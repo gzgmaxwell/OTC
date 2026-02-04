@@ -1,0 +1,73 @@
+// <template>
+//   <div class="map"
+//        id="olMap">
+//   </div>
+// </template>
+// <script>
+// import 'ol/ol.css'
+// import { Tile as TileLayer } from 'ol/layer'
+// import XYZ from 'ol/source/XYZ'
+// import { defaults as defaultControls } from 'ol/control'
+// import Map from 'ol/Map.js'
+// import View from 'ol/View.js'
+
+// export default {
+//   data () {
+//     return {
+//       map: null,
+//       parser: null
+//     }
+//   },
+//   mounted () {
+//     this.initMap()
+//   },
+//   methods: {
+//     initMap () {
+//       const map = new Map({
+//         target: 'olMap',
+//         view: new View({
+//           center: [102.432097, 36.887123],//中心点经纬度
+//           zoom: 11,//图层缩放大小
+//           projection: 'EPSG:4326'
+//         }),
+//         controls: defaultControls({
+//           zoom: true,
+//           attribution: false,
+//           rotate: false
+//         })
+//       })
+//       this.map = map
+//       // 添加地图
+//       let url = 'http://t{0-7}.tianditu.com/DataServer?x={x}&y={y}&l={z}'
+//       url = `${url}&T=vec_c&tk=73f429c4c1d4550cdbac3def1243aa9c`
+//       const source = new XYZ({
+//         url: url,
+//         projection: 'EPSG:4326'
+//       })
+//       const tdtLayer = new TileLayer({
+//         source: source
+//       })
+//       this.map.addLayer(tdtLayer)
+//       // 添加注记
+//       url = 'http://t{0-7}.tianditu.com/DataServer?x={x}&y={y}&l={z}'
+//       url = `${url}&T=73f429c4c1d4550cdbac3def1243aa9c`
+//       const sourceCVA = new XYZ({
+//         url: url,
+//         projection: 'EPSG:4326'
+//       })
+//       const tdtcvaLayer = new TileLayer({
+//         source: sourceCVA
+//       })
+//       this.map.addLayer(tdtcvaLayer)
+//     }
+//   }
+
+// }
+// </script>
+
+// <style   scoped>
+// .map {
+//   width: 100%;
+//   height: 100%;
+// }
+// </style>

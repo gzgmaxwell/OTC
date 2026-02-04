@@ -1,0 +1,32 @@
+{
+  "name": "JChat",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "axios": "^1.13.2",
+    "core-js": "^3.8.3",
+    "element-ui": "^2.15.14",
+    "sass-loader": "^16.0.6",
+    "tailwind": "^4.0.0",
+    "vue": "^2.6.14",
+    "vue-i18n": "^8.28.2",
+    "vue-router": "^3.6.5"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.16",
+    "@vue/cli-plugin-babel": "~5.0.0",
+    "@vue/cli-service": "~5.0.0",
+    "sass": "^1.94.0",
+    "vue-template-compiler": "^2.6.14"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}

@@ -1,0 +1,348 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Axios文件上传工具</title>
+    <link href="./static/tailwind.min.css" rel="stylesheet">
+    <link href="./static/all.min.css" rel="stylesheet">
+    <style>
+        .upload-area {
+            transition: all 0.3s ease;
+            border: 2px dashed #d1d5db;
+        }
+        .upload-area:hover, .upload-area.dragover {
+            border-color: #3b82f6;
+            background-color: #f0f9ff;
+        }
+        .file-card {
+            transition: transform 0.2s ease;
+        }
+        .file-card:hover {
+            transform: translateY(-3px);
+        }
+        .progress-bar {
+            height: 6px;
+            background: #e5e7eb;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3b82f6, #60a5fa);
+            border-radius: 3px;
+            transition: width 0.4s ease;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
+    <div id="app" class="container mx-auto px-4 py-12">
+        <div class="max-w-3xl mx-auto">
+            <!-- 头部 -->
+            <div class="text-center mb-12">
+                <h1 class="text-4xl font-bold text-gray-800 mb-3">
+                    <i class="fas fa-cloud-upload-alt text-blue-500 mr-3"></i>文件上传工具
+                </h1>
+                <p class="text-gray-600 text-lg">基于Axios的高效文件上传解决方案</p>
+            </div>
+
+            <!-- 上传卡片 -->
+            <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+                <div class="p-1 bg-gradient-to-r from-blue-500 to-purple-600"></div>
+                <div class="p-8">
+                    <!-- 上传区域 -->
+                    <div 
+                        class="upload-area rounded-xl p-10 text-center cursor-pointer mb-8"
+                        @dragover.prevent="handleDragOver"
+                        @dragleave.prevent="handleDragLeave"
+                        @drop.prevent="handleDrop"
+                        :class="{'dragover': isDragover}"
+                    >
+                        <input 
+                            type="file" 
+                            ref="fileInput" 
+                            class="hidden" 
+                            @change="handleFileSelect"
+                        >
+                        
+                        <div @click="$refs.fileInput.click()" class="space-y-4">
+                            <div class="mx-auto w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-cloud-upload-alt text-blue-500 text-2xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-xl font-medium text-gray-700">
+                                    将文件拖拽到这里或<span class="text-blue-500">点击选择</span>
+                                </p>
+                                <p class="text-gray-500 mt-2">
+                                    支持所有文件类型，最大文件大小 200MB
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 文件信息 -->
+                    <div v-if="selectedFile" class="file-card bg-gray-50 rounded-xl p-6 mb-8 border border-gray-200">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-lg font-semibold text-gray-800 flex items-center">
+                                <i class="fas fa-file-alt text-blue-500 mr-2"></i>文件信息
+                            </h3>
+                            <button 
+                                @click="removeFile" 
+                                class="text-gray-400 hover:text-red-500 transition-colors"
+                                title="移除文件"
+                            >
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <p class="text-sm text-gray-500">文件名称</p>
+                                <p class="font-medium truncate">{{ selectedFile.name }}</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500">文件类型</p>
+                                <p class="font-medium">{{ selectedFile.type || '未知类型' }}</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500">文件大小</p>
+                                <p class="font-medium">{{ formatFileSize(selectedFile.size) }}</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500">最后修改</p>
+                                <p class="font-medium">{{ formatDate(selectedFile.lastModified) }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 上传进度 -->
+                    <div v-if="isUploading" class="mb-8">
+                        <div class="flex justify-between mb-2">
+                            <span class="text-gray-700 font-medium">正在上传...</span>
+                            <span class="text-gray-500">{{ Math.round(uploadProgress) }}%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" :style="{ width: uploadProgress + '%' }"></div>
+                        </div>
+                    </div>
+
+                    <!-- 操作按钮 -->
+                    <div class="flex flex-col sm:flex-row justify-center gap-4">
+                        <button 
+                            :disabled="!selectedFile || isUploading" 
+                            @click="startUpload"
+                            class="flex items-center justify-center px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-medium rounded-full hover:opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-md hover:shadow-lg"
+                        >
+                            <i :class="isUploading ? 'fas fa-spinner fa-spin mr-2' : 'fas fa-upload mr-2'"></i>
+                            {{ isUploading ? '上传中...' : '开始上传' }}
+                        </button>
+                        
+                        <button 
+                            @click="resetForm"
+                            class="flex items-center justify-center px-6 py-3 bg-gray-100 text-gray-700 font-medium rounded-full hover:bg-gray-200 transition-colors"
+                        >
+                            <i class="fas fa-redo mr-2"></i>清空重置
+                        </button>
+                    </div>
+
+                    <!-- 上传结果 -->
+                    <div v-if="uploadResult.message" class="mt-8">
+                        <div 
+                            :class="[
+                                'p-4 rounded-lg border',
+                                uploadResult.type === 'success' ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'
+                            ]"
+                        >
+                            <div class="flex items-center">
+                                <i 
+                                    :class="[
+                                        'text-xl mr-3',
+                                        uploadResult.type === 'success' ? 'text-green-500 fas fa-check-circle' : 'text-red-500 fas fa-exclamation-circle'
+                                    ]"
+                                ></i>
+                                <span :class="uploadResult.type === 'success' ? 'text-green-700' : 'text-red-700'">
+                                    {{ uploadResult.message }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- API配置 -->
+            <div class="mt-8 bg-white rounded-2xl shadow-xl overflow-hidden" v-if="false">
+                <div class="p-1 bg-gradient-to-r from-green-500 to-teal-600"></div>
+                <div class="p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                        <i class="fas fa-cog text-green-500 mr-2"></i>API配置
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">上传地址</label>
+                            <input 
+                                v-model="apiConfig.url" 
+                                type="text" 
+                                placeholder="请输入上传接口URL"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            >
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">认证Token (可选)</label>
+                            <input 
+                                v-model="apiConfig.token" 
+                                type="text" 
+                                placeholder="请输入Bearer Token"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            >
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 说明信息 -->
+            <div class="mt-8 text-center text-gray-600 text-sm">
+                <p>© 2023 Axios文件上传工具 - 基于Vue.js和Axios实现的安全文件传输解决方案</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Axios CDN -->
+    <script src="./static/axios.min.js"></script>
+    <!-- Vue.js CDN -->
+    <script src="./static/vue.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data() {
+                return {
+                    selectedFile: null,
+                    isDragover: false,
+                    isUploading: false,
+                    uploadProgress: 0,
+                    uploadResult: {
+                        message: '',
+                        type: ''
+                    },
+                    apiConfig: {
+                        url: 'http://18.221.156.131:26455/otc/api/mobile/upload?index=1',
+                        token: ''
+                    }
+                };
+            },
+            methods: {
+                handleFileSelect(event) {
+                    const file = event.target.files[0];
+                    if (file) {
+                        this.selectedFile = file;
+                        this.clearResult();
+                    }
+                },
+                handleDragOver() {
+                    this.isDragover = true;
+                },
+                handleDragLeave() {
+                    this.isDragover = false;
+                },
+                handleDrop(event) {
+                    this.isDragover = false;
+                    const files = event.dataTransfer.files;
+                    if (files.length > 0) {
+                        this.selectedFile = files[0];
+                        this.clearResult();
+                    }
+                },
+                removeFile() {
+                    this.selectedFile = null;
+                    this.$refs.fileInput.value = '';
+                },
+                startUpload() {
+                    if (!this.selectedFile) {
+                        this.uploadResult = {
+                            message: '请先选择文件',
+                            type: 'error'
+                        };
+                        return;
+                    }
+                    
+                    if (!this.apiConfig.url) {
+                        this.uploadResult = {
+                            message: '请配置上传地址',
+                            type: 'error'
+                        };
+                        return;
+                    }
+                    
+                    this.isUploading = true;
+                    this.uploadProgress = 0;
+                    this.clearResult();
+                    
+                    // 创建FormData对象
+                    const formData = new FormData();
+                    formData.append('file', this.selectedFile);
+                    
+                    // 配置Axios请求
+                    const config = {
+                        headers: {
+                            'Content-Type': 'multipart/form-data'
+                        },
+                        onUploadProgress: (progressEvent) => {
+                            if (progressEvent.lengthComputable) {
+                                this.uploadProgress = (progressEvent.loaded / progressEvent.total) * 100;
+                            }
+                        }
+                    };
+                    
+                    // 添加认证token（如果有）
+                    if (this.apiConfig.token) {
+                        config.headers.Authorization = `Bearer ${this.apiConfig.token}`;
+                    }
+                    
+                    // 执行上传请求
+                    axios.post(this.apiConfig.url, formData, config)
+                        .then(response => {
+                            this.uploadResult = {
+                                message: '文件上传成功！',
+                                type: 'success'
+                            };
+                            console.log('上传成功:', response.data);
+                        })
+                        .catch(error => {
+                            this.uploadResult = {
+                                message: error.response?.data?.message || '上传失败，请检查网络连接和API配置',
+                                type: 'error'
+                            };
+                            console.error('上传失败:', error);
+                        })
+                        .finally(() => {
+                            this.isUploading = false;
+                        });
+                },
+                resetForm() {
+                    this.selectedFile = null;
+                    this.isUploading = false;
+                    this.uploadProgress = 0;
+                    this.$refs.fileInput.value = '';
+                    this.clearResult();
+                },
+                clearResult() {
+                    this.uploadResult = {
+                        message: '',
+                        type: ''
+                    };
+                },
+                formatFileSize(bytes) {
+                    if (bytes === 0) return '0 Bytes';
+                    const k = 1024;
+                    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+                    const i = Math.floor(Math.log(bytes) / Math.log(k));
+                    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+                },
+                formatDate(timestamp) {
+                    return new Date(timestamp).toLocaleString('zh-CN');
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div :class="{ left_wrapper: true, c_left_wrapper: isCollapse }">
-      <div class="menu_tittle" v-if="!isCollapse">OTC综合管理平台</div>
+      <div class="menu_tittle" v-if="!isCollapse">OTC商户平台</div>
       <Sidebar />
     </div>
     <div :class="{ right_wrapper: true, s_right_wrapper: isCollapse }">

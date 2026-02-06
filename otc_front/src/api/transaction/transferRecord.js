@@ -12,7 +12,7 @@ export const TransferRecordPage = params =>
 export const TransferRecordPageShop = params =>
   request({
     method: "get",
-    url: "/merchant/page",
+    url: url+"/money/shop",
     params
   });
 export const TransferRecordList = params =>

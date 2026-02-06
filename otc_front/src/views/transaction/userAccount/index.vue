@@ -70,7 +70,7 @@
 </template>
 
 <script>
-import { UserAccountPage, UserAccountDelete } from "@a/transaction";
+import { UserAccountPage, UserAccountDelete, UserAccountPageShop } from "@a/transaction";
 
 export default {
   name: "UserAccount",
@@ -127,7 +127,8 @@ export default {
     //获取列表
     async List() {
       this.params.descs = "a.update_time";
-      const data = await UserAccountPage(this.params);
+      // const data = await UserAccountPage(this.params);
+      const data = await UserAccountPageShop(this.params);
 
       this.total = data.total;
       this.list = data.records;

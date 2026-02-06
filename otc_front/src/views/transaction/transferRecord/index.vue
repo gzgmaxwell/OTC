@@ -126,7 +126,7 @@
 </template>
 
 <script>
-import { TransferRecordPage, TransferRecordDelete,TransferRecordPageShop } from "@a/transaction";
+import { TransferRecordPage, TransferRecordDelete, TransferRecordPageShop } from "@a/transaction";
 import { nextTick } from "vue";
 
 import { QuerySelect } from "@a/system";

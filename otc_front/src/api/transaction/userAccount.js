@@ -8,6 +8,13 @@ export const UserAccountPage = params =>
     url: url+"/page",
     params
   });
+  //商户账户分页
+export const UserAccountPageShop = params =>
+  request({
+    method: "get",
+    url: url+"/shop",
+    params
+  });
 export const UserAccountList = params =>
   request({
     method: "get",

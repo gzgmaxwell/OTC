@@ -1,7 +1,7 @@
 const resolve = dir => require("path").join(__dirname, dir);
 
 module.exports = {
-  publicPath: "/of",
+  publicPath: "/shop",
   productionSourceMap: false,
   lintOnSave: false,
 

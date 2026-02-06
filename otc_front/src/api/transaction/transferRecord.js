@@ -8,6 +8,13 @@ export const TransferRecordPage = params =>
     url: url+"/money/page",
     params
   });
+//商户转账记录分页
+export const TransferRecordPageShop = params =>
+  request({
+    method: "get",
+    url: "/merchant/page",
+    params
+  });
 export const TransferRecordList = params =>
   request({
     method: "get",

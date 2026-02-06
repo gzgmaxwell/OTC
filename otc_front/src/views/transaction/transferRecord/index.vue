@@ -126,7 +126,7 @@
 </template>
 
 <script>
-import { TransferRecordPage, TransferRecordDelete } from "@a/transaction";
+import { TransferRecordPage, TransferRecordDelete,TransferRecordPageShop } from "@a/transaction";
 import { nextTick } from "vue";
 
 import { QuerySelect } from "@a/system";
@@ -277,7 +277,9 @@ export default {
     //获取列表
     async List() {
       this.params.descs = "a.update_time";
-      const data = await TransferRecordPage(this.params);
+      // const data = await TransferRecordPage(this.params);
+      const data = await TransferRecordPageShop(this.params);
+
 
       this.total = data.page.total;
       this.list = data.page.records;

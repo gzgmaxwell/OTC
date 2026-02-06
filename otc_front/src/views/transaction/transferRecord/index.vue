@@ -347,7 +347,7 @@ export default {
   },
   mounted() {
     this.search();
-    this.getCodeUser();
+    // this.getCodeUser();
   },
 };
 </script>

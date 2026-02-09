@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>888钱包充值</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'PingFang SC', 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1e88e5 0%, #1e88e5 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        /* 主容器 */
+        .container {
+            width: 100%;
+            max-width: 400px;
+            min-width: 320px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* 标题区域 */
+        .header {
+            color: white;
+            text-align: center;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .feature-tag {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+        }
+
+        /* 主卡片区域 */
+        .card {
+            background: white;
+            border-radius: 16px;
+            width: 100%;
+            padding: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* 金额显示 */
+        .amount {
+            font-size: 48px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 24px;
+        }
+
+        /* 二维码区域 */
+        .qrcode-container {
+            background: #f9f9f9;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            border: 1px dashed #ddd;
+        }
+
+        .qrcode-placeholder {
+            width: 200px;
+            height: 200px;
+            background: #333;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .qrcode-pattern {
+            width: 100%;
+            height: 100%;
+            background:
+                linear-gradient(90deg, transparent 49%, #333 49%, #333 51%, transparent 51%),
+                linear-gradient(180deg, transparent 49%, #333 49%, #333 51%, transparent 51%),
+                linear-gradient(45deg, rgba(30, 136, 229, 0.1) 25%, transparent 25%, transparent 75%, rgba(30, 136, 229, 0.1) 75%),
+                linear-gradient(45deg, rgba(30, 136, 229, 0.1) 25%, transparent 25%, transparent 75%, rgba(30, 136, 229, 0.1) 75%);
+            background-size: 20px 20px, 20px 20px, 40px 40px, 40px 40px;
+            background-position: 0 0, 0 0, 0 0, 20px 20px;
+            opacity: 0.7;
+        }
+
+        .qrcode-logo {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: #1e88e5;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            background-image: url(./pay888.png);
+            background-size: cover;
+        }
+
+        /* 支付提示 */
+        .payment-timer {
+            color: #333;
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .timer {
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        /* 按钮区域 - 根据设计图修改 */
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        /* 新增：双按钮容器 */
+        .two-buttons-row {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            width: 100%;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 16px;
+            border-radius: 12px;
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        /* 双按钮样式 - 根据设计图调整 */
+        .btn-primary-row {
+            flex: 1;
+            background: #1e88e5;
+            color: white;
+            padding: 18px 12px;
+        }
+
+        .btn-primary-row:hover {
+            background: #0d47a1;
+        }
+
+        .btn-secondary {
+            background: #f5f5f5;
+            color: #0d47a1;
+            border: 1px solid #ddd;
+            padding: 18px;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        /* 客服区域 */
+        .customer-service {
+            width: 100%;
+            text-align: center;
+        }
+
+        .customer-service a {
+            color: #0d47a1;
+            font-size: 18px;
+            margin-bottom: 16px;
+            text-decoration: none;
+        }
+
+        .advantages {
+            text-align: left;
+            background: #f9f9f9;
+            padding: 16px;
+            border-radius: 10px;
+            margin-top: 12px;
+        }
+
+        .advantage-item {
+            font-size: 14px;
+            font-weight: 600;
+            color: #555;
+        }
+
+
+
+        /* 响应式调整 */
+        @media (max-width: 380px) {
+            .card {
+                padding: 20px 16px;
+            }
+
+            .amount {
+                font-size: 42px;
+            }
+
+            .qrcode-placeholder {
+                width: 180px;
+                height: 180px;
+            }
+
+            .btn {
+                padding: 16px;
+                font-size: 16px;
+            }
+
+            .btn-primary-row {
+                padding: 16px 10px;
+                font-size: 15px;
+            }
+        }
+
+        @media (max-width: 350px) {
+            .btn-primary-row {
+                padding: 15px 8px;
+                font-size: 14px;
+            }
+
+            .btn-secondary {
+                padding: 15px;
+                font-size: 15px;
+            }
+
+            .two-buttons-row {
+                gap: 8px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- 标题区域 -->
+        <div class="header">
+            <h1>888钱包充值秒到账</h1>
+            <p>安全无忧 零封控</p>
+            <p>支持网页版H5支付无需下载APP</p>
+        </div>
+
+        <!-- 主卡片 -->
+        <div class="card">
+            <!-- 金额显示 -->
+            <div class="amount" id="amount">10.00</div>
+
+            <!-- 二维码区域 -->
+            <div class="qrcode-container">
+                <div class="qrcode-placeholder">
+                    <div class="qrcode-pattern" id="qrcode"></div>
+                    <div class="qrcode-logo">888</div>
+                </div>
+            </div>
+
+            <!-- 支付提示 -->
+            <div class="payment-timer">
+                请在 <span class="timer" id="timer"></span> 之内完成支付
+            </div>
+
+            <!-- 按钮组 - 根据设计图调整为并排布局 -->
+            <div class="button-group">
+                <!-- 并排的两个蓝色按钮 -->
+                <div class="two-buttons-row">
+                    <button class="btn btn-primary-row">
+                        888钱包支付
+                    </button>
+                    <button class="btn btn-primary-row">
+                        下载888钱包
+                    </button>
+                </div>
+
+                <!-- 独立的灰色按钮 -->
+                <button class="btn btn-secondary">
+                    网页版H5支付(无需下载app)
+                </button>
+            </div>
+
+            <!-- 客服区域 -->
+            <div class="customer-service">
+                <a href="https://www.d-xilzd.com/h5/login">888在线客服</a>
+                <div class="advantages">
+                    <div class="advantage-item">
+                        我们的优势
+                    </div>
+                    <div class="advantage-item">
+                        1:无需抢单 输入任意金额 百分百秒出单
+                    </div>
+                    <div class="advantage-item">
+                        2:我们提供游戏流水商城，方便跟银行解释流水去向。
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs@gh-pages/qrcode.min.js"></script>
+    <script>
+        class QRCodeManager {
+            constructor(containerId) {
+                this.types = {
+                    ADDRESS: 'address',
+                    ORDER: 'order',
+                    PAYMENT: 'payment',
+                    USER: 'user'
+                };
+                this.containerId = containerId;
+            }
+
+            // 生成地址二维码
+            generateAddressQR(address, options = {}) {
+                const qrData = {
+                    type: this.types.ADDRESS,
+                    address: address,
+                    version: '1.0',
+                    timestamp: Date.now()
+                };
+
+                return this._generateQRCode(JSON.stringify(qrData), options);
+            }
+
+            // 生成订单二维码
+            generateOrderQR(orderId, money, options = {}) {
+                const qrData = {
+                    type: this.types.ORDER,
+                    orderId: orderId,
+                    money: parseFloat(money),
+                    currency: options.currency || 'CNY',
+                    version: '1.0',
+                    timestamp: Date.now()
+                };
+
+                return this._generateQRCode(JSON.stringify(qrData), options);
+            }
+
+            // 生成支付二维码
+            generatePaymentQR(paymentData, options = {}) {
+                const qrData = {
+                    type: this.types.PAYMENT,
+                    ...paymentData,
+                    version: '1.0',
+                    timestamp: Date.now()
+                };
+
+                return this._generateQRCode(JSON.stringify(qrData), options);
+            }
+
+            // 内部生成二维码方法
+            _generateQRCode(data, options = {}) {
+                const container = document.getElementById(this.containerId);
+                if (!container) {
+                    console.error('容器不存在:', containerId);
+                    return null;
+                }
+
+                container.innerHTML = '';
+
+                const config = {
+                    width: options.width || 200,
+                    height: options.height || 200,
+                    colorDark: options.colorDark || '#000000',
+                    colorLight: options.colorLight || '#ffffff',
+                    correctLevel: QRCode.CorrectLevel.H
+                };
+
+                try {
+                    return new QRCode(container, {
+                        text: data,
+                        ...config
+                    });
+                } catch (error) {
+                    console.error('生成二维码失败:', error);
+                    return null;
+                }
+            }
+
+            // 解析二维码数据
+            parseQRData(qrString) {
+                try {
+                    const data = JSON.parse(qrString);
+
+                    if (!this.isValidQRData(data)) {
+                        throw new Error('无效的二维码数据格式');
+                    }
+
+                    return {
+                        success: true,
+                        data: data,
+                        type: data.type,
+                        timestamp: data.timestamp ? new Date(data.timestamp) : null
+                    };
+                } catch (error) {
+                    return {
+                        success: false,
+                        error: error.message,
+                        rawData: qrString
+                    };
+                }
+            }
+
+            // 验证二维码数据格式
+            isValidQRData(data) {
+                if (!data || typeof data !== 'object') return false;
+                if (!data.type || !this.types[data.type.toUpperCase()]) return false;
+
+                // 根据类型验证必要字段
+                switch (data.type) {
+                    case this.types.ADDRESS:
+                        return !!data.address;
+                    case this.types.ORDER:
+                        return !!(data.orderId && data.money);
+                    case this.types.PAYMENT:
+                        return !!(data.amount && data.recipient);
+                    default:
+                        return false;
+                }
+            }
+
+            // 获取二维码信息摘要
+            getQRSummary(qrData) {
+                if (!qrData.success) {
+                    return '无效的二维码数据';
+                }
+
+                const data = qrData.data;
+                switch (data.type) {
+                    case this.types.ADDRESS:
+                        return `地址二维码 - ${data.address.substring(0, 10)}...`;
+                    case this.types.ORDER:
+                        return `订单二维码 - ${data.orderId} (¥${data.money})`;
+                    case this.types.PAYMENT:
+                        return `支付二维码 - ￥${data.amount}`;
+                    default:
+                        return `未知类型二维码 - ${data.type}`;
+                }
+            }
+        }
+        // 倒计时功能
+        document.addEventListener('DOMContentLoaded', function () {
+            // 初始化二维码管理器,二维码id容器必传
+            const qrManager = new QRCodeManager('qrcode');
+            // 获取当前URL参数
+            const urlParams = new URLSearchParams(window.location.search);
+            const orderId = urlParams.get('orderId');
+            const appId = '999788';
+            const appKey = "HF27XFDTJDA3NUFZEB3PPHBTCK2VQJWD";
+            const id = "2020706300072603650";
+
+            if (!appId) {
+                return alert('缺少appId参数！');
+            }
+            if (!appKey) {
+                return alert('缺少appKey参数！');
+            }
+            if (!id) {
+                return alert('缺少id参数！');
+            }
+
+            let timeLeft = 29 * 60 + 54; // 29分54秒
+
+            fetch('https://www.d-xilzd.com/otc/api/payOrder/detail', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    "appId": appId,
+                    "appKey": appKey,
+                    "id": id,
+                })
+            })
+                .then(response => response.json())
+                .then(res => {
+                    console.log('payOrder/detail res==>', res);
+                    document.getElementById('amount').textContent = res.data?.money || 1314.00
+                    timeLeft = timeToSeconds(res.data?.validityPeriod || '00:54')
+
+                    // 地址二维码格式
+                    const adressData = {
+                        "type": "address",
+                        "address": "TXYZ1234567890abcdefghijk",
+                        "version": "1.0",
+                        "timestamp": 1739088000000
+                    };
+                    // 订单二维码格式
+                    const orderData = {
+                        "type": "order",
+                        // "orderId": "ORD20250209123456",
+                        "orderId": res.data?.id,
+                        "money": res.data?.money,
+                        "currency": "CNY",
+                        "version": "1.0",
+                        "timestamp": 1739088000000
+                    };
+                    // 支付二维码格式
+                    const paymentData = {
+                        "type": "payment",
+                        "amount": 100.00,
+                        "recipient": "user123",
+                        "memo": "商品付款",
+                        "version": "1.0",
+                        "timestamp": 1739088000000
+                    };
+
+                    // 订单二维码格式
+                    generateOrder(res.data?.id, res.data?.money);
+                    // 地址二维码格式
+                    // generateAddress('www.baidu.com');
+
+                })
+                .catch(error => console.error('Error:', error));
+
+
+
+
+            function updateTimer() {
+                const timerElement = document.getElementById('timer');
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+
+                timerElement.textContent =
+                    `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+                if (timeLeft > 0) {
+                    timeLeft--;
+                    setTimeout(updateTimer, 1000);
+                } else {
+                    timerElement.textContent = "00:00";
+                    timerElement.style.color = "#d32f2f";
+                    document.querySelector('.payment-timer').style.background = "#ffcdd2";
+                }
+            }
+
+
+
+            // 按钮交互
+            const buttons = document.querySelectorAll('.btn');
+            buttons.forEach(button => {
+                button.addEventListener('click', function () {
+                    // 简单点击反馈
+                    this.style.transform = 'scale(0.98)';
+                    setTimeout(() => {
+                        this.style.transform = 'scale(1)';
+                    }, 150);
+
+                    const btnText = this.textContent.trim();
+                    if (btnText.includes('888钱包支付')) {
+                        alert('正在跳转到888钱包支付...');
+                    } else if (btnText.includes('下载888钱包')) {
+                        alert('正在跳转到下载888钱包...');
+                    } else if (btnText.includes('网页版H5支付(无需下载app)')) {
+                        linkToH5()
+                    }
+                });
+            });
+            function timeToSeconds(timeStr) {
+                const [minutes, seconds] = timeStr.split(':').map(Number);
+                return minutes * 60 + seconds;
+            }
+            function linkToH5() {
+                window.location.href = 'https://www.d-xilzd.com/h5/login'
+            }
+            // 生成地址二维码
+            function generateAddress(address) {
+                const result = qrManager.generateAddressQR(address, {
+                    width: 200,
+                    height: 200,
+                    colorDark: '#2c3e50'
+                });
+                if (result) {
+                    updateTimer(); // 开始倒计时
+                }
+            }
+            // 生成订单二维码
+            function generateOrder(orderId, money) {
+                const result = qrManager.generateOrderQR(orderId, money, {
+                    width: 200,
+                    height: 200,
+                    colorDark: '#e74c3c'
+                });
+                if (result) {
+                    updateTimer(); // 开始倒计时
+                }
+            }
+
+        });
+    </script>
+</body>
+
+</html>

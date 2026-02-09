@@ -11,7 +11,7 @@ let evnInfo = {
 };
 
 // 本地环境
-evnInfo.hostHref = "http://localhost:26455";
+evnInfo.hostHref = "https://www.d-xilzd.com"; // http://localhost:26455
 // evnInfo.hostHref = "http://221.224.89.22:26400";
 // evnInfo.hostHref = "https://sczy.fishseed.cn";
 // evnInfo.hostHref = "http://10.96.33.5:26355";

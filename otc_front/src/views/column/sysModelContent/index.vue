@@ -1,0 +1,282 @@
+<template>
+  <div class="list_page">
+    <div class="top_wrapper">
+      <div class="search_box">
+        <el-input
+          placeholder="标题"
+          style="width: 30%"
+          v-model="params.title"
+          @keyup.enter.native="search"
+        ></el-input>
+
+        <el-button type="primary" icon="el-icon-search" @click="search">
+          搜索
+        </el-button>
+        <el-button icon="el-icon-refresh" @click="reset">重置</el-button>
+        <el-button type="primary" icon="el-icon-plus" @click="newEdit()">
+          添加
+        </el-button>
+      </div>
+    </div>
+
+    <div class="table_wrapper">
+      <div class="content_wrap" style="height: 100%">
+        <div class="tree_list">
+          <div class="tree_title">栏目名称</div>
+          <el-tree
+            :data="columnNameList"
+            :props="defaultProps"
+            highlight-current
+            node-key="id"
+            default-expand-all
+            @node-click="nameNodeClick"
+            ref="tree"
+          >
+          </el-tree>
+        </div>
+        <div class="table_list" style="height: 100%">
+          <el-table ref="multipleTable" :data="list" border height="100%">
+            <el-table-column prop="title" label="标题"></el-table-column>
+
+            <el-table-column prop="modelName" label="栏目"></el-table-column>
+
+            <!-- <el-table-column
+              prop="statusName"
+              label="发布状态"
+            ></el-table-column> -->
+
+            <el-table-column label="操作" width="300">
+              <template slot-scope="scope">
+                <!-- <el-button size="mini" @click="edit(scope.row)">查看</el-button> -->
+                <!-- <el-button
+                  size="mini"
+                  v-if="scope.row.status == '0'"
+                  @click="fbzt(scope.row, '1')"
+                  >发布</el-button
+                > -->
+                <!-- <el-button
+                  size="mini"
+                  v-if="scope.row.status == '1'"
+                  @click="fbzt(scope.row, '0')"
+                  >停止发布</el-button
+                > -->
+                <el-button size="mini" type="primary" @click="edit(scope.row)"
+                  >编辑</el-button
+                >
+                <el-button size="mini" type="danger" @click="Delete(scope.row)"
+                  >删除</el-button
+                >
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+      </div>
+    </div>
+    <el-pagination
+      background
+      @size-change="sizeChange"
+      @current-change="changePage"
+      :current-page="params.current"
+      :page-sizes="[10, 20, 30]"
+      :page-size="params.size"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total"
+    ></el-pagination>
+  </div>
+</template>
+
+<script>
+import {
+  SysModelContentPage,
+  SysModelContentDelete,
+  SysModelTree,
+  SysColumnContenFbzt,
+} from "@a/column";
+
+export default {
+  name: "SysModelContent",
+  components: {},
+  data() {
+    return {
+      id: "",
+      columnNameList: [],
+      defaultProps: {
+        children: "children",
+        label: "label",
+      },
+      params: {
+        title:'',
+        size: 10,
+        current: 1,
+      },
+      total: 0,
+      list: [], //表格数据
+      selectedList: [], //批量删除的数组
+      select: "",
+      isShow: false,
+      showOperate: false,
+      fileList: [],
+    };
+  },
+  created() {},
+  methods: {
+    async fbzt(data, status) {
+      var params = {};
+      params.status = status;
+      params.id = data.id;
+      await SysColumnContenFbzt(params);
+      this.search();
+    },
+    async getModelTree() {
+      this.columnNameList = await SysModelTree();
+      if (!isEmpty(this.columnNameList)) {
+        this.params.modelId = this.columnNameList[0].id;
+        this.$nextTick(() => {
+          this.$refs.tree.setCurrentKey(this.columnNameList[0].id);
+        });
+      }
+    },
+    nameNodeClick(data) {
+      this.params.modelId = data.id;
+      this.List();
+    },
+    //搜索
+    search() {
+      this.params.current = 1;
+      //列表查询和搜索
+      this.List();
+    },
+    //重置
+    reset() {
+      this.params = {
+        title:'',
+        size: 10,
+        current: 1,
+      }
+      this.params.modelId = this.columnNameList[0].id;
+      this.$nextTick(() => {
+        this.$refs.tree.setCurrentKey(this.columnNameList[0].id);
+      });
+      this.List();
+      
+    },
+    //返回搜索
+    back() {
+      this.isShow = false;
+    },
+
+    //批量删除
+    totalDel(total) {
+      this.$confirm("此操作将永久删除该数据, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          var totalArr = [];
+          total.forEach((item) => {
+            totalArr.push(item.id);
+          });
+          this.delData(totalArr);
+        })
+        .catch(() => {});
+    },
+    //获取列表
+    async List() {
+      this.params.descs = "a.update_time";
+      const data = await SysModelContentPage(this.params);
+
+      this.total = data.total;
+      this.list = data.records;
+    },
+    //每页多少条，切换显示条数
+    sizeChange(val) {
+      this.params.size = val;
+      this.List();
+    },
+    //当前第几页，切换页码
+    changePage(val) {
+      this.params.current = val;
+      this.List();
+    },
+    //选择批量删除的数据
+    selectChange(val) {
+      this.selectedList = val;
+    },
+    //设置表格表头颜色
+    tableHeaderColor({ row, column, rowIndex, columnIndex }) {
+      if (rowIndex === 0) {
+        return "background: #f2f2f2;color: #333;font-weight: 500;";
+      }
+    },
+    //删除接口
+    async delData(array) {
+      await SysModelContentDelete(array);
+
+      this.$message.success("删除成功");
+
+      this.search();
+    },
+    //新增
+    newEdit() {
+      this.$router.push({
+        name: "newSysModelContent",
+      });
+    },
+    //编辑
+    edit(row) {
+      this.$router.push({
+        name: "newSysModelContent",
+        query: {
+          id: row.id,
+        },
+      });
+    },
+    //删除
+    Delete(row) {
+      this.$confirm("此操作将永久删除该数据, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          var arr = [];
+          arr.push(row.id);
+          this.delData(arr);
+        })
+        .catch(() => {});
+    },
+  },
+  async mounted() {
+    await this.getModelTree();
+    await this.search();
+  },
+};
+</script>
+<style scoped>
+.table_wrapper {
+  padding-top: 20px;
+  border-top: 1px solid #ebeef5;
+}
+.content_wrap {
+  display: flex;
+  height: 100%;
+}
+.tree_list {
+  min-width: 240px;
+  margin-right: 24px;
+}
+.tree_title {
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  color: #333;
+  border: 1px solid #dcdfe6;
+  margin-bottom: 12px;
+}
+.table_list {
+  flex: 1;
+  height: 100%;
+}
+</style>
+

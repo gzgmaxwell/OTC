@@ -500,7 +500,7 @@
             const orderId = urlParams.get('orderId');
             const appId = '999788';
             const appKey = "HF27XFDTJDA3NUFZEB3PPHBTCK2VQJWD";
-            const id = "2020706300072603650";
+            const id = "2020813752557277185";
 
             if (!appId) {
                 return alert('缺少appId参数！');
@@ -528,8 +528,8 @@
                 .then(response => response.json())
                 .then(res => {
                     console.log('payOrder/detail res==>', res);
-                    document.getElementById('amount').textContent = res.data?.money || 1314.00
-                    timeLeft = timeToSeconds(res.data?.validityPeriod || '00:54')
+                    document.getElementById('amount').textContent = res.data?.money
+                    timeLeft = timeToSeconds(res.data?.validityPeriod)
 
                     // 地址二维码格式
                     const adressData = {

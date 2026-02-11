@@ -351,12 +351,14 @@ export default {
 .container_banner {
   background-image: url("../../assets/img/bg.png");
   background-size: cover;
+  position: relative;
   .banner {
     margin-top: 50px;
+    width: 80%;
     img {
-      max-width: 600px;
+      max-width: 320px;
       height: auto;
-      margin: 0 auto;
+      display: block; /* 去掉底部小空隙 */
     }
   }
 }

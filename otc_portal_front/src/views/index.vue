@@ -1,13 +1,19 @@
 <template>
-  <div data-v-828b61c5 class="w-full min-h-screen" style="overflow: visible;">
-    <section data-v-828b61c5 class="app-main w-full relative flex flex-grow flex-col">
+  <div data-v-828b61c5 class="w-full min-h-screen" style="overflow: visible">
+    <section
+      data-v-828b61c5
+      class="app-main w-full relative flex flex-grow flex-col"
+    >
       <div data-v-828b61c5 class="app-main-wrap" ref="scrollContainer">
         <div data-v-207a772c data-v-828b61c5 class="w-full flex flex-col">
           <header
             data-v-65508b29
             data-v-207a772c
-            :class="['w-full h-[3.2rem] pc:py-[0.8rem] pc:px-[1.6rem] mob:p-[0.8rem] flex justify-between items-center fixed z-50 left-0 top-0 transition-colors duration-300', { 'bg-black': scrolled, 'bg-transparent': !scrolled }]"
-            style="background: transparent;"
+            :class="[
+              'w-full h-[3.2rem] pc:py-[0.8rem] pc:px-[1.6rem] mob:p-[0.8rem] flex justify-between items-center fixed z-50 left-0 top-0 transition-colors duration-300',
+              { 'bg-black': scrolled, 'bg-transparent': !scrolled },
+            ]"
+            style="background: transparent"
           >
             <img
               data-v-65508b29
@@ -18,23 +24,41 @@
               <div data-v-65508b29 class="flex items-center gap-[4rem]">
                 <div
                   data-v-65508b29
-                  :class="['text-[0.8rem] font-[500] leading-[1.1rem] cursor-pointer', { 'text-white': scrolled, 'text-black': !scrolled }]"
+                  :class="[
+                    'text-[0.8rem] font-[500] leading-[1.1rem] cursor-pointer',
+                    { 'text-white': scrolled, 'text-black': !scrolled },
+                  ]"
                   @click="routeChange('index')"
-                >{{$t('home')}}</div>
+                >
+                  {{ $t("home") }}
+                </div>
                 <div
                   data-v-65508b29
-                  :class="['text-[0.8rem] font-[500] leading-[1.1rem] cursor-pointer', { 'text-white': scrolled, 'text-black': !scrolled }]"
+                  :class="[
+                    'text-[0.8rem] font-[500] leading-[1.1rem] cursor-pointer',
+                    { 'text-white': scrolled, 'text-black': !scrolled },
+                  ]"
                   @click="routeChange('about')"
-                >{{$t('about')}}</div>
+                >
+                  {{ $t("about") }}
+                </div>
                 <div
                   data-v-65508b29
-                  :class="['text-[0.8rem] font-[500] leading-[1.1rem] cursor-pointer', { 'text-white': scrolled, 'text-black': !scrolled }]"
+                  :class="[
+                    'text-[0.8rem] font-[500] leading-[1.1rem] cursor-pointer',
+                    { 'text-white': scrolled, 'text-black': !scrolled },
+                  ]"
                   @click="routeChange('privacy')"
-                >{{$t('privacy')}}</div>
-                <div data-v-65508b29 class="ant-dropdown-link cursor-pointer ant-dropdown-trigger">
+                >
+                  {{ $t("privacy") }}
+                </div>
+                <div
+                  data-v-65508b29
+                  class="ant-dropdown-link cursor-pointer ant-dropdown-trigger"
+                >
                   <div
                     data-v-65508b29
-                    style="position: relative;"
+                    style="position: relative"
                     class="py-[0.2rem] px-[0.4rem] flex items-center gap-[0.2rem] h-[1.6rem] bg-[#ffffff] rounded-[0.2rem]"
                   >
                     <img
@@ -47,10 +71,16 @@
                       data-v-65508b29
                       class="text-[0.8rem] font-[400] leading-[1.2rem]"
                       @click="languageChange"
-                    >{{language}}</span>
+                      >{{ language }}</span
+                    >
                     <div
                       class="ant-dropdown css-1p3hq3p ant-dropdown-placement-bottomLeft"
-                      style="min-width: 80px; position: absolute;top: 30px;left: -8px;"
+                      style="
+                        min-width: 80px;
+                        position: absolute;
+                        top: 30px;
+                        left: -8px;
+                      "
                       v-if="languageShow"
                     >
                       <!---->
@@ -59,35 +89,67 @@
                         role="menu"
                       >
                         <li
-                          :class="['ant-dropdown-menu-item ant-dropdown-menu-item-only-child', {'ant-dropdown-menu-item-disabled': language === '繁體中文'}]"
+                          :class="[
+                            'ant-dropdown-menu-item ant-dropdown-menu-item-only-child',
+                            {
+                              'ant-dropdown-menu-item-disabled':
+                                language === '繁體中文',
+                            },
+                          ]"
                           role="menuitem"
                         >
                           <span class="ant-dropdown-menu-title-content">
-                            <span @click.prevent="languageChoose('繁體中文')">繁體中文</span>
+                            <span @click.prevent="languageChoose('繁體中文')"
+                              >繁體中文</span
+                            >
                           </span>
                         </li>
                         <li
-                          :class="['ant-dropdown-menu-item ant-dropdown-menu-item-only-child', {'ant-dropdown-menu-item-disabled': language === 'English'}]"
+                          :class="[
+                            'ant-dropdown-menu-item ant-dropdown-menu-item-only-child',
+                            {
+                              'ant-dropdown-menu-item-disabled':
+                                language === 'English',
+                            },
+                          ]"
                           role="menuitem"
                         >
                           <span class="ant-dropdown-menu-title-content">
-                            <span @click.prevent="languageChoose('English')">English</span>
+                            <span @click.prevent="languageChoose('English')"
+                              >English</span
+                            >
                           </span>
                         </li>
                         <li
-                          :class="['ant-dropdown-menu-item ant-dropdown-menu-item-only-child', {'ant-dropdown-menu-item-disabled': language === 'Tiếng Việt'}]"
+                          :class="[
+                            'ant-dropdown-menu-item ant-dropdown-menu-item-only-child',
+                            {
+                              'ant-dropdown-menu-item-disabled':
+                                language === 'Tiếng Việt',
+                            },
+                          ]"
                           role="menuitem"
                         >
                           <span class="ant-dropdown-menu-title-content">
-                            <span @click.prevent="languageChoose('Tiếng Việt')">Tiếng Việt</span>
+                            <span @click.prevent="languageChoose('Tiếng Việt')"
+                              >Tiếng Việt</span
+                            >
                           </span>
                         </li>
                         <li
-                          :class="['ant-dropdown-menu-item ant-dropdown-menu-item-only-child', {'ant-dropdown-menu-item-disabled': language === 'Português'}]"
+                          :class="[
+                            'ant-dropdown-menu-item ant-dropdown-menu-item-only-child',
+                            {
+                              'ant-dropdown-menu-item-disabled':
+                                language === 'Português',
+                            },
+                          ]"
                           role="menuitem"
                         >
                           <span class="ant-dropdown-menu-title-content">
-                            <span @click.prevent="languageChoose('Português')">Português</span>
+                            <span @click.prevent="languageChoose('Português')"
+                              >Português</span
+                            >
                           </span>
                         </li>
                       </ul>
@@ -98,11 +160,15 @@
             </div>
             <div data-v-65508b29 class="pc:hidden mob:block">
               <div data-v-65508b29 class="flex items-center gap-[0.8rem]">
-                <div data-v-65508b29 class="ant-dropdown-link cursor-pointer ant-dropdown-trigger" style="position: relative;">
+                <div
+                  data-v-65508b29
+                  class="ant-dropdown-link cursor-pointer ant-dropdown-trigger"
+                  style="position: relative"
+                >
                   <div
                     data-v-65508b29
                     class="py-[0.2rem] px-[0.4rem] flex items-center gap-[0.2rem] h-[1.6rem] bg-[#ffffff] rounded-[0.2rem]"
-                     @click="languageChange"
+                    @click="languageChange"
                   >
                     <img
                       data-v-65508b29
@@ -113,53 +179,90 @@
                     <span
                       data-v-65508b29
                       class="text-[0.8rem] font-[400] leading-[1.2rem]"
-
-                    >{{language}}</span>
+                      >{{ language }}</span
+                    >
                   </div>
                   <div
-                      class="ant-dropdown css-1p3hq3p ant-dropdown-placement-bottomLeft"
-                      style="min-width: 80px; position: absolute;top: 30px;left: -8px;"
-                      v-if="languageShow"
+                    class="ant-dropdown css-1p3hq3p ant-dropdown-placement-bottomLeft"
+                    style="
+                      min-width: 80px;
+                      position: absolute;
+                      top: 30px;
+                      left: -8px;
+                    "
+                    v-if="languageShow"
+                  >
+                    <!---->
+                    <ul
+                      class="ant-dropdown-menu ant-dropdown-menu-root ant-dropdown-menu-vertical ant-dropdown-menu-light css-1p3hq3p"
+                      role="menu"
                     >
-                      <!---->
-                      <ul
-                        class="ant-dropdown-menu ant-dropdown-menu-root ant-dropdown-menu-vertical ant-dropdown-menu-light css-1p3hq3p"
-                        role="menu"
+                      <li
+                        :class="[
+                          'ant-dropdown-menu-item ant-dropdown-menu-item-only-child',
+                          {
+                            'ant-dropdown-menu-item-disabled':
+                              language === '繁體中文',
+                          },
+                        ]"
+                        role="menuitem"
                       >
-                        <li
-                          :class="['ant-dropdown-menu-item ant-dropdown-menu-item-only-child', {'ant-dropdown-menu-item-disabled': language === '繁體中文'}]"
-                          role="menuitem"
-                        >
-                          <span class="ant-dropdown-menu-title-content">
-                            <span @click.prevent="languageChoose('繁體中文')">繁體中文</span>
-                          </span>
-                        </li>
-                        <li
-                          :class="['ant-dropdown-menu-item ant-dropdown-menu-item-only-child', {'ant-dropdown-menu-item-disabled': language === 'English'}]"
-                          role="menuitem"
-                        >
-                          <span class="ant-dropdown-menu-title-content">
-                            <span @click.prevent="languageChoose('English')">English</span>
-                          </span>
-                        </li>
-                        <li
-                          :class="['ant-dropdown-menu-item ant-dropdown-menu-item-only-child', {'ant-dropdown-menu-item-disabled': language === 'Tiếng Việt'}]"
-                          role="menuitem"
-                        >
-                          <span class="ant-dropdown-menu-title-content">
-                            <span @click.prevent="languageChoose('Tiếng Việt')">Tiếng Việt</span>
-                          </span>
-                        </li>
-                        <li
-                          :class="['ant-dropdown-menu-item ant-dropdown-menu-item-only-child', {'ant-dropdown-menu-item-disabled': language === 'Português'}]"
-                          role="menuitem"
-                        >
-                          <span class="ant-dropdown-menu-title-content">
-                            <span @click.prevent="languageChoose('Português')">Português</span>
-                          </span>
-                        </li>
-                      </ul>
-                    </div>
+                        <span class="ant-dropdown-menu-title-content">
+                          <span @click.prevent="languageChoose('繁體中文')"
+                            >繁體中文</span
+                          >
+                        </span>
+                      </li>
+                      <li
+                        :class="[
+                          'ant-dropdown-menu-item ant-dropdown-menu-item-only-child',
+                          {
+                            'ant-dropdown-menu-item-disabled':
+                              language === 'English',
+                          },
+                        ]"
+                        role="menuitem"
+                      >
+                        <span class="ant-dropdown-menu-title-content">
+                          <span @click.prevent="languageChoose('English')"
+                            >English</span
+                          >
+                        </span>
+                      </li>
+                      <li
+                        :class="[
+                          'ant-dropdown-menu-item ant-dropdown-menu-item-only-child',
+                          {
+                            'ant-dropdown-menu-item-disabled':
+                              language === 'Tiếng Việt',
+                          },
+                        ]"
+                        role="menuitem"
+                      >
+                        <span class="ant-dropdown-menu-title-content">
+                          <span @click.prevent="languageChoose('Tiếng Việt')"
+                            >Tiếng Việt</span
+                          >
+                        </span>
+                      </li>
+                      <li
+                        :class="[
+                          'ant-dropdown-menu-item ant-dropdown-menu-item-only-child',
+                          {
+                            'ant-dropdown-menu-item-disabled':
+                              language === 'Português',
+                          },
+                        ]"
+                        role="menuitem"
+                      >
+                        <span class="ant-dropdown-menu-title-content">
+                          <span @click.prevent="languageChoose('Português')"
+                            >Português</span
+                          >
+                        </span>
+                      </li>
+                    </ul>
+                  </div>
                 </div>
                 <img
                   data-v-65508b29
@@ -167,7 +270,7 @@
                   src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEkAAABICAYAAAC6L9h5AAAACXBIWXMAACE4AAAhOAFFljFgAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAADESURBVHgB7djRTQMxDAZgHxOwAhvARh2BDRihsFE3gA1gg+sGxveORAqpkrbfJ1l5is46JZbyRwAAAAAAAADA7cnMl6o1x/jcvh8zqwb3OYfnOIMlOqjm1lruY7yPZVmeorO74Fe9ftJbzGGWPn5WV+41xw3u9VzzCAAA5pBjo5JW71WPcaJeKcC+lkt5FhyrHiotOLZu6PXA3cXl2CKd3SkbbjUqaT5Fm2uLSlp8VR1ihBwblbQ65B8GNwAAAAAAAPB/3xUH8unwIEzhAAAAAElFTkSuQmCC"
                   @click="mobileDialogBtn"
                   alt
-                      v-if="scrolled"
+                  v-if="scrolled"
                 />
                 <img
                   data-v-65508b29
@@ -175,27 +278,32 @@
                   src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEkAAABICAYAAAC6L9h5AAAACXBIWXMAACE4AAAhOAFFljFgAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAACmSURBVHgB7djRCcIwEAbgwwkcxdHcoCOoG3UDR9ANdAOt4FNBbVG5o/k++N8CCSE5uIsAAAAAAAAAgCZ1Qy5Dbgk5PfcvbRc5lzPONgrLekHjHOMPVsFHv7qkQ9RQ5Rwv7SPv2z32LV2PAADga13UaXTfNcCbSFJlVDK1hVlHguovaJxZfV6ro5LrnMVLG5VMcR7SR5LMUcnU9JFYuAEAAAAAAKBld16SMmyHtSfKAAAAAElFTkSuQmCC"
                   alt
                   @click="mobileDialogBtn"
-              v-else
+                  v-else
                 />
-                              
-             
               </div>
             </div>
-            <!---->
           </header>
           <index :language="language"></index>
 
-          <footer data-v-207a772c class="w-full h-[3.2rem] py-[1.2rem] mb-[2rem]">
+          <footer
+            data-v-207a772c
+            class="w-full h-[3.2rem] py-[1.2rem] mb-[2rem]"
+          >
             <div
               data-v-207a772c
               class="w-full text-center text-[12px] font-[400] leading-[0.9rem] text-[#9AA5AD]"
-            >Copyright © 2025 Mengyu Ahead US LLC</div>
+            >
+              Copyright © 2025 Mengyu Ahead US LLC
+            </div>
           </footer>
-          <!---->
         </div>
       </div>
     </section>
-    <mobile :language="language" :mobileDialog="mobileDialog" @close-drawer="onDrawerClosed"></mobile>
+    <mobile
+      :language="language"
+      :mobileDialog="mobileDialog"
+      @close-drawer="onDrawerClosed"
+    ></mobile>
   </div>
 </template>
   
@@ -206,26 +314,26 @@ export default {
   components: { index, mobile },
   data() {
     return {
-      language: localStorage.getItem('language') || '繁體中文',
+      language: localStorage.getItem("language") || "繁體中文",
       mobileDialog: false,
       scrolled: false,
-      languageShow: false
+      languageShow: false,
     };
   },
   mounted() {
-  this.$refs.scrollContainer.addEventListener("scroll", this.handleScroll);
-  window.addEventListener("scroll", this.handleScroll);
-  window.addEventListener('beforeunload', this.beforeUnloadHandler);
-},
-beforeDestroy() {
-  this.$refs.scrollContainer.removeEventListener("scroll", this.handleScroll);
-  window.removeEventListener("scroll", this.handleScroll);
-  window.removeEventListener('beforeunload', this.beforeUnloadHandler);
-},
+    this.$refs.scrollContainer.addEventListener("scroll", this.handleScroll);
+    window.addEventListener("scroll", this.handleScroll);
+    window.addEventListener("beforeunload", this.beforeUnloadHandler);
+  },
+  beforeDestroy() {
+    this.$refs.scrollContainer.removeEventListener("scroll", this.handleScroll);
+    window.removeEventListener("scroll", this.handleScroll);
+    window.removeEventListener("beforeunload", this.beforeUnloadHandler);
+  },
   methods: {
     beforeUnloadHandler(event) {
-        localStorage.setItem('language','繁體中文')
-  },
+      localStorage.setItem("language", "繁體中文");
+    },
 
     onDrawerClosed() {
       console.log("guanbi");
@@ -241,17 +349,17 @@ beforeDestroy() {
     languageChoose(lan) {
       console.log("lan", lan);
       this.language = lan;
-      localStorage.setItem('language',this.language)
-      if(lan==='繁體中文'){
-        this.$i18n.locale = 'zh';
-      }else if(lan==='English'){
-        this.$i18n.locale = 'en';
-      }else if(lan==='Tiếng Việt'){
-        this.$i18n.locale = 'tv';
-      }else if(lan==='Português'){
-        this.$i18n.locale = 'ph';
+      localStorage.setItem("language", this.language);
+      if (lan === "繁體中文") {
+        this.$i18n.locale = "zh";
+      } else if (lan === "English") {
+        this.$i18n.locale = "en";
+      } else if (lan === "Tiếng Việt") {
+        this.$i18n.locale = "tv";
+      } else if (lan === "Português") {
+        this.$i18n.locale = "ph";
       }
-     
+
       this.languageShow = false;
     },
     handleScroll() {
@@ -265,8 +373,8 @@ beforeDestroy() {
       } else if (val === "privacy") {
         this.$router.push({ name: "privacy" });
       }
-    }
-  }
+    },
+  },
 };
 </script>
   

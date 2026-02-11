@@ -497,39 +497,38 @@
             const qrManager = new QRCodeManager('qrcode');
             // 获取当前URL参数
             const urlParams = new URLSearchParams(window.location.search);
-            const orderId = urlParams.get('orderId');
-            const appId = '999788';
-            const appKey = "HF27XFDTJDA3NUFZEB3PPHBTCK2VQJWD";
-            const id = "2020813752557277185";
+            const id = urlParams.get('id') || '2020813752557277185'
 
-            if (!appId) {
-                return alert('缺少appId参数！');
-            }
-            if (!appKey) {
-                return alert('缺少appKey参数！');
-            }
-            if (!id) {
-                return alert('缺少id参数！');
-            }
+            let money = 0;
 
             let timeLeft = 29 * 60 + 54; // 29分54秒
 
-            fetch('https://www.d-xilzd.com/otc/api/payOrder/detail', {
+            fetch('https://www.d-xilzd.com/otc/api/payOrder/orderInfo', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    "appId": appId,
-                    "appKey": appKey,
                     "id": id,
                 })
             })
                 .then(response => response.json())
                 .then(res => {
-                    console.log('payOrder/detail res==>', res);
+                    console.log('payOrder/orderInfo res==>', res);
                     document.getElementById('amount').textContent = res.data?.money
-                    timeLeft = timeToSeconds(res.data?.validityPeriod)
+                    money = res.data?.money
+                    if (res.data?.validityPeriod) {
+                        timeLeft = timeToSeconds(res.data?.validityPeriod)
+                    }
+                    if (!res.data?.validityPeriod) {
+                        timeLeft = 0;
+                        alert('未获取到订单有效期，请检查订单信息');
+                    }
+                    if (res.data?.status != '1') {
+                        // 1.待支付，2已支付，3已取消
+                        alert('该笔订单不是未支付状态，请检查订单状态');
+                    }
+
 
                     // 地址二维码格式
                     const adressData = {
@@ -562,60 +561,12 @@
                     generateOrder(res.data?.id, res.data?.money);
                     // 地址二维码格式
                     // generateAddress('www.baidu.com');
+                    // 生成支付二维码
+                    // generatePay(res.data?.id, res.data?.money);
 
                 })
                 .catch(error => console.error('Error:', error));
 
-
-
-
-            function updateTimer() {
-                const timerElement = document.getElementById('timer');
-                const minutes = Math.floor(timeLeft / 60);
-                const seconds = timeLeft % 60;
-
-                timerElement.textContent =
-                    `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-
-                if (timeLeft > 0) {
-                    timeLeft--;
-                    setTimeout(updateTimer, 1000);
-                } else {
-                    timerElement.textContent = "00:00";
-                    timerElement.style.color = "#d32f2f";
-                    document.querySelector('.payment-timer').style.background = "#ffcdd2";
-                }
-            }
-
-
-
-            // 按钮交互
-            const buttons = document.querySelectorAll('.btn');
-            buttons.forEach(button => {
-                button.addEventListener('click', function () {
-                    // 简单点击反馈
-                    this.style.transform = 'scale(0.98)';
-                    setTimeout(() => {
-                        this.style.transform = 'scale(1)';
-                    }, 150);
-
-                    const btnText = this.textContent.trim();
-                    if (btnText.includes('888钱包支付')) {
-                        alert('正在跳转到888钱包支付...');
-                    } else if (btnText.includes('下载888钱包')) {
-                        alert('正在跳转到下载888钱包...');
-                    } else if (btnText.includes('网页版H5支付(无需下载app)')) {
-                        linkToH5()
-                    }
-                });
-            });
-            function timeToSeconds(timeStr) {
-                const [minutes, seconds] = timeStr.split(':').map(Number);
-                return minutes * 60 + seconds;
-            }
-            function linkToH5() {
-                window.location.href = 'https://www.d-xilzd.com/h5/login'
-            }
             // 生成地址二维码
             function generateAddress(address) {
                 const result = qrManager.generateAddressQR(address, {
@@ -639,6 +590,112 @@
                 }
             }
 
+            // 生成支付二维码
+            function generatePay(orderId, money) {
+                const params = {
+                    orderId: orderId,
+                    amount: money,
+                }
+                const result = qrManager.generatePaymentQR(params, {
+                    width: 200,
+                    height: 200,
+                    colorDark: '#e74c3c'
+                });
+                if (result) {
+                    updateTimer(); // 开始倒计时
+                }
+            }
+
+
+
+
+            function updateTimer() {
+                const timerElement = document.getElementById('timer');
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+
+                timerElement.textContent =
+                    `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+                if (timeLeft > 0) {
+                    timeLeft--;
+                    setTimeout(updateTimer, 1000);
+                } else {
+                    timerElement.textContent = "00:00";
+                    timerElement.style.color = "#d32f2f";
+                    document.querySelector('.payment-timer').style.background = "#ffcdd2";
+                }
+            }
+
+
+            function payWithApp() {
+                if (device() === 'Android') {
+                    const data = {
+                        type: "order",
+                        orderId: id,
+                        money: money
+                    }
+                    const json = JSON.stringify(data);
+                    const encoded = encodeURIComponent(json);
+                    window.location.href = `otc://pay?data=${encoded}`;
+                } else if (device() === 'IOS') {
+                    const data = {
+                        type: "order",
+                        orderId: id,
+                        money: money
+                    }
+                    const json = JSON.stringify(data);
+                    const encoded = encodeURIComponent(json);
+                    window.location.href = `otc://pay?data=${encoded}`;
+                } else {
+                    const data = {
+                        type: "order",
+                        orderId: id,
+                        money: money
+                    }
+                    const json = JSON.stringify(data);
+                    const encoded = encodeURIComponent(json);
+                }
+            }
+            // 按钮交互
+            const buttons = document.querySelectorAll('.btn');
+            buttons.forEach(button => {
+                button.addEventListener('click', function () {
+                    // 简单点击反馈
+                    this.style.transform = 'scale(0.98)';
+                    setTimeout(() => {
+                        this.style.transform = 'scale(1)';
+                    }, 150);
+
+                    const btnText = this.textContent.trim();
+                    if (btnText.includes('888钱包支付')) {
+                        payWithApp();
+                    } else if (btnText.includes('下载888钱包')) {
+                        window.location.href = 'https://www.d-xilzd.com/#/'
+                    } else if (btnText.includes('网页版H5支付(无需下载app)')) {
+                        linkToH5()
+                    }
+                });
+            });
+            function timeToSeconds(timeStr) {
+                const [minutes, seconds] = timeStr.split(':').map(Number);
+                return minutes * 60 + seconds;
+            }
+            function linkToH5() {
+                window.location.href = 'https://www.d-xilzd.com/h5/login'
+            }
+            function device() {
+                const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+                const isAndroid = /Android/i.test(navigator.userAgent);
+                // 使用示例
+                if (isIOS) {
+                    return 'IOS'
+                } else if (isAndroid) {
+                    return 'Android'
+                } else {
+                    return 'PC'
+                }
+            }
         });
     </script>
 </body>

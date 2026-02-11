@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>888支付 - 恒定人民币汇率数字资产</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #0066ff;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path d="M0,0 L100,0 L100,100 L0,100 Z" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="0.5"/><path d="M20,20 L80,20 L80,80 L20,80 Z" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="0.5"/><path d="M40,40 L60,40 L60,60 L40,60 Z" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="0.5"/></svg>');
+            background-size: 400px;
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* 世界地图轮廓背景 */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800"><g fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="2"><path d="M200,300 Q400,250 600,300 T1000,300"/><path d="M150,400 Q300,350 500,400 T1100,400"/><path d="M100,500 Q350,450 600,500 T1050,500"/><path d="M250,200 Q450,150 700,200 T950,200"/><ellipse cx="400" cy="350" rx="80" ry="40"/><ellipse cx="800" cy="450" rx="100" ry="50"/></g></svg>');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.6;
+            z-index: 0;
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 900px;
+            z-index: 1;
+            position: relative;
+        }
+        
+        /* 主标题区域 */
+        .main-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .title-888 {
+            font-family: 'Arial Rounded MT Bold', 'Arial', sans-serif;
+            font-size: 120px;
+            font-weight: 900;
+            letter-spacing: 5px;
+            text-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            margin-bottom: 15px;
+            line-height: 1;
+        }
+        
+        .subtitle {
+            font-size: 22px;
+            max-width: 700px;
+            line-height: 1.4;
+            opacity: 0.95;
+            font-weight: 300;
+        }
+        
+        /* 联系我们区域 */
+        .contact-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 60px;
+            text-align: center;
+        }
+        
+        .section-title {
+            font-size: 28px;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+        
+        .email-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .email-icon {
+            font-size: 24px;
+            margin-right: 12px;
+        }
+        
+        .email-address {
+            font-size: 22px;
+            font-weight: 300;
+        }
+        
+        /* 社交媒体图标 */
+        .social-icons {
+            display: flex;
+            gap: 25px;
+        }
+        
+        .social-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .social-icon:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+        }
+        
+        /* 底部区域 */
+        .bottom-section {
+            display: flex;
+            width: 100%;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-top: 40px;
+        }
+        
+        .terms-section {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .terms-title {
+            font-size: 20px;
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+        
+        .terms-links {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .term-link {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.85);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            transition: color 0.3s ease;
+        }
+        
+        .term-link:hover {
+            color: white;
+        }
+        
+        .term-link::before {
+            content: ">";
+            margin-right: 8px;
+            font-weight: bold;
+        }
+        
+        /* 右下角图标 */
+        .bottom-icons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .bottom-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .bottom-icon:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .title-888 {
+                font-size: 90px;
+            }
+            
+            .subtitle {
+                font-size: 18px;
+                padding: 0 20px;
+            }
+            
+            .section-title {
+                font-size: 24px;
+            }
+            
+            .email-address {
+                font-size: 18px;
+            }
+            
+            .bottom-section {
+                flex-direction: column;
+                align-items: center;
+                gap: 40px;
+            }
+            
+            .terms-section {
+                align-items: center;
+                text-align: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .title-888 {
+                font-size: 70px;
+            }
+            
+            .subtitle {
+                font-size: 16px;
+            }
+            
+            .social-icons {
+                gap: 15px;
+            }
+            
+            .social-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 18px;
+            }
+        }
+        
+        /* 添加一些动画效果 */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .main-title, .contact-section, .bottom-section {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+        
+        .contact-section {
+            animation-delay: 0.2s;
+        }
+        
+        .bottom-section {
+            animation-delay: 0.4s;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 主标题区域 -->
+        <div class="main-title">
+            <div class="title-888">888</div>
+            <div class="subtitle">使用808管理、世界通用的、恒定人民币汇率数字资产</div>
+        </div>
+        
+        <!-- 联系我们区域 -->
+        <div class="contact-section">
+            <h2 class="section-title">联系我们</h2>
+            <div class="email-container">
+                <div class="email-icon">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <div class="email-address">service@888pay.com</div>
+            </div>
+            <div class="social-icons">
+                <div class="social-icon">
+                    <i class="fab fa-twitter"></i>
+                </div>
+                <div class="social-icon">
+                    <i class="fab fa-facebook-f"></i>
+                </div>
+                <div class="social-icon">
+                    <i class="fab fa-youtube"></i>
+                </div>
+                <div class="social-icon">
+                    <i class="fab fa-instagram"></i>
+                </div>
+                <div class="social-icon">
+                    <i class="fab fa-linkedin-in"></i>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 底部区域 -->
+        <div class="bottom-section">
+            <div class="terms-section">
+                <div class="terms-title">服务条款</div>
+                <div class="terms-links">
+                    <a href="#" class="term-link">服务条款</a>
+                    <a href="#" class="term-link">隐私条款</a>
+                </div>
+            </div>
+            <div class="bottom-icons">
+                <div class="bottom-icon" title="语言切换">
+                    <i class="fas fa-globe"></i>
+                </div>
+                <div class="bottom-icon" title="返回顶部">
+                    <i class="fas fa-arrow-up"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 添加交互功能
+        document.addEventListener('DOMContentLoaded', function() {
+            // 返回顶部按钮功能
+            const topButton = document.querySelector('.fa-arrow-up').closest('.bottom-icon');
+            topButton.addEventListener('click', function() {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+            
+            // 语言切换按钮（模拟）
+            const langButton = document.querySelector('.fa-globe').closest('.bottom-icon');
+            langButton.addEventListener('click', function() {
+                alert('语言切换功能（演示）');
+            });
+            
+            // 社交媒体图标悬停效果增强
+            const socialIcons = document.querySelectorAll('.social-icon');
+            socialIcons.forEach(icon => {
+                icon.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-5px) scale(1.1)';
+                });
+                icon.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+            
+            // 服务条款链接点击事件
+            const termLinks = document.querySelectorAll('.term-link');
+            termLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    alert('跳转到' + this.textContent + '页面（演示）');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

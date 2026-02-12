@@ -351,6 +351,7 @@
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs@gh-pages/qrcode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html5-qrcode@2.3.8/minified/html5-qrcode.min.js"></script>
     <script>
         class QRCodeManager {
             constructor(containerId) {
@@ -587,6 +588,11 @@
                 });
                 if (result) {
                     updateTimer(); // 开始倒计时
+                    console.log(result);
+                    
+                      // window.location.href = 'https://www.d-xilzd.com/h5/login'
+                      // http://192.168.0.103:3000/h5/payOrderId
+                      // window.open('https://www.example.com', '_blank'); 
                 }
             }
 

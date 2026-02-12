@@ -3,7 +3,7 @@ export default {
     about: '關於',
     privacy: '隱私',
     title: '助您安全、自由支付',
-    desc: 'GU币-世界通用数字资产，恒定人民币汇率 100%互兑无需远行即可畅玩全球',
+    desc: 'FC币-世界通用数字资产，恒定人民币汇率 100%互兑无需远行即可畅玩全球',
     phoneDown: '下載手機端APP',
     pdDesc: '掃描QR-CODE下載APP',
     imPhoneDown: 'APP下載',

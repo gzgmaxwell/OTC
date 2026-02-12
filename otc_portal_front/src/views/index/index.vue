@@ -247,7 +247,7 @@
 
       <div class="container_gu">
         <header>
-          <h1>关于GU币(888币)</h1>
+          <h1>关于FC币(888币)</h1>
           <p class="subtitle">
             使用888管理、世界通用的、恒定人民币汇率数字资产
           </p>

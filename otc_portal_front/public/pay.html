@@ -524,7 +524,7 @@
                         alert('该笔订单不是未支付状态，请检查订单状态');
                     }
 
-                    const url = `https://www.d-xilzd.com/h5/login?id=${id}&money=${money}`
+                    const url = `http://192.168.0.103:3000/h5?id=${id}&money=${money}&pathTo=payOrderId`
 
                     // 订单二维码格式
                     // generateOrder(res.data?.id, res.data?.money);

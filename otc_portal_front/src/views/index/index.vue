@@ -439,7 +439,7 @@ export default {
     downLoadBtn() {
       // this.showQrcodeDialog = true;
       if (this.device() === "Android") {
-        const url = "https://vip99tf.ekk.ghzyaw.com/eKYUIm";
+        const url = "https://www.d-xilzd.com/otc/api/view/apk/pay888.apk";
         window.open(url, "_blank");
       } else if (this.device() === "IOS") {
         const url = "https://vip99tf.ekk.ghzyaw.com/eKYUIm";

@@ -1,7 +1,7 @@
 <template>
   <div class="login_wrapper">
     <div class="login-title">
-      <h3>OTC管理平台</h3>
+      <h3>OTC商户平台</h3>
       <p>输入您的个人详细信息开始使用！</p>
     </div>
     <el-form class="login_form" ref="loginForm" :model="loginForm" :rules="loginRules">

@@ -424,9 +424,30 @@ export default {
     aboutBtn() {
       this.$router.push({ name: "about" });
     },
+    device() {
+      const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+      const isAndroid = /Android/i.test(navigator.userAgent);
+      // 使用示例
+      if (isIOS) {
+        return "IOS";
+      } else if (isAndroid) {
+        return "Android";
+      } else {
+        return "PC";
+      }
+    },
     downLoadBtn() {
-      this.showQrcodeDialog = true;
-      // this.downloadFile()
+      // this.showQrcodeDialog = true;
+      if (this.device() === "Android") {
+        const url = "https://vip99tf.ekk.ghzyaw.com/eKYUIm";
+        window.open(url, "_blank");
+      } else if (this.device() === "IOS") {
+        const url = "https://vip99tf.ekk.ghzyaw.com/eKYUIm";
+        window.open(url, "_blank");
+      } else {
+        const url = "https://www.d-xilzd.com/h5/login";
+        window.open(url, "_blank");
+      }
     },
     async downloadFile() {
       try {

@@ -49,7 +49,7 @@ export const constantRouter = [
 const router = new VueRouter({
   routes: constantRouter,
   mode:"history",
-  base: "/of"
+  base: "/shop"
 
 });
 

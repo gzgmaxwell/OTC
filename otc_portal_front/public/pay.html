@@ -254,11 +254,6 @@
                 font-size: 42px;
             }
 
-            .qrcode-placeholder {
-                width: 180px;
-                height: 180px;
-            }
-
             .btn {
                 padding: 16px;
                 font-size: 16px;
@@ -306,7 +301,7 @@
             <div class="qrcode-container">
                 <div class="qrcode-placeholder">
                     <div class="qrcode-pattern" id="qrcode"></div>
-                    <div class="qrcode-logo">888</div>
+                    <!-- <div class="qrcode-logo">888</div> -->
                 </div>
             </div>
 
@@ -351,7 +346,6 @@
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs@gh-pages/qrcode.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
     <script>
         class QRCodeManager {
             constructor(containerId) {
@@ -530,41 +524,21 @@
                         alert('该笔订单不是未支付状态，请检查订单状态');
                     }
 
-
-                    // 地址二维码格式
-                    const adressData = {
-                        "type": "address",
-                        "address": "TXYZ1234567890abcdefghijk",
-                        "version": "1.0",
-                        "timestamp": 1739088000000
-                    };
-                    // 订单二维码格式
-                    const orderData = {
-                        "type": "order",
-                        // "orderId": "ORD20250209123456",
-                        "orderId": res.data?.id,
-                        "money": res.data?.money,
-                        "currency": "CNY",
-                        "version": "1.0",
-                        "timestamp": 1739088000000
-                    };
-                    // 支付二维码格式
-                    const paymentData = {
-                        "type": "payment",
-                        "amount": 100.00,
-                        "recipient": "user123",
-                        "memo": "商品付款",
-                        "version": "1.0",
-                        "timestamp": 1739088000000
-                    };
+                    const url = `https://www.d-xilzd.com/h5/login?id=${id}&money=${money}`
 
                     // 订单二维码格式
-                    generateOrder(res.data?.id, res.data?.money);
+                    // generateOrder(res.data?.id, res.data?.money);
                     // 地址二维码格式
                     // generateAddress(`https://www.d-xilzd.com/h5/login?id=${id}&money=${money}`);
                     // 生成支付二维码
                     // generatePay(res.data?.id, res.data?.money);
 
+                    const qrcode = new QRCode(document.getElementById("qrcode"), {
+                        text: url,
+                        width: 200,
+                        height: 200
+                    });
+                    updateTimer();
                 })
                 .catch(error => console.error('Error:', error));
 
@@ -588,12 +562,6 @@
                 });
                 if (result) {
                     updateTimer(); // 开始倒计时
-                    // console.log(result);
-
-                    // window.location.href = 'https://www.d-xilzd.com/h5/login'
-                    // http://192.168.0.103:3000/h5/payOrderId
-                    // window.open('https://www.example.com', '_blank'); 
-
                 }
                 const html5QrcodeScanner = new Html5QrcodeScanner(
                     "qrcode",
@@ -604,21 +572,6 @@
                     },
                     false
                 );
-                console.log(html5QrcodeScanner)
-                debugger
-
-
-                // 开始扫描
-                html5QrcodeScanner.render(onScanSuccess, onScanFailure);
-
-                function onScanSuccess(decodedText, decodedResult) {
-                    alert('222')
-                }
-
-                function onScanFailure(error) {
-                    // 大部分情况下，这只是"没有检测到二维码"的信息
-                    console.log('扫描中...', error);
-                }
             }
 
             // 生成支付二维码
@@ -634,64 +587,6 @@
                 });
                 if (result) {
                     updateTimer(); // 开始倒计时
-                }
-
-                const config = {
-                    fps: 10, // 每秒帧数
-                    qrbox: 250 // 扫描框的大小
-                };
-
-                // 创建Html5Qrcode对象
-                const html5QrCode = new Html5Qrcode("reader");
-
-                // 开始扫描
-                html5QrCode.start(
-                    { facingMode: "environment" }, // 使用后置摄像头，如果需要前置摄像头可以设置为"user"
-                    config,
-                    onScanSuccess, // 扫描成功的回调
-                    onScanError // 扫描失败的回调
-                ).catch(err => {
-                    console.error("无法启动摄像头", err);
-                });
-
-                // 扫描成功回调
-                function onScanSuccess(decodedText, decodedResult) {
-                    debugger
-                    // 停止扫描（避免重复扫描）
-                    html5QrCode.stop().then(ignore => {
-                        // 成功停止摄像头
-                        console.log("摄像头已停止");
-                    }).catch(err => {
-                        console.error("停止摄像头时出错", err);
-                    });
-
-                    // 检查解码的文本是否是一个URL
-                    if (isUrl(decodedText)) {
-                        // 如果是URL，则跳转
-                        window.location.href = decodedText;
-                    } else {
-                        // 如果不是URL，可以给用户提示，或者重新开始扫描
-                        alert("扫描到的内容不是有效的网址：" + decodedText);
-                        // 可以选择重新开始扫描
-                        // html5QrCode.start(...);
-                    }
-                }
-
-                // 扫描失败回调
-                function onScanError(error) {
-                    // 可以处理扫描错误，比如摄像头不可用、权限问题等
-                    // 这里我们只是打印错误，不进行其他操作
-                    console.warn(`扫描错误: ${error}`);
-                }
-
-                // 判断字符串是否为URL
-                function isUrl(string) {
-                    try {
-                        new URL(string);
-                        return true;
-                    } catch (_) {
-                        return false;
-                    }
                 }
             }
 

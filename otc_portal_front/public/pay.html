@@ -492,7 +492,7 @@
             const qrManager = new QRCodeManager('qrcode');
             // 获取当前URL参数
             const urlParams = new URLSearchParams(window.location.search);
-            const id = urlParams.get('id') || '2020813752557277185'
+            const id = urlParams.get('id')
 
             let money = 0;
 
@@ -524,7 +524,7 @@
                         alert('该笔订单不是未支付状态，请检查订单状态');
                     }
 
-                    const url = `http://192.168.0.103:3000/h5?id=${id}&money=${money}&pathTo=payOrderId`
+                    const url = `https://d-xilzd.com/h5?id=${id}&money=${money}&pathTo=payOrderId`
 
                     // 订单二维码格式
                     // generateOrder(res.data?.id, res.data?.money);
@@ -605,9 +605,9 @@
                     timeLeft--;
                     setTimeout(updateTimer, 1000);
                 } else {
-                    timerElement.textContent = "00:00";
-                    timerElement.style.color = "#d32f2f";
                     document.querySelector('.payment-timer').style.background = "#ffcdd2";
+                    document.querySelector('.payment-timer').innerHTML = "付款超时";
+                    document.querySelector('.payment-timer').style.color ="#d32f2f";
                 }
             }
 

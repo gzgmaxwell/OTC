@@ -146,7 +146,7 @@ export default {
          const userinfo = await Login({
             userName: this.loginForm.username,
             verificationCode: this.loginForm.verificationCode,
-            client: "2",
+            client: "3",
             // password: this.loginForm.password
             password: jm(this.loginForm.password)
           });

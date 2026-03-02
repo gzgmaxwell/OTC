@@ -35,15 +35,15 @@
         <el-table-column label="操作" width="310">
           <template slot-scope="scope">
             <el-button size="mini" @click="edit(scope.row)">查看</el-button>
-            <el-button size="mini" type="success" v-if="userId != scope.row.userId" @click="handleTransfer(scope.row)">
+            <el-button size="mini" type="success" @click="handleTransfer(scope.row)">
               转入
             </el-button>
-            <el-button size="mini" type="danger" v-if="userId != scope.row.userId" @click="handleWithdraw(scope.row)">
+            <el-button size="mini" type="danger"  @click="handleWithdraw(scope.row)">
               转出
             </el-button>
-            <el-button size="mini" type="danger" @click="delData(scope.row)">
+            <!-- <el-button size="mini" type="danger" @click="delData(scope.row)">
               删除
-            </el-button>
+            </el-button> -->
           </template>
         </el-table-column>
       </el-table>

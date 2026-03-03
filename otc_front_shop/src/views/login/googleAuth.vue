@@ -9,19 +9,11 @@
       <p style="color: red">提示:为了您的资金安全,请尽快绑定谷歌验证码!</p>
       <p>
         手机客户端下载地址:
-        <a
-          target="_blank"
-          href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2"
-          style="color: blue"
-          >Android</a
-        >
+        <a target="_blank" href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2"
+          style="color: blue">Android</a>
         |
-        <a
-          target="_blank"
-          href="https://apps.apple.com/us/app/google-authenticator/id388497605"
-          style="color: blue"
-          >IOS</a
-        >
+        <a target="_blank" href="https://apps.apple.com/us/app/google-authenticator/id388497605"
+          style="color: blue">IOS</a>
       </p>
     </div>
 
@@ -32,8 +24,8 @@
       <img :src="row.ewm" alt="QR Code" />
       <div class="manual-entry">
         <p>扫描不了？使用账号+密钥获取</p>
-        <p>用户账号：{{ userInfo.userName }}</p>
-        <p>谷歌密钥：{{ userInfo.secretKey }}</p>
+        <p>用户账号：{{ this.row.userName }}</p>
+        <p>谷歌密钥：{{ this.row.secretKey }}</p>
         <p style="color: red">绑定成功后密钥将不再展示，请自行备份保存。</p>
       </div>
     </div>
@@ -41,11 +33,7 @@
     <!-- 第三步 -->
     <div class="step">
       <h4>第三步：输入Google验证器中验证码</h4>
-      <el-input
-        v-model="verificationCode"
-        placeholder="请输入谷歌验证码"
-        style="width: 200px; margin-right: 10px"
-      ></el-input>
+      <el-input v-model="verificationCode" placeholder="请输入谷歌验证码" style="width: 200px; margin-right: 10px"></el-input>
       <el-button type="primary" @click="bindGoogleAuth">绑定</el-button>
     </div>
   </div>
@@ -81,6 +69,7 @@ export default {
         userId: this.row.userId,
         secretKey: this.row.secretKey,
         verificationCode: this.verificationCode,
+        userName: this.row.userName,
       });
       this.$message.success("绑定成功");
       this.row.callback(true);
@@ -93,8 +82,8 @@ export default {
     removeRouter();
     removeDics();
     refreshRouter();
-    this.userInfo = getUserInfo();
-    console.error(this.userInfo);
+    // this.userInfo = getUserInfo();
+    // console.error(this.userInfo);
   },
 };
 </script>
@@ -103,11 +92,13 @@ export default {
 .google-auth-container {
   padding: 20px;
 }
+
 .step {
   margin-bottom: 20px;
   padding: 15px;
   border: 1px solid #ddd;
 }
+
 .manual-entry {
   margin-top: 10px;
 }

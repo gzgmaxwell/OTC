@@ -205,15 +205,23 @@ export default {
           const fun = () => {
             return checkSecretKey({ userName: this.loginForm.username })
               .then((res) => {
-                if (res?.isBind === 'true') {
+                const isBind = String(res && res.isBind) === 'true';
+                if (isBind) {
                   this.hasGoogleAuth = true;
                   console.log("谷歌验证已经绑定");
                 } else {
                   this.hasGoogleAuth = false;
-                  this.handleGoogleAuth(res.ewm, res.secretKey, res.userId, res.userName);
+                  const ewm = res && res.ewm;
+                  const secretKey = res && res.secretKey;
+                  const userId = res && res.userId;
+                  const userName = res && res.userName;
+                  if (ewm && secretKey && userId) {
+                    this.handleGoogleAuth(ewm, secretKey, userId, userName);
+                  }
                 }
                 return Promise.resolve();
               })
+              .catch(() => Promise.resolve())
           };
           if (this.loginForm.username) {
             debounceCallBack(fun, 1000)();

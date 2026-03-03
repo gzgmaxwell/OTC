@@ -16,6 +16,9 @@ Vue.config.productionTip = false;
 import * as echarts from "echarts";//引入echarts
 Vue.prototype.$echarts = echarts//挂载到vue实例，方便全局使用
 
+import "@/styles/theme.scss";
+const themeInit = localStorage.getItem("theme") || "ocean";
+document.documentElement.setAttribute("data-theme", themeInit);
 import "@/styles/index.scss"; // 全局样式
 import "@/assets/icon/iconfont.css";
 

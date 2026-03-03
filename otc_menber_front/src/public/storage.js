@@ -63,7 +63,7 @@ export function removeRouter() {
 const themeField = `Theme`;
 export function getTheme() {
   const data = localStorage.getItem(themeField);
-  return data || 'dark';
+  return data || 'light';
 }
 export function setTheme(value) {
   localStorage.setItem(themeField, value);

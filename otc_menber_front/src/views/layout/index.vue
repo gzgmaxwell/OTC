@@ -32,6 +32,7 @@ export default {
   background-color: var(--navbar-bg);
   font-size: 20px;
   text-align: center;
+  color: var(--text-main);
 }
 .layout_wrapper {
   height: 100%;
@@ -44,7 +45,7 @@ export default {
     height: 100%;
     transition: all 0.3s;
     background-color: var(--sidebar-bg);
-    color: #fff;
+    color: var(--text-main);
   }
   .c_left_wrapper {
     width: $cSidebarWidth;

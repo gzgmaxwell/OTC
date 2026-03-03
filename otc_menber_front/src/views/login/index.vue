@@ -7,30 +7,15 @@
     <el-form class="login_form" ref="loginForm" :model="loginForm" :rules="loginRules">
       <h4>登录</h4>
       <el-form-item prop="username">
-        <el-input
-          v-model="loginForm.username"
-          type="text"
-          auto-complete="off"
-          placeholder="请输入账号"
-        />
+        <el-input v-model="loginForm.username" type="text" auto-complete="off" placeholder="请输入账号" />
       </el-form-item>
       <el-form-item prop="password">
-        <el-input
-          v-model="loginForm.password"
-          type="password"
-          auto-complete="off"
-          placeholder="请输入密码"
-          @keyup.enter.native="handleLogin"
-        />
+        <el-input v-model="loginForm.password" type="password" auto-complete="off" placeholder="请输入密码"
+          @keyup.enter.native="handleLogin" />
       </el-form-item>
       <el-form-item prop="verificationCode">
-        <el-input
-          v-model="loginForm.verificationCode"
-          type="text"
-          auto-complete="off"
-          placeholder="谷歌验证码（如未绑定不必填写）"
-          @keyup.enter.native="handleLogin"
-        />
+        <el-input v-model="loginForm.verificationCode" type="text" auto-complete="off" placeholder="谷歌验证码（如未绑定不必填写）"
+          @keyup.enter.native="handleLogin" />
       </el-form-item>
       <el-row class="v-center">
         <el-col :span="12" class="v-center">
@@ -51,15 +36,15 @@
           <el-button class="submit_button" @click="handleRegister">注册</el-button>
         </el-col> -->
       </el-row>
-     
+
     </el-form>
   </div>
 </template>
 
 <script>
 
-import { loginAfter} from "@p/token";
-import { Login} from "@a";
+import { loginAfter } from "@p/token";
+import { Login } from "@a";
 import Cookies from 'js-cookie';
 // import debounce from '@p'
 export default {
@@ -70,7 +55,7 @@ export default {
         username: "",
         password: "",
         rememberMe: false,
-      },      
+      },
       loginRules: {
         username: [
           { required: true, trigger: "blur", message: "请输入您的账号" }
@@ -82,36 +67,36 @@ export default {
       loading: false,
     };
   },
-  created() {},
+  created() { },
   mounted() {
     this.$axios.get('https://w1.hifleet.com/hfWeatherApi/GetIsoline?&time=20231220&f=024').then(res => {
-        console.log(res.data);
-      })
-      console.log(localStorage.getItem("rememberMe"));
-      
-    if(localStorage.getItem("rememberMe") ){
-      
+      console.log(res.data);
+    })
+    console.log(localStorage.getItem("rememberMe"));
+
+    if (localStorage.getItem("rememberMe")) {
+
       console.log(localStorage.getItem("rememberMe") == "1");
-        if(localStorage.getItem("rememberMe") == "1"){
-              this.loginForm.rememberMe = true
-              this.loginForm.username = localStorage.getItem("userName")
-              this.loginForm.password = localStorage.getItem("password")
-        }
+      if (localStorage.getItem("rememberMe") == "1") {
+        this.loginForm.rememberMe = true
+        this.loginForm.username = localStorage.getItem("userName")
+        this.loginForm.password = localStorage.getItem("password")
+      }
     }
   },
   methods: {
-    jzwChange(val){
+    jzwChange(val) {
 
-        if(!val){
-            localStorage.removeItem("userName");
-            localStorage.removeItem("password");
-            localStorage.setItem("rememberMe","2")
-        }
+      if (!val) {
+        localStorage.removeItem("userName");
+        localStorage.removeItem("password");
+        localStorage.setItem("rememberMe", "2")
+      }
 
     },
 
     handleLogin() {
-      this.$refs.loginForm.validate( valid => {
+      this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.login();
           // this.loading = true;
@@ -126,13 +111,13 @@ export default {
           // }
           // 登录
 
- 
+
 
           // this.$store.dispatch("Login", this.loginForm).then(() => {
           //   location.href = '/homeIndex';
           //   // this.$router.push({ path: this.redirect || "/" }).catch(()=>{});
           // }).catch(() => {
-            
+
           //   // if (this.captchaEnabled) {
           //   //   this.getCode();
           //   // }
@@ -140,32 +125,30 @@ export default {
         }
       });
 
-      
+
     },
-    async login(){
-         const userinfo = await Login({
-            userName: this.loginForm.username,
-            verificationCode: this.loginForm.verificationCode,
-            client: "1",
-            // password: this.loginForm.password
-            password: jm(this.loginForm.password)
-          });
-          this.$message.success("登录成功");
+    async login() {
+      const userinfo = await Login({
+        userName: this.loginForm.username,
+        verificationCode: this.loginForm.verificationCode,
+        client: "1",
+        // password: this.loginForm.password
+        password: jm(this.loginForm.password)
+      });
+      this.$message.success("登录成功");
 
 
-          if(this.loginForm.rememberMe){
-            
-          console.log(this.loginForm.rememberMe);
-            localStorage.setItem("userName", this.loginForm.username)
-            localStorage.setItem("password",this.loginForm.password)
-            localStorage.setItem("rememberMe","1")
+      if (this.loginForm.rememberMe) {
+        console.log(this.loginForm.rememberMe);
+        localStorage.setItem("userName", this.loginForm.username)
+        localStorage.setItem("password", this.loginForm.password)
+        localStorage.setItem("rememberMe", "1")
 
-          }
-          console.log('userinfo========>', userinfo)
-          if(userinfo) {
-            loginAfter(userinfo);
-            
-          }
+      }
+      console.log('userinfo========>', userinfo)
+      if (userinfo) {
+        loginAfter(userinfo);
+      }
     },
     handleRegister() {
       this.$router.push({
@@ -184,8 +167,9 @@ export default {
   height: 100%;
   margin-left: -280px;
   background: $bg url("../../assets/images/bg.png") 50% 50% no-repeat;
-  background-size:cover;
+  background-size: cover;
   overflow: hidden;
+
   .login-title {
     position: absolute;
     width: 420px;
@@ -193,31 +177,38 @@ export default {
     left: 15%;
     transform: translate(0, -50%);
     color: $color;
+
     h3 {
       font-size: 30px;
       line-height: 40px;
     }
+
     p {
       font-size: 14px;
       line-height: 40px;
     }
   }
+
   .login_form {
     position: absolute;
     width: 420px;
     top: 50%;
     right: 15%;
     transform: translate(10%, -50%);
+
     h4 {
       font-size: 18px;
       font-weight: bold;
       margin-bottom: 20px;
+      color: #333;
     }
   }
+
   .submit_button {
     width: calc(100% - 10px);
     margin-top: 20px;
   }
+
   .button-area {
     .el-col {
       &:nth-child(1) {
@@ -225,8 +216,9 @@ export default {
           margin-right: 10px;
         }
       }
+
       &:nth-child(2) {
-        
+
         .submit_button {
           margin-left: 10px;
         }

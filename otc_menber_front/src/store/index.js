@@ -7,7 +7,7 @@ export default new Vuex.Store({
   state: {
     isCollapse: false,
     routerField: "",
-    theme: "dark"
+    theme: "light"
   },
   getters: {
     isCollapse: state => state.isCollapse,

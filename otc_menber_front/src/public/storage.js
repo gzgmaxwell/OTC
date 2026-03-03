@@ -58,3 +58,14 @@ export function removeRouter() {
   localStorage.removeItem(routerField);
   store.commit('SET_ROUTER', "");
 }
+
+// 主题
+const themeField = `Theme`;
+export function getTheme() {
+  const data = localStorage.getItem(themeField);
+  return data || 'dark';
+}
+export function setTheme(value) {
+  localStorage.setItem(themeField, value);
+  store.commit('SET_THEME', value);
+}

@@ -13,7 +13,7 @@
 import Sidebar from "./views/layout/components/sidebar";
 import { mapGetters } from "vuex";
 import Vue from "vue";
-import { setToken, setUserInfo, setDics, setRouter } from "@p/storage";
+import { setToken, setUserInfo, setDics, setRouter, getTheme, setTheme } from "@p/storage";
 import {  GetDics, GetRouterList,CodeLogin } from "@a";
 export default {
   name: "app",
@@ -21,7 +21,7 @@ export default {
     Sidebar
   },
   computed: {
-    ...mapGetters(["isCollapse"])
+    ...mapGetters(["isCollapse", "theme"])
   },
   data() {
     return {
@@ -31,6 +31,9 @@ export default {
   mounted() {
     console.log(window.location, 23233)
     this.getDics();
+    const theme = getTheme();
+    setTheme(theme);
+    this.applyTheme(theme);
   },
   methods: {
     async getDics() {
@@ -38,6 +41,16 @@ export default {
       const dictionaryData = await GetDics();
       setDics(dictionaryData);
       Vue.prototype.dics = dictionaryData;
+    },
+    applyTheme(theme) {
+      const root = document.documentElement;
+      root.classList.remove('theme-light', 'theme-dark');
+      root.classList.add(theme === 'light' ? 'theme-light' : 'theme-dark');
+    }
+  },
+  watch: {
+    theme(newVal) {
+      this.applyTheme(newVal);
     }
   }  
 };
@@ -46,7 +59,7 @@ export default {
 .menu_tittle {
   height: $navbarHeight;
   line-height: $navbarHeight;
-  background-color: rgba(0, 40, 77);
+  background-color: var(--navbar-bg);
   font-size: 20px;
   text-align: center;
 }
@@ -60,7 +73,7 @@ export default {
     top: 0;
     height: 100%;
     transition: all 0.3s;
-    background-color: $siderbarBac;
+    background-color: var(--sidebar-bg);
     color: #fff;
   }
   .c_left_wrapper {

@@ -1,4 +1,35 @@
 /* 基础样式 */
+:root {
+  --primary: #1890ff;
+  --primary-hover: rgba(24, 144, 255, 0.5);
+  --sidebar-bg: rgba(0, 21, 41);
+  --sidebar-text: rgb(191, 203, 217);
+  --active-text: #ffffff;
+  --navbar-bg: rgba(0, 40, 77);
+  --text-main: #2c3e50;
+  --bg-main: #ffffff;
+}
+.theme-light {
+  --primary: #1677ff;
+  --primary-hover: rgba(22, 119, 255, 0.15);
+  --sidebar-bg: #f5f7fa;
+  --sidebar-text: #0f172a;
+  --active-text: #ffffff;
+  --navbar-bg: #ffffff;
+  --text-main: #1f2328;
+  --bg-main: #ffffff;
+}
+.theme-dark {
+  --primary: #1890ff;
+  --primary-hover: rgba(24, 144, 255, 0.5);
+  --sidebar-bg: rgba(0, 21, 41);
+  --sidebar-text: rgb(191, 203, 217);
+  --active-text: #ffffff;
+  --navbar-bg: rgba(0, 40, 77);
+  --text-main: #e6edf3;
+  --bg-main: #0b1324;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -10,13 +41,14 @@ html {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
+  color: var(--text-main);
   font-size: 14px;
 }
 
 body {
   height: 100%;
   overflow: hidden;
+  background-color: var(--bg-main);
 }
 
 #app {

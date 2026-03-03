@@ -6,9 +6,9 @@
       :collapse="isCollapse"
       :default-active="$route.path"
       unique-opened
-      background-color="rgba(0, 21, 41)"
-      text-color="rgb(191, 203, 217)"
-      active-text-color="#fff"
+      background-color="var(--sidebar-bg)"
+      text-color="var(--sidebar-text)"
+      active-text-color="var(--active-text)"
     >
       <sidebar-item :routes="menuList"></sidebar-item>
     </el-menu>
@@ -37,7 +37,7 @@ export default {
   .el-menu {
     border-right: 0;
     .is-active {
-      background-color: rgb(24, 144, 255) !important;
+      background-color: var(--primary) !important;
     }
   }
   .el-submenu__title span {
@@ -55,9 +55,9 @@ export default {
   }
 }
 .el-menu-item:hover {
-  background-color: rgb(24, 144, 255,0.5) !important;
+  background-color: var(--primary-hover) !important;
 }
 .el-submenu__title:hover {
-  background-color: rgb(24, 144, 255,0.5) !important;
+  background-color: var(--primary-hover) !important;
 }
 </style>

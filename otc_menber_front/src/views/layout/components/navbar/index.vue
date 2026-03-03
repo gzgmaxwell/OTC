@@ -10,6 +10,7 @@
         @click="$store.commit('SET_COLLAPSE')"
       >
         <path
+          fill="currentColor"
           d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM142.4 642.1L298.7 519a8.84 8.84 0 0 0 0-13.9L142.4 381.9c-5.8-4.6-14.4-.5-14.4 6.9v246.3a8.9 8.9 0 0 0 14.4 7z"
         />
       </svg>
@@ -45,13 +46,17 @@
           </div>
         </el-card>
       </div> -->
+      <el-select v-model="currentTheme" size="mini" @change="changeTheme" style="margin-right:12px;width:120px;">
+        <el-option label="深色主题" value="dark"></el-option>
+        <el-option label="浅色主题" value="light"></el-option>
+      </el-select>
       <i class="el-icon-rank color-icon ft-25" @click="fullScreen"></i>
       <el-dropdown
         trigger="click"
         @command="checkItem"
         placement="bottom-end"
       >
-        <span class="el-dropdown-link" style="color:#031529;user-select:none;">
+        <span class="el-dropdown-link" style="color:var(--text-main);user-select:none;">
           欢迎您,
           {{ userInfo.fullName }}
           <i class="el-icon-arrow-down el-icon--right"></i>
@@ -176,7 +181,8 @@ export default {
         oldPwd: [{ required: true, message: "请输入原密码", trigger: "blur" }],
         newPwd: [ { required: true, validator: this.checkPassword, trigger: 'change' }],
         affirmPwd: [{ validator: validatePass2, trigger: "blur" }]
-      }
+      },
+      currentTheme: this.$store.getters.theme
     };
   },
   mounted() {
@@ -184,7 +190,7 @@ export default {
    console.log(this.userInfo);
   },
   computed: {
-    ...mapGetters(["isCollapse"])
+    ...mapGetters(["isCollapse", "theme"])
   },
   methods: {// 校验密码
     checkPassword(rule, value, callback) {
@@ -320,6 +326,9 @@ export default {
         return false;
       }
       screenfull.toggle();
+    },
+    changeTheme(val) {
+      this.$store.commit('SET_THEME', val);
     }
   }
 };
@@ -335,11 +344,18 @@ export default {
     height: 100%;
     display: flex;
     align-items: center;
+    svg {
+      color: var(--text-main);
+      cursor: pointer;
+    }
+    svg:hover {
+      color: var(--primary);
+    }
     > i {
       font-size: 28px;
       margin-left: 10px;
       cursor: pointer;
-      color: gray;
+      color: var(--text-main);
     }
     .collapse {
       cursor: pointer;
@@ -357,12 +373,16 @@ export default {
       font-size: 26px;
       margin-right: 12px;
       cursor: pointer;
-      color: gray;
+      color: var(--text-main);
+    }
+    > i:hover {
+      color: var(--primary);
     }
     .el-dropdown {
       font-size: 16px;
       margin-right: 30px;
       cursor: pointer;
+      color: var(--text-main);
     }
     .news_box {
       position: fixed;

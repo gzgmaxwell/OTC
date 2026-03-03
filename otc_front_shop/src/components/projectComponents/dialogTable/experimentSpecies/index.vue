@@ -101,8 +101,8 @@ export default {
       column: [],
       // 表格数据
       tableList: [],
-      speciesUrl: '',
-      experimentType: ''
+      speciesUrl: "",
+      experimentType: ""
     };
   },
   created() {
@@ -112,21 +112,24 @@ export default {
     /** 查询公告列表 */
     getList() {
       this.loading = true;
-      console.log('this.speciesUrl',this.speciesUrl)
-      getExperimentList(this.speciesUrl,this.queryParams).then((response) => {
-        this.tableList = response.rows || [];
-        this.queryParams.total = response.total || 0;
-        this.loading = false;
-      }).catch(()=>{
-        this.tableList = [];
-        this.queryParams.total = 0;
-      }).finally(()=>{
-        this.loading = false;
-      });
+      console.log("this.speciesUrl", this.speciesUrl);
+      getExperimentList(this.speciesUrl, this.queryParams)
+        .then(response => {
+          this.tableList = response.rows || [];
+          this.queryParams.total = response.total || 0;
+          this.loading = false;
+        })
+        .catch(() => {
+          this.tableList = [];
+          this.queryParams.total = 0;
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
-      this.ids = selection.map((item) => item.speciesId);
+      this.ids = selection.map(item => item.speciesId);
       this.single = selection.length != 1;
       this.multiple = !selection.length;
     },
@@ -143,50 +146,173 @@ export default {
     },
     /** table 初始化 */
     init(type) {
-      switch(type) {
-        case '1': // 核酸
-          this.speciesUrl = '/system/nucleic/listUnUse';
-          this.title = '选择核酸样品'
+      switch (type) {
+        case "1": // 核酸
+          this.speciesUrl = "/system/nucleic/listUnUse";
+          this.title = "选择核酸样品";
           this.column = [
             { label: "序号", prop: "serialNumber", width: "80", type: "text" },
-            { label: "实验编号", prop: "experimentNo", width: "", type: "text", tooltip: true },
-            { label: "物种编号", prop: "speciesNumber", width: "", type: "text", tooltip: true },
-            { label: "物种名称", prop: "speciesName", width: "", type: "text", tooltip: true },
-            { label: "采样时间", prop: "samplingTime", width: "", type: "text", tooltip: true },
-            { label: "江河流域", prop: "riverBasin", width: "", type: "text", tooltip: true },
-            { label: "行政区域", prop: "administrativeDivision", width: "", type: "text", tooltip: true },
+            {
+              label: "实验编号",
+              prop: "experimentNo",
+              width: "",
+              type: "text",
+              tooltip: true
+            },
+            {
+              label: "物种编号",
+              prop: "speciesNumber",
+              width: "",
+              type: "text",
+              tooltip: true
+            },
+            {
+              label: "物种名称",
+              prop: "speciesName",
+              width: "",
+              type: "text",
+              tooltip: true
+            },
+            {
+              label: "采样时间",
+              prop: "samplingTime",
+              width: "",
+              type: "text",
+              tooltip: true
+            },
+            {
+              label: "江河流域",
+              prop: "riverBasin",
+              width: "",
+              type: "text",
+              tooltip: true
+            },
+            {
+              label: "行政区域",
+              prop: "administrativeDivision",
+              width: "",
+              type: "text",
+              tooltip: true
+            },
             // { label: "位置编号", prop: "sampleName", width: "", type: "text", tooltip: true },
-            { label: "操作", prop: "slot", width: "100", slotName: "action", fixed: 'right', align: 'center' },
-          ]
+            {
+              label: "操作",
+              prop: "slot",
+              width: "100",
+              slotName: "action",
+              fixed: "right",
+              align: "center"
+            }
+          ];
           break;
-        case '2': // 组织
-          this.speciesUrl = '/system/tissue/listUnUse';
-          this.title = '选择组织样品'
+        case "2": // 组织
+          this.speciesUrl = "/system/tissue/listUnUse";
+          this.title = "选择组织样品";
           this.column = [
             { label: "序号", prop: "serialNumber", width: "80", type: "text" },
-            { label: "实验编号", prop: "experimentNo", width: "", type: "text", tooltip: true },
-            { label: "物种编号", prop: "speciesNumber", width: "", type: "text", tooltip: true },
-            { label: "物种名称", prop: "speciesName", width: "", type: "text", tooltip: true },
-            { label: "采样时间", prop: "samplingTime", width: "", type: "text", tooltip: true },
-            { label: "江河流域", prop: "riverBasin", width: "", type: "text", tooltip: true },
-            { label: "行政区域", prop: "administrativeDivision", width: "", type: "text", tooltip: true },
+            {
+              label: "实验编号",
+              prop: "experimentNo",
+              width: "",
+              type: "text",
+              tooltip: true
+            },
+            {
+              label: "物种编号",
+              prop: "speciesNumber",
+              width: "",
+              type: "text",
+              tooltip: true
+            },
+            {
+              label: "物种名称",
+              prop: "speciesName",
+              width: "",
+              type: "text",
+              tooltip: true
+            },
+            {
+              label: "采样时间",
+              prop: "samplingTime",
+              width: "",
+              type: "text",
+              tooltip: true
+            },
+            {
+              label: "江河流域",
+              prop: "riverBasin",
+              width: "",
+              type: "text",
+              tooltip: true
+            },
+            {
+              label: "行政区域",
+              prop: "administrativeDivision",
+              width: "",
+              type: "text",
+              tooltip: true
+            },
             // { label: "位置编号", prop: "sampleName", width: "", type: "text", tooltip: true },
-            { label: "操作", prop: "slot", width: "100", slotName: "action", fixed: 'right', align: 'center' },
-          ]
+            {
+              label: "操作",
+              prop: "slot",
+              width: "100",
+              slotName: "action",
+              fixed: "right",
+              align: "center"
+            }
+          ];
           break;
-        case '3': // 标本
-          this.speciesUrl = '/system/specimen/listUnUse';
-          this.title = '选择标本样品'
+        case "3": // 标本
+          this.speciesUrl = "/system/specimen/listUnUse";
+          this.title = "选择标本样品";
           this.column = [
             { label: "序号", prop: "serialNumber", width: "80", type: "text" },
-            { label: "标本编号", prop: "specimenNo", width: "", type: "text", tooltip: true },
-            { label: "物种名称", prop: "speciesName", width: "", type: "text", tooltip: true },
-            { label: "采样时间", prop: "operatorTime", width: "", type: "text", tooltip: true },
-            { label: "江河流域", prop: "riverBasin", width: "", type: "text", tooltip: true },
-            { label: "行政区域", prop: "administrativeDivision", width: "", type: "text", tooltip: true },
+            {
+              label: "标本编号",
+              prop: "specimenNo",
+              width: "",
+              type: "text",
+              tooltip: true
+            },
+            {
+              label: "物种名称",
+              prop: "speciesName",
+              width: "",
+              type: "text",
+              tooltip: true
+            },
+            {
+              label: "采样时间",
+              prop: "operatorTime",
+              width: "",
+              type: "text",
+              tooltip: true
+            },
+            {
+              label: "江河流域",
+              prop: "riverBasin",
+              width: "",
+              type: "text",
+              tooltip: true
+            },
+            {
+              label: "行政区域",
+              prop: "administrativeDivision",
+              width: "",
+              type: "text",
+              tooltip: true
+            },
             // { label: "位置编号", prop: "cabinetId", width: "", type: "text", tooltip: true },
-            { label: "操作", prop: "slot", width: "100", slotName: "action", fixed: 'right', align: 'center' },
-          ]
+            {
+              label: "操作",
+              prop: "slot",
+              width: "100",
+              slotName: "action",
+              fixed: "right",
+              align: "center"
+            }
+          ];
           break;
         default:
           break;
@@ -196,18 +322,18 @@ export default {
     async show(type) {
       this.open = true;
       this.experimentType = type;
-      console.log('type===>', type)
-      console.log('type===>', typeof(type))
-      await this.init(type)
+      console.log("type===>", type);
+      console.log("type===>", typeof type);
+      await this.init(type);
       this.getList();
     },
     /** 取消 */
     cancel() {
-      this.tableList = []
-      this.column =[]
+      this.tableList = [];
+      this.column = [];
       this.open = false;
       this.resetForm("queryForm");
-      this.resetQuery()
+      this.resetQuery();
     },
     /** 提交 */
     submitForm() {
@@ -216,7 +342,7 @@ export default {
     /** 选择 */
     handleSelect(row) {
       this.$emit("selectSpecies", row);
-      this.cancel()
+      this.cancel();
     },
     /** 分页切换 */
     handleChangePage(page) {
@@ -224,8 +350,8 @@ export default {
       this.queryParams.pageNum = pageNum;
       this.queryParams.pageSize = pageSize;
       this.getList();
-    },
-  },
+    }
+  }
 };
 </script>
 

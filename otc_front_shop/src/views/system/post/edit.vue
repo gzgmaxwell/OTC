@@ -195,7 +195,7 @@ export default {
     },
     //新增保存接口
     async addData() {
-      this.formValidate.ress=this.$refs.postsTree.getCheckedKeys();
+      this.formValidate.ress = this.$refs.postsTree.getCheckedKeys();
       await PostSave(this.formValidate);
       this.$message.success("保存成功");
       this.$router.push({
@@ -204,7 +204,7 @@ export default {
     },
     //编辑保存接口
     async editData() {
-      this.formValidate.ress=this.$refs.postsTree.getCheckedKeys();
+      this.formValidate.ress = this.$refs.postsTree.getCheckedKeys();
       await PostUpdate(this.formValidate, this.id);
       this.$message.success("修改成功");
       this.$router.push({

@@ -1,5 +1,4 @@
-
-import { setToken, setUserInfo} from "@p/storage";
+import { setToken, setUserInfo } from "@p/storage";
 import Vue from "vue";
 import axios from "axios";
 import { Message } from "element-ui";
@@ -7,8 +6,8 @@ import router from "@r";
 import config from "@p/config";
 class NewAxios {
   handleError = result => {
-    let { code, data ,msg } = result;
-  
+    let { code, data, msg } = result;
+
     switch (code) {
       case "401":
         Message({
@@ -28,9 +27,9 @@ class NewAxios {
           message: msg,
           type: "error"
         });
-          setToken(data.token);
-          setUserInfo(data);
-          Vue.prototype.userInfo = data;
+        setToken(data.token);
+        setUserInfo(data);
+        Vue.prototype.userInfo = data;
         router.push("/auth");
 
         break;

@@ -14,8 +14,19 @@
       :max-height="tableHeight"
       ref="tableRef"
     >
-      <el-table-column v-if="isSelection" type="selection" width="55" align="center"></el-table-column>
-      <el-table-column v-if="hasIndex" label="序号" type="index" :index="indexMethod" width="80"></el-table-column>
+      <el-table-column
+        v-if="isSelection"
+        type="selection"
+        width="55"
+        align="center"
+      ></el-table-column>
+      <el-table-column
+        v-if="hasIndex"
+        label="序号"
+        type="index"
+        :index="indexMethod"
+        width="80"
+      ></el-table-column>
       <el-table-column
         v-for="(item, i) in column"
         :key="i"
@@ -48,71 +59,73 @@
       <slot name="action"></slot>
     </el-table>
     <Pagination
-        v-if="(pagination.total > 0)"
-        :pageNum.sync="pagination.pageNum"
-        :pageSize.sync="pagination.pageSize"
-        :total.sync="pagination.total"
-        @pagination="handleChangePage"
-      />
+      v-if="pagination.total > 0"
+      :pageNum.sync="pagination.pageNum"
+      :pageSize.sync="pagination.pageSize"
+      :total.sync="pagination.total"
+      @pagination="handleChangePage"
+    />
   </div>
 </template>
 <script>
-  import Pagination from "./pagination.vue";
+import Pagination from "./pagination.vue";
 export default {
   components: {
-      Pagination
+    Pagination
   },
   props: {
     column: {
       type: Array,
-      default: () => [],
+      default: () => []
     },
     dataSource: {
       type: Array,
-      default: () => [],
+      default: () => []
     },
     isSelection: {
       type: Boolean,
-      default: false,
+      default: false
     },
     loading: {
       type: Boolean,
-      default: false,
+      default: false
     },
     optionWidth: {
       type: String,
-      default: "100",
+      default: "100"
     },
     pagination: {
       type: Object,
       default() {
         return {};
-      },
+      }
     },
     tableHeight: {
       type: Number,
-      default: null,
+      default: null
     },
-    isRowClick: { // 当前行是否可以点击 
+    isRowClick: {
+      // 当前行是否可以点击
       type: Boolean,
       default: false
     },
     clickColumnIndex: {
       type: Array,
-      default: () => [],
+      default: () => []
     },
-    isManager: { // 后端系统 
+    isManager: {
+      // 后端系统
       type: Boolean,
       default: false
     },
-    hasIndex: { 
+    hasIndex: {
       type: Boolean,
       default: false
     }
   },
   data() {
     return {
-      multipleSelection: [],
+      multipleSelection: []
     };
   },
   methods: {
@@ -120,63 +133,67 @@ export default {
     handleChangePage(val) {
       this.$emit("pagination", val);
     },
-    handleClickShowDetail: function (scope) {
+    handleClickShowDetail: function(scope) {
       console.log(scope);
     },
-    handleClickPass: function () {},
-    handleClickReject: function () {},
+    handleClickPass: function() {},
+    handleClickReject: function() {},
     handleSelectionChange(arr) {
       this.$emit("selectionChange", arr);
     },
     // 点击行
     handlerRowClick(row, column, event) {
-      if(!this.isRowClick || !this.clickColumnIndex) return
-      if(this.clickColumnIndex.length) {
-        const isGo = this.clickColumnIndex.some(col => {return col == column.property})
-        if(!isGo) return
+      if (!this.isRowClick || !this.clickColumnIndex) return;
+      if (this.clickColumnIndex.length) {
+        const isGo = this.clickColumnIndex.some(col => {
+          return col == column.property;
+        });
+        if (!isGo) return;
       }
-      console.log('row',row)
-      console.log('column',column)
-      this.$emit('rowClick', row)
+      console.log("row", row);
+      console.log("column", column);
+      this.$emit("rowClick", row);
     },
     indexMethod(index) {
-      return (index + 1) + ((this.pagination.pageNum - 1) * this.pagination.pageSize);
+      return (
+        index + 1 + (this.pagination.pageNum - 1) * this.pagination.pageSize
+      );
     }
   },
   //生命周期 - 创建完成（访问当前this实例）
   created() {},
   //生命周期 - 挂载完成（访问DOM元素）
-  mounted() {},
+  mounted() {}
 };
 </script>
 <style scoped lang="scss">
 /* @import url(); 引入css类 */
 .web-page {
   .el-table {
-  ::v-deep th {
-    background-color: #eff5f8 !important;
-    color: #278de4 !important;
-    padding: 16px 0 9px !important;
-    border: none !important;
-    font-size: 16px;
+    ::v-deep th {
+      background-color: #eff5f8 !important;
+      color: #278de4 !important;
+      padding: 16px 0 9px !important;
+      border: none !important;
+      font-size: 16px;
+    }
+    ::v-deep td {
+      border: none;
+      padding: 10px 0 !important;
+      font-size: 16px;
+    }
+    ::v-deep th .cell {
+      line-height: 18px !important;
+      padding: 0 20px !important;
+    }
+    ::v-deep td .cell {
+      height: 28px;
+      line-height: 28px !important;
+      padding: 0 20px !important;
+    }
+    &::before {
+      height: 0 !important;
+    }
   }
-  ::v-deep td {
-    border: none;
-    padding: 10px 0 !important;
-    font-size: 16px;
-  }
-  ::v-deep th .cell {
-    line-height: 18px !important;
-    padding: 0 20px !important;
-  }
-  ::v-deep td .cell {
-    height: 28px;
-    line-height: 28px !important;
-    padding: 0 20px !important;
-  }
-  &::before{
-    height: 0 !important;
-  }
-}
 }
 </style>

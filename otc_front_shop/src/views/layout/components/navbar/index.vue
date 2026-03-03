@@ -1,10 +1,18 @@
 <template>
   <div class="navbar_wrapper">
     <div class="left_box">
-      <svg :class="{ collapse: true, 'is-active': !isCollapse }" viewBox="0 0 1024 1024"
-        xmlns="http://www.w3.org/2000/svg" width="24" height="24" @click="$store.commit('SET_COLLAPSE')">
-        <path fill="currentColor"
-          d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM142.4 642.1L298.7 519a8.84 8.84 0 0 0 0-13.9L142.4 381.9c-5.8-4.6-14.4-.5-14.4 6.9v246.3a8.9 8.9 0 0 0 14.4 7z" />
+      <svg
+        :class="{ collapse: true, 'is-active': !isCollapse }"
+        viewBox="0 0 1024 1024"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        @click="$store.commit('SET_COLLAPSE')"
+      >
+        <path
+          fill="currentColor"
+          d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM142.4 642.1L298.7 519a8.84 8.84 0 0 0 0-13.9L142.4 381.9c-5.8-4.6-14.4-.5-14.4 6.9v246.3a8.9 8.9 0 0 0 14.4 7z"
+        />
       </svg>
     </div>
     <div class="right_box">
@@ -39,14 +47,22 @@
         </el-card>
       </div> -->
       <i class="el-icon-rank color-icon ft-25" @click="fullScreen"></i>
-      <el-select v-model="theme" size="mini" style="width:120px;margin-right:12px" @change="changeTheme">
+      <el-select
+        v-model="theme"
+        size="mini"
+        style="width:120px;margin-right:12px"
+        @change="changeTheme"
+      >
         <el-option label="海洋" value="ocean"></el-option>
         <el-option label="亮色" value="light"></el-option>
         <el-option label="暗色" value="dark"></el-option>
         <el-option label="森林" value="forest"></el-option>
       </el-select>
       <el-dropdown trigger="click" @command="checkItem" placement="bottom-end">
-        <span class="el-dropdown-link" style="color:var(--menu-text-color);user-select:none;">
+        <span
+          class="el-dropdown-link"
+          style="color:var(--menu-text-color);user-select:none;"
+        >
           欢迎您,
           {{ userInfo.fullName }}
           <i class="el-icon-arrow-down el-icon--right"></i>
@@ -57,37 +73,69 @@
         </el-dropdown-menu>
       </el-dropdown>
     </div>
-    <el-dialog title="修改密码" :visible.sync="dialogFormVisible" :before-close="closeDialog" :modal-append-to-body="false"
-      width="40%" top="25vh">
-      <el-form :model="formValidate" label-width="100px" ref="formValidate" :rules="rules">
+    <el-dialog
+      title="修改密码"
+      :visible.sync="dialogFormVisible"
+      :before-close="closeDialog"
+      :modal-append-to-body="false"
+      width="40%"
+      top="25vh"
+    >
+      <el-form
+        :model="formValidate"
+        label-width="100px"
+        ref="formValidate"
+        :rules="rules"
+      >
         <el-form-item label="账号:">
           <span>{{ userInfo.userName }}</span>
         </el-form-item>
         <el-form-item label="原密码:" prop="oldPwd">
-          <el-input v-model="formValidate.oldPwd" autocomplete="off" type="password"></el-input>
+          <el-input
+            v-model="formValidate.oldPwd"
+            autocomplete="off"
+            type="password"
+          ></el-input>
         </el-form-item>
         <el-form-item label="新密码:" prop="newPwd">
-          <el-input v-model="formValidate.newPwd" autocomplete="off" type="password"></el-input>
+          <el-input
+            v-model="formValidate.newPwd"
+            autocomplete="off"
+            type="password"
+          ></el-input>
 
           <div class="intensity">
             <span class="psdText">密码强度</span>
-            <span class="line" :class="[level.includes('low') ? 'low' : '']"></span>
-            <span class="line" :class="[level.includes('middle') ? 'middle' : '']"></span>
-            <span class="line" :class="[level.includes('high') ? 'high' : '']"></span>
+            <span
+              class="line"
+              :class="[level.includes('low') ? 'low' : '']"
+            ></span>
+            <span
+              class="line"
+              :class="[level.includes('middle') ? 'middle' : '']"
+            ></span>
+            <span
+              class="line"
+              :class="[level.includes('high') ? 'high' : '']"
+            ></span>
             <div class="warningtext">
               密码应由8-16位数字、字母、符号组成。请不要使用容易被猜到的密码
             </div>
           </div>
-
-
         </el-form-item>
         <el-form-item label="确认密码:" prop="affirmPwd">
-          <el-input v-model="formValidate.affirmPwd" autocomplete="off" type="password"></el-input>
+          <el-input
+            v-model="formValidate.affirmPwd"
+            autocomplete="off"
+            type="password"
+          ></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="closeDialog">取 消</el-button>
-        <el-button type="primary" @click="save('formValidate')">确 定</el-button>
+        <el-button type="primary" @click="save('formValidate')"
+          >确 定</el-button
+        >
       </div>
     </el-dialog>
   </div>
@@ -97,7 +145,6 @@
 import { mapGetters } from "vuex";
 import screenfull from "screenfull";
 import { Logout, ChangePwd } from "@a";
-
 
 import { getToken, getUserInfo, getDics, removeUserInfo } from "@p/storage";
 export default {
@@ -133,7 +180,9 @@ export default {
       },
       rules: {
         oldPwd: [{ required: true, message: "请输入原密码", trigger: "blur" }],
-        newPwd: [{ required: true, validator: this.checkPassword, trigger: 'change' }],
+        newPwd: [
+          { required: true, validator: this.checkPassword, trigger: "change" }
+        ],
         affirmPwd: [{ validator: validatePass2, trigger: "blur" }]
       }
     };
@@ -146,58 +195,58 @@ export default {
   computed: {
     ...mapGetters(["isCollapse"])
   },
-  methods: {// 校验密码
+  methods: {
+    // 校验密码
     checkPassword(rule, value, callback) {
-      this.level = []
+      this.level = [];
       if (!value) {
-        return callback('密码不能为空')
+        return callback("密码不能为空");
       }
       if (value.length < 8) {
-        return callback('密码不少于8位')
+        return callback("密码不少于8位");
       }
       if (value.length > 16) {
-        return callback('密码不大于16位')
+        return callback("密码不大于16位");
       }
       // 校验是数字
-      const regex1 = /^\d+$/
+      const regex1 = /^\d+$/;
       // 校验字母
-      const regex2 = /^[A-Za-z]+$/
+      const regex2 = /^[A-Za-z]+$/;
       // 校验符号
-      const regex3 =
-        /^[`~!@#$%^&*()_\-+=<>?:"{}|,.\/;'\\[\]·~！@#￥%……&*（）——\-+={}|《》？：“”【】、；‘'，。、]+$/
+      const regex3 = /^[`~!@#$%^&*()_\-+=<>?:"{}|,.\/;'\\[\]·~！@#￥%……&*（）——\-+={}|《》？：“”【】、；‘'，。、]+$/;
       if (regex1.test(value)) {
-        this.level.push('low')
+        this.level.push("low");
       } else if (regex2.test(value)) {
-        this.level.push('low')
+        this.level.push("low");
       } else if (regex3.test(value)) {
-        this.level.push('low')
+        this.level.push("low");
       } else if (/^[A-Za-z\d]+$/.test(value)) {
-        this.level.push('low')
-        this.level.push('middle')
+        this.level.push("low");
+        this.level.push("middle");
       } else if (
         /^[`~!@#$%^&*()_\-+=<>?:"{}|,.\/;'\\[\]·~！@#￥%……&*（）——\-+={}|《》？：“”【】、；‘'，。、\d]+$/.test(
           value
         )
       ) {
-        this.level.push('low')
-        this.level.push('middle')
+        this.level.push("low");
+        this.level.push("middle");
       } else if (
         /^[`~!@#$%^&*()_\-+=<>?:"{}|,.\/;'\\[\]·~！@#￥%……&*（）——\-+={}|《》？：“”【】、；‘'，。、A-Za-z]+$/.test(
           value
         )
       ) {
-        this.level.push('low')
-        this.level.push('middle')
+        this.level.push("low");
+        this.level.push("middle");
       } else if (
         /^[`~!@#$%^&*()_\-+=<>?:"{}|,.\/;'\\[\]·~！@#￥%……&*（）——\-+={}|《》？：“”【】、；‘'，。、A-Za-z\d]+$/.test(
           value
         )
       ) {
-        this.level.push('low')
-        this.level.push('middle')
-        this.level.push('high')
+        this.level.push("low");
+        this.level.push("middle");
+        this.level.push("high");
       }
-      return callback()
+      return callback();
     },
     toData() {
       this.$router.push("/data");
@@ -226,7 +275,6 @@ export default {
         }
         this.formValidate.userId = this.userInfo.userId;
 
-
         var param = {};
         param.oldPwd = jm(this.formValidate.oldPwd);
         param.newPwd = jm(this.formValidate.newPwd);
@@ -248,7 +296,6 @@ export default {
         // localStorage.clear();
         this.$message.success("退出成功");
 
-
         // const host = window.location.hostname;
 
         // if (host.includes("syj.fishseed.")) {
@@ -258,9 +305,7 @@ export default {
         this.$router.push("/login");
         // }
 
-
         // window.close();
-
       });
     },
     //关闭弹窗
@@ -298,14 +343,14 @@ export default {
     display: flex;
     align-items: center;
 
-    >i {
+    > i {
       font-size: 28px;
       margin-left: 10px;
       cursor: pointer;
       color: var(--menu-text-color);
     }
 
-    >i:hover {
+    > i:hover {
       color: var(--primary-color);
     }
 
@@ -329,14 +374,14 @@ export default {
     align-items: center;
     position: relative;
 
-    >i {
+    > i {
       font-size: 26px;
       margin-right: 12px;
       cursor: pointer;
       color: var(--menu-text-color);
     }
 
-    >i:hover {
+    > i:hover {
       color: var(--primary-color);
     }
 
@@ -354,12 +399,12 @@ export default {
       width: 400px;
 
       .el-card__header {
-        >div {
+        > div {
           display: flex;
           align-items: center;
           justify-content: space-between;
 
-          >div {
+          > div {
             display: flex;
             align-items: center;
           }
@@ -386,7 +431,6 @@ export default {
     }
   }
 }
-
 
 .intensity {
   .psdText {

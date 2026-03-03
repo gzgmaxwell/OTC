@@ -1,20 +1,18 @@
 import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
-import 'ol/ol.css';
+import "ol/ol.css";
 
-import axios from 'axios'
-Vue.prototype.$axios = axios
+import axios from "axios";
+Vue.prototype.$axios = axios;
 
-
-import { login} from "@p/token";
+import { login } from "@p/token";
 login();
-
 
 import store from "./store";
 Vue.config.productionTip = false;
-import * as echarts from "echarts";//引入echarts
-Vue.prototype.$echarts = echarts//挂载到vue实例，方便全局使用
+import * as echarts from "echarts"; //引入echarts
+Vue.prototype.$echarts = echarts; //挂载到vue实例，方便全局使用
 
 import "@/styles/theme.scss";
 const themeInit = localStorage.getItem("theme") || "ocean";

@@ -14,7 +14,7 @@ import Sidebar from "./views/layout/components/sidebar";
 import { mapGetters } from "vuex";
 import Vue from "vue";
 import { setToken, setUserInfo, setDics, setRouter } from "@p/storage";
-import {  GetDics, GetRouterList,CodeLogin } from "@a";
+import { GetDics, GetRouterList, CodeLogin } from "@a";
 export default {
   name: "app",
   components: {
@@ -25,11 +25,11 @@ export default {
   },
   data() {
     return {
-      showMenu : false
-    }
+      showMenu: false
+    };
   },
   mounted() {
-    console.log(window.location, 23233)
+    console.log(window.location, 23233);
     this.getDics();
   },
   methods: {
@@ -39,7 +39,7 @@ export default {
       setDics(dictionaryData);
       Vue.prototype.dics = dictionaryData;
     }
-  }  
+  }
 };
 </script>
 <style lang="scss">

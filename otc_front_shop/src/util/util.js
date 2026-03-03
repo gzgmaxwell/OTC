@@ -1,7 +1,7 @@
 let timercb = null;
 let isProcessing = false; // 添加一个状态变量
 export function debounceCallBack(fn, ms = 400) {
-  return function () {
+  return function() {
     if (timercb) {
       clearTimeout(timercb);
     }
@@ -14,7 +14,7 @@ export function debounceCallBack(fn, ms = 400) {
             // 在异步操作完成后将状态变量设置为已完成
             isProcessing = false;
           })
-          .catch((error) => {
+          .catch(error => {
             isProcessing = false;
           });
       }, ms);

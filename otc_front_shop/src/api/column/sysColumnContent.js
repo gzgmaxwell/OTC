@@ -5,49 +5,46 @@ const url = "/sysColumnContent";
 export const SysColumnContentPage = params =>
   request({
     method: "get",
-    url: url+"/page",
+    url: url + "/page",
     params
   });
 export const SysColumnContentList = params =>
   request({
     method: "get",
-    url: url+"/all",
+    url: url + "/all",
     params
   });
-
 
 // 获取详情
 export const SysColumnContentInfo = id =>
   request({
     method: "get",
-    url: url+"/get/"+id
+    url: url + "/get/" + id
   });
 
-
-  export const SysColumnContentSave = data =>
+export const SysColumnContentSave = data =>
   request({
     method: "post",
-    url: url+"/add",
+    url: url + "/add",
     data
   });
 
-  export const SysColumnContentUpdate = data =>
+export const SysColumnContentUpdate = data =>
   request({
     method: "post",
-    url: url+"/put/"+data.id,
+    url: url + "/put/" + data.id,
     data
-  });  
-  
-  export const SysColumnContenFbzt = data =>
+  });
+
+export const SysColumnContenFbzt = data =>
   request({
     method: "post",
-    url: url+"/fbzt/"+data.id,
+    url: url + "/fbzt/" + data.id,
     data
-  });  
- export const SysColumnContentDelete = data =>
- request({
-   method: "post",
-   url: url+"/deletes",
-   data
- });
-  
+  });
+export const SysColumnContentDelete = data =>
+  request({
+    method: "post",
+    url: url + "/deletes",
+    data
+  });

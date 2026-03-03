@@ -15,7 +15,7 @@
       label-width="68px"
       @submit.native.prevent
     >
-    <el-form-item label="姓名" prop="personName">
+      <el-form-item label="姓名" prop="personName">
         <el-input
           v-model="queryParams.personName"
           placeholder="请输入姓名"
@@ -103,15 +103,51 @@ export default {
       total: 0,
       column: [
         { label: "序号", prop: "serialNumber", width: "80", type: "text" },
-        { label: "姓名", prop: "personName", width: "", type: "text", tooltip: true },
-        { label: "性别", prop: "slot", width: "", slotName: "speciesType", tooltip: true },
-        { label: "联系方式", prop: "phone", width: "", type: "text", tooltip: true },
-        { label: "出生年月", prop: "birthday", width: "", type: "text", tooltip: true },
-        { label: "邮箱", prop: "email", width: "", type: "text", tooltip: true },
-        { label: "操作", prop: "slot", width: "100", slotName: "action", align: 'center' },
+        {
+          label: "姓名",
+          prop: "personName",
+          width: "",
+          type: "text",
+          tooltip: true
+        },
+        {
+          label: "性别",
+          prop: "slot",
+          width: "",
+          slotName: "speciesType",
+          tooltip: true
+        },
+        {
+          label: "联系方式",
+          prop: "phone",
+          width: "",
+          type: "text",
+          tooltip: true
+        },
+        {
+          label: "出生年月",
+          prop: "birthday",
+          width: "",
+          type: "text",
+          tooltip: true
+        },
+        {
+          label: "邮箱",
+          prop: "email",
+          width: "",
+          type: "text",
+          tooltip: true
+        },
+        {
+          label: "操作",
+          prop: "slot",
+          width: "100",
+          slotName: "action",
+          align: "center"
+        }
       ],
       // 表格数据
-      tableList: [],
+      tableList: []
     };
   },
   created() {
@@ -121,21 +157,24 @@ export default {
     /** 查询公告列表 */
     getList() {
       this.loading = true;
-      getList(this.queryParams).then((response) => {
-        console.log('response.total', response.total)
-        this.tableList = response.rows;
-        this.queryParams.total = response.total;
-        this.loading = false;
-      }).catch(()=>{
-        this.tableList = [];
-        this.queryParams.total = 0;
-      }).finally(()=>{
-        this.loading = false;
-      });
+      getList(this.queryParams)
+        .then(response => {
+          console.log("response.total", response.total);
+          this.tableList = response.rows;
+          this.queryParams.total = response.total;
+          this.loading = false;
+        })
+        .catch(() => {
+          this.tableList = [];
+          this.queryParams.total = 0;
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
-      this.ids = selection.map((item) => item.speciesId);
+      this.ids = selection.map(item => item.speciesId);
       this.single = selection.length != 1;
       this.multiple = !selection.length;
     },
@@ -166,7 +205,7 @@ export default {
     /** 选择 */
     handleSelect(row) {
       this.$emit("selectPerson", row);
-      this.cancel()
+      this.cancel();
     },
     /** 分页切换 */
     handleChangePage(page) {
@@ -174,8 +213,8 @@ export default {
       this.queryParams.pageNum = pageNum;
       this.queryParams.pageSize = pageSize;
       this.getList();
-    },
-  },
+    }
+  }
 };
 </script>
 

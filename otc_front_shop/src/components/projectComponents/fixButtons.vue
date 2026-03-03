@@ -68,7 +68,9 @@
           >
             <template v-slot:button>
               <el-button @click="handlerFixClose">取消</el-button>
-              <el-button type="primary" @click="submit" :loading="isSaving">确定</el-button>
+              <el-button type="primary" @click="submit" :loading="isSaving"
+                >确定</el-button
+              >
             </template>
           </FormComponents>
         </div>
@@ -106,16 +108,24 @@ export default {
       },
       formRules: {
         messageContent: [
-          { required: true, message: "请输入留言内容", trigger: ["blur", 'change'] },
+          {
+            required: true,
+            message: "请输入留言内容",
+            trigger: ["blur", "change"]
+          }
         ],
         phone: [
-          { required: true, message: "请输入手机号码", trigger: ["blur", 'change'] },
+          {
+            required: true,
+            message: "请输入手机号码",
+            trigger: ["blur", "change"]
+          },
           {
             pattern: /^1[3|4|5|6|7|8|9][0-9]\d{8}$/,
             message: "请输入正确的手机号码",
-            trigger: ["blur", 'change'],
-          },
-        ],
+            trigger: ["blur", "change"]
+          }
+        ]
       },
       isSaving: false
     };
@@ -126,7 +136,7 @@ export default {
       this.clickedButton = type;
     },
     handlerFixClose() {
-      if(this.clickedButton === 2) this.$refs.ruleForm.resetForm();
+      if (this.clickedButton === 2) this.$refs.ruleForm.resetForm();
       this.fixShow = false;
       this.clickedButton = null;
     },
@@ -135,13 +145,13 @@ export default {
     },
     async save() {
       this.isSaving = true;
-      sendMessage(this.formData).then((res) => {
+      sendMessage(this.formData).then(res => {
         this.isSaving = false;
         this.$modal.msgSuccess("留言成功");
-        this.handlerFixClose()
+        this.handlerFixClose();
       });
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -241,6 +251,6 @@ export default {
   }
 }
 ::v-deep .el-textarea__inner {
-height: 107px;;
+  height: 107px;
 }
 </style>

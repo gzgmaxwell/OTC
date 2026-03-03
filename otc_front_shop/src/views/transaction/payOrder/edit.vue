@@ -48,7 +48,7 @@
 import {
   TransferRecordInfo,
   TransferRecordSave,
-  TransferRecordUpdate,
+  TransferRecordUpdate
 } from "@a/transaction";
 
 export default {
@@ -68,21 +68,21 @@ export default {
         createTime: null,
         updateBy: null,
         updateTime: null,
-        isDelete: null,
+        isDelete: null
       },
       data: [],
       rules: {
         fromId: [{ required: true, message: "请输入发起人", trigger: "blur" }],
         address: [
-          { required: true, message: "请输入钱包地址", trigger: "blur" },
+          { required: true, message: "请输入钱包地址", trigger: "blur" }
         ],
         purposeId: [
-          { required: true, message: "请输入接收人", trigger: "blur" },
+          { required: true, message: "请输入接收人", trigger: "blur" }
         ],
-        money: [{ required: true, message: "请输入金额", trigger: "blur" }],
+        money: [{ required: true, message: "请输入金额", trigger: "blur" }]
       },
       dialogVisible: false,
-      otherType: "",
+      otherType: ""
     };
   },
   methods: {
@@ -120,9 +120,9 @@ export default {
     //返回
     backTo() {
       this.$router.push({
-        name: "TransferRecord",
+        name: "TransferRecord"
       });
-    },
+    }
   },
   mounted() {
     //拿到从列表页传过来的ID
@@ -131,6 +131,6 @@ export default {
     if (this.id) {
       this.getInfo(this.id);
     }
-  },
+  }
 };
 </script>

@@ -74,7 +74,7 @@ function filterAsyncRouter(
           console.log(err);
         }
       }
-    }else{
+    } else {
       //Layout组件特殊处理
       route.component = Layout;
     }

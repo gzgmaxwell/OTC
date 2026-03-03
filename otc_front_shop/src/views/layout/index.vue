@@ -1,10 +1,10 @@
 <template>
   <div class="layout_wrapper">
     <Navbar />
-      <div class="layout_content_wrapper">
-        <router-view></router-view>
-        <slot></slot>
-      </div>
+    <div class="layout_content_wrapper">
+      <router-view></router-view>
+      <slot></slot>
+    </div>
   </div>
 </template>
 <script>
@@ -25,7 +25,6 @@ export default {
 </script>
 
 <style lang="scss">
-
 .menu_tittle {
   height: $navbarHeight;
   line-height: $navbarHeight;

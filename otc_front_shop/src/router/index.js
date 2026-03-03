@@ -14,7 +14,7 @@ export const constantRouter = [
     name: "Login",
     component: () => import("@v/login")
   },
-  
+
   {
     path: "/auth",
     name: "auth",
@@ -48,12 +48,11 @@ export const constantRouter = [
 ];
 const router = new VueRouter({
   routes: constantRouter,
-  mode:"history",
+  mode: "history",
   base: "/shop"
-
 });
 
-var exclude = ["/login", "/pending", "/audited", "/load", "/load", '/register'];
+var exclude = ["/login", "/pending", "/audited", "/load", "/load", "/register"];
 router.beforeEach((to, from, next) => {
   let token = window.getToken();
   if (token) {

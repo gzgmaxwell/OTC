@@ -13,19 +13,33 @@
         :on-remove="handleRemove"
         :accept="accept"
         multiple
-        v-loading="type === 'picture-card'?btnLoading:null"
+        v-loading="type === 'picture-card' ? btnLoading : null"
         :show-file-list="true"
         :file-list="previewFileList"
-        :class="['file-box', (previewFileList && previewFileList.length < maxLength) ? '' : 'btn-none']"
+        :class="[
+          'file-box',
+          previewFileList && previewFileList.length < maxLength
+            ? ''
+            : 'btn-none'
+        ]"
       >
-        <div v-if="(previewFileList && previewFileList.length < maxLength)">
-          <el-button size="small" type="primary" :loading="btnLoading">{{ item.btnText || '上传文件' }}</el-button>
+        <div v-if="previewFileList && previewFileList.length < maxLength">
+          <el-button size="small" type="primary" :loading="btnLoading">{{
+            item.btnText || "上传文件"
+          }}</el-button>
         </div>
         <slot name="tip"></slot>
       </el-upload>
     </div>
 
-    <div v-else :class="['img-content', $attrs.isView ? 'not-upload' : '', type === 'picture-card' ? 'img-contents-card' : '']">
+    <div
+      v-else
+      :class="[
+        'img-content',
+        $attrs.isView ? 'not-upload' : '',
+        type === 'picture-card' ? 'img-contents-card' : ''
+      ]"
+    >
       <el-upload
         :action="fileManage.uploadPath"
         :http-request="handleUploadFile"
@@ -33,47 +47,52 @@
         multiple
         :list-type="type"
         :accept="accept"
-        v-loading="type === 'picture-card'?btnLoading:null"
-        :class="['upload-box', type === 'picture-card' ? 'box-border' : '', maxLength <= previewImgList.length ? 'not-upload' : '' ]"
+        v-loading="type === 'picture-card' ? btnLoading : null"
+        :class="[
+          'upload-box',
+          type === 'picture-card' ? 'box-border' : '',
+          maxLength <= previewImgList.length ? 'not-upload' : ''
+        ]"
         ref="pictureUploadRef"
         :limit="maxLength"
         :on-exceed="handleExceed"
         :file-list="previewImgList"
-        >
-          <i slot="default" class="el-icon-plus"></i>
-          <div slot="file" slot-scope="{file}" class="upload-item-box">
-            <!-- <img
+      >
+        <i slot="default" class="el-icon-plus"></i>
+        <div slot="file" slot-scope="{ file }" class="upload-item-box">
+          <!-- <img
               class="el-upload-list__item-thumbnail"
               :src="file.url" alt=""
             > -->
-            <el-image
-               class="upload-item-thumb"
-              :src="file.url"
-              fit="cover"></el-image>
-            <!-- <div class="upload-item-thumb" :style="{backgroundImage: `url(${file.url})`}"></div> -->
-            <span class="el-upload-list__item-actions">
-              <span
-                class="el-upload-list__item-preview"
-                @click="handlePreviewClick(file)"
-              >
-                <i class="el-icon-zoom-in"></i>
-              </span>
-              <!-- <span
+          <el-image
+            class="upload-item-thumb"
+            :src="file.url"
+            fit="cover"
+          ></el-image>
+          <!-- <div class="upload-item-thumb" :style="{backgroundImage: `url(${file.url})`}"></div> -->
+          <span class="el-upload-list__item-actions">
+            <span
+              class="el-upload-list__item-preview"
+              @click="handlePreviewClick(file)"
+            >
+              <i class="el-icon-zoom-in"></i>
+            </span>
+            <!-- <span
                 v-if="!disabled"
                 class="el-upload-list__item-delete"
                 @click="handleDownload(file)"
               >
                 <i class="el-icon-download"></i>
               </span> -->
-              <span
-              v-if="($attrs.isView !== true)"
-                class="el-upload-list__item-delete"
-                @click="handleDeleteClick(file)"
-              >
-                <i class="el-icon-delete"></i>
-              </span>
+            <span
+              v-if="$attrs.isView !== true"
+              class="el-upload-list__item-delete"
+              @click="handleDeleteClick(file)"
+            >
+              <i class="el-icon-delete"></i>
             </span>
-          </div>
+          </span>
+        </div>
       </el-upload>
     </div>
 
@@ -84,7 +103,7 @@
   </div>
 </template>
 <script>
-import * as fileManage from '@/utils/fileManage'
+import * as fileManage from "@/utils/fileManage";
 
 export default {
   props: {
@@ -99,82 +118,87 @@ export default {
     type: {
       // text,picture-card,link
       type: String,
-      default: () => 'text'
+      default: () => "text"
     },
     accept: {
       type: String,
-      default: () => ''
+      default: () => ""
     },
     size: {
       type: Number,
       default: () => 500
     },
-    item:{
+    item: {
       type: Object,
-      default: () =>{}
+      default: () => {}
     }
   },
   data() {
     return {
       fileManage,
       previewImgList: [],
-      dialogImageUrl: '',
+      dialogImageUrl: "",
       btnLoading: false,
       dialogVisible: false,
       previewFileList: [],
       tempFileList: []
-    }
+    };
   },
   methods: {
     updateArchive(row) {
-      let link = document.createElement('a')
-      let body = document.querySelector('body')
-      link.href = row.url
-      link.style.display = 'none'
-      body.appendChild(link)
-      link.click()
-      body.removeChild(link)
-      window.URL.revokeObjectURL(link.href)
+      let link = document.createElement("a");
+      let body = document.querySelector("body");
+      link.href = row.url;
+      link.style.display = "none";
+      body.appendChild(link);
+      link.click();
+      body.removeChild(link);
+      window.URL.revokeObjectURL(link.href);
     },
     beforeUpload(file) {
-      const { size, accept } = this
-      if (accept && accept !== '') {
-        const filName = '.' + file.name.substring(file.name.lastIndexOf('.') + 1)
-        const arr = accept.split(',')
+      const { size, accept } = this;
+      if (accept && accept !== "") {
+        const filName =
+          "." + file.name.substring(file.name.lastIndexOf(".") + 1);
+        const arr = accept.split(",");
         if (
-          arr.some((v) => {
-            return v === filName
+          arr.some(v => {
+            return v === filName;
           })
         ) {
-          return true
+          return true;
         } else {
           this.$message({
             message: `请上传${accept}格式文件`,
-            type: 'warning'
-          })
-          return false
+            type: "warning"
+          });
+          return false;
         }
       } else {
-        const limitSize = file.size / 1024 / 1024 < Number(size)
+        const limitSize = file.size / 1024 / 1024 < Number(size);
         if (!limitSize) {
           this.$message({
             message: `上传文件不能大于${size}M!`,
-            type: 'warning'
-          })
-          return false
+            type: "warning"
+          });
+          return false;
         } else {
-          return true
+          return true;
         }
       }
     },
     handleUploadFile(e) {
-      console.log('e===>',e)
+      console.log("e===>", e);
       if (this.beforeUpload(e.file)) {
-        this.btnLoading = true
-        fileManage.uploadFile(e).then((response) => {
-          this.btnLoading = false
+        this.btnLoading = true;
+        fileManage.uploadFile(e).then(response => {
+          this.btnLoading = false;
           let tempList = [];
-          this.previewImgList.push({name: response.newFileName, url: response.url, newFileName: response.newFileName})
+          this.previewImgList.push({
+            name: response.newFileName,
+            url: response.url,
+            newFileName: response.newFileName
+          });
           // for (const file of response.mapList) {
           //   this.previewImgList.push(file)
           // }
@@ -182,29 +206,28 @@ export default {
           //   item.id = index
           // })
           // this.previewImgList = [...this.tempFileList, ...tempList]
-          this.previewImgList.map((item,index)=> {
-            item.id = index
-          })
+          this.previewImgList.map((item, index) => {
+            item.id = index;
+          });
 
-          this.$emit('uploadSuccess', [...this.previewImgList])
-        })
+          this.$emit("uploadSuccess", [...this.previewImgList]);
+        });
       }
     },
-    handleProgress(event, file, fileList){
-      console.log('1----handleProgress====>', fileList)
-
+    handleProgress(event, file, fileList) {
+      console.log("1----handleProgress====>", fileList);
     },
     handlePreviewClick(e) {
-      this.dialogImageUrl = e.url
-      this.dialogVisible = true
+      this.dialogImageUrl = e.url;
+      this.dialogVisible = true;
     },
     // 图片删除
     handleDeleteClick(file) {
       this.previewImgList.forEach((element, index) => {
         if (element.id === file.id || element.uid === file.uid) {
-          this.previewImgList.splice(index, 1)
+          this.previewImgList.splice(index, 1);
         }
-      })
+      });
     },
     // 文件删除
     handleRemove(file) {
@@ -213,9 +236,9 @@ export default {
       // this.$emit('uploadSuccess', this.previewFileList)
       this.previewFileList.forEach((element, index) => {
         if (element.id === file.id || element.uid === file.uid) {
-          this.previewFileList.splice(index, 1)
+          this.previewFileList.splice(index, 1);
         }
-      })
+      });
     },
     handleExceed(files, fileList) {
       this.$message.warning(`当前限制选择 ${this.maxLength} 个文件`);
@@ -229,11 +252,11 @@ export default {
         // if(!this.previewImgList.length) this.previewImgList = val;
         // console.log('imgList', val)
         this.previewFileList = val;
-        this.previewImgList = val
+        this.previewImgList = val;
       }
     }
   }
-}
+};
 </script>
 <style lang="scss" scoped>
 .imglink {
@@ -282,7 +305,7 @@ export default {
       display: flex;
       justify-content: center;
       align-items: center;
-      background-size:contain;
+      background-size: contain;
       background-repeat: no-repeat;
       background-position: 50% 50%;
       i {
@@ -306,12 +329,12 @@ export default {
 }
 ::v-deep .upload-box .el-upload {
   // border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    &:hover {
-    border-color: #409EFF;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  &:hover {
+    border-color: #409eff;
   }
 }
 ::v-deep .box-border {
@@ -323,20 +346,20 @@ export default {
     .upload-item-box {
       width: 100%;
       height: 100%;
-    .upload-item-thumb {
-      width: 100%;
-      height: 100%;
-      background-position: 50% 50%;
-      background-size: cover;
-      background-repeat: no-repeat;
-    }
+      .upload-item-thumb {
+        width: 100%;
+        height: 100%;
+        background-position: 50% 50%;
+        background-size: cover;
+        background-repeat: no-repeat;
+      }
     }
   }
 }
 ::v-deep .box-border .el-upload {
   border: 1px dashed #d9d9d9;
-    margin-right: 10px;
-    margin-bottom: 10px;
+  margin-right: 10px;
+  margin-bottom: 10px;
 }
 .preview-img {
   width: 100%;
@@ -346,10 +369,9 @@ export default {
 .btn-none ::v-deep .el-upload {
   display: none;
 }
-.file-box ::v-deep .el-upload-list li:first-child{
+.file-box ::v-deep .el-upload-list li:first-child {
   margin-top: 6px;
 }
-
 
 .img-contents-card {
   // display: flex;
@@ -357,7 +379,7 @@ export default {
   .upload-box {
     margin: 10px 10px 10px 0;
   }
-  .img-list{
+  .img-list {
     vertical-align: top;
     .img-item {
       margin: 10px 10px 10px 0;
@@ -370,7 +392,6 @@ export default {
     display: none !important;
   }
 }
-
 
 ::v-deep .el-list-enter-active,
 ::v-deep .el-list-leave-active {

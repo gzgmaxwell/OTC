@@ -1,7 +1,12 @@
 <template>
   <div class="map">
     <div id="myPageTop" v-if="!isView">
-      <el-input v-model="inputSearch" id="tipinput" placeholder="请输入关键字" style="width: 290px"></el-input>
+      <el-input
+        v-model="inputSearch"
+        id="tipinput"
+        placeholder="请输入关键字"
+        style="width: 290px"
+      ></el-input>
       <el-button type="primary" @click="query">搜索</el-button>
     </div>
     <div id="map-container"></div>
@@ -16,16 +21,16 @@ export default {
   props: {
     receiveLongitude: {
       type: String,
-      defalut: "",
+      defalut: ""
     },
     receiveLatitude: {
       type: String,
-      defalut: "",
+      defalut: ""
     },
     isView: {
       type: Boolean,
-      defalut: false,
-    },
+      defalut: false
+    }
   },
   data() {
     return {
@@ -44,7 +49,7 @@ export default {
       province: "",
       city: "",
       area: "",
-      coordinate: "",
+      coordinate: ""
     };
   },
   mounted() {
@@ -59,16 +64,16 @@ export default {
           "AMap.Scale",
           "AMap.PlaceSearch",
           "AMap.AutoComplete",
-          "AMap.Geocoder",
-        ], // 需要使用的的插件列表，如比例尺'AMap.Scale'等
+          "AMap.Geocoder"
+        ] // 需要使用的的插件列表，如比例尺'AMap.Scale'等
       })
-        .then((AMap) => {
+        .then(AMap => {
           this.AMap = AMap;
           this.map = new AMap.Map("map-container", {
             //设置地图容器id
             // viewMode: "3D", //是否为3D地图模式
             zoom: 8, //初始化地图级别
-            center: [109.84, 19.16], //初始化地图中心点位置
+            center: [109.84, 19.16] //初始化地图中心点位置
             // mapStyle: 'amap://styles/macaron', //设置地图的显示样式
           });
 
@@ -76,11 +81,11 @@ export default {
           // this.map.addControl(new AMap.Scale())
           // 搜索框自动完成类
           this.auto = new AMap.AutoComplete({
-            input: "tipinput",
+            input: "tipinput"
           });
           //构造地点查询类
           this.placeSearch = new AMap.PlaceSearch({
-            map: this.map,
+            map: this.map
           });
           // 当选中某条搜索记录时触发
           this.auto.on("select", this.select);
@@ -91,23 +96,23 @@ export default {
               position: new AMap.LngLat(
                 this.receiveLongitude,
                 this.receiveLatitude
-              ),
+              )
             });
             marker.on("click", this.markerClickHandler2);
             let param = {
               lnglat: {
                 lng: this.receiveLongitude,
-                lat: this.receiveLatitude,
-              },
+                lat: this.receiveLatitude
+              }
             };
             this.map.add(marker);
             this.markerClickHandler2(param);
           }
           // 地图点击事件
-          if(!this.isView) this.map.on("click", this.clickHandler);
+          if (!this.isView) this.map.on("click", this.clickHandler);
           //this.map.on("click", this.clickHandler);
         })
-        .catch((e) => {
+        .catch(e => {
           console.log(e);
         });
     },
@@ -115,10 +120,10 @@ export default {
     markerClickHandler(e) {
       // this.lnglat.longit = e.data.location.lng;
       // this.lnglat.latit = e.data.location.lat;
-      if(this.isView) return
+      if (this.isView) return;
       this.lnglat = {
         longit: e.data.location.lng,
-        latit: e.data.location.lat,
+        latit: e.data.location.lat
       };
       this.coordinate = `${e.data.location.lng},${e.data.location.lat}`;
       // emit("lngAndlat", state.longit, state.latit);
@@ -137,22 +142,25 @@ export default {
     },
     // 自定义标记点的点击事件
     markerClickHandler2(e) {
-      if(this.isView) return
+      if (this.isView) return;
       let longit = e.lnglat.lng;
       let latit = e.lnglat.lat;
       this.lnglat = {
         longit: e.lnglat.lng,
-        latit: e.lnglat.lat,
+        latit: e.lnglat.lat
       };
       let self = this;
       this.coordinate = `${longit},${latit}`;
       this.$emit("clickCoordinate", this.lnglat);
       self.geocoder &&
-        self.geocoder.getAddress([longit, latit], function (status, result) {
+        self.geocoder.getAddress([longit, latit], function(status, result) {
           if (status === "complete" && result.info === "OK") {
             if (result && result.regeocode) {
-              const { province, city, district } =
-                result.regeocode.addressComponent;
+              const {
+                province,
+                city,
+                district
+              } = result.regeocode.addressComponent;
               const { formattedAddress } = result.regeocode;
               // self.formData.selectCity = formattedAddress;
               // const str = `${province}${city}${district}`;
@@ -164,12 +172,12 @@ export default {
 
             let poi = {
               name: self.address,
-              address: self.address,
+              address: self.address
             };
             self.infoWindow = new AMap.InfoWindow({
               content: self.createContent(poi),
               autoMove: true,
-              offset: { x: 0, y: -30 },
+              offset: { x: 0, y: -30 }
             });
             self.infoWindow.open(self.map, [longit, latit]);
             self.inputSearch = self.address;
@@ -188,7 +196,7 @@ export default {
     clickHandler(data) {
       this.map.clearMap();
       let marker = new AMap.Marker({
-        position: new AMap.LngLat(data.lnglat.lng, data.lnglat.lat),
+        position: new AMap.LngLat(data.lnglat.lng, data.lnglat.lat)
       });
       console.log("data", data);
       this.markerClickHandler2(data);
@@ -213,8 +221,8 @@ export default {
       let data = {
         poi: {
           name: this.inputSearch,
-          adcode: this.cityCode,
-        },
+          adcode: this.cityCode
+        }
       };
       this.auto.closeResult();
       this.select(data);
@@ -230,8 +238,8 @@ export default {
       this.inputSearch = "";
       // this.$emit('resetReceiveLnglat')
       // this.showMap();
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>

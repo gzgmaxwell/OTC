@@ -5,20 +5,20 @@ const url = "/user";
 export const UserPage = params =>
   request({
     method: "get",
-    url: url+"/page",
+    url: url + "/page",
     params
   });
 export const UserList = params =>
   request({
     method: "get",
-    url: url+"/all",
+    url: url + "/all",
     params
   });
 
 export const QuerySelect = params =>
   request({
     method: "get",
-    url: url+"/select",
+    url: url + "/select",
     params
   });
 
@@ -26,55 +26,56 @@ export const QuerySelect = params =>
 export const UserInfo = id =>
   request({
     method: "get",
-    url: url+"/get/"+id
+    url: url + "/get/" + id
   });
 
-
-  export const RemoveSecretKey = data =>
+export const RemoveSecretKey = data =>
   request({
     method: "post",
-    url: url+"/removeSecretKey",
-    data
-  });
-  
-  //绑定谷歌秘钥
-
-  export const BindSecretKey = data =>
-  request({
-    method: "post",
-    url: url+"/bindSecretKey",
-    data
-  });  
-
-
-  export const UserSave = data =>
-  request({
-    method: "post",
-    url: url+"/add",
+    url: url + "/removeSecretKey",
     data
   });
 
+//绑定谷歌秘钥
 
-
-  export const UserUpdate = data =>
+export const BindSecretKey = data =>
   request({
     method: "post",
-    url: url+"/put/"+data.userId,
+    url: url + "/bindSecretKey",
     data
-  });  
+  });
 
-  export const UserLockStatus = data =>
+export const bindSecretKeyBeforeLogin = data =>
   request({
     method: "post",
-    url: url+"/lockStatus",
+    url: url + "/bindSecretKeyBeforeLogin",
     data
-  });  
-  
-  
- export const UserDelete = data =>
- request({
-   method: "post",
-   url: url+"/deletes",
-   data
- });
-  
+  });
+
+export const UserSave = data =>
+  request({
+    method: "post",
+    url: url + "/add",
+    data
+  });
+
+export const UserUpdate = data =>
+  request({
+    method: "post",
+    url: url + "/put/" + data.userId,
+    data
+  });
+
+export const UserLockStatus = data =>
+  request({
+    method: "post",
+    url: url + "/lockStatus",
+    data
+  });
+
+export const UserDelete = data =>
+  request({
+    method: "post",
+    url: url + "/deletes",
+    data
+  });

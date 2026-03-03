@@ -187,10 +187,7 @@ export default {
     //获取列表
     async List() {
       this.params.descs = "a.update_time";
-      let {
-        code,
-        data
-      } = await this.$ajax.sysDepartmentApi.sysDepartmentList(
+      let { code, data } = await this.$ajax.sysDepartmentApi.sysDepartmentList(
         this.params
       );
       if (code == 200) {

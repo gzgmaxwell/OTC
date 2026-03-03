@@ -44,7 +44,7 @@ import { getUserInfo } from "@p/storage";
 
 import router from "@r";
 import { loginAfter } from "@p/token";
-import { BindSecretKey } from "@a/system";
+import { BindSecretKey, bindSecretKeyBeforeLogin } from "@a/system";
 
 // 刷新路由
 import { refreshRouter } from "@r/dealRouter";
@@ -53,30 +53,29 @@ export default {
   props: {
     row: {
       type: Object,
-      default: () => ({}),
-    },
+      default: () => ({})
+    }
   },
   data() {
     return {
       verificationCode: "",
-      userInfo: {},
+      userInfo: {}
     };
   },
   methods: {
     async bindGoogleAuth() {
       // 这里可以添加绑定逻辑
-      await BindSecretKey({
+      await bindSecretKeyBeforeLogin({
         userId: this.row.userId,
         secretKey: this.row.secretKey,
         verificationCode: this.verificationCode,
-        userName: this.row.userName,
       });
       this.$message.success("绑定成功");
       this.row.callback(true);
 
       // router.push("/login");
       // loginAfter(userinfo);
-    },
+    }
   },
   mounted() {
     removeRouter();
@@ -84,7 +83,7 @@ export default {
     refreshRouter();
     // this.userInfo = getUserInfo();
     // console.error(this.userInfo);
-  },
+  }
 };
 </script>
 

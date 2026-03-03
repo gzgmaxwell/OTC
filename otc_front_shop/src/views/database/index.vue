@@ -71,7 +71,11 @@
         </el-card>
         <el-card class="box-card3">
           <div slot="header" class="clearfix">
-            <span class="card-title">企业设备离线率<span class="red">(数据包含自建及停用的数量)</span></span>
+            <span class="card-title"
+              >企业设备离线率<span class="red"
+                >(数据包含自建及停用的数量)</span
+              ></span
+            >
           </div>
           <div class="card-content">
             <el-table ref="multipleTable" :data="qysbList" height="100%">
@@ -85,8 +89,12 @@
                 width="120px"
                 label="物联设备离线率"
               >
-               <template slot-scope="scope">
-                  <span>{{ scope.row.szlxl}}({{ scope.row.szlxsl}}/{{ scope.row.szzs}})</span>
+                <template slot-scope="scope">
+                  <span
+                    >{{ scope.row.szlxl }}({{ scope.row.szlxsl }}/{{
+                      scope.row.szzs
+                    }})</span
+                  >
                 </template>
               </el-table-column>
               <!-- <el-table-column prop="splxl" width="80px" label="">
@@ -269,14 +277,14 @@ export default {
       drList: [],
       lsList: [],
       params: {
-        xmId: "",
+        xmId: ""
       },
       params2: {
         size: 10,
         current: 1,
         lx: "1",
         sTime: "",
-        eTime: "",
+        eTime: ""
       },
       dataInfo: {},
       dataInfo2: {},
@@ -286,7 +294,7 @@ export default {
       wlwsb: null,
       bjlb: null,
       spjksb: null,
-      bjcl: null,
+      bjcl: null
     };
   },
   async mounted() {
@@ -311,14 +319,14 @@ export default {
       this.xmLists = [];
       this.xmLists.push({
         id: "",
-        xmmc: "全部",
+        xmmc: "全部"
       });
       const data = await xmList();
       this.xmLists = [...this.xmLists, ...data];
     },
     xmChange(val) {
       //this.getWlwsb();
-      
+
       this.getWlwsb1();
       this.getWlwsb2();
       this.getWlwsb3();
@@ -356,7 +364,7 @@ export default {
         current: 1,
         lx: "1",
         sTime: "",
-        eTime: "",
+        eTime: ""
       };
       this.List();
     },
@@ -384,15 +392,15 @@ export default {
       if (data.wlsbtj) {
         wlwsbList.push({
           name: "离线率",
-          value: data.wlsbtj.lxsb,
+          value: data.wlsbtj.lxsb
         });
         wlwsbList.push({
           name: "在线率",
-          value: data.wlsbtj.zxsb,
+          value: data.wlsbtj.zxsb
         });
         wlwsbList.push({
           name: "停用率",
-          value: data.wlsbtj.tysb,
+          value: data.wlsbtj.tysb
         });
       }
 
@@ -405,9 +413,9 @@ export default {
           : ((data.wlsbtj.zxsb / data.wlsbtj.sbzs) * 100).toFixed(1) + "%";
 
         this.wlwsb.setOption({
-          color: ["#f56c6c", "#67c23a","#DBA710"],
+          color: ["#f56c6c", "#67c23a", "#DBA710"],
           tooltip: {
-            trigger: "item",
+            trigger: "item"
           },
           // title: [
           //   {
@@ -436,7 +444,7 @@ export default {
             {
               type: "pie",
               // radius: ["40%", "55%"],
-              radius:'50%',
+              radius: "50%",
               // center: ["50%", "50%"],
               // avoidLabelOverlap: false,
               // itemStyle: {
@@ -446,16 +454,16 @@ export default {
               // },
               label: {
                 show: true,
-                formatter:'{b} :'+'\n'+'{d}%',
-                // position: "", 
-                fontSize:"13px"
+                formatter: "{b} :" + "\n" + "{d}%",
+                // position: "",
+                fontSize: "13px"
               },
               labelLine: {
-                show: true,
+                show: true
               },
-              data: wlwsbList,
-            },
-          ],
+              data: wlwsbList
+            }
+          ]
         });
       });
     },
@@ -467,11 +475,11 @@ export default {
       if (data.spjksbtj) {
         spjksbList.push({
           name: "离线设备",
-          value: data.spjksbtj.lxsb,
+          value: data.spjksbtj.lxsb
         });
         spjksbList.push({
           name: "在线设备",
-          value: data.spjksbtj.zxsb,
+          value: data.spjksbtj.zxsb
         });
       }
 
@@ -485,7 +493,7 @@ export default {
         this.spjksb.setOption({
           color: ["#f56c6c", "#67c23a"],
           tooltip: {
-            trigger: "item",
+            trigger: "item"
           },
           title: [
             {
@@ -498,16 +506,16 @@ export default {
                 rich: {
                   a: {
                     fontSize: 18,
-                    color: "#000",
-                  },
-                },
+                    color: "#000"
+                  }
+                }
               },
               subtext: spjkNum,
               subtextStyle: {
                 fontSize: 18,
-                color: ["#000"],
-              },
-            },
+                color: ["#000"]
+              }
+            }
           ],
           legend: { top: "bottom" },
           series: [
@@ -519,18 +527,18 @@ export default {
               itemStyle: {
                 borderRadius: 10,
                 borderColor: "#fff",
-                borderWidth: 2,
+                borderWidth: 2
               },
               label: {
                 show: false,
-                position: "center",
+                position: "center"
               },
               labelLine: {
-                show: false,
+                show: false
               },
-              data: spjksbList,
-            },
-          ],
+              data: spjksbList
+            }
+          ]
         });
       });
     },
@@ -547,13 +555,13 @@ export default {
 
         this.bjlb.setOption({
           grid: {
-            left: "15%",
+            left: "15%"
           },
           tooltip: {
             trigger: "axis",
             axisPointer: {
-              type: "shadow",
-            },
+              type: "shadow"
+            }
           },
           xAxis: {
             type: "category",
@@ -562,12 +570,12 @@ export default {
               // formatter: function (value) {
               //   return value.split("").join("\n");
               // },
-              rotate:45,
-              fontSize:'11px'
-      	    }
+              rotate: 45,
+              fontSize: "11px"
+            }
           },
           yAxis: {
-            type: "value",
+            type: "value"
           },
           series: [
             {
@@ -575,10 +583,10 @@ export default {
               type: "bar",
               label: {
                 show: true, // 显示标签
-                position: 'top' // 标签位置
+                position: "top" // 标签位置
               }
-            },
-          ],
+            }
+          ]
         });
       });
     },
@@ -590,15 +598,15 @@ export default {
       if (data.bjcll) {
         bjcllList.push({
           name: "待处理",
-          value: data.bjcll.wclbj,
+          value: data.bjcll.wclbj
         });
         bjcllList.push({
           name: "已处理",
-          value: data.bjcll.yclbj,
+          value: data.bjcll.yclbj
         });
         bjcllList.push({
           name: "处理中",
-          value: data.bjcll.clzbj,
+          value: data.bjcll.clzbj
         });
       }
 
@@ -611,9 +619,9 @@ export default {
           : ((data.bjcll.yclbj / data.bjcll.bjzs) * 100).toFixed(1) + "%";
 
         this.bjcl.setOption({
-          color: ["#f56c6c", "#67c23a","#DBA710"],
+          color: ["#f56c6c", "#67c23a", "#DBA710"],
           tooltip: {
-            trigger: "item",
+            trigger: "item"
           },
           // title: [
           //   {
@@ -649,22 +657,22 @@ export default {
               //   borderColor: "#fff",
               //   borderWidth: 2,
               // },
-              radius:"50%",
+              radius: "50%",
               label: {
                 show: true,
-                fontSize:"13px",
-                formatter:'{b} :'+'\n'+'{d}%',
+                fontSize: "13px",
+                formatter: "{b} :" + "\n" + "{d}%"
               },
               labelLine: {
-                show: true,
+                show: true
               },
-              data: bjcllList,
-            },
-          ],
+              data: bjcllList
+            }
+          ]
         });
       });
     },
-    
+
     async getWlwsb6() {
       const data = await sjfx2(this.params, 6);
       this.drList = data.bjtjfx;
@@ -679,33 +687,33 @@ export default {
       if (data.wlsbtj) {
         wlwsbList.push({
           name: "离线设备",
-          value: data.wlsbtj.lxsb,
+          value: data.wlsbtj.lxsb
         });
         wlwsbList.push({
           name: "在线设备",
-          value: data.wlsbtj.zxsb,
+          value: data.wlsbtj.zxsb
         });
       }
       const spjksbList = [];
       if (data.spjksbtj) {
         spjksbList.push({
           name: "离线设备",
-          value: data.spjksbtj.lxsb,
+          value: data.spjksbtj.lxsb
         });
         spjksbList.push({
           name: "在线设备",
-          value: data.spjksbtj.zxsb,
+          value: data.spjksbtj.zxsb
         });
       }
       const bjcllList = [];
       if (data.bjcll) {
         bjcllList.push({
           name: "未处理",
-          value: data.bjcll[0].wclbj,
+          value: data.bjcll[0].wclbj
         });
         bjcllList.push({
           name: "已处理",
-          value: data.bjcll[0].yclbj,
+          value: data.bjcll[0].yclbj
         });
       }
       setTimeout(() => {
@@ -738,7 +746,7 @@ export default {
         this.spjksb.setOption({
           color: ["#f56c6c", "#67c23a"],
           tooltip: {
-            trigger: "item",
+            trigger: "item"
           },
           title: [
             {
@@ -751,16 +759,16 @@ export default {
                 rich: {
                   a: {
                     fontSize: 18,
-                    color: "#000",
-                  },
-                },
+                    color: "#000"
+                  }
+                }
               },
               subtext: spjkNum,
               subtextStyle: {
                 fontSize: 18,
-                color: ["#000"],
-              },
-            },
+                color: ["#000"]
+              }
+            }
           ],
           legend: { top: "bottom" },
           series: [
@@ -772,23 +780,23 @@ export default {
               itemStyle: {
                 borderRadius: 10,
                 borderColor: "#fff",
-                borderWidth: 2,
+                borderWidth: 2
               },
               label: {
                 show: false,
-                position: "center",
+                position: "center"
               },
               labelLine: {
-                show: false,
+                show: false
               },
-              data: spjksbList,
-            },
-          ],
+              data: spjksbList
+            }
+          ]
         });
         this.wlwsb.setOption({
           color: ["#f56c6c", "#67c23a"],
           tooltip: {
-            trigger: "item",
+            trigger: "item"
           },
           title: [
             {
@@ -801,16 +809,16 @@ export default {
                 rich: {
                   a: {
                     fontSize: 18,
-                    color: "#000",
-                  },
-                },
+                    color: "#000"
+                  }
+                }
               },
               subtext: wlwsbNum,
               subtextStyle: {
                 fontSize: 18,
-                color: ["#000"],
-              },
-            },
+                color: ["#000"]
+              }
+            }
           ],
           legend: { top: "bottom" },
           series: [
@@ -822,23 +830,23 @@ export default {
               itemStyle: {
                 borderRadius: 10,
                 borderColor: "#fff",
-                borderWidth: 2,
+                borderWidth: 2
               },
               label: {
                 show: false,
-                position: "center",
+                position: "center"
               },
               labelLine: {
-                show: false,
+                show: false
               },
-              data: wlwsbList,
-            },
-          ],
+              data: wlwsbList
+            }
+          ]
         });
         this.bjcl.setOption({
           color: ["#f56c6c", "#67c23a"],
           tooltip: {
-            trigger: "item",
+            trigger: "item"
           },
           title: [
             {
@@ -851,16 +859,16 @@ export default {
                 rich: {
                   a: {
                     fontSize: 18,
-                    color: "#000",
-                  },
-                },
+                    color: "#000"
+                  }
+                }
               },
               subtext: bjcllNum,
               subtextStyle: {
                 fontSize: 18,
-                color: ["#000"],
-              },
-            },
+                color: ["#000"]
+              }
+            }
           ],
           legend: { top: "bottom" },
           series: [
@@ -872,43 +880,43 @@ export default {
               itemStyle: {
                 borderRadius: 10,
                 borderColor: "#fff",
-                borderWidth: 2,
+                borderWidth: 2
               },
               label: {
                 show: false,
-                position: "center",
+                position: "center"
               },
               labelLine: {
-                show: false,
+                show: false
               },
-              data: bjcllList,
-            },
-          ],
+              data: bjcllList
+            }
+          ]
         });
         this.bjlb.setOption({
           tooltip: {
             trigger: "axis",
             axisPointer: {
-              type: "shadow",
-            },
+              type: "shadow"
+            }
           },
           xAxis: {
             type: "category",
-            data: data.bjx,
+            data: data.bjx
           },
           yAxis: {
-            type: "value",
+            type: "value"
           },
           series: [
             {
               data: data.bjy,
-              type: "bar",
-            },
-          ],
+              type: "bar"
+            }
+          ]
         });
       }, 0);
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -993,8 +1001,8 @@ export default {
 .noActive {
   color: #409eff;
 }
-.red{
-  color:red;
+.red {
+  color: red;
   font-size: 17px;
 }
 </style>

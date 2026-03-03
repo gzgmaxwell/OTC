@@ -5,44 +5,40 @@ const url = "/sysVersion";
 export const SysVersionPage = params =>
   request({
     method: "get",
-    url: url+"/page",
+    url: url + "/page",
     params
   });
 export const SysVersionList = params =>
   request({
     method: "get",
-    url: url+"/all",
+    url: url + "/all",
     params
   });
-
 
 // 获取详情
 export const SysVersionInfo = id =>
   request({
     method: "get",
-    url: url+"/get/"+id
+    url: url + "/get/" + id
   });
 
-
-  export const SysVersionSave = data =>
+export const SysVersionSave = data =>
   request({
     method: "post",
-    url: url+"/add",
+    url: url + "/add",
     data
   });
 
-  export const SysVersionUpdate = data =>
+export const SysVersionUpdate = data =>
   request({
     method: "put",
-    url: url+"/put/"+data.id,
+    url: url + "/put/" + data.id,
     data
-  });  
-  
- 
- export const SysVersionDelete = data =>
- request({
-   method: "delete",
-   url: url+"/deletes",
-   data
- });
-  
+  });
+
+export const SysVersionDelete = data =>
+  request({
+    method: "delete",
+    url: url + "/deletes",
+    data
+  });

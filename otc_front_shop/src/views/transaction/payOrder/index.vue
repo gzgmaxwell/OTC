@@ -91,7 +91,10 @@
         </el-table-column>
         <el-table-column prop="title" label="标题"></el-table-column>
         <el-table-column prop="orderNumber" label="订单编号"></el-table-column>
-        <el-table-column prop="orderStatusName" label="订单状态"></el-table-column>
+        <el-table-column
+          prop="orderStatusName"
+          label="订单状态"
+        ></el-table-column>
 
         <!-- <el-table-column
           prop="purposeCodeName"
@@ -103,14 +106,13 @@
           label="更新时间"
           width="160"
         ></el-table-column> -->
-<!-- 
+        <!-- 
         <el-table-column label="操作" width="200">
           <template slot-scope="scope">
             <el-button size="mini" @click="edit(scope.row)">查看</el-button>
             <el-button size="mini" type="danger" @click="Delete( scope.row)" >删除</el-button >
           </template>
         </el-table-column> -->
-
       </el-table>
     </div>
     <el-pagination
@@ -127,10 +129,7 @@
 </template>
 
 <script>
-import {
-  TransferRecordDelete,
-  TransferPayOrderShop,
-} from "@a/transaction";
+import { TransferRecordDelete, TransferPayOrderShop } from "@a/transaction";
 import { nextTick } from "vue";
 
 import { QuerySelect } from "@a/system";
@@ -150,7 +149,7 @@ export default {
               const start = new Date();
               start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
               picker.$emit("pick", [start, end]);
-            },
+            }
           },
           {
             text: "最近一个月",
@@ -159,7 +158,7 @@ export default {
               const start = new Date();
               start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
               picker.$emit("pick", [start, end]);
-            },
+            }
           },
           {
             text: "最近三个月",
@@ -168,9 +167,9 @@ export default {
               const start = new Date();
               start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
               picker.$emit("pick", [start, end]);
-            },
-          },
-        ],
+            }
+          }
+        ]
       },
       id: "",
       users: [],
@@ -178,7 +177,7 @@ export default {
         size: 10,
         current: 1,
         startTime: null,
-        endTime: null,
+        endTime: null
       },
       total: 0,
       list: [], //表格数据
@@ -187,7 +186,7 @@ export default {
       select: "",
       isShow: false,
       showOperate: false,
-      fileList: [],
+      fileList: []
     };
   },
   created() {},
@@ -205,7 +204,7 @@ export default {
           return;
         }
 
-        const values = data.map((item) => Number(item[column.property]));
+        const values = data.map(item => Number(item[column.property]));
 
         if (!values.every(isNaN)) {
           if (column.property === "money") {
@@ -267,11 +266,11 @@ export default {
       this.$confirm("此操作将永久删除该数据, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "warning",
+        type: "warning"
       })
         .then(() => {
           var totalArr = [];
-          total.forEach((item) => {
+          total.forEach(item => {
             totalArr.push(item.id);
           });
           this.delData(totalArr);
@@ -322,7 +321,7 @@ export default {
     //新增
     newEdit() {
       this.$router.push({
-        name: "newTransferRecord",
+        name: "newTransferRecord"
       });
     },
     //编辑
@@ -330,8 +329,8 @@ export default {
       this.$router.push({
         name: "newTransferRecord",
         query: {
-          id: row.id,
-        },
+          id: row.id
+        }
       });
     },
     //删除
@@ -339,7 +338,7 @@ export default {
       this.$confirm("此操作将永久删除该数据, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "warning",
+        type: "warning"
       })
         .then(() => {
           var arr = [];
@@ -347,11 +346,11 @@ export default {
           this.delData(arr);
         })
         .catch(() => {});
-    },
+    }
   },
   mounted() {
     this.search();
     // this.getCodeUser();
-  },
+  }
 };
 </script>

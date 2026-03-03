@@ -69,7 +69,7 @@ import {
   SysModelInfo,
   SysModelSave,
   SysModelUpdate,
-  SysModelList,
+  SysModelList
 } from "@a/column";
 
 export default {
@@ -87,18 +87,18 @@ export default {
         createBy: null,
         createTime: null,
         updateBy: null,
-        updateTime: null,
+        updateTime: null
       },
       data: [],
       rules: {
         modelName: [
           { required: true, message: "请输入栏目名称", trigger: "blur" },
-          { max: 50, message: "最多50位", trigger: "blur" },
+          { max: 50, message: "最多50位", trigger: "blur" }
         ],
-        num: [{ required: true, message: "请输入顺序", trigger: "blur" }],
+        num: [{ required: true, message: "请输入顺序", trigger: "blur" }]
       },
       dialogVisible: false,
-      otherType: "",
+      otherType: ""
     };
   },
   methods: {
@@ -139,9 +139,9 @@ export default {
     //返回
     backTo() {
       this.$router.push({
-        name: "SysModel",
+        name: "SysModel"
       });
-    },
+    }
   },
   mounted() {
     //拿到从列表页传过来的ID
@@ -151,6 +151,6 @@ export default {
     if (this.id) {
       this.getInfo(this.id);
     }
-  },
+  }
 };
 </script>

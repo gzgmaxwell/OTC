@@ -5,44 +5,40 @@ const url = "/userRealAuth";
 export const UserRealAuthPage = params =>
   request({
     method: "get",
-    url: url+"/page",
+    url: url + "/page",
     params
   });
 export const UserRealAuthList = params =>
   request({
     method: "get",
-    url: url+"/all",
+    url: url + "/all",
     params
   });
-
 
 // 获取详情
 export const UserRealAuthInfo = id =>
   request({
     method: "get",
-    url: url+"/get/"+id
+    url: url + "/get/" + id
   });
 
-
-  export const UserRealAuthSave = data =>
+export const UserRealAuthSave = data =>
   request({
     method: "post",
-    url: url+"/add",
+    url: url + "/add",
     data
   });
 
-  export const UserRealAuthUpdate = data =>
+export const UserRealAuthUpdate = data =>
   request({
     method: "post",
-    url: url+"/put/"+data.id,
+    url: url + "/put/" + data.id,
     data
-  });  
-  
- 
- export const UserRealAuthDelete = data =>
- request({
-   method: "post",
-   url: url+"/deletes",
-   data
- });
-  
+  });
+
+export const UserRealAuthDelete = data =>
+  request({
+    method: "post",
+    url: url + "/deletes",
+    data
+  });

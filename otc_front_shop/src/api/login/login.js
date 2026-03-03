@@ -14,7 +14,6 @@ export const BuyCoinsInfo = id =>
     url: url + "/get/" + id
   });
 
-
 export const BuyCoinsSave = data =>
   request({
     method: "post",

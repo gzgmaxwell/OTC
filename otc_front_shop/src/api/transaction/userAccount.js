@@ -5,51 +5,47 @@ const url = "/userAccount";
 export const UserAccountPage = params =>
   request({
     method: "get",
-    url: url+"/page",
+    url: url + "/page",
     params
   });
-  //商户账户分页
+//商户账户分页
 export const UserAccountPageShop = params =>
   request({
     method: "get",
-    url: url+"/shop",
+    url: url + "/shop",
     params
   });
 export const UserAccountList = params =>
   request({
     method: "get",
-    url: url+"/all",
+    url: url + "/all",
     params
   });
-
 
 // 获取详情
 export const UserAccountInfo = id =>
   request({
     method: "get",
-    url: url+"/get/"+id
+    url: url + "/get/" + id
   });
 
-
-  export const UserAccountSave = data =>
+export const UserAccountSave = data =>
   request({
     method: "post",
-    url: url+"/add",
+    url: url + "/add",
     data
   });
 
-  export const UserAccountUpdate = data =>
+export const UserAccountUpdate = data =>
   request({
     method: "post",
-    url: url+"/put/"+data.id,
+    url: url + "/put/" + data.id,
     data
-  });  
-  
- 
- export const UserAccountDelete = data =>
- request({
-   method: "post",
-   url: url+"/deletes",
-   data
- });
-  
+  });
+
+export const UserAccountDelete = data =>
+  request({
+    method: "post",
+    url: url + "/deletes",
+    data
+  });

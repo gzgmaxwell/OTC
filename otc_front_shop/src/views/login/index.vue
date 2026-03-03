@@ -4,23 +4,45 @@
       <h3>OTC商户平台</h3>
       <p>输入您的个人详细信息开始使用！</p>
     </div>
-    <el-form class="login_form" ref="loginForm" :model="loginForm" :rules="loginRules">
+    <el-form
+      class="login_form"
+      ref="loginForm"
+      :model="loginForm"
+      :rules="loginRules"
+    >
       <h4>登录</h4>
       <el-form-item prop="username">
-        <el-input v-model="loginForm.username" @blur="blurUsername" type="text" auto-complete="off"
-          placeholder="请输入账号" />
+        <el-input
+          v-model="loginForm.username"
+          @blur="blurUsername"
+          type="text"
+          auto-complete="off"
+          placeholder="请输入账号"
+        />
       </el-form-item>
       <el-form-item prop="password">
-        <el-input v-model="loginForm.password" type="password" auto-complete="off" placeholder="请输入密码"
-          @keyup.enter.native="handleLogin" />
+        <el-input
+          v-model="loginForm.password"
+          type="password"
+          auto-complete="off"
+          placeholder="请输入密码"
+          @keyup.enter.native="handleLogin"
+        />
       </el-form-item>
       <el-form-item prop="verificationCode">
-        <el-input v-model="loginForm.verificationCode" type="text" auto-complete="off" placeholder="谷歌验证码"
-          @keyup.enter.native="handleLogin" />
+        <el-input
+          v-model="loginForm.verificationCode"
+          type="text"
+          auto-complete="off"
+          placeholder="谷歌验证码"
+          @keyup.enter.native="handleLogin"
+        />
       </el-form-item>
       <el-row class="v-center">
         <el-col :span="12" class="v-center">
-          <el-checkbox v-model="loginForm.rememberMe" @change="jzwChange">记住我</el-checkbox>
+          <el-checkbox v-model="loginForm.rememberMe" @change="jzwChange"
+            >记住我</el-checkbox
+          >
         </el-col>
         <el-col :span="12" style="text-align: right" class="v-center h-end">
           <!-- <el-button type="text">忘记密码？</el-button> -->
@@ -28,7 +50,12 @@
       </el-row>
       <el-row class="h-between button-area">
         <el-col :span="12">
-          <el-button :loading="loading" type="primary" class="submit_button" @click="handleLogin">
+          <el-button
+            :loading="loading"
+            type="primary"
+            class="submit_button"
+            @click="handleLogin"
+          >
             <span v-if="!loading">登 录</span>
             <span v-else>登 录 中...</span>
           </el-button>
@@ -38,7 +65,12 @@
         </el-col> -->
       </el-row>
     </el-form>
-    <el-dialog title="提示" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
+    <el-dialog
+      title="提示"
+      :visible.sync="dialogVisible"
+      width="30%"
+      :before-close="handleClose"
+    >
       <googleAuth :row="row" />
     </el-dialog>
   </div>
@@ -48,13 +80,12 @@
 import { loginAfter } from "@p/token";
 import { Login } from "@a";
 import { debounceCallBack } from "@/util/util";
-import Cookies from "js-cookie";
 // import debounce from '@p'
 import googleAuth from "./googleAuth.vue";
 import { checkSecretKey } from "@a/login";
 export default {
   components: {
-    googleAuth,
+    googleAuth
   },
   name: "Login",
   data() {
@@ -62,32 +93,32 @@ export default {
       loginForm: {
         username: "",
         password: "",
-        rememberMe: false,
+        rememberMe: false
       },
       loginRules: {
         username: [
-          { required: true, trigger: "blur", message: "请输入您的账号" },
+          { required: true, trigger: "blur", message: "请输入您的账号" }
         ],
         password: [
-          { required: true, trigger: "blur", message: "请输入您的密码" },
+          { required: true, trigger: "blur", message: "请输入您的密码" }
         ],
         verificationCode: [
-          { required: true, trigger: "blur", message: "请输入您的谷歌验证码" },
-        ],
+          { required: true, trigger: "blur", message: "请输入您的谷歌验证码" }
+        ]
       },
       loading: false,
       dialogVisible: false,
       hasGoogleAuth: false,
-      row: {},
+      row: {}
     };
   },
-  created() { },
+  created() {},
   mounted() {
     this.$axios
       .get(
         "https://w1.hifleet.com/hfWeatherApi/GetIsoline?&time=20231220&f=024"
       )
-      .then((res) => {
+      .then(res => {
         console.log(res.data);
       });
     console.log(localStorage.getItem("rememberMe"));
@@ -113,24 +144,7 @@ export default {
       }
     },
 
-    blurUsername() {
-      // if (this.loginForm.username) {
-      //   this.$axios
-      //     .get(
-      //       "https://w1.hifleet.com/hfWeatherApi/GetIsoline?&time=20231220&f=024"
-      //     )
-      //     .then((res) => {
-      //       console.log(res);
-      //       this.hasGoogleAuth = true;
-      //       if (this.hasGoogleAuth) {
-      //         this.$message.error("账号未绑定谷歌验证，请联系管理员");
-      //         console.log("谷歌验证已经绑定");
-      //       } else {
-      //         this.handleGoogleAuth();
-      //       }
-      //     });
-      // }
-    },
+    blurUsername() {},
     handleGoogleAuth(_ewm, _secretKey, _userId, _userName) {
       console.log(2222, _ewm, _secretKey, _userId);
       this.dialogVisible = true;
@@ -139,14 +153,14 @@ export default {
         secretKey: _secretKey,
         userId: _userId,
         userName: _userName,
-        callback: (data) => {
+        callback: data => {
           this.dialogVisible = false;
-        },
+        }
       };
     },
 
     handleLogin() {
-      this.$refs.loginForm.validate((valid) => {
+      this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.login();
           // this.loading = true;
@@ -177,7 +191,7 @@ export default {
         verificationCode: this.loginForm.verificationCode,
         client: "3",
         // password: this.loginForm.password
-        password: jm(this.loginForm.password),
+        password: jm(this.loginForm.password)
       });
       this.$message.success("登录成功");
 
@@ -194,9 +208,9 @@ export default {
     },
     handleRegister() {
       this.$router.push({
-        name: "Register",
+        name: "Register"
       });
-    },
+    }
   },
   watch: {
     "loginForm.username": {
@@ -204,8 +218,8 @@ export default {
         if (val !== oldVal && val) {
           const fun = () => {
             return checkSecretKey({ userName: this.loginForm.username })
-              .then((res) => {
-                const isBind = String(res && res.isBind) === 'true';
+              .then(res => {
+                const isBind = String(res && res.isBind) === "true";
                 if (isBind) {
                   this.hasGoogleAuth = true;
                   console.log("谷歌验证已经绑定");
@@ -221,16 +235,16 @@ export default {
                 }
                 return Promise.resolve();
               })
-              .catch(() => Promise.resolve())
+              .catch(() => Promise.resolve());
           };
           if (this.loginForm.username) {
             debounceCallBack(fun, 1000)();
           }
         }
       },
-      immediate: true,
-    },
-  },
+      immediate: true
+    }
+  }
 };
 </script>
 

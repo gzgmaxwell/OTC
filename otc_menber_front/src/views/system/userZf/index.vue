@@ -1,17 +1,29 @@
 <template>
-
-
-<div class="list_page">
-
-      <div class="top_wrapper">
+  <div class="list_page">
+    <div class="top_wrapper">
       <div class="search_box">
+        <el-input
+          placeholder="账号"
+          style="width: 30%; "
+          v-model="params.userName"
+          @keyup.enter.native="search"
+        ></el-input>
 
+        <el-input
+          placeholder="请输入部门名称"
+          style="width: 30%; margin-left: 10px;"
+          v-model="params.companyName"
+          @keyup.enter.native="search"
+        ></el-input>
 
-                  <el-input placeholder="账号" style="width: 30%; " v-model="params.userName" @keyup.enter.native="search"></el-input>
-
-                  <el-input placeholder="请输入部门名称" style="width: 30%; margin-left: 10px;" v-model="params.companyName" @keyup.enter.native="search"></el-input>
-
-                <el-cascader  placeholder="区域" style="width: 30%; margin-left: 10px;"   :props="{ checkStrictly: true }"  :options="orgs"  v-model="orgValue" @change="handleChange"></el-cascader>
+        <el-cascader
+          placeholder="区域"
+          style="width: 30%; margin-left: 10px;"
+          :props="{ checkStrictly: true }"
+          :options="orgs"
+          v-model="orgValue"
+          @change="handleChange"
+        ></el-cascader>
 
         <el-button type="primary" icon="el-icon-search" @click="search">
           搜索
@@ -23,23 +35,18 @@
       </div>
     </div>
 
-      <div class="table_wrapper">
+    <div class="table_wrapper">
       <el-table ref="multipleTable" :data="list" border height="100%">
-        
-          <el-table-column prop="userName" label="账号"></el-table-column>
-          <el-table-column prop="companyName" label="部门名称"></el-table-column>
+        <el-table-column prop="userName" label="账号"></el-table-column>
+        <el-table-column prop="companyName" label="部门名称"></el-table-column>
 
+        <el-table-column prop="ssqy" label="所属区域"></el-table-column>
 
-
-
-
-          <el-table-column prop="ssqy" label="所属区域"></el-table-column>
-
-
-
-          <el-table-column prop="lxr" label="联系人"></el-table-column>
-          <el-table-column prop="contactPersonMobile" label="联系方式"></el-table-column>
-
+        <el-table-column prop="lxr" label="联系人"></el-table-column>
+        <el-table-column
+          prop="contactPersonMobile"
+          label="联系方式"
+        ></el-table-column>
 
         <el-table-column label="操作">
           <template slot-scope="scope">
@@ -58,18 +65,11 @@
       layout="total, sizes, prev, pager, next, jumper"
       :total="total"
     ></el-pagination>
-
-
-
-  
   </div>
-
-
-
 </template>
 
 <script>
-import {userZfPage , userZfDelete ,orgCascade} from "@a/system";
+import { userZfPage, userZfDelete, orgCascade } from "@a/system";
 export default {
   name: "userZf",
   components: {},
@@ -77,7 +77,7 @@ export default {
     return {
       id: "",
       orgValue: [],
-      orgs:[],
+      orgs: [],
       params: {
         // _search: false,
         // nd: 1561967433595,
@@ -96,15 +96,14 @@ export default {
   created() {},
   methods: {
     handleChange(value) {
-        this.params.province=value[0];
-        this.params.city=value[1];
-        this.params.county=value[2];
-      },
+      this.params.province = value[0];
+      this.params.city = value[1];
+      this.params.county = value[2];
+    },
     //获取地区信息
     async getAreaCascade() {
-      const data  = await orgCascade();
-      this.orgs=data;
-     
+      const data = await orgCascade();
+      this.orgs = data;
     },
     //搜索
     search() {
@@ -112,18 +111,18 @@ export default {
       //列表查询和搜索
       this.List();
     },
-   
+
     //重置
     reset() {
       this.params = {};
-      this.orgValue=[];
+      this.orgValue = [];
       this.search();
     },
     //返回搜索
     back() {
       this.isShow = false;
     },
-    
+
     //批量删除
     totalDel(total) {
       this.$confirm("此操作将永久删除该数据, 是否继续?", "提示", {
@@ -140,13 +139,13 @@ export default {
         })
         .catch(() => {});
     },
-    
+
     //获取列表
     async List() {
       this.params.descs = "a.update_time";
-        const  data = await userZfPage(this.params);
-        this.total = data.total;
-        this.list = data.records;
+      const data = await userZfPage(this.params);
+      this.total = data.total;
+      this.list = data.records;
     },
     //每页多少条，切换显示条数
     sizeChange(val) {
@@ -170,9 +169,9 @@ export default {
     },
     //删除接口
     async delData(array) {
-     await userZfDelete(array);
-        this.$message.success("删除成功");
-        this.search();
+      await userZfDelete(array);
+      this.$message.success("删除成功");
+      this.search();
     },
     //新增
     newEdit(uuid) {
@@ -237,4 +236,3 @@ export default {
   }
 };
 </script>
-

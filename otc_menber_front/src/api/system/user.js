@@ -5,78 +5,63 @@ const url = "/user";
 export const UserPage = params =>
   request({
     method: "get",
-    url: url+"/member/page",
+    url: url + "/member/page",
     params
   });
 export const UserList = params =>
   request({
     method: "get",
-    url: url+"/member/all",
+    url: url + "/member/all",
     params
   });
-
 
 // 获取详情
 export const UserInfo = id =>
   request({
     method: "get",
-    url: url+"/get/"+id
+    url: url + "/get/" + id
   });
 
-
-  
 // 获取详情
 export const MySellUserInfo = () =>
   request({
     method: "get",
-    url: url+"/userInfo"
+    url: url + "/userInfo"
   });
 
-
-
-
-  export const UserSave = data =>
+export const UserSave = data =>
   request({
     method: "post",
-    url: url+"/member/add",
+    url: url + "/member/add",
     data
   });
-  
 
-
-
-
-  export const UserUpdate = data =>
+export const UserUpdate = data =>
   request({
     method: "post",
-    url: url+"/put/"+data.userId,
+    url: url + "/put/" + data.userId,
     data
-  });  
+  });
 
+//绑定谷歌秘钥
 
-  //绑定谷歌秘钥
-
-  export const BindSecretKey = data =>
+export const BindSecretKey = data =>
   request({
     method: "post",
-    url: url+"/bindSecretKey",
+    url: url + "/bindSecretKey",
     data
-  });  
+  });
 
-
-
-  export const UserLockStatus = data =>
+export const UserLockStatus = data =>
   request({
     method: "post",
-    url: url+"/lockStatus",
+    url: url + "/lockStatus",
     data
-  });  
-  
-  
- export const UserDelete = data =>
- request({
-   method: "post",
-   url: url+"/deletes",
-   data
- });
-  
+  });
+
+export const UserDelete = data =>
+  request({
+    method: "post",
+    url: url + "/deletes",
+    data
+  });

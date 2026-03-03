@@ -5,53 +5,48 @@ const url = "/buyCoins";
 export const BuyCoinsPage = params =>
   request({
     method: "get",
-    url: url+"/member/page",
+    url: url + "/member/page",
     params
   });
 export const BuyCoinsList = params =>
   request({
     method: "get",
-    url: url+"/all",
+    url: url + "/all",
     params
   });
-
 
 // 获取详情
 export const BuyCoinsInfo = id =>
   request({
     method: "get",
-    url: url+"/get/"+id
+    url: url + "/get/" + id
   });
-
 
 // 放行
 
 export const releaseOrder = id =>
   request({
     method: "post",
-    url: url+"/release/"+id
+    url: url + "/release/" + id
   });
 
-
-  export const BuyCoinsSave = data =>
+export const BuyCoinsSave = data =>
   request({
     method: "post",
-    url: url+"/add",
+    url: url + "/add",
     data
   });
 
-  export const BuyCoinsUpdate = data =>
+export const BuyCoinsUpdate = data =>
   request({
     method: "post",
-    url: url+"/put/"+data.id,
+    url: url + "/put/" + data.id,
     data
-  });  
-  
- 
- export const BuyCoinsDelete = data =>
- request({
-   method: "post",
-   url: url+"/deletes",
-   data
- });
-  
+  });
+
+export const BuyCoinsDelete = data =>
+  request({
+    method: "post",
+    url: url + "/deletes",
+    data
+  });

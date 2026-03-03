@@ -15,14 +15,12 @@ export const TransferRecordList = params =>
     params
   });
 
-
 // 获取详情
 export const TransferRecordInfo = id =>
   request({
     method: "get",
     url: url + "/get/" + id
   });
-
 
 export const TransferRecordSave = data =>
   request({
@@ -37,7 +35,6 @@ export const TransferRecordUpdate = data =>
     url: url + "/put/" + data.id,
     data
   });
-
 
 export const TransferRecordDelete = data =>
   request({

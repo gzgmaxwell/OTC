@@ -5,51 +5,46 @@ const url = "/sysOrg";
 export const orgCascade = params =>
   request({
     method: "get",
-    url: url+"/cascade",
+    url: url + "/cascade",
     params
   });
 
-  
 // 获取地区
 export const AreaList = params =>
   request({
     method: "get",
-    url: url+"/all",
+    url: url + "/all",
     params
   });
 // 地区树
 export const AreaTree = params =>
   request({
     method: "get",
-    url: url+"/getTree",
+    url: url + "/getTree",
     params
   });
 // 地区详情
 export const AreaInfo = id =>
   request({
     method: "get",
-    url: url+`/get/${id}`
-  })
+    url: url + `/get/${id}`
+  });
 
-
-
-  // 新增
+// 新增
 export const AreaSave = data =>
-request({
-  method: "post",
-  url: url + "/add",
-  data
-});
+  request({
+    method: "post",
+    url: url + "/add",
+    data
+  });
 
 // 编辑
-export const AreaUpdate = (data) =>
-request({
-  method: "post",
-  url: `${url}/put/${data.orgId}`,
-  data
-});
-
-
+export const AreaUpdate = data =>
+  request({
+    method: "post",
+    url: `${url}/put/${data.orgId}`,
+    data
+  });
 
 // 删除
 export const AreaDelete = data =>
@@ -62,6 +57,6 @@ export const AreaDelete = data =>
 export const SzOrgs = params =>
   request({
     method: "get",
-    url: url+"/getSz",
+    url: url + "/getSz",
     params
   });

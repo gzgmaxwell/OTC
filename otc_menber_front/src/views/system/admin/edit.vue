@@ -66,10 +66,11 @@
               :value="item.orgId"
             ></el-option>
           </el-select>
-          <el-select v-model="formValidate.county"
-          
+          <el-select
+            v-model="formValidate.county"
             @change="change4"
-             placeholder="请选择区">
+            placeholder="请选择区"
+          >
             <el-option
               v-for="item in areaList4"
               :key="item.orgId"

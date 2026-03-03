@@ -5,7 +5,7 @@ const url = "/sysGrow";
 export const SysGrowPage = params =>
   request({
     method: "get",
-    url: url+"/page",
+    url: url + "/page",
     params
   });
 
@@ -13,7 +13,7 @@ export const SysGrowPage = params =>
 export const SysGrowSave = data =>
   request({
     method: "post",
-    url: url+"/add",
+    url: url + "/add",
     data
   });
 
@@ -21,29 +21,20 @@ export const SysGrowSave = data =>
 export const SysGrowInfo = id =>
   request({
     method: "get",
-    url: url+"/get/"+id
+    url: url + "/get/" + id
   });
 
 // 生长模型更新
 export const SysGrowUpdate = data =>
   request({
     method: "post",
-    url: url+"/put/"+data.id,
+    url: url + "/put/" + data.id,
     data
-  }); 
+  });
 
 export const SysGrowDelete = data =>
   request({
     method: "post",
-    url: url+"/deletes",
+    url: url + "/deletes",
     data
   });
-   
-
-  
-
-
-  
-  
- 
-  

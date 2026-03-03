@@ -5,9 +5,16 @@
     width="80%"
     top="10vh"
     append-to-body
-    >
+  >
     <div class="preview-box">
-      <iframe id="pdfIframe" class="iframe-box" :src="previewUrl" width="100%" height="100%" style="border: none"></iframe>
+      <iframe
+        id="pdfIframe"
+        class="iframe-box"
+        :src="previewUrl"
+        width="100%"
+        height="100%"
+        style="border: none"
+      ></iframe>
     </div>
   </el-dialog>
 </template>
@@ -17,20 +24,20 @@ export default {
   props: {
     previewUrl: {
       type: String,
-      default: "",
-    },
+      default: ""
+    }
   },
   data() {
     return {
-        dialogVisible: false
-    }
+      dialogVisible: false
+    };
   },
   methods: {
     open() {
-        this.dialogVisible = true
+      this.dialogVisible = true;
     },
     close() {
-        this.dialogVisible = false
+      this.dialogVisible = false;
     }
   }
 };

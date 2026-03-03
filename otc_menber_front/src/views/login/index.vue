@@ -4,22 +4,44 @@
       <h3>码商平台</h3>
       <p>输入您的个人详细信息开始使用！</p>
     </div>
-    <el-form class="login_form" ref="loginForm" :model="loginForm" :rules="loginRules">
+    <el-form
+      class="login_form"
+      ref="loginForm"
+      :model="loginForm"
+      :rules="loginRules"
+    >
       <h4>登录</h4>
       <el-form-item prop="username">
-        <el-input v-model="loginForm.username" type="text" auto-complete="off" placeholder="请输入账号" />
+        <el-input
+          v-model="loginForm.username"
+          type="text"
+          auto-complete="off"
+          placeholder="请输入账号"
+        />
       </el-form-item>
       <el-form-item prop="password">
-        <el-input v-model="loginForm.password" type="password" auto-complete="off" placeholder="请输入密码"
-          @keyup.enter.native="handleLogin" />
+        <el-input
+          v-model="loginForm.password"
+          type="password"
+          auto-complete="off"
+          placeholder="请输入密码"
+          @keyup.enter.native="handleLogin"
+        />
       </el-form-item>
       <el-form-item prop="verificationCode">
-        <el-input v-model="loginForm.verificationCode" type="text" auto-complete="off" placeholder="谷歌验证码（如未绑定不必填写）"
-          @keyup.enter.native="handleLogin" />
+        <el-input
+          v-model="loginForm.verificationCode"
+          type="text"
+          auto-complete="off"
+          placeholder="谷歌验证码（如未绑定不必填写）"
+          @keyup.enter.native="handleLogin"
+        />
       </el-form-item>
       <el-row class="v-center">
         <el-col :span="12" class="v-center">
-          <el-checkbox v-model="loginForm.rememberMe" @change="jzwChange">记住我</el-checkbox>
+          <el-checkbox v-model="loginForm.rememberMe" @change="jzwChange"
+            >记住我</el-checkbox
+          >
         </el-col>
         <el-col :span="12" style="text-align: right" class="v-center h-end">
           <!-- <el-button type="text">忘记密码？</el-button> -->
@@ -27,7 +49,12 @@
       </el-row>
       <el-row class="h-between button-area">
         <el-col :span="12">
-          <el-button :loading="loading" type="primary" class="submit_button" @click="handleLogin">
+          <el-button
+            :loading="loading"
+            type="primary"
+            class="submit_button"
+            @click="handleLogin"
+          >
             <span v-if="!loading">登 录</span>
             <span v-else>登 录 中...</span>
           </el-button>
@@ -36,16 +63,14 @@
           <el-button class="submit_button" @click="handleRegister">注册</el-button>
         </el-col> -->
       </el-row>
-
     </el-form>
   </div>
 </template>
 
 <script>
-
 import { loginAfter } from "@p/token";
 import { Login } from "@a";
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 // import debounce from '@p'
 export default {
   name: "Login",
@@ -54,7 +79,7 @@ export default {
       loginForm: {
         username: "",
         password: "",
-        rememberMe: false,
+        rememberMe: false
       },
       loginRules: {
         username: [
@@ -62,37 +87,38 @@ export default {
         ],
         password: [
           { required: true, trigger: "blur", message: "请输入您的密码" }
-        ],
+        ]
       },
-      loading: false,
+      loading: false
     };
   },
-  created() { },
+  created() {},
   mounted() {
-    this.$axios.get('https://w1.hifleet.com/hfWeatherApi/GetIsoline?&time=20231220&f=024').then(res => {
-      console.log(res.data);
-    })
+    this.$axios
+      .get(
+        "https://w1.hifleet.com/hfWeatherApi/GetIsoline?&time=20231220&f=024"
+      )
+      .then(res => {
+        console.log(res.data);
+      });
     console.log(localStorage.getItem("rememberMe"));
 
     if (localStorage.getItem("rememberMe")) {
-
       console.log(localStorage.getItem("rememberMe") == "1");
       if (localStorage.getItem("rememberMe") == "1") {
-        this.loginForm.rememberMe = true
-        this.loginForm.username = localStorage.getItem("userName")
-        this.loginForm.password = localStorage.getItem("password")
+        this.loginForm.rememberMe = true;
+        this.loginForm.username = localStorage.getItem("userName");
+        this.loginForm.password = localStorage.getItem("password");
       }
     }
   },
   methods: {
     jzwChange(val) {
-
       if (!val) {
         localStorage.removeItem("userName");
         localStorage.removeItem("password");
-        localStorage.setItem("rememberMe", "2")
+        localStorage.setItem("rememberMe", "2");
       }
-
     },
 
     handleLogin() {
@@ -111,8 +137,6 @@ export default {
           // }
           // 登录
 
-
-
           // this.$store.dispatch("Login", this.loginForm).then(() => {
           //   location.href = '/homeIndex';
           //   // this.$router.push({ path: this.redirect || "/" }).catch(()=>{});
@@ -124,8 +148,6 @@ export default {
           // }).finally(()=>{this.loading = false;});
         }
       });
-
-
     },
     async login() {
       const userinfo = await Login({
@@ -137,23 +159,21 @@ export default {
       });
       this.$message.success("登录成功");
 
-
       if (this.loginForm.rememberMe) {
         console.log(this.loginForm.rememberMe);
-        localStorage.setItem("userName", this.loginForm.username)
-        localStorage.setItem("password", this.loginForm.password)
-        localStorage.setItem("rememberMe", "1")
-
+        localStorage.setItem("userName", this.loginForm.username);
+        localStorage.setItem("password", this.loginForm.password);
+        localStorage.setItem("rememberMe", "1");
       }
-      console.log('userinfo========>', userinfo)
+      console.log("userinfo========>", userinfo);
       if (userinfo) {
         loginAfter(userinfo);
       }
     },
     handleRegister() {
       this.$router.push({
-        name: 'Register'
-      })
+        name: "Register"
+      });
     }
   }
 };
@@ -218,7 +238,6 @@ export default {
       }
 
       &:nth-child(2) {
-
         .submit_button {
           margin-left: 10px;
         }

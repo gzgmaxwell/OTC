@@ -99,12 +99,12 @@ export default {
 <style lang="scss" rel="stylesheet/scss">
 #wangeditor {
   width: 50rem;
-}	
+}
 
-.w-e-toolbar{
-	  z-index: 2 !important;
-	}
-	.w-e-text-container{
-	  z-index: 1 !important;
-	}
+.w-e-toolbar {
+  z-index: 2 !important;
+}
+.w-e-text-container {
+  z-index: 1 !important;
+}
 </style>

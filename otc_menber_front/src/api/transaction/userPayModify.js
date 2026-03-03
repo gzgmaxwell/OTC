@@ -5,44 +5,40 @@ const url = "/userPayModify";
 export const UserPayModifyPage = params =>
   request({
     method: "get",
-    url: url+"/member/page",
+    url: url + "/member/page",
     params
   });
 export const UserPayModifyList = params =>
   request({
     method: "get",
-    url: url+"/all",
+    url: url + "/all",
     params
   });
-
 
 // 获取详情
 export const UserPayModifyInfo = id =>
   request({
     method: "get",
-    url: url+"/get/"+id
+    url: url + "/get/" + id
   });
 
-
-  export const UserPayModifySave = data =>
+export const UserPayModifySave = data =>
   request({
     method: "post",
-    url: url+"/add",
+    url: url + "/add",
     data
   });
 
-  export const UserPayModifyUpdate = data =>
+export const UserPayModifyUpdate = data =>
   request({
     method: "put",
-    url: url+"/put/"+data.id,
+    url: url + "/put/" + data.id,
     data
-  });  
-  
- 
- export const UserPayModifyDelete = data =>
- request({
-   method: "delete",
-   url: url+"/deletes",
-   data
- });
-  
+  });
+
+export const UserPayModifyDelete = data =>
+  request({
+    method: "delete",
+    url: url + "/deletes",
+    data
+  });

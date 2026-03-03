@@ -5,44 +5,40 @@ const url = "/ztArea";
 export const ZtAreaPage = params =>
   request({
     method: "get",
-    url: url+"/page",
+    url: url + "/page",
     params
   });
 export const ZtAreaList = params =>
   request({
     method: "get",
-    url: url+"/all",
+    url: url + "/all",
     params
   });
-
 
 // 获取详情
 export const ZtAreaInfo = id =>
   request({
     method: "get",
-    url: url+"/get/"+id
+    url: url + "/get/" + id
   });
 
-
-  export const ZtAreaSave = data =>
+export const ZtAreaSave = data =>
   request({
     method: "post",
-    url: url+"/add",
+    url: url + "/add",
     data
   });
 
-  export const ZtAreaUpdate = data =>
+export const ZtAreaUpdate = data =>
   request({
     method: "post",
-    url: url+"/put/"+data.id,
+    url: url + "/put/" + data.id,
     data
-  });  
-  
- 
- export const ZtAreaDelete = data =>
- request({
-   method: "post",
-   url: url+"/deletes",
-   data
- });
-  
+  });
+
+export const ZtAreaDelete = data =>
+  request({
+    method: "post",
+    url: url + "/deletes",
+    data
+  });

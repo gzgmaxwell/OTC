@@ -50,17 +50,14 @@
           </el-select>
         </el-form-item>
         <el-form-item label="父区划：" style="width:70%">
- 
-
-              <SelectTree
-                  :checkedKey.sync="formValidate.orgParentId"
-                  :checkStrictly="true"
-                  :defaultProps="orgProps"
-                  :nodeKey="'id'"
-                  :data="data"
-                  :width="100"
-                />
-
+          <SelectTree
+            :checkedKey.sync="formValidate.orgParentId"
+            :checkStrictly="true"
+            :defaultProps="orgProps"
+            :nodeKey="'id'"
+            :data="data"
+            :width="100"
+          />
         </el-form-item>
         <el-form-item style="width:70%">
           <el-button type="primary" @click="save('formValidate')"
@@ -90,7 +87,13 @@
 </template>
 <script>
 import SelectTree from "@/components/tree/SelectTree.vue";
-import {AreaTree,AreaSave,AreaDelete,AreaInfo,AreaUpdate} from "@a/system";
+import {
+  AreaTree,
+  AreaSave,
+  AreaDelete,
+  AreaInfo,
+  AreaUpdate
+} from "@a/system";
 
 let id = 1000;
 
@@ -135,8 +138,8 @@ export default {
   methods: {
     async tree(id) {
       //创建loading对象开始遮罩
-	    // var rLoading = loading.open();
-      let  data  = await AreaTree();
+      // var rLoading = loading.open();
+      let data = await AreaTree();
       // loading.close(rLoading);
       this.data = data;
       if (id) {
@@ -152,8 +155,7 @@ export default {
         orgParentId: values.id,
         orgName: "未填写"
       };
-      let  data  = await AreaSave(params);
-
+      let data = await AreaSave(params);
 
       const newChild = {
         id: data.orgId,
@@ -163,8 +165,8 @@ export default {
         children: []
       };
 
-      if(isEmpty(values.children)){
-        values.children=[];
+      if (isEmpty(values.children)) {
+        values.children = [];
       }
 
       values.children.push(newChild);
@@ -201,7 +203,7 @@ export default {
     },
     //删除接口
     async delData(array) {
-     await AreaDelete(array);
+      await AreaDelete(array);
 
       this.deleteNode();
 
@@ -245,7 +247,7 @@ export default {
     },
     //获取列表详情接口
     async getInfo(id) {
-      let data  = await AreaInfo(id);
+      let data = await AreaInfo(id);
       this.formValidate = data;
     },
     //获取上级菜单接口
@@ -255,7 +257,7 @@ export default {
     },
     //新增保存接口
     async addData(params) {
-      let data  = await AreaSave(params);
+      let data = await AreaSave(params);
 
       this.$message.success("添加成功");
       this.tree(data.orgId);
@@ -263,7 +265,7 @@ export default {
     },
     //编辑保存接口
     async editData(params, id) {
-      let data  = await AreaUpdate(params, id);
+      let data = await AreaUpdate(params, id);
       this.$message.success("修改成功");
       this.tree(data.orgId);
       this.resetForm();
@@ -322,9 +324,9 @@ export default {
 <style lang="scss" scoped>
 .leftClass {
   width: 50%;
-  float: left;    
+  float: left;
   overflow-y: auto;
-    max-height: 100%;
+  max-height: 100%;
 }
 .rightClass {
   width: 50%;

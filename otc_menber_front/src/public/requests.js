@@ -4,8 +4,8 @@ import router from "@r";
 import config from "@p/config";
 class NewAxio {
   handleError = result => {
-    let { code, data ,msg } = result;
-  
+    let { code, data, msg } = result;
+
     switch (code) {
       case "401":
         Message({
@@ -33,7 +33,7 @@ class NewAxio {
     return options => {
       const instance = axios.create({
         // baseURL: "https://xxx/dtu/api",
-        baseURL:"https://open.fishseed.cn/openCloud/api",
+        baseURL: "https://open.fishseed.cn/openCloud/api",
         timeout: 1000 * 30
       });
       instance.interceptors.request.use(

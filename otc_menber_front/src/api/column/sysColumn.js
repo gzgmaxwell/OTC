@@ -5,19 +5,19 @@ const url = "/sysColumn";
 export const SysColumnPage = params =>
   request({
     method: "get",
-    url: url+"/page",
+    url: url + "/page",
     params
   });
 export const SysColumnList = params =>
   request({
     method: "get",
-    url: url+"/all",
+    url: url + "/all",
     params
   });
-  export const SysColumnTree = params =>
+export const SysColumnTree = params =>
   request({
     method: "get",
-    url: url+"/tree",
+    url: url + "/tree",
     params
   });
 
@@ -25,29 +25,26 @@ export const SysColumnList = params =>
 export const SysColumnInfo = id =>
   request({
     method: "get",
-    url: url+"/get/"+id
+    url: url + "/get/" + id
   });
 
-
-  export const SysColumnSave = data =>
+export const SysColumnSave = data =>
   request({
     method: "post",
-    url: url+"/add",
+    url: url + "/add",
     data
   });
 
-  export const SysColumnUpdate = data =>
+export const SysColumnUpdate = data =>
   request({
     method: "post",
-    url: url+"/put/"+data.id,
+    url: url + "/put/" + data.id,
     data
-  });  
-  
- 
- export const SysColumnDelete = data =>
- request({
-   method: "post",
-   url: url+"/deletes",
-   data
- });
-  
+  });
+
+export const SysColumnDelete = data =>
+  request({
+    method: "post",
+    url: url + "/deletes",
+    data
+  });

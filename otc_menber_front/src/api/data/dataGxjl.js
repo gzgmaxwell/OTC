@@ -5,44 +5,40 @@ const url = "/dataGxjl";
 export const DataGxjlPage = params =>
   request({
     method: "get",
-    url: url+"/page",
+    url: url + "/page",
     params
   });
 export const DataGxjlList = params =>
   request({
     method: "get",
-    url: url+"/all",
+    url: url + "/all",
     params
   });
-
 
 // 获取详情
 export const DataGxjlInfo = id =>
   request({
     method: "get",
-    url: url+"/get/"+id
+    url: url + "/get/" + id
   });
 
-
-  export const DataGxjlSave = data =>
+export const DataGxjlSave = data =>
   request({
     method: "post",
-    url: url+"/add",
+    url: url + "/add",
     data
   });
 
-  export const DataGxjlUpdate = data =>
+export const DataGxjlUpdate = data =>
   request({
     method: "post",
-    url: url+"/put/"+data.id,
+    url: url + "/put/" + data.id,
     data
-  });  
-  
- 
- export const DataGxjlDelete = data =>
- request({
-   method: "post",
-   url: url+"/deletes",
-   data
- });
-  
+  });
+
+export const DataGxjlDelete = data =>
+  request({
+    method: "post",
+    url: url + "/deletes",
+    data
+  });

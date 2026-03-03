@@ -26,7 +26,6 @@ if (host.includes("39.97.254.203")) {
   evnInfo.hostHref = "http://39.97.254.203";
 }
 
-
 if (host.includes("45.77.69.197")) {
   evnInfo.hostHref = "http://45.77.69.197";
 }
@@ -62,8 +61,8 @@ if (host.includes("18.221.156.131")) {
 // evnInfo.hostHref = "https://clw.fishseed.cn";
 // evnInfo.hostHref = "https://example.fishseed.cn";
 
-  // evnInfo.hostHref = "https://www.d-xilzd.com";
-  // evnInfo.hostHref = "https://h5.jingchat.com.cn";
+// evnInfo.hostHref = "https://www.d-xilzd.com";
+// evnInfo.hostHref = "https://h5.jingchat.com.cn";
 evnInfo.http_url = evnInfo.hostHref + "/" + evnInfo.appName;
-evnInfo.upload_url = evnInfo.http_url+ "/api/upload";
+evnInfo.upload_url = evnInfo.http_url + "/api/upload";
 export default evnInfo;

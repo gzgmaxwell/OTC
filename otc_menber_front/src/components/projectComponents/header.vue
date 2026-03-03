@@ -10,9 +10,13 @@
           </div>
         </div>
       </div>
-      <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click" v-if="getToken()">
+      <el-dropdown
+        class="avatar-container right-menu-item hover-effect"
+        trigger="click"
+        v-if="getToken()"
+      >
         <div class="avatar-wrapper">
-          <img :src="avatar" class="user-avatar">
+          <img :src="avatar" class="user-avatar" />
           <i class="el-icon el-icon-caret-bottom" style="color: #fff" />
         </div>
         <el-dropdown-menu slot="dropdown" style="width: 92px">
@@ -27,16 +31,23 @@
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
-      <div class="btn-login" @click="$router.push({name: 'Login'})" v-else>登录</div>
+      <div class="btn-login" @click="$router.push({ name: 'Login' })" v-else>
+        登录
+      </div>
     </div>
     <h1>海南淡水及河口鱼类种质资源库</h1>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import { getToken } from '@/utils/auth'
-import { removeRouter, removeDics, removeUserInfo, removeToken } from "@p/storage";
+import { mapGetters } from "vuex";
+import { getToken } from "@/utils/auth";
+import {
+  removeRouter,
+  removeDics,
+  removeUserInfo,
+  removeToken
+} from "@p/storage";
 export default {
   data() {
     return {
@@ -44,27 +55,25 @@ export default {
     };
   },
   computed: {
-    ...mapGetters([
-      'avatar',
-    ]),
+    ...mapGetters(["avatar"])
   },
   methods: {
-    
     async logout() {
-      this.$confirm('确定注销并退出系统吗？', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        
-        removeRouter(); 
-        removeDics(); 
-        removeUserInfo(); 
-        removeToken();
-        this.$store.dispatch('LogOut').then(() => {
-          location.href = '/homeIndex';
+      this.$confirm("确定注销并退出系统吗？", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          removeRouter();
+          removeDics();
+          removeUserInfo();
+          removeToken();
+          this.$store.dispatch("LogOut").then(() => {
+            location.href = "/homeIndex";
+          });
         })
-      }).catch(() => {});
+        .catch(() => {});
     }
   }
 };
@@ -84,7 +93,7 @@ export default {
     align-items: center;
     margin: 0 auto 48px;
     .btn-login {
-      color: #ffffff; 
+      color: #ffffff;
       width: 60px;
       line-height: 40px;
       text-align: center;
@@ -119,27 +128,27 @@ export default {
     color: #ffffff;
   }
   .avatar-container {
-      margin-right: 30px;
+    margin-right: 30px;
 
-      .avatar-wrapper {
-        margin-top: 5px;
-        position: relative;
+    .avatar-wrapper {
+      margin-top: 5px;
+      position: relative;
 
-        .user-avatar {
-          cursor: pointer;
-          width: 40px;
-          height: 40px;
-          border-radius: 10px;
-        }
+      .user-avatar {
+        cursor: pointer;
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+      }
 
-        .el-icon-caret-bottom {
-          cursor: pointer;
-          position: absolute;
-          right: -20px;
-          top: 12px;
-          font-size: 12px;
-        }
+      .el-icon-caret-bottom {
+        cursor: pointer;
+        position: absolute;
+        right: -20px;
+        top: 12px;
+        font-size: 12px;
       }
     }
+  }
 }
 </style>

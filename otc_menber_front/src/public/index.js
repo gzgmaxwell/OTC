@@ -1,10 +1,18 @@
 import Vue from "vue";
-import { getToken, getUserInfo, getDics ,removeUserInfo} from "@p/storage";
+import { getToken, getUserInfo, getDics, removeUserInfo } from "@p/storage";
 
 import config from "@p/config";
-import { unique,getNowDate,isEmpty,loading,download,jm,getUrlKey} from "@p/utils";
+import {
+  unique,
+  getNowDate,
+  isEmpty,
+  loading,
+  download,
+  jm,
+  getUrlKey
+} from "@p/utils";
 import { filterDate } from "@f";
-import { encrypt ,decrypt } from "@p/sm2";
+import { encrypt, decrypt } from "@p/sm2";
 import { formValidateConstant, formValidator } from "./formValidator";
 // Vue.prototype挂载
 Vue.prototype.userInfo = getUserInfo();
@@ -33,7 +41,5 @@ window.isEmpty = isEmpty;
 window.loading = loading;
 window.jm = jm;
 window.getUrlKey = getUrlKey;
-
-
 
 Vue.prototype.loading = loading;

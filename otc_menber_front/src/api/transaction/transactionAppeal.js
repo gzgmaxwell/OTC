@@ -5,44 +5,40 @@ const url = "/transactionAppeal";
 export const TransactionAppealPage = params =>
   request({
     method: "get",
-    url: url+"/member/page",
+    url: url + "/member/page",
     params
   });
 export const TransactionAppealList = params =>
   request({
     method: "get",
-    url: url+"/all",
+    url: url + "/all",
     params
   });
-
 
 // 获取详情
 export const TransactionAppealInfo = id =>
   request({
     method: "get",
-    url: url+"/get/"+id
+    url: url + "/get/" + id
   });
 
-
-  export const TransactionAppealSave = data =>
+export const TransactionAppealSave = data =>
   request({
     method: "post",
-    url: url+"/add",
+    url: url + "/add",
     data
   });
 
-  export const TransactionAppealUpdate = data =>
+export const TransactionAppealUpdate = data =>
   request({
     method: "put",
-    url: url+"/put/"+data.id,
+    url: url + "/put/" + data.id,
     data
-  });  
-  
- 
- export const TransactionAppealDelete = data =>
- request({
-   method: "delete",
-   url: url+"/deletes",
-   data
- });
-  
+  });
+
+export const TransactionAppealDelete = data =>
+  request({
+    method: "delete",
+    url: url + "/deletes",
+    data
+  });

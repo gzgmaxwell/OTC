@@ -5,44 +5,40 @@ const url = "/ztType";
 export const ZtTypePage = params =>
   request({
     method: "get",
-    url: url+"/page",
+    url: url + "/page",
     params
   });
 export const ZtTypeList = params =>
   request({
     method: "get",
-    url: url+"/all",
+    url: url + "/all",
     params
   });
-
 
 // 获取详情
 export const ZtTypeInfo = id =>
   request({
     method: "get",
-    url: url+"/get/"+id
+    url: url + "/get/" + id
   });
 
-
-  export const ZtTypeSave = data =>
+export const ZtTypeSave = data =>
   request({
     method: "post",
-    url: url+"/add",
+    url: url + "/add",
     data
   });
 
-  export const ZtTypeUpdate = data =>
+export const ZtTypeUpdate = data =>
   request({
     method: "post",
-    url: url+"/put/"+data.id,
+    url: url + "/put/" + data.id,
     data
-  });  
-  
- 
- export const ZtTypeDelete = data =>
- request({
-   method: "post",
-   url: url+"/deletes",
-   data
- });
-  
+  });
+
+export const ZtTypeDelete = data =>
+  request({
+    method: "post",
+    url: url + "/deletes",
+    data
+  });

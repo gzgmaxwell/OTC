@@ -5,44 +5,40 @@ const url = "/sellCoins";
 export const SellCoinsPage = params =>
   request({
     method: "get",
-    url: url+"/member/page",
+    url: url + "/member/page",
     params
   });
 export const SellCoinsList = params =>
   request({
     method: "get",
-    url: url+"/all",
+    url: url + "/all",
     params
   });
-
 
 // 获取详情
 export const SellCoinsInfo = id =>
   request({
     method: "get",
-    url: url+"/get/"+id
+    url: url + "/get/" + id
   });
 
-
-  export const SellCoinsSave = data =>
+export const SellCoinsSave = data =>
   request({
     method: "post",
-    url: url+"/add1",
+    url: url + "/add1",
     data
   });
 
-  export const SellCoinsUpdate = data =>
+export const SellCoinsUpdate = data =>
   request({
     method: "post",
-    url: url+"/put/"+data.id,
+    url: url + "/put/" + data.id,
     data
-  });  
-  
- 
- export const SellCoinsDelete = data =>
- request({
-   method: "post",
-   url: url+"/deletes",
-   data
- });
-  
+  });
+
+export const SellCoinsDelete = data =>
+  request({
+    method: "post",
+    url: url + "/deletes",
+    data
+  });

@@ -8,17 +8,17 @@
  * @returns
  */
 const debounce = (func, wait) => {
-  let timeout
+  let timeout;
 
-  return function () {
-    const args = arguments
+  return function() {
+    const args = arguments;
 
-    clearTimeout(timeout)
+    clearTimeout(timeout);
 
     timeout = setTimeout(() => {
-      func.apply(this, args)
-    }, wait)
-  }
-}
+      func.apply(this, args);
+    }, wait);
+  };
+};
 
-export default debounce
+export default debounce;

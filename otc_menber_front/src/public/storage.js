@@ -1,5 +1,5 @@
 import evnInfo from "./config";
-import store from '@/store'
+import store from "@/store";
 // 设置token
 const tokenField = `Token`;
 export function getToken() {
@@ -43,29 +43,29 @@ const routerField = `Router`;
 export function getRouter() {
   const data1 = store.getters && store.getters.routerField;
   let data = [];
-  if(data1=="") {
+  if (data1 == "") {
     data = localStorage.getItem(routerField);
   } else {
     data = data1;
   }
-  return data ? JSON.parse(data) : data;; 
+  return data ? JSON.parse(data) : data;
 }
 export function setRouter(value) {
   localStorage.setItem(routerField, JSON.stringify(value));
-  store.commit('SET_ROUTER', JSON.stringify(value));
+  store.commit("SET_ROUTER", JSON.stringify(value));
 }
 export function removeRouter() {
   localStorage.removeItem(routerField);
-  store.commit('SET_ROUTER', "");
+  store.commit("SET_ROUTER", "");
 }
 
 // 主题
 const themeField = `Theme`;
 export function getTheme() {
   const data = localStorage.getItem(themeField);
-  return data || 'light';
+  return data || "light";
 }
 export function setTheme(value) {
   localStorage.setItem(themeField, value);
-  store.commit('SET_THEME', value);
+  store.commit("SET_THEME", value);
 }

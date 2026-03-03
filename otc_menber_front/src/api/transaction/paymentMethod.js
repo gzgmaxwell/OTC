@@ -5,44 +5,40 @@ const url = "/paymentMethod";
 export const PaymentMethodPage = params =>
   request({
     method: "get",
-    url: url+"/member/page",
+    url: url + "/member/page",
     params
   });
 export const PaymentMethodList = params =>
   request({
     method: "get",
-    url: url+"/account",
+    url: url + "/account",
     params
   });
-
 
 // 获取详情
 export const PaymentMethodInfo = id =>
   request({
     method: "get",
-    url: url+"/get/"+id
+    url: url + "/get/" + id
   });
 
-
-  export const PaymentMethodSave = data =>
+export const PaymentMethodSave = data =>
   request({
     method: "post",
-    url: url+"/add",
+    url: url + "/add",
     data
   });
 
-  export const PaymentMethodUpdate = data =>
+export const PaymentMethodUpdate = data =>
   request({
     method: "post",
-    url: url+"/put/"+data.id,
+    url: url + "/put/" + data.id,
     data
-  });  
-  
- 
- export const PaymentMethodDelete = data =>
- request({
-   method: "post",
-   url: url+"/deletes",
-   data
- });
-  
+  });
+
+export const PaymentMethodDelete = data =>
+  request({
+    method: "post",
+    url: url + "/deletes",
+    data
+  });

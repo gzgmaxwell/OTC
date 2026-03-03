@@ -5,7 +5,7 @@ const url = "/sbglBjjl";
 export const DataWlCount = params =>
   request({
     method: "get",
-    url: url+"/v2/wlsblxtj",
+    url: url + "/v2/wlsblxtj",
     params
   });
 
@@ -13,8 +13,6 @@ export const DataWlCount = params =>
 export const DataSxtCount = params =>
   request({
     method: "get",
-    url: url+"/v2/spsblxtj",
+    url: url + "/v2/spsblxtj",
     params
   });
-
-

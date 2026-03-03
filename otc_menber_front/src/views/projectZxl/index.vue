@@ -78,18 +78,18 @@ export default {
   data() {
     return {
       params: {
-        ny: "",
+        ny: ""
       },
       params2: {
         ny: "",
-        xmId: "",
+        xmId: ""
       },
       xmsb: null,
       drawer: false,
       total: 0,
       title: "设备在线率",
       currentMonth: "",
-      list: [], //表格数据
+      list: [] //表格数据
     };
   },
   created() {
@@ -122,7 +122,7 @@ export default {
       this.params = {
         size: 10,
         current: 1,
-        ny: this.currentMonth,
+        ny: this.currentMonth
       };
       this.List();
     },
@@ -139,24 +139,24 @@ export default {
         this.xmsb = this.$echarts.init(document.getElementById("xmsbzxl"));
         this.xmsb.setOption({
           tooltip: {
-            trigger: 'axis',
+            trigger: "axis",
             axisPointer: {
-              type: 'shadow'
+              type: "shadow"
             }
           },
           xAxis: {
             type: "category",
-            data: data.rq,
+            data: data.rq
           },
           yAxis: {
-            type: "value",
+            type: "value"
           },
           series: [
             {
               data: data.list,
-              type: "line",
-            },
-          ],
+              type: "line"
+            }
+          ]
         });
       }, 0);
     },
@@ -169,11 +169,11 @@ export default {
     changePage(val) {
       this.params.current = val;
       this.List();
-    },
+    }
   },
   mounted() {
     this.search();
-  },
+  }
 };
 </script>
 <style>

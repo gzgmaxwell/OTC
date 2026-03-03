@@ -50,6 +50,6 @@ export const SysModelDelete = data =>
 export const SysModelTree = params =>
   request({
     method: "get",
-    url: url+"/tree",
+    url: url + "/tree",
     params
   });

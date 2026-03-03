@@ -90,7 +90,7 @@ import {
   SysModelContentPage,
   SysModelContentDelete,
   SysModelTree,
-  SysColumnContenFbzt,
+  SysColumnContenFbzt
 } from "@a/column";
 
 export default {
@@ -102,12 +102,12 @@ export default {
       columnNameList: [],
       defaultProps: {
         children: "children",
-        label: "label",
+        label: "label"
       },
       params: {
-        title:'',
+        title: "",
         size: 10,
-        current: 1,
+        current: 1
       },
       total: 0,
       list: [], //表格数据
@@ -115,7 +115,7 @@ export default {
       select: "",
       isShow: false,
       showOperate: false,
-      fileList: [],
+      fileList: []
     };
   },
   created() {},
@@ -149,16 +149,15 @@ export default {
     //重置
     reset() {
       this.params = {
-        title:'',
+        title: "",
         size: 10,
-        current: 1,
-      }
+        current: 1
+      };
       this.params.modelId = this.columnNameList[0].id;
       this.$nextTick(() => {
         this.$refs.tree.setCurrentKey(this.columnNameList[0].id);
       });
       this.List();
-      
     },
     //返回搜索
     back() {
@@ -170,11 +169,11 @@ export default {
       this.$confirm("此操作将永久删除该数据, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "warning",
+        type: "warning"
       })
         .then(() => {
           var totalArr = [];
-          total.forEach((item) => {
+          total.forEach(item => {
             totalArr.push(item.id);
           });
           this.delData(totalArr);
@@ -220,7 +219,7 @@ export default {
     //新增
     newEdit() {
       this.$router.push({
-        name: "newSysModelContent",
+        name: "newSysModelContent"
       });
     },
     //编辑
@@ -228,8 +227,8 @@ export default {
       this.$router.push({
         name: "newSysModelContent",
         query: {
-          id: row.id,
-        },
+          id: row.id
+        }
       });
     },
     //删除
@@ -237,7 +236,7 @@ export default {
       this.$confirm("此操作将永久删除该数据, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "warning",
+        type: "warning"
       })
         .then(() => {
           var arr = [];
@@ -245,12 +244,12 @@ export default {
           this.delData(arr);
         })
         .catch(() => {});
-    },
+    }
   },
   async mounted() {
     await this.getModelTree();
     await this.search();
-  },
+  }
 };
 </script>
 <style scoped>
@@ -279,4 +278,3 @@ export default {
   height: 100%;
 }
 </style>
-

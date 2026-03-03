@@ -46,17 +46,21 @@
           </div>
         </el-card>
       </div> -->
-      <el-select v-model="currentTheme" size="mini" @change="changeTheme" style="margin-right:12px;width:120px;">
+      <el-select
+        v-model="currentTheme"
+        size="mini"
+        @change="changeTheme"
+        style="margin-right:12px;width:120px;"
+      >
         <el-option label="深色主题" value="dark"></el-option>
         <el-option label="浅色主题" value="light"></el-option>
       </el-select>
       <i class="el-icon-rank color-icon ft-25" @click="fullScreen"></i>
-      <el-dropdown
-        trigger="click"
-        @command="checkItem"
-        placement="bottom-end"
-      >
-        <span class="el-dropdown-link" style="color:var(--text-main);user-select:none;">
+      <el-dropdown trigger="click" @command="checkItem" placement="bottom-end">
+        <span
+          class="el-dropdown-link"
+          style="color:var(--text-main);user-select:none;"
+        >
           欢迎您,
           {{ userInfo.fullName }}
           <i class="el-icon-arrow-down el-icon--right"></i>
@@ -99,25 +103,23 @@
           ></el-input>
 
           <div class="intensity">
-          <span class="psdText">密码强度</span>
-          <span
-            class="line"
-            :class="[level.includes('low') ? 'low' : '']"
-          ></span>
-          <span
-            class="line"
-            :class="[level.includes('middle') ? 'middle' : '']"
-          ></span>
-          <span
-            class="line"
-            :class="[level.includes('high') ? 'high' : '']"
-          ></span>
-          <div class="warningtext">
-            密码应由8-16位数字、字母、符号组成。请不要使用容易被猜到的密码
+            <span class="psdText">密码强度</span>
+            <span
+              class="line"
+              :class="[level.includes('low') ? 'low' : '']"
+            ></span>
+            <span
+              class="line"
+              :class="[level.includes('middle') ? 'middle' : '']"
+            ></span>
+            <span
+              class="line"
+              :class="[level.includes('high') ? 'high' : '']"
+            ></span>
+            <div class="warningtext">
+              密码应由8-16位数字、字母、符号组成。请不要使用容易被猜到的密码
+            </div>
           </div>
-        </div>
-
-
         </el-form-item>
         <el-form-item label="确认密码:" prop="affirmPwd">
           <el-input
@@ -142,11 +144,10 @@ import { mapGetters } from "vuex";
 import screenfull from "screenfull";
 import { Logout, ChangePwd } from "@a";
 
-
 // 刷新路由
 import { refreshRouter } from "@r/dealRouter";
 import { removeRouter, removeDics, removeToken } from "@p/storage";
-import { getToken, getUserInfo, getDics ,removeUserInfo} from "@p/storage";
+import { getToken, getUserInfo, getDics, removeUserInfo } from "@p/storage";
 export default {
   data() {
     const validatePass = (rule, value, callback) => {
@@ -179,71 +180,75 @@ export default {
       },
       rules: {
         oldPwd: [{ required: true, message: "请输入原密码", trigger: "blur" }],
-        newPwd: [ { required: true, validator: this.checkPassword, trigger: 'change' }],
+        newPwd: [
+          { required: true, validator: this.checkPassword, trigger: "change" }
+        ],
         affirmPwd: [{ validator: validatePass2, trigger: "blur" }]
       },
       currentTheme: this.$store.getters.theme
     };
   },
   mounted() {
-   this.userInfo = getUserInfo();
-   console.log(this.userInfo);
+    this.userInfo = getUserInfo();
+    console.log(this.userInfo);
   },
   computed: {
     ...mapGetters(["isCollapse", "theme"])
   },
-  methods: {// 校验密码
+  methods: {
+    // 校验密码
     checkPassword(rule, value, callback) {
-      this.level = []
+      this.level = [];
       if (!value) {
-        return callback('密码不能为空')
+        return callback("密码不能为空");
       }
       if (value.length < 8) {
-        return callback('密码不少于8位')
+        return callback("密码不少于8位");
       }
       if (value.length > 16) {
-        return callback('密码不大于16位')
+        return callback("密码不大于16位");
       }
       // 校验是数字
-      const regex1 = /^\d+$/
+      const regex1 = /^\d+$/;
       // 校验字母
-      const regex2 = /^[A-Za-z]+$/
+      const regex2 = /^[A-Za-z]+$/;
       // 校验符号
-      const regex3 =
-        /^[`~!@#$%^&*()_\-+=<>?:"{}|,.\/;'\\[\]·~！@#￥%……&*（）——\-+={}|《》？：“”【】、；‘'，。、]+$/
+      const regex3 = /^[`~!@#$%^&*()_\-+=<>?:"{}|,.\/;'\\[\]·~！@#￥%……&*（）——\-+={}|《》？：“”【】、；‘'，。、]+$/;
       if (regex1.test(value)) {
-        this.level.push('low')
+        this.level.push("low");
       } else if (regex2.test(value)) {
-        this.level.push('low')
+        this.level.push("low");
       } else if (regex3.test(value)) {
-        this.level.push('low')
+        this.level.push("low");
       } else if (/^[A-Za-z\d]+$/.test(value)) {
-        this.level.push('low')
-        this.level.push('middle')
+        this.level.push("low");
+        this.level.push("middle");
       } else if (
-        /^[`~!@#$%^&*()_\-+=<>?:"{}|,.\/;'\\[\]·~！@#￥%……&*（）——\-+={}|《》？：“”【】、；‘'，。、\d]+$/.test(  value  )
+        /^[`~!@#$%^&*()_\-+=<>?:"{}|,.\/;'\\[\]·~！@#￥%……&*（）——\-+={}|《》？：“”【】、；‘'，。、\d]+$/.test(
+          value
+        )
       ) {
-        this.level.push('low')
-        this.level.push('middle')
+        this.level.push("low");
+        this.level.push("middle");
       } else if (
         /^[`~!@#$%^&*()_\-+=<>?:"{}|,.\/;'\\[\]·~！@#￥%……&*（）——\-+={}|《》？：“”【】、；‘'，。、A-Za-z]+$/.test(
           value
         )
       ) {
-        this.level.push('low')
-        this.level.push('middle')
+        this.level.push("low");
+        this.level.push("middle");
       } else if (
         /^[`~!@#$%^&*()_\-+=<>?:"{}|,.\/;'\\[\]·~！@#￥%……&*（）——\-+={}|《》？：“”【】、；‘'，。、A-Za-z\d]+$/.test(
           value
         )
       ) {
-        this.level.push('low')
-        this.level.push('middle')
-        this.level.push('high')
+        this.level.push("low");
+        this.level.push("middle");
+        this.level.push("high");
       }
-      return callback()
+      return callback();
     },
-    toData(){
+    toData() {
       this.$router.push("/data");
       // window.open(this.html_url+"data","大屏")
     },
@@ -270,11 +275,10 @@ export default {
         }
         this.formValidate.userId = this.userInfo.userId;
 
-
-        var param={};
-        param.oldPwd=jm(this.formValidate.oldPwd);
-        param.newPwd=jm(this.formValidate.newPwd);
-        param.affirmPwd=jm(this.formValidate.affirmPwd);
+        var param = {};
+        param.oldPwd = jm(this.formValidate.oldPwd);
+        param.newPwd = jm(this.formValidate.newPwd);
+        param.affirmPwd = jm(this.formValidate.affirmPwd);
         await ChangePwd(param);
         this.closeDialog();
         this.$message.success("修改成功");
@@ -288,15 +292,14 @@ export default {
         type: "warning"
       }).then(async () => {
         await Logout();
-        removeRouter(); 
-        removeDics(); 
-        removeUserInfo(); 
+        removeRouter();
+        removeDics();
+        removeUserInfo();
         removeToken();
         refreshRouter();
         // this.removeUserInfo();
         // localStorage.clear();
         this.$message.success("退出成功");
-        
 
         // const host = window.location.hostname;
 
@@ -304,12 +307,10 @@ export default {
         //     // window.location.href="http://112.23.1.136:8081/dashboard/analysis";
         //     window.close();
         //   }else{
-            this.$router.push("/login");
-          // }
-
+        this.$router.push("/login");
+        // }
 
         // window.close();
-        
       });
     },
     //关闭弹窗
@@ -328,13 +329,13 @@ export default {
       screenfull.toggle();
     },
     changeTheme(val) {
-      this.$store.commit('SET_THEME', val);
+      this.$store.commit("SET_THEME", val);
     }
   }
 };
 </script>
 
-<style lang="scss" >
+<style lang="scss">
 .navbar_wrapper {
   height: $navbarHeight;
   box-shadow: 0 2px 4px #e4e4e4;
@@ -419,7 +420,6 @@ export default {
   }
 }
 
-
 .intensity {
   .psdText {
     font-size: 14px;
@@ -451,5 +451,4 @@ export default {
     margin-top: 5px;
   }
 }
-
 </style>

@@ -13,8 +13,15 @@
 import Sidebar from "./views/layout/components/sidebar";
 import { mapGetters } from "vuex";
 import Vue from "vue";
-import { setToken, setUserInfo, setDics, setRouter, getTheme, setTheme } from "@p/storage";
-import {  GetDics, GetRouterList,CodeLogin } from "@a";
+import {
+  setToken,
+  setUserInfo,
+  setDics,
+  setRouter,
+  getTheme,
+  setTheme
+} from "@p/storage";
+import { GetDics, GetRouterList, CodeLogin } from "@a";
 export default {
   name: "app",
   components: {
@@ -25,11 +32,11 @@ export default {
   },
   data() {
     return {
-      showMenu : false
-    }
+      showMenu: false
+    };
   },
   mounted() {
-    console.log(window.location, 23233)
+    console.log(window.location, 23233);
     this.getDics();
     const theme = getTheme();
     setTheme(theme);
@@ -44,15 +51,15 @@ export default {
     },
     applyTheme(theme) {
       const root = document.documentElement;
-      root.classList.remove('theme-light', 'theme-dark');
-      root.classList.add(theme === 'light' ? 'theme-light' : 'theme-dark');
+      root.classList.remove("theme-light", "theme-dark");
+      root.classList.add(theme === "light" ? "theme-light" : "theme-dark");
     }
   },
   watch: {
     theme(newVal) {
       this.applyTheme(newVal);
     }
-  }  
+  }
 };
 </script>
 <style lang="scss">

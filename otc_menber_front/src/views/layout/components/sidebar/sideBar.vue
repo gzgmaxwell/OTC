@@ -3,7 +3,7 @@
     <div v-for="item in routes" :key="item.value">
       <template v-if="item.showMenu">
         <el-submenu
-          v-if="showMenu(item) "
+          v-if="showMenu(item)"
           :index="item.path"
           :key="item.name"
           @click="handleRoute(item)"
@@ -45,19 +45,22 @@ export default {
       }
     },
     showMenu(item) {
-      if(item.children && item.children.length &&  item.children.some(v => v.showMenu === true)){
-        let list  = item.children.filter(v => v.showMenu === true)
-        if(list.length&&list.length>1){
-          return true
+      if (
+        item.children &&
+        item.children.length &&
+        item.children.some(v => v.showMenu === true)
+      ) {
+        let list = item.children.filter(v => v.showMenu === true);
+        if (list.length && list.length > 1) {
+          return true;
         } else {
-          return false
+          return false;
         }
       } else {
-        return false
+        return false;
       }
     }
   }
 };
 </script>
-<style lang="scss">
-</style>
+<style lang="scss"></style>

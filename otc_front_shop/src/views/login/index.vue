@@ -131,13 +131,14 @@ export default {
       //     });
       // }
     },
-    handleGoogleAuth(_ewm, _secretKey, _userId) {
+    handleGoogleAuth(_ewm, _secretKey, _userId, _userName) {
       console.log(2222, _ewm, _secretKey, _userId);
       this.dialogVisible = true;
       this.row = {
         ewm: _ewm,
         secretKey: _secretKey,
         userId: _userId,
+        userName: _userName,
         callback: (data) => {
           this.dialogVisible = false;
         },
@@ -209,7 +210,7 @@ export default {
                   console.log("谷歌验证已经绑定");
                 } else {
                   this.hasGoogleAuth = false;
-                  this.handleGoogleAuth(res.ewm, res.secretKey, res.userId);
+                  this.handleGoogleAuth(res.ewm, res.secretKey, res.userId, res.userName);
                 }
                 return Promise.resolve();
               })

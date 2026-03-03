@@ -23,6 +23,9 @@ import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
 Vue.use(ElementUI);
 
+const savedTheme = localStorage.getItem('theme') || 'default';
+document.documentElement.setAttribute('data-theme', savedTheme);
+
 // 注册全局组件
 import "./components";
 

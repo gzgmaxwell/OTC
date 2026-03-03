@@ -15,6 +15,11 @@
       </svg>
     </div>
     <div class="right_box">
+      <el-select v-model="theme" size="mini" @change="applyTheme" style="margin-right:12px;width:120px;">
+        <el-option label="默认" value="default"></el-option>
+        <el-option label="深色" value="dark"></el-option>
+        <el-option label="海洋" value="ocean"></el-option>
+      </el-select>
       <!-- <i class="el-icon-data-analysis color-icon ft-25 mr-10" @click="toData"></i> -->
       <!-- <i
         class="el-icon-bell color-icon ft-25 mr-10"
@@ -51,7 +56,7 @@
         @command="checkItem"
         placement="bottom-end"
       >
-        <span class="el-dropdown-link" style="color:#031529;user-select:none;">
+        <span class="el-dropdown-link" style="color:var(--text-color);user-select:none;">
           欢迎您,
           {{ userInfo.fullName }}
           <i class="el-icon-arrow-down el-icon--right"></i>
@@ -163,6 +168,7 @@ export default {
       userInfo: {},
       showNewMenu: true,
       dialogFormVisible: false,
+      theme: 'default',
       formValidate: {
         oldPwd: "",
         newPwd: "",
@@ -179,11 +185,18 @@ export default {
   mounted() {
    this.userInfo = getUserInfo();
    console.log(this.userInfo);
+   const saved = localStorage.getItem('theme') || 'default';
+   this.theme = saved;
+   this.applyTheme(saved);
   },
   computed: {
     ...mapGetters(["isCollapse"])
   },
   methods: {// 校验密码
+    applyTheme(val) {
+      document.documentElement.setAttribute('data-theme', val);
+      localStorage.setItem('theme', val);
+    },
     checkPassword(rule, value, callback) {
       this.level = []
       if (!value) {
@@ -333,11 +346,19 @@ export default {
       font-size: 28px;
       margin-left: 10px;
       cursor: pointer;
-      color: gray;
+      color: var(--text-color);
     }
     .collapse {
       cursor: pointer;
       margin-left: 20px;
+      path {
+        fill: var(--text-color);
+      }
+    }
+    .collapse:hover {
+      path {
+        fill: var(--primary);
+      }
     }
     .collapse.is-active {
       transform: rotate(180deg);
@@ -351,7 +372,10 @@ export default {
       font-size: 26px;
       margin-right: 12px;
       cursor: pointer;
-      color: gray;
+      color: var(--text-color);
+    }
+    > i:hover {
+      color: var(--primary);
     }
     .el-dropdown {
       font-size: 16px;

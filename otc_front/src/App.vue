@@ -46,7 +46,7 @@ export default {
 .menu_tittle {
   height: $navbarHeight;
   line-height: $navbarHeight;
-  background-color: rgba(0, 40, 77);
+  background-color: var(--navbar-bg);
   font-size: 20px;
   text-align: center;
 }
@@ -60,7 +60,7 @@ export default {
     top: 0;
     height: 100%;
     transition: all 0.3s;
-    background-color: $siderbarBac;
+    background-color: var(--sidebar-bg);
     color: #fff;
   }
   .c_left_wrapper {

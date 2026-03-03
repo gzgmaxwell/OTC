@@ -1,3 +1,37 @@
+:root {
+  --primary: #1890ff;
+  --primary-hover: #40a9ff;
+  --primary-hover-bg: rgba(24, 144, 255, 0.5);
+  --body-bg: #ffffff;
+  --text-color: #2c3e50;
+  --navbar-bg: rgba(0, 40, 77);
+  --sidebar-bg: rgba(0, 21, 41);
+  --sidebar-text: rgb(191, 203, 217);
+  --sidebar-active-text: #ffffff;
+}
+[data-theme="dark"] {
+  --primary: #4e8cff;
+  --primary-hover: #6fa6ff;
+  --primary-hover-bg: rgba(78, 140, 255, 0.5);
+  --body-bg: #0d1117;
+  --text-color: #e6edf3;
+  --navbar-bg: #0f2744;
+  --sidebar-bg: #0b1e33;
+  --sidebar-text: #bcd0e6;
+  --sidebar-active-text: #ffffff;
+}
+[data-theme="ocean"] {
+  --primary: #2aa5d6;
+  --primary-hover: #45b3dd;
+  --primary-hover-bg: rgba(42, 165, 214, 0.5);
+  --body-bg: #f7fbfd;
+  --text-color: #1f2d3d;
+  --navbar-bg: #0b3647;
+  --sidebar-bg: #0d2b3a;
+  --sidebar-text: #b9d7e6;
+  --sidebar-active-text: #ffffff;
+}
+
 /* 基础样式 */
 * {
   margin: 0;
@@ -10,13 +44,14 @@ html {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
+  color: var(--text-color);
   font-size: 14px;
 }
 
 body {
   height: 100%;
   overflow: hidden;
+  background: var(--body-bg);
 }
 
 #app {
@@ -196,7 +231,7 @@ a {
   overflow: hidden;
 }
 .avatar-uploader2 .el-upload:hover {
-  border-color: #409EFF;
+  border-color: var(--primary);
 }
 .avatar-uploader2 .avatar-uploader-icon {
   font-size: 28px;
@@ -249,4 +284,15 @@ a {
 
 .menu_wrapper .el-menu-item span {
   padding-left: 14px;
+}
+
+.el-button--primary {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  color: #ffffff;
+}
+.el-button--primary:hover,
+.el-button--primary:focus {
+  background-color: var(--primary-hover);
+  border-color: var(--primary-hover);
 }

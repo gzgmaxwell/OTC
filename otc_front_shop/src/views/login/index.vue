@@ -178,36 +178,38 @@ export default {
       this.$router.push({
         name: "Register"
       });
+    },
+    handleCheckSecretKey(username) {
+      return checkSecretKey({ userName: username })
+        .then(res => {
+          const isBind = String(res && res.isBind) === "true";
+          if (isBind) {
+            this.hasGoogleAuth = true;
+            console.log("谷歌验证已经绑定");
+          } else {
+            this.hasGoogleAuth = false;
+            const ewm = res && res.ewm;
+            const secretKey = res && res.secretKey;
+            const userId = res && res.userId;
+            const userName = res && res.userName;
+            if (ewm && secretKey && userId) {
+              this.handleGoogleAuth(ewm, secretKey, userId, userName);
+            }
+          }
+          return Promise.resolve();
+        })
+        .catch(() => Promise.resolve());
     }
   },
   watch: {
     "loginForm.username": {
       handler(val, oldVal) {
         if (val !== oldVal && val) {
-          const fun = () => {
-            if (!this.loginForm.username) return;
-            return checkSecretKey({ userName: this.loginForm.username })
-              .then(res => {
-                const isBind = String(res && res.isBind) === "true";
-                if (isBind) {
-                  this.hasGoogleAuth = true;
-                  console.log("谷歌验证已经绑定");
-                } else {
-                  this.hasGoogleAuth = false;
-                  const ewm = res && res.ewm;
-                  const secretKey = res && res.secretKey;
-                  const userId = res && res.userId;
-                  const userName = res && res.userName;
-                  if (ewm && secretKey && userId) {
-                    this.handleGoogleAuth(ewm, secretKey, userId, userName);
-                  }
-                }
-                return Promise.resolve();
-              })
-              .catch(() => Promise.resolve());
-          };
           if (this.loginForm.username) {
-            debounceCallBack(fun, 1000)();
+            debounceCallBack(
+              this.handleCheckSecretKey,
+              1000
+            )(this.loginForm.username);
           }
         }
       },

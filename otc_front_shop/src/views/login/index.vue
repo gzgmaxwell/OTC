@@ -224,9 +224,6 @@ export default {
   height: 100%;
   margin-left: -280px;
   background: linear-gradient(135deg, #0a1e2a, #1e90ff);
-  background-image: none !important;
-  background-repeat: no-repeat;
-  background-size: cover;
   overflow: hidden;
   color: #ffffff;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,

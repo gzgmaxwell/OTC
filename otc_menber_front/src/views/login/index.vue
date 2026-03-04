@@ -186,9 +186,6 @@ export default {
   height: 100%;
   margin-left: -280px;
   background: linear-gradient(135deg, var(--primary) 0%, #0b1324 70%);
-  background-image: none !important;
-  background-repeat: no-repeat;
-  background-size: cover;
   overflow: hidden;
   position: relative;
 

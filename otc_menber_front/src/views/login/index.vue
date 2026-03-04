@@ -1,9 +1,9 @@
 <template>
   <div class="login_wrapper">
-    <div class="login-title">
+    <!-- <div class="login-title">
       <h3>码商平台</h3>
       <p>输入您的个人详细信息开始使用！</p>
-    </div>
+    </div> -->
     <el-form
       class="login_form"
       ref="loginForm"
@@ -181,14 +181,26 @@ export default {
 
 <style lang="scss">
 .login_wrapper {
-  $bg: #2d3a4b;
   $color: #fff;
   $cursor: #fff;
   height: 100%;
   margin-left: -280px;
-  background: $bg url("../../assets/images/bg.png") 50% 50% no-repeat;
-  background-size: cover;
+  background: linear-gradient(135deg, var(--primary) 0%, #0b1324 70%);
   overflow: hidden;
+  position: relative;
+
+  &::before {
+    content: "码商平台";
+    position: absolute;
+    left: 10%;
+    top: 50%;
+    transform: translateY(-160%);
+    font-size: 120px;
+    font-weight: 700;
+    letter-spacing: 6px;
+    color: rgba(255, 255, 255, 0.08);
+    pointer-events: none;
+  }
 
   .login-title {
     position: absolute;
@@ -215,12 +227,17 @@ export default {
     top: 50%;
     right: 15%;
     transform: translate(10%, -50%);
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    padding: 24px;
+    color: var(--text-main);
 
     h4 {
       font-size: 18px;
       font-weight: bold;
       margin-bottom: 20px;
-      color: #333;
+      color: var(--text-main);
     }
   }
 

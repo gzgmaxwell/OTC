@@ -9,11 +9,19 @@
       <p style="color: red">提示:为了您的资金安全,请尽快绑定谷歌验证码!</p>
       <p>
         手机客户端下载地址:
-        <a target="_blank" href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2"
-          style="color: blue">Android</a>
+        <a
+          target="_blank"
+          href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2"
+          style="color: blue"
+          >Android</a
+        >
         |
-        <a target="_blank" href="https://apps.apple.com/us/app/google-authenticator/id388497605"
-          style="color: blue">IOS</a>
+        <a
+          target="_blank"
+          href="https://apps.apple.com/us/app/google-authenticator/id388497605"
+          style="color: blue"
+          >IOS</a
+        >
       </p>
     </div>
 
@@ -33,7 +41,11 @@
     <!-- 第三步 -->
     <div class="step">
       <h4>第三步：输入Google验证器中验证码</h4>
-      <el-input v-model="verificationCode" placeholder="请输入谷歌验证码" style="width: 200px; margin-right: 10px"></el-input>
+      <el-input
+        v-model="verificationCode"
+        placeholder="请输入谷歌验证码"
+        style="width: 200px; margin-right: 10px"
+      ></el-input>
       <el-button type="primary" @click="bindGoogleAuth">绑定</el-button>
     </div>
   </div>
@@ -68,7 +80,7 @@ export default {
       await bindSecretKeyBeforeLogin({
         userId: this.row.userId,
         secretKey: this.row.secretKey,
-        verificationCode: this.verificationCode,
+        verificationCode: this.verificationCode
       });
       this.$message.success("绑定成功");
       this.row.callback(true);

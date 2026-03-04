@@ -4,23 +4,45 @@
       <h3>OTC商户平台</h3>
       <p>输入您的个人详细信息开始使用！</p>
     </div>
-    <el-form class="login_form" ref="loginForm" :model="loginForm" :rules="loginRules">
+    <el-form
+      class="login_form"
+      ref="loginForm"
+      :model="loginForm"
+      :rules="loginRules"
+    >
       <h4>登录</h4>
       <el-form-item prop="username">
-        <el-input v-model="loginForm.username" @blur="blurUsername" type="text" auto-complete="off"
-          placeholder="请输入账号" />
+        <el-input
+          v-model="loginForm.username"
+          @blur="blurUsername"
+          type="text"
+          auto-complete="off"
+          placeholder="请输入账号"
+        />
       </el-form-item>
       <el-form-item prop="password">
-        <el-input v-model="loginForm.password" type="password" auto-complete="off" placeholder="请输入密码"
-          @keyup.enter.native="handleLogin" />
+        <el-input
+          v-model="loginForm.password"
+          type="password"
+          auto-complete="off"
+          placeholder="请输入密码"
+          @keyup.enter.native="handleLogin"
+        />
       </el-form-item>
       <el-form-item prop="verificationCode">
-        <el-input v-model="loginForm.verificationCode" type="text" auto-complete="off" placeholder="谷歌验证码"
-          @keyup.enter.native="handleLogin" />
+        <el-input
+          v-model="loginForm.verificationCode"
+          type="text"
+          auto-complete="off"
+          placeholder="谷歌验证码"
+          @keyup.enter.native="handleLogin"
+        />
       </el-form-item>
       <el-row class="v-center">
         <el-col :span="12" class="v-center">
-          <el-checkbox v-model="loginForm.rememberMe" @change="jzwChange">记住我</el-checkbox>
+          <el-checkbox v-model="loginForm.rememberMe" @change="jzwChange"
+            >记住我</el-checkbox
+          >
         </el-col>
         <el-col :span="12" style="text-align: right" class="v-center h-end">
           <!-- <el-button type="text">忘记密码？</el-button> -->
@@ -28,7 +50,12 @@
       </el-row>
       <el-row class="h-between button-area">
         <el-col :span="12">
-          <el-button :loading="loading" type="primary" class="submit_button" @click="handleLogin">
+          <el-button
+            :loading="loading"
+            type="primary"
+            class="submit_button"
+            @click="handleLogin"
+          >
             <span v-if="!loading">登 录</span>
             <span v-else>登 录 中...</span>
           </el-button>
@@ -38,7 +65,12 @@
         </el-col> -->
       </el-row>
     </el-form>
-    <el-dialog title="提示" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
+    <el-dialog
+      title="提示"
+      :visible.sync="dialogVisible"
+      width="30%"
+      :before-close="handleClose"
+    >
       <googleAuth :row="row" />
     </el-dialog>
   </div>
@@ -80,7 +112,7 @@ export default {
       row: {}
     };
   },
-  created() { },
+  created() {},
   mounted() {
     this.$axios
       .get(
@@ -112,7 +144,7 @@ export default {
       }
     },
 
-    blurUsername() { },
+    blurUsername() {},
     handleGoogleAuth(_ewm, _secretKey, _userId, _userName) {
       console.log(2222, _ewm, _secretKey, _userId);
       this.dialogVisible = true;
@@ -221,14 +253,14 @@ export default {
 
 <style lang="scss">
 .login_wrapper {
-  $bg: #2d3a4b;
-  $color: #fff;
-  $cursor: #fff;
   height: 100%;
   margin-left: -280px;
-  background: $bg url("../../assets/images/bg.png") 50% 50% no-repeat;
-  background-size: cover;
+  background: linear-gradient(135deg, #0a1e2a, #1e90ff);
   overflow: hidden;
+  color: #ffffff;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans", "PingFang SC", "Microsoft YaHei",
+    sans-serif;
 
   .login-title {
     position: absolute;
@@ -236,16 +268,19 @@ export default {
     top: 50%;
     left: 15%;
     transform: translate(0, -50%);
-    color: $color;
+    color: #ffffff;
 
     h3 {
-      font-size: 30px;
-      line-height: 40px;
+      font-size: 34px;
+      line-height: 46px;
+      letter-spacing: 1px;
+      font-weight: 600;
     }
 
     p {
-      font-size: 14px;
-      line-height: 40px;
+      font-size: 15px;
+      line-height: 28px;
+      opacity: 0.9;
     }
   }
 
@@ -253,20 +288,40 @@ export default {
     position: absolute;
     width: 420px;
     top: 50%;
-    right: 15%;
-    transform: translate(10%, -50%);
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #ffffff;
+    border: 1px solid #e6edf3;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(14, 35, 54, 0.15);
+    padding: 24px 24px 12px 24px;
+    color: #0e2336;
 
     h4 {
-      font-size: 18px;
-      font-weight: bold;
-      margin-bottom: 20px;
-      color: #333;
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: #0e2336;
+    }
+    .el-form-item {
+      .el-input__inner {
+        background: #ffffff;
+        color: #0e2336;
+        border-color: #e0e9f0;
+      }
+      .el-input__inner::placeholder {
+        color: #6f8193;
+        opacity: 0.9;
+      }
     }
   }
 
   .submit_button {
     width: calc(100% - 10px);
     margin-top: 20px;
+    font-size: 16px;
+    height: 40px;
+    border-radius: 8px;
   }
 
   .button-area {

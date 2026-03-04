@@ -4,45 +4,23 @@
       <h3>OTC商户平台</h3>
       <p>输入您的个人详细信息开始使用！</p>
     </div>
-    <el-form
-      class="login_form"
-      ref="loginForm"
-      :model="loginForm"
-      :rules="loginRules"
-    >
+    <el-form class="login_form" ref="loginForm" :model="loginForm" :rules="loginRules">
       <h4>登录</h4>
       <el-form-item prop="username">
-        <el-input
-          v-model="loginForm.username"
-          @blur="blurUsername"
-          type="text"
-          auto-complete="off"
-          placeholder="请输入账号"
-        />
+        <el-input v-model="loginForm.username" @blur="blurUsername" type="text" auto-complete="off"
+          placeholder="请输入账号" />
       </el-form-item>
       <el-form-item prop="password">
-        <el-input
-          v-model="loginForm.password"
-          type="password"
-          auto-complete="off"
-          placeholder="请输入密码"
-          @keyup.enter.native="handleLogin"
-        />
+        <el-input v-model="loginForm.password" type="password" auto-complete="off" placeholder="请输入密码"
+          @keyup.enter.native="handleLogin" />
       </el-form-item>
       <el-form-item prop="verificationCode">
-        <el-input
-          v-model="loginForm.verificationCode"
-          type="text"
-          auto-complete="off"
-          placeholder="谷歌验证码"
-          @keyup.enter.native="handleLogin"
-        />
+        <el-input v-model="loginForm.verificationCode" type="text" auto-complete="off" placeholder="谷歌验证码"
+          @keyup.enter.native="handleLogin" />
       </el-form-item>
       <el-row class="v-center">
         <el-col :span="12" class="v-center">
-          <el-checkbox v-model="loginForm.rememberMe" @change="jzwChange"
-            >记住我</el-checkbox
-          >
+          <el-checkbox v-model="loginForm.rememberMe" @change="jzwChange">记住我</el-checkbox>
         </el-col>
         <el-col :span="12" style="text-align: right" class="v-center h-end">
           <!-- <el-button type="text">忘记密码？</el-button> -->
@@ -50,12 +28,7 @@
       </el-row>
       <el-row class="h-between button-area">
         <el-col :span="12">
-          <el-button
-            :loading="loading"
-            type="primary"
-            class="submit_button"
-            @click="handleLogin"
-          >
+          <el-button :loading="loading" type="primary" class="submit_button" @click="handleLogin">
             <span v-if="!loading">登 录</span>
             <span v-else>登 录 中...</span>
           </el-button>
@@ -65,12 +38,7 @@
         </el-col> -->
       </el-row>
     </el-form>
-    <el-dialog
-      title="提示"
-      :visible.sync="dialogVisible"
-      width="30%"
-      :before-close="handleClose"
-    >
+    <el-dialog title="提示" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
       <googleAuth :row="row" />
     </el-dialog>
   </div>
@@ -112,7 +80,7 @@ export default {
       row: {}
     };
   },
-  created() {},
+  created() { },
   mounted() {
     this.$axios
       .get(
@@ -144,7 +112,7 @@ export default {
       }
     },
 
-    blurUsername() {},
+    blurUsername() { },
     handleGoogleAuth(_ewm, _secretKey, _userId, _userName) {
       console.log(2222, _ewm, _secretKey, _userId);
       this.dialogVisible = true;
@@ -256,6 +224,9 @@ export default {
   height: 100%;
   margin-left: -280px;
   background: linear-gradient(135deg, #0a1e2a, #1e90ff);
+  background-image: none !important;
+  background-repeat: no-repeat;
+  background-size: cover;
   overflow: hidden;
   color: #ffffff;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
@@ -303,12 +274,14 @@ export default {
       margin-bottom: 16px;
       color: #0e2336;
     }
+
     .el-form-item {
       .el-input__inner {
         background: #ffffff;
         color: #0e2336;
         border-color: #e0e9f0;
       }
+
       .el-input__inner::placeholder {
         color: #6f8193;
         opacity: 0.9;

@@ -72,7 +72,7 @@
           </template>
         </el-table-column>
         <el-table-column prop="title" label="标题"></el-table-column>
-        <el-table-column prop="orderNumberThird" label="订单编号"></el-table-column>
+        <el-table-column prop="orderId" label="订单编号"></el-table-column>
         <el-table-column prop="createTime" label="充值日期"></el-table-column>
         <el-table-column prop="orderStatusName" label="订单状态"></el-table-column>
 

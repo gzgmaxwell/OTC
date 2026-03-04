@@ -331,8 +331,6 @@ export default {
   $cursor: #fff;
   height: 100%;
   margin-left: -280px;
-  background: $bg url("../../assets/images/bg.png") 50% 50% no-repeat;
-  background-size: cover;
   overflow: hidden;
   .login-title {
     position: absolute;

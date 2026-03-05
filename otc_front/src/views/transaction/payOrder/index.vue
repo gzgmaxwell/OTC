@@ -1,12 +1,12 @@
 <template>
   <div class="list_page">
- 
- 
- 
-       <div class="top_wrapper">
+
+
+
+    <div class="top_wrapper">
       <div class="search_box">
-	  
-          <el-input placeholder="请输入付款人" v-model="params.fromId" @keyup.enter.native="search"></el-input>
+
+        <el-input placeholder="请输入付款人" v-model="params.fromId" @keyup.enter.native="search"></el-input>
 
         <el-button type="primary" icon="el-icon-search" @click="search">
           搜索
@@ -15,57 +15,50 @@
 
       </div>
     </div>
-	
-	
-	<div class="table_wrapper">
+
+
+    <div class="table_wrapper">
       <el-table ref="multipleTable" :data="list" border height="100%">
-        
-															 <el-table-column prop="fromNickName" label="付款人昵称"></el-table-column>
-								
 
-												
-														  <el-table-column prop="address" label="钱包地址"></el-table-column>
-								
+        <el-table-column prop="fromNickName" label="付款人昵称"></el-table-column>
 
-												
-														  <el-table-column prop="purposeNickName" label="收款人昵称"></el-table-column>
 
-												
-														  <el-table-column prop="money" label="金额"></el-table-column>
-								
 
-																																																				
-														  <el-table-column prop="title" label="标题"></el-table-column>
-								
+        <el-table-column prop="address" label="钱包地址"></el-table-column>
 
-												
-														  <el-table-column prop="orderNumber" label="订单编号"></el-table-column>
-								
 
-												
-														  <el-table-column prop="orderStatusName" label="订单状态"></el-table-column>
-								
 
-								
+        <el-table-column prop="purposeNickName" label="收款人昵称"></el-table-column>
+
+
+        <el-table-column prop="money" label="金额"></el-table-column>
+
+
+
+        <el-table-column prop="title" label="标题"></el-table-column>
+
+
+
+        <el-table-column prop="orderId" label="订单编号"></el-table-column>
+
+
+
+        <el-table-column prop="orderStatusName" label="订单状态"></el-table-column>
+
+
+
         <el-table-column label="操作">
           <template slot-scope="scope">
-		   <el-button size="mini" @click="edit(scope.row)">查看</el-button>
+            <el-button size="mini" @click="edit(scope.row)">查看</el-button>
           </template>
         </el-table-column>
       </el-table>
     </div>
-    <el-pagination
-      background
-      @size-change="sizeChange"
-      @current-change="changePage"
-      :current-page="params.current"
-      :page-sizes="[10, 20, 30]"
-      :page-size="params.size"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="total"
-    ></el-pagination>
+    <el-pagination background @size-change="sizeChange" @current-change="changePage" :current-page="params.current"
+      :page-sizes="[10, 20, 30]" :page-size="params.size" layout="total, sizes, prev, pager, next, jumper"
+      :total="total"></el-pagination>
 
-      
+
 
 
   </div>
@@ -73,7 +66,7 @@
 
 <script>
 
-import {PayOrderPage , PayOrderDelete} from "@a/transaction";
+import { PayOrderPage, PayOrderDelete } from "@a/transaction";
 
 
 
@@ -96,11 +89,11 @@ export default {
       fileList: []
     };
   },
-  created() {},
+  created() { },
   methods: {
     //搜索
     search() {
-	this.params.current = 1;
+      this.params.current = 1;
       //列表查询和搜索
       this.List();
     },
@@ -112,7 +105,7 @@ export default {
     back() {
       this.isShow = false;
     },
-    
+
     //批量删除
     totalDel(total) {
       this.$confirm("此操作将永久删除该数据, 是否继续?", "提示", {
@@ -127,16 +120,16 @@ export default {
           });
           this.delData(totalArr);
         })
-        .catch(() => {});
+        .catch(() => { });
     },
     //获取列表
     async List() {
-	  this.params.descs = "a.update_time";
-        const   data  = await PayOrderPage(this.params);
-    
-        this.total = data.total;
-        this.list = data.records;
-      
+      this.params.descs = "a.update_time";
+      const data = await PayOrderPage(this.params);
+
+      this.total = data.total;
+      this.list = data.records;
+
     },
     //每页多少条，切换显示条数
     sizeChange(val) {
@@ -160,11 +153,11 @@ export default {
     },
     //删除接口
     async delData(array) {
-       await PayOrderDelete(array);
+      await PayOrderDelete(array);
 
-        this.$message.success("删除成功");
+      this.$message.success("删除成功");
 
-        this.search();
+      this.search();
 
     },
     //新增
@@ -174,7 +167,7 @@ export default {
       });
     },
     //编辑
-    edit( row ) {
+    edit(row) {
       this.$router.push({
         name: "newPayOrder",
         query: {
@@ -183,7 +176,7 @@ export default {
       });
     },
     //删除
-    Delete( row ) {
+    Delete(row) {
       this.$confirm("此操作将永久删除该数据, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -194,7 +187,7 @@ export default {
           arr.push(row.id);
           this.delData(arr);
         })
-        .catch(() => {});
+        .catch(() => { });
     }
   },
   mounted() {
@@ -202,4 +195,3 @@ export default {
   }
 };
 </script>
-

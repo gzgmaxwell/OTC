@@ -105,7 +105,7 @@ export default {
     //返回
     backTo() {
       this.$router.push({
-        name: "TransferRecord"
+        name: "AdminSummary"
       });
     }
   },

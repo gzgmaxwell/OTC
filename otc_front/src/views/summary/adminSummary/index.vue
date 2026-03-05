@@ -236,7 +236,7 @@ export default {
     //编辑
     edit(row) {
       this.$router.push({
-        name: "newTransferRecord",
+        name: "adminSummaryEdit",
         query: {
           id: row.id
         }

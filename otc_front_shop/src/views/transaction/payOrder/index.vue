@@ -4,6 +4,8 @@
       <div class="search_box">
         <el-input placeholder="请输入付款人昵称" v-model="params.fromNickName" style="width: 40%"
           @keyup.enter.native="search"></el-input>
+        <el-input placeholder="请输入订单编号" v-model="params.orderId" style="width: 40%;margin-left: 10px"
+          @keyup.enter.native="search"></el-input>
 
         <!-- <el-select
           filterable
@@ -207,14 +209,12 @@ export default {
       if (val) {
         this.params.startTime = val[0];
         this.params.endTime = val[1];
-      } else {
       }
     },
     async getCodeUser() {
       var param = {};
       param.userType = "3";
       const data = await QuerySelect(param);
-
       this.users = data;
     },
     //搜索
@@ -286,9 +286,7 @@ export default {
     //删除接口
     async delData(array) {
       await TransferRecordDelete(array);
-
       this.$message.success("删除成功");
-
       this.search();
     },
     //新增

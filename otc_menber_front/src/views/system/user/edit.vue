@@ -12,55 +12,27 @@
       </div>
     </div>
     <div class="edit_content">
-      <el-form
-        class="u_form"
-        :model="formValidate"
-        :rules="rules"
-        ref="formValidate"
-        label-width="100px"
-      >
-        <el-form-item
-          label="账号："
-          v-if="id.trim().length != 0"
-          prop="userName"
-        >
+      <el-form class="u_form" :model="formValidate" :rules="rules" ref="formValidate" label-width="100px">
+        <el-form-item label="账号：" v-if="id.trim().length != 0" prop="userName">
           <!-- <el-input v-model="formValidate.userName"   v-if="id.trim().length != 0" ></el-input> -->
           <span>{{ formValidate.userName }}</span>
         </el-form-item>
         <el-form-item label="姓名：" prop="fullName">
-          <el-input
-            v-model="formValidate.fullName"
-            :disabled="id.trim().length != 0"
-          ></el-input>
+          <el-input v-model="formValidate.fullName"></el-input>
         </el-form-item>
         <el-form-item label="身份证号：" prop="idNumber">
-          <el-input
-            v-model="formValidate.idNumber"
-            :disabled="id.trim().length != 0"
-          ></el-input>
+          <el-input v-model="formValidate.idNumber"></el-input>
         </el-form-item>
         <el-form-item label="手机号：">
-          <el-input
-            v-model="formValidate.phoneNum"
-            :disabled="id.trim().length != 0"
-          ></el-input>
+          <el-input v-model="formValidate.phoneNum"></el-input>
         </el-form-item>
         <el-form-item label="邮箱地址：">
           <el-input v-model="formValidate.emailAddress"></el-input>
         </el-form-item>
         <el-form-item label="头像：" prop="header">
-          <el-upload
-            class="avatar-uploader"
-            :action="upload_url"
-            :show-file-list="false"
-            accept=".jpg, .jpeg, .JPG, .JPEG, .png"
-            :on-success="handleIconSuccess"
-          >
-            <img
-              v-if="formValidate.header"
-              :src="formValidate.header"
-              class="avatar"
-            />
+          <el-upload class="avatar-uploader" :action="upload_url" :show-file-list="false"
+            accept=".jpg, .jpeg, .JPG, .JPEG, .png" :on-success="handleIconSuccess">
+            <img v-if="formValidate.header" :src="formValidate.header" class="avatar" />
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
         </el-form-item>
@@ -197,9 +169,7 @@ export default {
     await this.getAreaCascade();
     if (this.id) {
       this.getInfo();
-    } else {
-    }
-
+    } 
     // this.getInst();
   },
   methods: {

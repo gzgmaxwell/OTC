@@ -13,24 +13,19 @@
           <div slot="header" class="clearfix">
             <span>代收总金额</span>
           </div>
-          <div class="summary_amount">¥ {{ formatCurrency(inTotal) }}</div>
+          <div class="summary_amount">¥ {{ res?.inTotal || 0 }}</div>
         </el-card>
         <el-card class="summary_card">
           <div slot="header" class="clearfix">
             <span>代付总金额</span>
           </div>
-          <div class="summary_amount">¥ {{ formatCurrency(outTotal) }}</div>
+          <div class="summary_amount">¥ {{ res?.inTotal || 0 }}</div>
         </el-card>
       </div>
     </div>
     <div class="top_wrapper">
       <div class="search_box">
-        <el-input
-          placeholder="码商名称"
-          v-model="params.transNumber"
-          style="width: 30%; "
-          @keyup.enter.native="search"
-        >
+        <el-input placeholder="码商名称" v-model="params.transNumber" style="width: 30%; " @keyup.enter.native="search">
         </el-input>
         <el-button type="primary" icon="el-icon-search" @click="search">
           搜索
@@ -39,14 +34,7 @@
       </div>
     </div>
     <div class="table_wrapper" style="height: calc(100% - 300px);">
-      <el-table
-        ref="multipleTable"
-        :data="list"
-        border
-        height="100%"
-        stripe
-        style="width: 100%;"
-      >
+      <el-table ref="multipleTable" :data="list" border height="100%" stripe style="width: 100%;">
         <el-table-column prop="fromNickName" label="码商名称"></el-table-column>
         <el-table-column prop="fromCodeName" label="收款金额"></el-table-column>
         <el-table-column prop="transNumber" label="出款金额"></el-table-column>
@@ -63,22 +51,14 @@
         </el-table-column>
       </el-table>
     </div>
-    <el-pagination
-      background
-      @size-change="sizeChange"
-      @current-change="changePage"
-      :current-page="params.current"
-      :page-sizes="[10, 20, 30]"
-      :page-size="params.size"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="total"
-    ></el-pagination>
+    <el-pagination background @size-change="sizeChange" @current-change="changePage" :current-page="params.current"
+      :page-sizes="[10, 20, 30]" :page-size="params.size" layout="total, sizes, prev, pager, next, jumper"
+      :total="total"></el-pagination>
   </div>
 </template>
 
 <script>
 import { TransferRecordPage } from "@a/summary";
-import dayjs from "dayjs";
 export default {
   name: "TransferRecord",
   components: {},
@@ -94,37 +74,13 @@ export default {
       list: [], //表格数据
       money: 0,
       timeFilter: "today",
-      inTotal: 0,
-      outTotal: 0
+      res: {}
     };
   },
   methods: {
     formatCurrency(value) {
       if (typeof value !== "number") return "0.00";
       return value.toFixed(2);
-    },
-    getRangeByFilter() {
-      const now = dayjs();
-      if (this.timeFilter === "today") {
-        return {
-          startTime: now.startOf("day").format("YYYY-MM-DD HH:mm:ss"),
-          endTime: now.endOf("day").format("YYYY-MM-DD HH:mm:ss")
-        };
-      }
-      if (this.timeFilter === "week") {
-        const d = now.day();
-        const offset = (d + 6) % 7;
-        const start = now.startOf("day").subtract(offset, "day");
-        const end = start.add(6, "day").endOf("day");
-        return {
-          startTime: start.format("YYYY-MM-DD HH:mm:ss"),
-          endTime: end.format("YYYY-MM-DD HH:mm:ss")
-        };
-      }
-      return {
-        startTime: now.startOf("month").format("YYYY-MM-DD HH:mm:ss"),
-        endTime: now.endOf("month").format("YYYY-MM-DD HH:mm:ss")
-      };
     },
     sumByDirection(records, dir) {
       const key = dir === "in" ? "代收" : "代付";
@@ -133,19 +89,10 @@ export default {
         .reduce((s, r) => s + (Number(r.money) || 0), 0);
     },
     async loadTotals() {
-      const range = this.getRangeByFilter();
-      const p = {
-        size: 1000,
-        current: 1,
-        startTime: range.startTime,
-        endTime: range.endTime,
-        descs: "a.update_time"
-      };
+      console.log(this.timeFilter);
       try {
-        const data = await TransferRecordPage(p);
-        const recs = (data && data.page && data.page.records) || [];
-        this.inTotal = this.sumByDirection(recs, "in");
-        this.outTotal = this.sumByDirection(recs, "out");
+        const data = await TransferRecordPage({});
+        this.res = {};
       } catch (e) {
         this.inTotal = 0;
         this.outTotal = 0;

@@ -224,7 +224,7 @@ export default {
         // 多选
         if (this.checkedKeys.length > 0) {
           this.checkSelectedNodes(this.checkedKeys);
-          if(this.checkStrictly)this.handleCheckChange()
+          if (this.checkStrictly) this.handleCheckChange();
         } else {
           this.clearSelectedNodes();
         }
@@ -285,7 +285,7 @@ export default {
         this.handleCheckChange();
       }
       this.$emit("change", this.selectedData);
-      this.popoverHide()
+      this.popoverHide();
     },
     treeToList(tree) {
       var queen = [];

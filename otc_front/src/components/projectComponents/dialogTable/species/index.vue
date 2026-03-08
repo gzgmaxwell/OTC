@@ -101,16 +101,58 @@ export default {
       total: 0,
       column: [
         { label: "序号", prop: "serialNumber", width: "80", type: "text" },
-        { label: "物种名称", prop: "speciesName", width: "", type: "text", tooltip: true },
-        { label: "目", prop: "speciesOrder", width: "", type: "text", tooltip: true },
-        { label: "科", prop: "speciesFamily", width: "", type: "text", tooltip: true },
-        { label: "属", prop: "speciesGenus", width: "", type: "text", tooltip: true },
-        { label: "拉丁名", prop: "latinName", width: "", type: "text", tooltip: true },
-        { label: "类别", prop: "slot", width: "", slotName: "speciesType", tooltip: true },
-        { label: "操作", prop: "slot", width: "100", slotName: "action", align: 'center' },
+        {
+          label: "物种名称",
+          prop: "speciesName",
+          width: "",
+          type: "text",
+          tooltip: true
+        },
+        {
+          label: "目",
+          prop: "speciesOrder",
+          width: "",
+          type: "text",
+          tooltip: true
+        },
+        {
+          label: "科",
+          prop: "speciesFamily",
+          width: "",
+          type: "text",
+          tooltip: true
+        },
+        {
+          label: "属",
+          prop: "speciesGenus",
+          width: "",
+          type: "text",
+          tooltip: true
+        },
+        {
+          label: "拉丁名",
+          prop: "latinName",
+          width: "",
+          type: "text",
+          tooltip: true
+        },
+        {
+          label: "类别",
+          prop: "slot",
+          width: "",
+          slotName: "speciesType",
+          tooltip: true
+        },
+        {
+          label: "操作",
+          prop: "slot",
+          width: "100",
+          slotName: "action",
+          align: "center"
+        }
       ],
       // 表格数据
-      tableList: [],
+      tableList: []
     };
   },
   created() {
@@ -120,33 +162,39 @@ export default {
     /** 查询公告列表 */
     getList() {
       this.loading = true;
-      if(this.$route.name == 'Storage') {
-        getSpeciesListUnUse(this.queryParams).then((response) => {
-          this.tableList = response.rows;
-          this.queryParams.total = response.total;
-          this.loading = false;
-        }).catch(()=>{
-          this.tableList = [];
-          this.queryParams.total = 0;
-        }).finally(()=>{
-          this.loading = false;
-        });
+      if (this.$route.name == "Storage") {
+        getSpeciesListUnUse(this.queryParams)
+          .then(response => {
+            this.tableList = response.rows;
+            this.queryParams.total = response.total;
+            this.loading = false;
+          })
+          .catch(() => {
+            this.tableList = [];
+            this.queryParams.total = 0;
+          })
+          .finally(() => {
+            this.loading = false;
+          });
       } else {
-        getList(this.queryParams).then((response) => {
-          this.tableList = response.rows;
-          this.queryParams.total = response.total;
-          this.loading = false;
-        }).catch(()=>{
-          this.tableList = [];
-          this.queryParams.total = 0;
-        }).finally(()=>{
-          this.loading = false;
-        });
+        getList(this.queryParams)
+          .then(response => {
+            this.tableList = response.rows;
+            this.queryParams.total = response.total;
+            this.loading = false;
+          })
+          .catch(() => {
+            this.tableList = [];
+            this.queryParams.total = 0;
+          })
+          .finally(() => {
+            this.loading = false;
+          });
       }
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
-      this.ids = selection.map((item) => item.speciesId);
+      this.ids = selection.map(item => item.speciesId);
       this.single = selection.length != 1;
       this.multiple = !selection.length;
     },
@@ -177,7 +225,7 @@ export default {
     /** 选择 */
     handleSelect(row) {
       this.$emit("selectSpecies", row);
-      this.cancel()
+      this.cancel();
     },
     /** 分页切换 */
     handleChangePage(page) {
@@ -185,8 +233,8 @@ export default {
       this.queryParams.pageNum = pageNum;
       this.queryParams.pageSize = pageSize;
       this.getList();
-    },
-  },
+    }
+  }
 };
 </script>
 

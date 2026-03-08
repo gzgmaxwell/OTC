@@ -1,12 +1,13 @@
 <template>
   <div class="list_page">
- 
- 
- 
-       <div class="top_wrapper">
+    <div class="top_wrapper">
       <div class="search_box">
-	  
-          <el-input placeholder="组织机构名称" style="width: 30%;"  v-model="params.orgName" @keyup.enter.native="search"></el-input>
+        <el-input
+          placeholder="组织机构名称"
+          style="width: 30%;"
+          v-model="params.orgName"
+          @keyup.enter.native="search"
+        ></el-input>
 
         <el-button type="primary" icon="el-icon-search" @click="search">
           搜索
@@ -17,21 +18,20 @@
         </el-button>
       </div>
     </div>
-	
-	
-	<div class="table_wrapper">
-      <el-table ref="multipleTable" :data="list" border height="100%">
-        
-																
-														  <el-table-column prop="orgName" label="组织机构名称"></el-table-column>
-								
 
-																																								
+    <div class="table_wrapper">
+      <el-table ref="multipleTable" :data="list" border height="100%">
+        <el-table-column prop="orgName" label="组织机构名称"></el-table-column>
+
         <el-table-column label="操作">
           <template slot-scope="scope">
-		   <el-button size="mini" @click="edit(scope.row)">查看</el-button>
-		   <el-button  size="mini" type="primary"  @click="edit(scope.row)" >编辑</el-button>
-           <el-button size="mini" type="danger" @click="Delete( scope.row)" >删除</el-button >
+            <el-button size="mini" @click="edit(scope.row)">查看</el-button>
+            <el-button size="mini" type="primary" @click="edit(scope.row)"
+              >编辑</el-button
+            >
+            <el-button size="mini" type="danger" @click="Delete(scope.row)"
+              >删除</el-button
+            >
           </template>
         </el-table-column>
       </el-table>
@@ -46,18 +46,11 @@
       layout="total, sizes, prev, pager, next, jumper"
       :total="total"
     ></el-pagination>
-
-      
-
-
   </div>
 </template>
 
 <script>
-
-import {SysInstPage , SysInstDelete} from "@a/system";
-
-
+import { SysInstPage, SysInstDelete } from "@a/system";
 
 export default {
   name: "SysInst",
@@ -82,7 +75,7 @@ export default {
   methods: {
     //搜索
     search() {
-	this.params.current = 1;
+      this.params.current = 1;
       //列表查询和搜索
       this.List();
     },
@@ -94,7 +87,7 @@ export default {
     back() {
       this.isShow = false;
     },
-    
+
     //批量删除
     totalDel(total) {
       this.$confirm("此操作将永久删除该数据, 是否继续?", "提示", {
@@ -113,12 +106,11 @@ export default {
     },
     //获取列表
     async List() {
-	  this.params.descs = "a.update_time";
-        const   data  = await SysInstPage(this.params);
-    
-        this.total = data.total;
-        this.list = data.records;
-      
+      this.params.descs = "a.update_time";
+      const data = await SysInstPage(this.params);
+
+      this.total = data.total;
+      this.list = data.records;
     },
     //每页多少条，切换显示条数
     sizeChange(val) {
@@ -142,12 +134,11 @@ export default {
     },
     //删除接口
     async delData(array) {
-       await SysInstDelete(array);
+      await SysInstDelete(array);
 
-        this.$message.success("删除成功");
+      this.$message.success("删除成功");
 
-        this.search();
-
+      this.search();
     },
     //新增
     newEdit() {
@@ -156,7 +147,7 @@ export default {
       });
     },
     //编辑
-    edit( row ) {
+    edit(row) {
       this.$router.push({
         name: "newSysInst",
         query: {
@@ -165,7 +156,7 @@ export default {
       });
     },
     //删除
-    Delete( row ) {
+    Delete(row) {
       this.$confirm("此操作将永久删除该数据, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -184,4 +175,3 @@ export default {
   }
 };
 </script>
-

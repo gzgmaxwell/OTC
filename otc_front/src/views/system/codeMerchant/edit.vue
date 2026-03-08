@@ -23,53 +23,44 @@
           <el-input v-model="formValidate.userName"></el-input>
         </el-form-item>
 
-
         <el-form-item label="邀请码：" prop="memberId">
           <el-input v-model="formValidate.memberId"></el-input>
-        </el-form-item>    
+        </el-form-item>
 
         <el-form-item label="手机号：" prop="phoneNum">
           <el-input v-model="formValidate.phoneNum"></el-input>
         </el-form-item>
 
-       <el-form-item label="邮箱地址：" prop="emailAddress">
+        <el-form-item label="邮箱地址：" prop="emailAddress">
           <el-input v-model="formValidate.emailAddress"></el-input>
         </el-form-item>
 
-
         <el-form-item label="头像：" prop="header">
-
           <el-upload
-                
-                class="avatar-uploader"
-                :action="upload_url"
-                :show-file-list="false"
-                accept=".jpg, .jpeg, .JPG, .JPEG, .png"
-                :on-success="handleIconSuccess">
-                <img v-if="formValidate.header" :src="formValidate.header" class="avatar">
-                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-              </el-upload>
-
-
-        </el-form-item> 
-
-
-
+            class="avatar-uploader"
+            :action="upload_url"
+            :show-file-list="false"
+            accept=".jpg, .jpeg, .JPG, .JPEG, .png"
+            :on-success="handleIconSuccess"
+          >
+            <img
+              v-if="formValidate.header"
+              :src="formValidate.header"
+              class="avatar"
+            />
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload>
+        </el-form-item>
 
         <el-form-item label="姓名：">
           <el-input v-model="formValidate.fullName"></el-input>
-        </el-form-item>        
-
-
-
+        </el-form-item>
 
         <el-form-item label="昵称：" prop="nickName">
           <el-input v-model="formValidate.nickName"></el-input>
-        </el-form-item>       
-        
-        
-        
-<!--         
+        </el-form-item>
+
+        <!--         
         <el-form-item label="组织机构：" prop="inst">
 
           <el-select  v-model="formValidate.inst"  placeholder="请选择组织机构" style="width: 100%;">
@@ -91,8 +82,7 @@
           />
         </el-form-item> -->
 
-         
-<!--          
+        <!--          
              <el-form-item label="所在县市" prop="szxs">
 
 
@@ -108,8 +98,6 @@
                   />
 
             </el-form-item> -->
-
-            
 
         <el-form-item v-if="id" label="密码：">
           <el-button type="primary" @click="comfirmpassword">
@@ -128,15 +116,21 @@
 </template>
 <script>
 import SelectTree from "@/components/tree/SelectTree.vue";
-import { AreaList,orgCascade } from "@a/system";
-import { UserInfo, UserSave, UserUpdate,  ResetPassword, PostCascader } from "@a/system";
+import { AreaList, orgCascade } from "@a/system";
+import {
+  UserInfo,
+  UserSave,
+  UserUpdate,
+  ResetPassword,
+  PostCascader
+} from "@a/system";
 
 export default {
   name: "Edit",
   components: { SelectTree },
   data() {
     return {
-      inst:[],
+      inst: [],
       id: "",
       posts: [], //角色列表
       postProps: {
@@ -144,7 +138,7 @@ export default {
         label: "label",
         value: "value"
       },
-      orgs:[],
+      orgs: [],
       orgProps: {
         children: "children",
         label: "label",
@@ -171,7 +165,9 @@ export default {
       areaList5: [], //地区信息
       rules: {
         userName: [{ required: true, message: "请输入账号", trigger: "blur" }],
-        memberId: [{ required: true, message: "请输入邀请码", trigger: "blur" }],
+        memberId: [
+          { required: true, message: "请输入邀请码", trigger: "blur" }
+        ],
         post: [{ required: true, message: "请选择角色", trigger: "blur" }],
         fullName: [
           { required: true, message: "请输入管理员名称", trigger: "blur" }
@@ -187,7 +183,6 @@ export default {
     if (this.id) {
       this.getInfo();
     } else {
-    
     }
 
     // this.getInst();
@@ -195,9 +190,8 @@ export default {
   methods: {
     //获取地区信息
     async getAreaCascade() {
-      const data  = await orgCascade();
-      this.orgs=data;
-     
+      const data = await orgCascade();
+      this.orgs = data;
     },
     change4(value) {
       if (value) {
@@ -207,11 +201,11 @@ export default {
         });
       }
     },
-      handleIconSuccess(res, file) {
-        this.formValidate.header = res.url;
-      },
-    async getInst(){
-      this.inst=await SysInstList();
+    handleIconSuccess(res, file) {
+      this.formValidate.header = res.url;
+    },
+    async getInst() {
+      this.inst = await SysInstList();
     },
     //获取角色Cascader
     async getPosts() {
@@ -294,27 +288,27 @@ export default {
 </script>
 
 <style>
-  .avatar-uploader .el-upload {
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-  }
-  .avatar-uploader .el-upload:hover {
-    border-color: #409EFF;
-  }
-  .avatar-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
-    width: 178px;
-    height: 178px;
-    line-height: 178px;
-    text-align: center;
-  }
-  .avatar {
-    width: 178px;
-    height: 178px;
-    display: block;
-  }
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409eff;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+}
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
+}
 </style>

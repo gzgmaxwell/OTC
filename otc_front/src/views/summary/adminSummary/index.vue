@@ -25,7 +25,12 @@
     </div>
     <div class="top_wrapper">
       <div class="search_box">
-        <el-input placeholder="码商名称" v-model="params.transNumber" style="width: 30%; " @keyup.enter.native="search">
+        <el-input
+          placeholder="码商名称"
+          v-model="params.transNumber"
+          style="width: 30%; "
+          @keyup.enter.native="search"
+        >
         </el-input>
         <el-button type="primary" icon="el-icon-search" @click="search">
           搜索
@@ -34,7 +39,14 @@
       </div>
     </div>
     <div class="table_wrapper" style="height: calc(100% - 300px);">
-      <el-table ref="multipleTable" :data="list" border height="100%" stripe style="width: 100%;">
+      <el-table
+        ref="multipleTable"
+        :data="list"
+        border
+        height="100%"
+        stripe
+        style="width: 100%;"
+      >
         <el-table-column prop="fromNickName" label="码商名称"></el-table-column>
         <el-table-column prop="fromCodeName" label="收款金额"></el-table-column>
         <el-table-column prop="transNumber" label="出款金额"></el-table-column>
@@ -51,9 +63,16 @@
         </el-table-column>
       </el-table>
     </div>
-    <el-pagination background @size-change="sizeChange" @current-change="changePage" :current-page="params.current"
-      :page-sizes="[10, 20, 30]" :page-size="params.size" layout="total, sizes, prev, pager, next, jumper"
-      :total="total"></el-pagination>
+    <el-pagination
+      background
+      @size-change="sizeChange"
+      @current-change="changePage"
+      :current-page="params.current"
+      :page-sizes="[10, 20, 30]"
+      :page-size="params.size"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total"
+    ></el-pagination>
   </div>
 </template>
 
@@ -69,7 +88,7 @@ export default {
         size: 10,
         current: 1,
         startTime: null,
-        endTime: null,
+        endTime: null
       },
       total: 0,
       list: [], //表格数据
@@ -81,8 +100,8 @@ export default {
   },
   methods: {
     formatCurrency(value) {
-      if (typeof value !== 'number') return '0.00'
-      return value.toFixed(2)
+      if (typeof value !== "number") return "0.00";
+      return value.toFixed(2);
     },
     getRangeByFilter() {
       const now = dayjs();
@@ -144,7 +163,6 @@ export default {
       this.search();
     },
 
-
     //获取列表
     async List() {
       this.params.descs = "a.update_time";
@@ -176,7 +194,7 @@ export default {
           id: row.id
         }
       });
-    },
+    }
   },
   mounted() {
     this.search();

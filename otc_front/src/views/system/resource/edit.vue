@@ -1,7 +1,5 @@
 <template>
   <div class="edit_page">
-
-
     <div class="top_box">
       <div class="title">
         {{ title }}
@@ -19,89 +17,119 @@
         ref="formValidate"
         label-width="100px"
       >
-       
-       
-              <el-form-item label="类型：" prop="resType">
-                <el-select
-                  v-model="formValidate.resType"
-                  placeholder="请选择类型"
-                >
-                  <el-option
-                    v-for="item in dics.resType"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
-                  ></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item label="标题：" prop="title">
-                <el-input v-model="formValidate.title"></el-input>
-              </el-form-item>
-              <el-form-item label="资源名称(English)：" v-show="formValidate.resType == '3'">
-                <el-input v-model="formValidate.resName"></el-input>
-              </el-form-item>
-              <el-form-item label="上一级：" prop="parentId" v-show="formValidate.resType != '4'">
-                <SelectTree
-                  :checkedKey.sync="formValidate.parentId"
-                  :checkStrictly="true"
-                  :defaultProps="resourceProps"
-                  :nodeKey="'id'"
-                  :data="menus"
-                  :width="100"
-                />
-              </el-form-item>
+        <el-form-item label="类型：" prop="resType">
+          <el-select v-model="formValidate.resType" placeholder="请选择类型">
+            <el-option
+              v-for="item in dics.resType"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="标题：" prop="title">
+          <el-input v-model="formValidate.title"></el-input>
+        </el-form-item>
+        <el-form-item
+          label="资源名称(English)："
+          v-show="formValidate.resType == '3'"
+        >
+          <el-input v-model="formValidate.resName"></el-input>
+        </el-form-item>
+        <el-form-item
+          label="上一级："
+          prop="parentId"
+          v-show="formValidate.resType != '4'"
+        >
+          <SelectTree
+            :checkedKey.sync="formValidate.parentId"
+            :checkStrictly="true"
+            :defaultProps="resourceProps"
+            :nodeKey="'id'"
+            :data="menus"
+            :width="100"
+          />
+        </el-form-item>
 
-              <el-form-item label="资源标识：" prop="resCode" v-show="formValidate.resType == '2'">
-                <el-input v-model="formValidate.resCode"></el-input>
-              </el-form-item>
+        <el-form-item
+          label="资源标识："
+          prop="resCode"
+          v-show="formValidate.resType == '2'"
+        >
+          <el-input v-model="formValidate.resCode"></el-input>
+        </el-form-item>
 
-              <el-form-item label="URL：" prop="resUrl" v-show="formValidate.resType == '3'">
-                <el-input v-model="formValidate.resUrl"></el-input>
-              </el-form-item>
+        <el-form-item
+          label="URL："
+          prop="resUrl"
+          v-show="formValidate.resType == '3'"
+        >
+          <el-input v-model="formValidate.resUrl"></el-input>
+        </el-form-item>
 
-              <el-form-item label="图标：" prop="icon"  v-show="formValidate.resType == '3'">
-                <el-input v-model="formValidate.icon"></el-input>
-              </el-form-item>
+        <el-form-item
+          label="图标："
+          prop="icon"
+          v-show="formValidate.resType == '3'"
+        >
+          <el-input v-model="formValidate.icon"></el-input>
+        </el-form-item>
 
-              <el-form-item label="组件：" prop="component" v-show="formValidate.resType == '3'">
-                <el-input v-model="formValidate.component"></el-input>
-              </el-form-item>
+        <el-form-item
+          label="组件："
+          prop="component"
+          v-show="formValidate.resType == '3'"
+        >
+          <el-input v-model="formValidate.component"></el-input>
+        </el-form-item>
 
-              <el-form-item label="是否显示菜单：" v-show="formValidate.resType == '3'">
-                <el-radio-group v-model="formValidate.showMenu">
-                  <el-radio :label="true">是</el-radio>
-                  <el-radio :label="false">否</el-radio>
-                </el-radio-group>
-              </el-form-item>
-              <el-form-item label="是否基础权限：" v-show="formValidate.resType == '2'">
-                <el-radio-group v-model="formValidate.isBasicPermissions">
-                  <el-radio :label="true">是</el-radio>
-                  <el-radio :label="false">否</el-radio>
-                </el-radio-group>
-              </el-form-item>
-         
-              <el-form-item label="重定向路径：" prop="redirect" v-show="formValidate.resType == '3'">
-                <el-input v-model="formValidate.redirect"></el-input>
-              </el-form-item>
+        <el-form-item
+          label="是否显示菜单："
+          v-show="formValidate.resType == '3'"
+        >
+          <el-radio-group v-model="formValidate.showMenu">
+            <el-radio :label="true">是</el-radio>
+            <el-radio :label="false">否</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item
+          label="是否基础权限："
+          v-show="formValidate.resType == '2'"
+        >
+          <el-radio-group v-model="formValidate.isBasicPermissions">
+            <el-radio :label="true">是</el-radio>
+            <el-radio :label="false">否</el-radio>
+          </el-radio-group>
+        </el-form-item>
 
-              <el-form-item label="排序号：" prop="number" v-show="formValidate.resType == '3'">
-                <el-input v-model="formValidate.number"></el-input>
-              </el-form-item>
+        <el-form-item
+          label="重定向路径："
+          prop="redirect"
+          v-show="formValidate.resType == '3'"
+        >
+          <el-input v-model="formValidate.redirect"></el-input>
+        </el-form-item>
 
-
-
+        <el-form-item
+          label="排序号："
+          prop="number"
+          v-show="formValidate.resType == '3'"
+        >
+          <el-input v-model="formValidate.number"></el-input>
+        </el-form-item>
       </el-form>
     </div>
-
-
-
-
   </div>
 </template>
 <script>
 import SelectTree from "@/components/tree/SelectTree.vue";
 
-import { ResourceAllTree , ResourceInfo , ResourceUpdate , ResourceAdd} from "@a/system";
+import {
+  ResourceAllTree,
+  ResourceInfo,
+  ResourceUpdate,
+  ResourceAdd
+} from "@a/system";
 
 export default {
   name: "Edit",
@@ -142,42 +170,42 @@ export default {
   },
   methods: {
     async ResourceAllTree() {
-      let data  = await ResourceAllTree();
+      let data = await ResourceAllTree();
       this.menus = data;
     },
     //获取列表详情接口
     async getInfo(params, id) {
-      let  data  = await ResourceInfo(id);
-        this.formValidate = data;
-        this.otherType = this.formValidate.resType;
+      let data = await ResourceInfo(id);
+      this.formValidate = data;
+      this.otherType = this.formValidate.resType;
     },
     //获取上级菜单接口
     async parentDirectory(params) {
-      let data  = await ResourceAllTree(params);
-        this.data = data;
+      let data = await ResourceAllTree(params);
+      this.data = data;
     },
     //新增保存接口
     async addData(params) {
-       await ResourceAdd(params);
-        this.$message.success("新增成功");
-        this.resetForm();
-        // 路由跳转至首页
-        this.$router.push({
-          name: "Resource"
-        });
+      await ResourceAdd(params);
+      this.$message.success("新增成功");
+      this.resetForm();
+      // 路由跳转至首页
+      this.$router.push({
+        name: "Resource"
+      });
     },
     //编辑保存接口
     async editData(params, id) {
       if (!Number(this.formValidate.resType)) {
         this.formValidate.resType = this.otherType;
       }
-       await ResourceUpdate(params,id);
-        this.$message.success("修改成功");
-        this.resetForm();
-        // 路由跳转至首页
-        this.$router.push({
-          name: "Resource"
-        });
+      await ResourceUpdate(params, id);
+      this.$message.success("修改成功");
+      this.resetForm();
+      // 路由跳转至首页
+      this.$router.push({
+        name: "Resource"
+      });
     },
     //保存
     save(formName) {

@@ -1,51 +1,44 @@
 <template>
   <div class="list_page">
-
-
-
     <div class="top_wrapper">
       <div class="search_box">
-
-        <el-input placeholder="请输入付款人" v-model="params.fromId" @keyup.enter.native="search"></el-input>
+        <el-input
+          placeholder="请输入付款人"
+          v-model="params.fromId"
+          @keyup.enter.native="search"
+        ></el-input>
 
         <el-button type="primary" icon="el-icon-search" @click="search">
           搜索
         </el-button>
         <el-button icon="el-icon-refresh" @click="reset">重置</el-button>
-
       </div>
     </div>
 
-
     <div class="table_wrapper">
       <el-table ref="multipleTable" :data="list" border height="100%">
-
-        <el-table-column prop="fromNickName" label="付款人昵称"></el-table-column>
-
-
+        <el-table-column
+          prop="fromNickName"
+          label="付款人昵称"
+        ></el-table-column>
 
         <el-table-column prop="address" label="钱包地址"></el-table-column>
 
-
-
-        <el-table-column prop="purposeNickName" label="收款人昵称"></el-table-column>
-
+        <el-table-column
+          prop="purposeNickName"
+          label="收款人昵称"
+        ></el-table-column>
 
         <el-table-column prop="money" label="金额"></el-table-column>
 
-
-
         <el-table-column prop="title" label="标题"></el-table-column>
-
-
 
         <el-table-column prop="orderId" label="订单编号"></el-table-column>
 
-
-
-        <el-table-column prop="orderStatusName" label="订单状态"></el-table-column>
-
-
+        <el-table-column
+          prop="orderStatusName"
+          label="订单状态"
+        ></el-table-column>
 
         <el-table-column label="操作">
           <template slot-scope="scope">
@@ -54,21 +47,21 @@
         </el-table-column>
       </el-table>
     </div>
-    <el-pagination background @size-change="sizeChange" @current-change="changePage" :current-page="params.current"
-      :page-sizes="[10, 20, 30]" :page-size="params.size" layout="total, sizes, prev, pager, next, jumper"
-      :total="total"></el-pagination>
-
-
-
-
+    <el-pagination
+      background
+      @size-change="sizeChange"
+      @current-change="changePage"
+      :current-page="params.current"
+      :page-sizes="[10, 20, 30]"
+      :page-size="params.size"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total"
+    ></el-pagination>
   </div>
 </template>
 
 <script>
-
 import { PayOrderPage, PayOrderDelete } from "@a/transaction";
-
-
 
 export default {
   name: "PayOrder",
@@ -89,7 +82,7 @@ export default {
       fileList: []
     };
   },
-  created() { },
+  created() {},
   methods: {
     //搜索
     search() {
@@ -120,7 +113,7 @@ export default {
           });
           this.delData(totalArr);
         })
-        .catch(() => { });
+        .catch(() => {});
     },
     //获取列表
     async List() {
@@ -129,7 +122,6 @@ export default {
 
       this.total = data.total;
       this.list = data.records;
-
     },
     //每页多少条，切换显示条数
     sizeChange(val) {
@@ -158,7 +150,6 @@ export default {
       this.$message.success("删除成功");
 
       this.search();
-
     },
     //新增
     newEdit() {
@@ -187,7 +178,7 @@ export default {
           arr.push(row.id);
           this.delData(arr);
         })
-        .catch(() => { });
+        .catch(() => {});
     }
   },
   mounted() {

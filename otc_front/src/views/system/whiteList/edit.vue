@@ -1,9 +1,6 @@
 <template>
-
-
-
-<div class="edit_page">
-      <div class="top_box">
+  <div class="edit_page">
+    <div class="top_box">
       <div class="title">
         {{ this.id ? "编辑信息" : "新增信息" }}
       </div>
@@ -13,8 +10,8 @@
         </ja-button>
         <el-button @click="backTo()">返回</el-button>
       </div>
-       </div>
-      <div class="edit_content">
+    </div>
+    <div class="edit_content">
       <el-form
         class="u_form"
         :model="formValidate"
@@ -22,31 +19,23 @@
         ref="formValidate"
         label-width="100px"
       >
-     
-
-                <el-row :gutter="20" type="flex" class="row-bg" justify="center">
-          <el-col :span="10" >
+        <el-row :gutter="20" type="flex" class="row-bg" justify="center">
+          <el-col :span="10">
             <el-form-item label="ip" prop="ip">
-              <el-input v-model="formValidate.ip" @change="handleChange" style="width: 100%;"></el-input>
+              <el-input
+                v-model="formValidate.ip"
+                @change="handleChange"
+                style="width: 100%;"
+              ></el-input>
             </el-form-item>
-          </el-col>	
+          </el-col>
         </el-row>
-
-
-       
-
-
       </el-form>
-      </div>
+    </div>
   </div>
-
-
-
-
-
 </template>
 <script>
-import {WhiteListInfo ,WhiteListSave ,WhiteListUpdate} from "@a/system";
+import { WhiteListInfo, WhiteListSave, WhiteListUpdate } from "@a/system";
 
 export default {
   name: "Edit",
@@ -57,50 +46,44 @@ export default {
       title: "",
       params: {},
       formValidate: {
-        ip: null,		
-        createBy: null,		
-        createTime: null,		
-        updateBy: null,		
-        updateTime: null,		
-        isDelete: null		
+        ip: null,
+        createBy: null,
+        createTime: null,
+        updateBy: null,
+        updateTime: null,
+        isDelete: null
       },
       data: [],
       rules: {
-        ip: [
-          { required: true, message: '请输入ip', trigger: 'blur' }
-		],
-
+        ip: [{ required: true, message: "请输入ip", trigger: "blur" }]
       },
       dialogVisible: false,
       otherType: ""
     };
   },
-  methods: {  
+  methods: {
     handleChange(value) {
       this.formValidate.ip = value.trim(); // 使用 trim() 去除字符串两端的空白字符
     },
     //获取列表详情接口
     async getInfo(id) {
-      
-      const  data = await WhiteListInfo(id);
-  
-        this.formValidate = data;
-   
+      const data = await WhiteListInfo(id);
+
+      this.formValidate = data;
     },
     //新增保存接口
     async addData() {
-        const  data = await WhiteListSave(this.formValidate);
-        this.$message.success("新增成功");
-        this.resetForm();
-        this.backTo();
-     
+      const data = await WhiteListSave(this.formValidate);
+      this.$message.success("新增成功");
+      this.resetForm();
+      this.backTo();
     },
     //编辑保存接口
     async editData() {
-        const  data = await WhiteListUpdate(this.formValidate);
-        this.$message.success("修改成功");
-        this.resetForm();
-        this.backTo();
+      const data = await WhiteListUpdate(this.formValidate);
+      this.$message.success("修改成功");
+      this.resetForm();
+      this.backTo();
     },
     //保存
     save(formName) {

@@ -6,7 +6,7 @@ export const configForm = [
     span: 24,
     maxlength: 250,
     placeholder: "请输入...",
-    showLimit: true,
+    showLimit: true
   },
   {
     label: "",
@@ -15,12 +15,12 @@ export const configForm = [
     span: 24,
     maxlength: 11,
     placeholder: "请输入电话号码（必填）",
-    showLimit: false,
+    showLimit: false
   },
   {
-    label: '',
-    type: 'slotName',
+    label: "",
+    type: "slotName",
     span: 24,
-    slotName: 'button'
+    slotName: "button"
   }
 ];

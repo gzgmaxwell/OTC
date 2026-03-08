@@ -32,28 +32,29 @@
             ></el-input
           ></el-col>
           <el-col :span="7" class="v-center h-end">
-            <el-button :loading="loading" @click="sendCode" style="width: calc(100% - 10px); margin-left: 10px"
-              >{{ time != 60 ? `已发送（${time}）`:'获取验证码'}}</el-button
+            <el-button
+              :loading="loading"
+              @click="sendCode"
+              style="width: calc(100% - 10px); margin-left: 10px"
+              >{{ time != 60 ? `已发送（${time}）` : "获取验证码" }}</el-button
             >
           </el-col>
         </el-row>
       </el-form-item>
       <el-form-item prop="yhlx">
-
-
-        
-                  <el-select placeholder="用户类型" style="width:100%" disabled  v-model="registerForm.yhlx" >
-                      
-
-                      <el-option
-                        v-for="item in lxs"
-                        :key="item.dicId"
-                        :label="item.dicLabel"
-                        :value="item.dicValue"
-                      ></el-option>
-                    </el-select>
-
-
+        <el-select
+          placeholder="用户类型"
+          style="width:100%"
+          disabled
+          v-model="registerForm.yhlx"
+        >
+          <el-option
+            v-for="item in lxs"
+            :key="item.dicId"
+            :label="item.dicLabel"
+            :value="item.dicValue"
+          ></el-option>
+        </el-select>
       </el-form-item>
       <el-form-item prop="companyName">
         <el-input
@@ -160,7 +161,7 @@
 <script>
 // import { register } from "@/api/login";
 
-import {registerCode,GetList ,UserZczh} from "@a/system";
+import { registerCode, GetList, UserZczh } from "@a/system";
 import { configForm } from "./data";
 export default {
   name: "Register",
@@ -173,7 +174,7 @@ export default {
       }
     };
     return {
-      lxs:[],
+      lxs: [],
       configForm: configForm,
       registerForm: {
         phone: "",
@@ -183,17 +184,19 @@ export default {
         password: "",
         userPassword: "",
         businessLicense: "",
-        mzscxkz: "",
+        mzscxkz: ""
       },
       rules: {
-        phone: [
-          { required: true, trigger: "blur", message: "请输入手机号" },
-        ],
+        phone: [{ required: true, trigger: "blur", message: "请输入手机号" }],
         code: [
-          { required: true, trigger: "blur", message: "请输入您的短信验证码" },
+          { required: true, trigger: "blur", message: "请输入您的短信验证码" }
         ],
         yhlx: [
-          { required: true, trigger: ['blur', 'change'], message: "请选择企业类型" },
+          {
+            required: true,
+            trigger: ["blur", "change"],
+            message: "请选择企业类型"
+          }
         ],
         companyName: [
           { required: true, trigger: "blur", message: "请输入企业名称" }
@@ -204,13 +207,13 @@ export default {
             min: 8,
             max: 20,
             message: "密码长度必须介于 8 和 20 位之间",
-            trigger: "blur",
-          },
+            trigger: "blur"
+          }
         ],
         userPassword: [
           { required: true, trigger: "blur", message: "请再次输入密码" },
-          { required: true, validator: equalToPassword, trigger: "blur" },
-        ],
+          { required: true, validator: equalToPassword, trigger: "blur" }
+        ]
       },
       loading: false,
       captchaEnabled: true,
@@ -222,37 +225,40 @@ export default {
   },
   created() {},
   methods: {
-    async getLxs(){
-      this.lxs = await GetList({model:"yhlx"})
+    async getLxs() {
+      this.lxs = await GetList({ model: "yhlx" });
     },
-   async zczh(){
+    async zczh() {
       this.loading = true;
       const data = await UserZczh(this.registerForm);
       this.loading = false;
 
-        console.log(data)
-        if(data.code == "200"){
-
+      console.log(data);
+      if (data.code == "200") {
         const username = this.registerForm.phone;
-            this.$alert("<font color='red'>恭喜你，您的账号 " + username + " 注册成功！</font>", '系统提示', {
-              dangerouslyUseHTMLString: true,
-              type: 'success'
-            }).then(() => {
-              this.$router.push("/login");
-            }).catch(() => {});
-
-        }
-
+        this.$alert(
+          "<font color='red'>恭喜你，您的账号 " +
+            username +
+            " 注册成功！</font>",
+          "系统提示",
+          {
+            dangerouslyUseHTMLString: true,
+            type: "success"
+          }
+        )
+          .then(() => {
+            this.$router.push("/login");
+          })
+          .catch(() => {});
+      }
     },
     handleRegister() {
-      this.$refs.registerForm.validate((valid) => {
+      this.$refs.registerForm.validate(valid => {
         if (valid) {
-         
-
           this.zczh();
 
           // register(this.registerForm).then(res => {
-          
+
           // }).catch(() => {
           //   this.loading = false;
           //   if (this.captchaEnabled) {
@@ -263,22 +269,22 @@ export default {
       });
     },
     sendCode() {
-      if(this.time != 60) return
-      this.$refs.registerForm.validateField('phone', (val) => {
+      if (this.time != 60) return;
+      this.$refs.registerForm.validateField("phone", val => {
         if (!val) {
           this.sendRegister();
           return true;
         } else {
           return false;
         }
-      })
+      });
       // this.timers(new Date().getTime())
     },
-    async sendRegister(){
-      const res = await registerCode({phoneNum:this.registerForm.phone})
-      console.log('res======', res)
+    async sendRegister() {
+      const res = await registerCode({ phoneNum: this.registerForm.phone });
+      console.log("res======", res);
       this.$message.success("发送成功");
-      this.timers(new Date().getTime())
+      this.timers(new Date().getTime());
     },
     handleIconSuccess(res, file) {
       this.registerForm.businessLicense = res.url;
@@ -300,21 +306,21 @@ export default {
           if (this.time < 1) {
             clearInterval(this.timer);
             this.showSend = true;
-            this.time = 60
+            this.time = 60;
           }
           console.log(this.time);
         }, 1000);
       } else {
         this.showSend = true;
       }
-    },
+    }
   },
- async mounted() {
-   await  this.getLxs();
- },
- destroyed() {
-  clearInterval(this.timer);
- }
+  async mounted() {
+    await this.getLxs();
+  },
+  destroyed() {
+    clearInterval(this.timer);
+  }
 };
 </script>
 
@@ -326,7 +332,7 @@ export default {
   height: 100%;
   margin-left: -280px;
   background: $bg url("../../assets/images/bg.png") 50% 50% no-repeat;
-  background-size:cover;
+  background-size: cover;
   overflow: hidden;
   .login-title {
     position: absolute;

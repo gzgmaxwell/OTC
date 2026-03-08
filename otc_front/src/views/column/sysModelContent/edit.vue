@@ -65,7 +65,13 @@
           </el-col>
         </el-row>
 
-        <el-row :gutter="20" type="flex" class="row-bg" justify="center" v-if="formValidate.status === '0'">
+        <el-row
+          :gutter="20"
+          type="flex"
+          class="row-bg"
+          justify="center"
+          v-if="formValidate.status === '0'"
+        >
           <el-col :span="20">
             <el-form-item label="超链接" prop="url">
               <el-input
@@ -86,7 +92,7 @@ import {
   SysModelContentSave,
   SysModelContentUpdate,
   SysModelList,
-  SysModelTree,
+  SysModelTree
 } from "@a/column";
 
 import { DeletesByUrl } from "@a/system";
@@ -103,7 +109,7 @@ export default {
       columnNameList: [],
       defaultProps: {
         children: "children",
-        label: "label",
+        label: "label"
       },
       title: "",
       params: {},
@@ -116,29 +122,30 @@ export default {
         createTime: null,
         updateBy: null,
         updateTime: null,
-        status: '1',
-        url: null,
+        status: "1",
+        url: null
       },
       data: [],
       rules: {
         modelId: [
-          { required: true, message: '请输入栏目名称', trigger: 'blur' },{  max: 50, message: "最多50位", trigger: "blur" }
+          { required: true, message: "请输入栏目名称", trigger: "blur" },
+          { max: 50, message: "最多50位", trigger: "blur" }
         ],
         title: [
           { required: true, message: "请输入标题", trigger: "blur" },
-          { max: 50, message: "最多50位", trigger: "blur" },
+          { max: 50, message: "最多50位", trigger: "blur" }
         ],
         content: [
           { required: true, message: "请输入内容", trigger: "blur" },
-          { max: 200000, message: "最多200000位", trigger: "blur" },
+          { max: 200000, message: "最多200000位", trigger: "blur" }
         ],
         url: [
           { required: true, message: "请输入超链接", trigger: "blur" },
-          { max: 200000, message: "最多200000位", trigger: "blur" },
-        ],
+          { max: 200000, message: "最多200000位", trigger: "blur" }
+        ]
       },
       dialogVisible: false,
-      otherType: "",
+      otherType: ""
     };
   },
   methods: {
@@ -221,16 +228,15 @@ export default {
     //返回
     backTo() {
       this.$router.push({
-        name: "SysModelContent",
+        name: "SysModelContent"
       });
-    },
+    }
   },
   mounted() {
     this.getColumn();
 
     this.getClumnTree();
-    
-  },
+  }
 };
 </script>
 <style scoped>

@@ -29,7 +29,6 @@ export const TransferRecordSave = data =>
     data
   });
 
-
 export const TransferRecordUpdate = data =>
   request({
     method: "put",

@@ -16,8 +16,16 @@
           v-for="item in formConfig"
           :key="item.prop"
           :span="item.span || 24"
-          :style="{ float: item.float ? item.float : 'left', }"
-          :class="[item.className ? item.className : (item.type == 'slotName' || item.type == 'textarea' || item.type == 'upload' ? '' : 'h37')]"
+          :style="{ float: item.float ? item.float : 'left' }"
+          :class="[
+            item.className
+              ? item.className
+              : item.type == 'slotName' ||
+                item.type == 'textarea' ||
+                item.type == 'upload'
+              ? ''
+              : 'h37'
+          ]"
         >
           <el-form-item
             :label="item.label"
@@ -29,8 +37,8 @@
             <el-input
               v-if="
                 item.type === 'text' ||
-                item.type === 'textarea' ||
-                item.type === 'password'
+                  item.type === 'textarea' ||
+                  item.type === 'password'
               "
               :type="item.type"
               class="input"
@@ -47,8 +55,10 @@
               :readonly="item.readonly"
               @keyup.enter.native="handleQuery(item.isEnter)"
             >
-            <template slot="append" v-if="item.append">{{item.append}}</template>
-          </el-input>
+              <template slot="append" v-if="item.append">{{
+                item.append
+              }}</template>
+            </el-input>
 
             <!-- 数字输入框 -->
             <el-input-number
@@ -65,7 +75,7 @@
             <el-select
               v-if="item.type === 'select'"
               v-model="formData[item.prop]"
-              :placeholder="item.placeholder||'请选择'"
+              :placeholder="item.placeholder || '请选择'"
               :disabled="item.disabled"
               :style="{ width: item.width || '100%' }"
               :multiple="item.multiple"
@@ -88,10 +98,11 @@
               :style="{ width: item.width || '100%' }"
             >
               <el-radio
-                  v-for="option in item.options"
-                  :key="option.value"
-                  :label="option.value"
-                >{{option.label}}</el-radio>
+                v-for="option in item.options"
+                :key="option.value"
+                :label="option.value"
+                >{{ option.label }}</el-radio
+              >
             </el-radio-group>
 
             <!-- 复选框 -->
@@ -122,8 +133,8 @@
               :type="item.btnType || 'text'"
               :item="item"
               :showFile="item.showFile"
-              @uploadSuccess="(v) => handleSuccess(v, item.prop)"
-              @uoloadRemove="(v) => handleRemove(v, item.prop)"
+              @uploadSuccess="v => handleSuccess(v, item.prop)"
+              @uoloadRemove="v => handleRemove(v, item.prop)"
               v-bind="$attrs"
             >
               <template slot="uploadBtn" v-if="item.btnType === 'picture-card'">
@@ -132,26 +143,29 @@
                 </div>
               </template>
               <template slot="uploadBtn" v-else>
-                  <el-button size="small" type="primary">{{
-                    item.btnText || '上传文件'
-                  }}</el-button>
+                <el-button size="small" type="primary">{{
+                  item.btnText || "上传文件"
+                }}</el-button>
               </template>
               <template slot="more">
-                <div>{{item.tip || ''}}</div>
+                <div>{{ item.tip || "" }}</div>
               </template>
             </ImgUpload>
 
             <!-- 富文本 -->
             <div style="height: 300px" v-if="item.type === 'editor'">
-              <Editor :html.sync="formData[item.prop]" :limitLength="item.maxlength" />
+              <Editor
+                :html.sync="formData[item.prop]"
+                :limitLength="item.maxlength"
+              />
             </div>
             <!-- 时间选择器 -->
             <el-date-picker
               :style="{ width: item.width || '100%' }"
               v-if="
                 item.type === 'daterange' ||
-                item.type === 'datetimerange' ||
-                item.type === 'date'
+                  item.type === 'datetimerange' ||
+                  item.type === 'date'
               "
               v-model="formData[item.prop]"
               :type="item.type"
@@ -173,15 +187,17 @@
               :filed.sync="formData[item.prop]"
             /> -->
 
-            <el-cascader v-if="item.type === 'cascader'" 
-            :options="item.options" 
-            v-model="formData[item.prop]"
-            :show-all-levels="item.showAllLevels"
-            :placeholder="item.placeholder || '请选择'" 
-            :disabled="item.disabled"
-            :props="item.optionProps"
-            filterable
-            clearable>
+            <el-cascader
+              v-if="item.type === 'cascader'"
+              :options="item.options"
+              v-model="formData[item.prop]"
+              :show-all-levels="item.showAllLevels"
+              :placeholder="item.placeholder || '请选择'"
+              :disabled="item.disabled"
+              :props="item.optionProps"
+              filterable
+              clearable
+            >
             </el-cascader>
 
             <!-- 日期选择器 -->
@@ -189,12 +205,15 @@
               <DatePicker
                 :config="item"
                 :filed.sync="formData[item.prop]"
-                @pickerChange="(v) => handleSuccess(v, item.prop)"
+                @pickerChange="v => handleSuccess(v, item.prop)"
               />
             </div>
             <!-- slot -->
           </el-form-item>
-          <div :class="[item.className ? item.className : '']" v-if="item.type === 'slotName'">
+          <div
+            :class="[item.className ? item.className : '']"
+            v-if="item.type === 'slotName'"
+          >
             <slot :name="item.slotName"></slot>
           </div>
           <!-- 操作按钮 -->
@@ -209,15 +228,15 @@
 
 <script>
 // import UploadForm from './upload-form.vue'
-import DatePicker from './date-picker.vue'
+import DatePicker from "./date-picker.vue";
 // import Editor from '@/components/projectComponents/formComponents/editor'
-import ImgUpload from './ImgUpload'
+import ImgUpload from "./ImgUpload";
 // import RegionalCascader from './regionalCascade'
 export default {
   components: {
     // UploadForm,
     ImgUpload,
-    DatePicker,
+    DatePicker
     // Editor,
     // RegionalCascader
   },
@@ -225,12 +244,12 @@ export default {
     // 表单域标签的宽度
     labelWidth: {
       type: String,
-      default: () => '140px'
+      default: () => "140px"
     },
     // 表单域标签的位置
     labelPosition: {
       type: String,
-      default: 'right'
+      default: "right"
     },
     // 表单配置
     formConfig: {
@@ -253,45 +272,44 @@ export default {
     isDialog: {
       type: Boolean,
       default: false
-    },
+    }
   },
   computed: {},
 
   data() {
     return {
       show: true
-    }
+    };
   },
   methods: {
     submitForm(cb) {
-      this.$refs.ruleForm.validate((valid) => {
+      this.$refs.ruleForm.validate(valid => {
         if (valid) {
-          cb && cb()
+          cb && cb();
         } else {
-          return false
+          return false;
         }
-      })
+      });
     },
     resetForm() {
-      this.$refs.ruleForm.resetFields()
+      this.$refs.ruleForm.resetFields();
     },
     // 图片上传成功
     handleSuccess(v, type) {
       // this.formData[type] = v
-      console.log('form组件-图片个数', v)
-      this.$set(this.formData, type, v)
+      console.log("form组件-图片个数", v);
+      this.$set(this.formData, type, v);
     },
-    handleRemove(v, type) { 
-      
+    handleRemove(v, type) {
       // this.$set(this.formData, type, v)
     },
     editorChange() {},
     handleQuery(isEnter) {
-      if(!isEnter) return
-      this.$emit('handleSearch')
+      if (!isEnter) return;
+      this.$emit("handleSearch");
     }
   }
-}
+};
 </script>
 <style scoped lang="scss">
 ::v-deep .img-content .img-item .overlay {
@@ -321,7 +339,8 @@ export default {
     text-align: left;
   }
 
-  .el-form, ::v-deep .el-textarea__inner {
+  .el-form,
+  ::v-deep .el-textarea__inner {
     font-family: "Arial";
   }
 

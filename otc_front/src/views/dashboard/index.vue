@@ -1,171 +1,207 @@
 <template>
   <Layout>
-  <div class="dashboard_wrapper">
-    <el-card class="box-card">
-      <div slot="header" class="clearfix">
-        <span class="card-title">运营概况</span>
-      </div>
-      <div class="card-content6">
-        <div v-for="item in yyList" :key="item.name" class="card-item">
+    <div class="dashboard_wrapper">
+      <el-card class="box-card">
+        <div slot="header" class="clearfix">
+          <span class="card-title">运营概况</span>
+        </div>
+        <div class="card-content6">
+          <div v-for="item in yyList" :key="item.name" class="card-item">
             <div class="item-left">
-              <img :src="item.img"/>
+              <img :src="item.img" />
             </div>
             <div class="item-right">
-              <div class="item-right-title">{{item.name}}</div>
-              <div class="item-right-num1">{{item.num}}</div>
-              <div class="item-right-num3" @click="dialogTableVisible = true" v-if="item.lxNum&&item.name=='物联设备在线数'">离线和停用数量：{{item.lxNum}}</div>
-              <div class="item-right-num2" @click="dialogTableVisible1 = true" v-if="item.lxNum&&item.name!='物联设备在线数'">离线和停用数量：{{item.lxNum}}</div>
+              <div class="item-right-title">{{ item.name }}</div>
+              <div class="item-right-num1">{{ item.num }}</div>
+              <div
+                class="item-right-num3"
+                @click="dialogTableVisible = true"
+                v-if="item.lxNum && item.name == '物联设备在线数'"
+              >
+                离线和停用数量：{{ item.lxNum }}
+              </div>
+              <div
+                class="item-right-num2"
+                @click="dialogTableVisible1 = true"
+                v-if="item.lxNum && item.name != '物联设备在线数'"
+              >
+                离线和停用数量：{{ item.lxNum }}
+              </div>
             </div>
+          </div>
         </div>
-      </div>
-    </el-card>
-    <el-card class="box-card">
-      <div slot="header" class="clearfix">
-        <span class="card-title">实时概况</span>
-      </div>
-      <div class="card-content8">
-        <div v-for="item in gkList" :key="item.name" class="card-item">
+      </el-card>
+      <el-card class="box-card">
+        <div slot="header" class="clearfix">
+          <span class="card-title">实时概况</span>
+        </div>
+        <div class="card-content8">
+          <div v-for="item in gkList" :key="item.name" class="card-item">
             <div class="item-left">
-              <img :src="item.img"/>
+              <img :src="item.img" />
             </div>
             <div class="item-right">
-              <div class="item-right-title">{{item.name}}</div>
-              <div class="item-right-num1">{{item.num}}</div>
+              <div class="item-right-title">{{ item.name }}</div>
+              <div class="item-right-num1">{{ item.num }}</div>
             </div>
+          </div>
         </div>
+      </el-card>
+      <div class="table-box">
+        <el-card class="box-card2">
+          <div slot="header" class="clearfix">
+            <span class="card-title">最近三日设备离线</span>
+          </div>
+          <div class="table_wrapper">
+            <el-table ref="multipleTable" :data="list" border>
+              <el-table-column
+                prop="companyName"
+                label="企业名称"
+                show-overflow-tooltip
+              ></el-table-column>
+              <el-table-column
+                prop="sbmc"
+                label="设备名称"
+                show-overflow-tooltip
+              ></el-table-column>
+              <el-table-column
+                prop="bjnr"
+                label="报警内容"
+                show-overflow-tooltip
+              ></el-table-column>
+              <el-table-column
+                prop="sblxName"
+                label="设备类型"
+                show-overflow-tooltip
+              ></el-table-column>
+              <el-table-column
+                prop="dtu"
+                label="设备编号"
+                show-overflow-tooltip
+              ></el-table-column>
+              <el-table-column
+                prop="createTime"
+                label="离线时间"
+                show-overflow-tooltip
+              ></el-table-column>
+            </el-table>
+
+            <el-pagination
+              background
+              @size-change="sizeChange"
+              @current-change="changePage"
+              :current-page="params.current"
+              :page-sizes="[10, 20, 30]"
+              :page-size="params.size"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total="total"
+            ></el-pagination>
+          </div>
+        </el-card>
+        <el-card class="box-card2">
+          <div slot="header" class="clearfix">
+            <span class="card-title">近三日设备报警</span>
+          </div>
+          <div class="table_wrapper">
+            <el-table ref="multipleTable" :data="list2" border>
+              <el-table-column
+                prop="companyName"
+                label="企业名称"
+                show-overflow-tooltip
+              ></el-table-column>
+              <el-table-column
+                prop="sbmc"
+                label="设备名称"
+                show-overflow-tooltip
+              ></el-table-column>
+              <el-table-column
+                prop="bjnr"
+                label="报警内容"
+                show-overflow-tooltip
+              ></el-table-column>
+              <el-table-column
+                prop="sblxName"
+                label="设备类型"
+                show-overflow-tooltip
+              ></el-table-column>
+              <el-table-column
+                prop="dtu"
+                label="设备编号"
+                show-overflow-tooltip
+              ></el-table-column>
+              <el-table-column
+                prop="createTime"
+                label="报警时间"
+                show-overflow-tooltip
+              ></el-table-column>
+            </el-table>
+
+            <el-pagination
+              background
+              @size-change="sizeChange2"
+              @current-change="changePage2"
+              :current-page="params2.current"
+              :page-sizes="[10, 20, 30]"
+              :page-size="params2.size"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total="total2"
+            ></el-pagination>
+          </div>
+        </el-card>
       </div>
-    </el-card>
-    <div class="table-box">
-      <el-card class="box-card2">
-        <div slot="header" class="clearfix">
-          <span class="card-title">最近三日设备离线</span>
+      <el-dialog title="物联设备故障统计" :visible.sync="dialogTableVisible">
+        <div class="ycl">已处理</div>
+        <el-table :data="wlData">
+          <el-table-column
+            property="gzlb1Name"
+            label="故障原因"
+            width="250"
+          ></el-table-column>
+          <el-table-column
+            property="gzlb2Name"
+            label="具体原因"
+          ></el-table-column>
+          <el-table-column
+            property="gzsl"
+            label="故障数量"
+            width="300"
+          ></el-table-column>
+        </el-table>
+        <div class="dcl">待处理</div>
+        <div class="dclsl" @click="wlJump">待处理数量：{{ this.wlNum }}</div>
+        <div class="dcl">已停用</div>
+        <div class="dclsl" @click="wltyJump">
+          已停用数量：{{ this.wltyNum }}
         </div>
-        <div class="table_wrapper">
-          <el-table ref="multipleTable" :data="list" border>
-            <el-table-column
-              prop="companyName"
-              label="企业名称"
-              show-overflow-tooltip
-            ></el-table-column>
-            <el-table-column
-              prop="sbmc"
-              label="设备名称"
-              show-overflow-tooltip
-            ></el-table-column>
-            <el-table-column
-              prop="bjnr"
-              label="报警内容"
-              show-overflow-tooltip
-            ></el-table-column>
-            <el-table-column
-              prop="sblxName"
-              label="设备类型"
-              show-overflow-tooltip
-            ></el-table-column>
-            <el-table-column
-              prop="dtu"
-              label="设备编号"
-              show-overflow-tooltip
-            ></el-table-column>
-            <el-table-column
-              prop="createTime"
-              label="离线时间"
-              show-overflow-tooltip
-            ></el-table-column>
-          </el-table>
-          
-          <el-pagination
-            background
-            @size-change="sizeChange"
-            @current-change="changePage"
-            :current-page="params.current"
-            :page-sizes="[10, 20, 30]"
-            :page-size="params.size"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="total"
-          ></el-pagination>
-        </div>
-      </el-card>
-      <el-card class="box-card2">
-        <div slot="header" class="clearfix">
-          <span class="card-title">近三日设备报警</span>
-        </div>
-        <div class="table_wrapper">
-          <el-table ref="multipleTable" :data="list2" border>
-            <el-table-column
-              prop="companyName"
-              label="企业名称"
-              show-overflow-tooltip
-            ></el-table-column>
-            <el-table-column
-              prop="sbmc"
-              label="设备名称"
-              show-overflow-tooltip
-            ></el-table-column>
-            <el-table-column
-              prop="bjnr"
-              label="报警内容"
-              show-overflow-tooltip
-            ></el-table-column>
-            <el-table-column
-              prop="sblxName"
-              label="设备类型"
-              show-overflow-tooltip
-            ></el-table-column>
-            <el-table-column
-              prop="dtu"
-              label="设备编号"
-              show-overflow-tooltip
-            ></el-table-column>
-            <el-table-column
-              prop="createTime"
-              label="报警时间"
-              show-overflow-tooltip
-            ></el-table-column>
-          </el-table>
-          
-          <el-pagination
-            background
-            @size-change="sizeChange2"
-            @current-change="changePage2"
-            :current-page="params2.current"
-            :page-sizes="[10, 20, 30]"
-            :page-size="params2.size"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="total2"
-          ></el-pagination>
-        </div>
-      </el-card>
+      </el-dialog>
+      <el-dialog title="摄像头设备故障统计" :visible.sync="dialogTableVisible1">
+        <div class="ycl">已处理</div>
+        <el-table :data="sxtData">
+          <el-table-column
+            property="gzlb1Name"
+            label="故障原因"
+            width="250"
+          ></el-table-column>
+          <el-table-column
+            property="gzlb2Name"
+            label="具体原因"
+          ></el-table-column>
+          <el-table-column
+            property="gzsl"
+            label="故障数量"
+            width="300"
+          ></el-table-column>
+        </el-table>
+        <div class="dcl">待处理</div>
+        <div class="dclsl" @click="sxtJump">待处理数量：{{ this.sxtNum }}</div>
+      </el-dialog>
     </div>
-    <el-dialog title="物联设备故障统计" :visible.sync="dialogTableVisible">
-      <div class="ycl">已处理</div>
-      <el-table :data="wlData">
-        <el-table-column property="gzlb1Name" label="故障原因" width="250"></el-table-column>
-        <el-table-column property="gzlb2Name" label="具体原因"></el-table-column>
-        <el-table-column property="gzsl" label="故障数量" width="300"></el-table-column>
-      </el-table>
-      <div class="dcl">待处理</div>
-      <div class="dclsl" @click="wlJump" >待处理数量：{{this.wlNum}}</div>
-       <div class="dcl">已停用</div>
-      <div class="dclsl" @click="wltyJump" >已停用数量：{{this.wltyNum}}</div>
-    </el-dialog>
-    <el-dialog title="摄像头设备故障统计" :visible.sync="dialogTableVisible1">
-      <div class="ycl">已处理</div>
-      <el-table :data="sxtData">
-        <el-table-column property="gzlb1Name" label="故障原因" width="250"></el-table-column>
-        <el-table-column property="gzlb2Name" label="具体原因"></el-table-column>
-        <el-table-column property="gzsl" label="故障数量" width="300"></el-table-column>
-      </el-table>
-      <div class="dcl">待处理</div>
-      <div class="dclsl" @click="sxtJump" >待处理数量：{{this.sxtNum}}</div>
-    </el-dialog>
-  </div>
   </Layout>
 </template>
 
 <script>
 import { disasterInfo, tableInfo, tableInfo2 } from "@a/dashboard";
-import {DataWlCount,DataSxtCount} from '../../api/home'
+import { DataWlCount, DataSxtCount } from "../../api/home";
 import imgUrl1 from "@/assets/images/sbsl.png";
 import imgUrl2 from "@/assets/images/sbzxsl.png";
 import imgUrl3 from "@/assets/images/sxj.png";
@@ -173,46 +209,46 @@ import imgUrl4 from "@/assets/images/sxjzxsl.png";
 import imgUrl5 from "@/assets/images/bj.png";
 import bjbg from "@/assets/images/bjbg.png";
 import Layout from "@v/layout";
-// 
+//
 export default {
-  name:'dashboard',
+  name: "dashboard",
   components: { Layout },
-  data(){
+  data() {
     return {
       yyList: [
         {
-          name: '物联设备总数',
+          name: "物联设备总数",
           img: imgUrl1,
-          num: '0'
+          num: "0"
         },
         {
-          name: '物联设备在线数',
+          name: "物联设备在线数",
           img: imgUrl2,
-          num: '0',
-          lxNum: '0'
+          num: "0",
+          lxNum: "0"
         },
         {
-          name: '摄像头设备总数',
+          name: "摄像头设备总数",
           img: imgUrl3,
-          num: '0'
+          num: "0"
         },
         {
-          name: '摄像头设备在线数',
+          name: "摄像头设备在线数",
           img: imgUrl4,
-          num: '0',
-          lxNum: '0'
+          num: "0",
+          lxNum: "0"
         }
       ],
       gkList: [
         {
-          name: '今日设备离线数',
+          name: "今日设备离线数",
           img: imgUrl5,
-          num: '0'
+          num: "0"
         },
         {
-          name: '今日设备报警数',
+          name: "今日设备报警数",
           img: imgUrl5,
-          num: '0'
+          num: "0"
         }
       ],
       params: {
@@ -229,23 +265,23 @@ export default {
       },
       total2: 0,
       list2: [], //表格数据,
-      wlData:[], //物联设备离线数量
-      sxtData:[], //摄像头设备离线数量，
+      wlData: [], //物联设备离线数量
+      sxtData: [], //摄像头设备离线数量，
       dialogTableVisible: false,
       dialogTableVisible1: false,
-      wlNum:0,
-      sxtNum:0,
-      wltyNum:0
-    }
+      wlNum: 0,
+      sxtNum: 0,
+      wltyNum: 0
+    };
   },
-  mounted(){
+  mounted() {
     this.info();
     this.List();
     this.List2();
     this.goShebei();
     this.goVideo();
   },
-  methods:{
+  methods: {
     async info() {
       const data = await disasterInfo();
       this.yyList[0].num = data.wlsbzs;
@@ -271,45 +307,45 @@ export default {
     },
     //物联设备
     async goShebei() {
-      await DataWlCount().then(res=>{
-        console.log(res,243);
-        this.wlData=res.ycl.list
-        this.wlNum=res.dcl.num
-        this.wltyNum=res.tysb.list
-      })
+      await DataWlCount().then(res => {
+        console.log(res, 243);
+        this.wlData = res.ycl.list;
+        this.wlNum = res.dcl.num;
+        this.wltyNum = res.tysb.list;
+      });
     },
     //摄像头设备
     async goVideo() {
-      await DataSxtCount().then(res=>{
-        console.log(res,255);
-        this.sxtData=res.ycl.list
-        this.sxtNum=res.dcl.num
-      })
+      await DataSxtCount().then(res => {
+        console.log(res, 255);
+        this.sxtData = res.ycl.list;
+        this.sxtNum = res.dcl.num;
+      });
     },
     // 物联设备跳转
-    wlJump(){
+    wlJump() {
       this.$router.push({
         name: "warning",
         query: {
-          type: '1'
+          type: "1"
         }
       });
     },
     // 物联停用设备跳转
-    wltyJump(){
+    wltyJump() {
       this.$router.push({
         name: "device",
         query: {
-          type: '1'
+          type: "1"
         }
       });
     },
     // 摄像头设备跳转
-    sxtJump(){
+    sxtJump() {
       this.$router.push({
         name: "warning",
         query: {
-          type: '2'
+          type: "2"
         }
       });
     },
@@ -332,7 +368,7 @@ export default {
     changePage2(val) {
       this.params2.current = val;
       this.List2();
-    },
+    }
   }
 };
 </script>
@@ -358,30 +394,30 @@ export default {
   font-weight: 800;
 }
 .card-content8 {
-  width:100%;
+  width: 100%;
   display: flex;
   justify-content: flex-start;
   .card-item {
     width: 24%;
-    height:180px;
+    height: 180px;
     border-radius: 10px;
     background: url("../../assets/images/bjbg.png") no-repeat;
     margin-right: 20px;
     display: flex;
     justify-content: flex-start;
-    padding:30px 20px;
+    padding: 30px 20px;
     .item-left {
       width: 35%;
       margin-right: 30px;
-      img{
-        width:100%;
-        height:auto;
+      img {
+        width: 100%;
+        height: auto;
       }
     }
     .item-right {
       .item-right-title {
         font-size: 18px;
-        font-weight:800;
+        font-weight: 800;
         margin: 10px 0;
       }
       .item-right-num1 {
@@ -404,29 +440,29 @@ export default {
   }
 }
 .card-content6 {
-  width:100%;
+  width: 100%;
   display: flex;
   justify-content: space-around;
   .card-item {
     width: 24%;
-    height:180px;
+    height: 180px;
     border-radius: 10px;
     background-color: #f4f8fe;
     display: flex;
     justify-content: flex-start;
-    padding:30px 20px;
+    padding: 30px 20px;
     .item-left {
       width: 35%;
       margin-right: 30px;
-      img{
-        width:100%;
-        height:auto;
+      img {
+        width: 100%;
+        height: auto;
       }
     }
     .item-right {
       .item-right-title {
         font-size: 18px;
-        font-weight:800;
+        font-weight: 800;
         margin: 10px 0;
       }
       .item-right-num1 {
@@ -450,27 +486,27 @@ export default {
   }
 }
 .table-box {
-  width:100%;
+  width: 100%;
   display: flex;
   justify-content: space-between;
 }
-.ycl{
+.ycl {
   padding-left: 17px;
   font-size: 16px;
 }
-.dcl{
+.dcl {
   padding-left: 17px;
   font-size: 16px;
-  margin-top:20px ;
+  margin-top: 20px;
 }
-.dclsl{
+.dclsl {
   padding-left: 96px;
   font-size: 14px;
-  margin-top:20px ;
+  margin-top: 20px;
   color: blue;
   text-decoration: underline;
 }
-.dclsl:hover{
+.dclsl:hover {
   color: red;
   text-decoration: underline; /* 当鼠标悬停时添加下划线 */
   cursor: pointer; /* 将鼠标指针变为小手形状 */

@@ -1,5 +1,3 @@
-
-
 export * from "./sysColumn";
 export * from "./sysColumnContent";
 export * from "./sysModel";

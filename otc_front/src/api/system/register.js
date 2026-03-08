@@ -1,10 +1,9 @@
 import request from "@p/requestRegister";
 const url = "/user";
 
-
-  export const UserZczh = data =>
+export const UserZczh = data =>
   request({
     method: "post",
-    url: url+"/zczh",
+    url: url + "/zczh",
     data
   });

@@ -67,9 +67,9 @@ export default {
     return {
       id: "",
       params: {
-        modelName:'',
+        modelName: "",
         size: 10,
-        current: 1,
+        current: 1
       },
       total: 0,
       list: [], //表格数据
@@ -77,7 +77,7 @@ export default {
       select: "",
       isShow: false,
       showOperate: false,
-      fileList: [],
+      fileList: []
     };
   },
   created() {},
@@ -91,10 +91,10 @@ export default {
     //重置
     reset() {
       this.params = {
-        modelName:'',
+        modelName: "",
         size: 10,
-        current: 1,
-      }
+        current: 1
+      };
       //列表查询和搜索
       this.List();
     },
@@ -108,11 +108,11 @@ export default {
       this.$confirm("此操作将永久删除该数据, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "warning",
+        type: "warning"
       })
         .then(() => {
           var totalArr = [];
-          total.forEach((item) => {
+          total.forEach(item => {
             totalArr.push(item.id);
           });
           this.delData(totalArr);
@@ -158,7 +158,7 @@ export default {
     //新增
     newEdit() {
       this.$router.push({
-        name: "newSysModel",
+        name: "newSysModel"
       });
     },
     //编辑
@@ -166,8 +166,8 @@ export default {
       this.$router.push({
         name: "newSysModel",
         query: {
-          id: row.id,
-        },
+          id: row.id
+        }
       });
     },
     //删除
@@ -175,7 +175,7 @@ export default {
       this.$confirm("此操作将永久删除该数据, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "warning",
+        type: "warning"
       })
         .then(() => {
           var arr = [];
@@ -183,11 +183,10 @@ export default {
           this.delData(arr);
         })
         .catch(() => {});
-    },
+    }
   },
   mounted() {
     this.search();
-  },
+  }
 };
 </script>
-

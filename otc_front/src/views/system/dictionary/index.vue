@@ -1,12 +1,20 @@
 <template>
   <div class="list_page">
-
-
     <div class="top_wrapper">
       <div class="search_box">
-        <el-input  placeholder="字典名称" style="width: 15%;" v-model="params.dicName" @keyup.enter.native="search()" ></el-input>
-        
-        <el-input  placeholder="字典类型" style="margin-left: 1%;width: 15%;" v-model="params.dicModel" @keyup.enter.native="search()" ></el-input>
+        <el-input
+          placeholder="字典名称"
+          style="width: 15%;"
+          v-model="params.dicName"
+          @keyup.enter.native="search()"
+        ></el-input>
+
+        <el-input
+          placeholder="字典类型"
+          style="margin-left: 1%;width: 15%;"
+          v-model="params.dicModel"
+          @keyup.enter.native="search()"
+        ></el-input>
         <el-button type="primary" icon="el-icon-search" @click="search">
           搜索
         </el-button>
@@ -18,58 +26,56 @@
     </div>
 
     <div class="table_wrapper">
+      <el-table
+        :data="list"
+        border
+        height="100%"
+        row-key="dicId"
+        @selection-change="selectChange"
+        :tree-props="{ children: 'children' }"
+      >
+        <el-table-column
+          prop="dicName"
+          label="名称"
+          show-overflow-tooltip
+        ></el-table-column>
 
-       <el-table
-          :data="list"
-          border height="100%"
-          row-key="dicId"
-          @selection-change="selectChange"
-          :tree-props="{ children: 'children' }"
-        >
-          
-          <el-table-column
-            prop="dicName"
-            label="名称"
-            show-overflow-tooltip
-          ></el-table-column>
+        <el-table-column prop="dicModel" label="模型"></el-table-column>
 
-          <el-table-column prop="dicModel" label="模型"></el-table-column>
-
-          <el-table-column
-            prop="dicValue"
-            label="值"
-            show-overflow-tooltip
-          ></el-table-column>
-          <el-table-column
-            prop="dicLabel"
-            label="label"
-            show-overflow-tooltip
-          ></el-table-column>
-          <el-table-column
-            prop="dicNum"
-            label="排序"
-            show-overflow-tooltip
-          ></el-table-column>
-          <el-table-column label="操作"  width="200">
-            <template slot-scope="scope">
-              <TableOperate :rowData="scope" @edit="edit" @delete="Delete" />
-            </template>
-          </el-table-column>
-        </el-table>
-
+        <el-table-column
+          prop="dicValue"
+          label="值"
+          show-overflow-tooltip
+        ></el-table-column>
+        <el-table-column
+          prop="dicLabel"
+          label="label"
+          show-overflow-tooltip
+        ></el-table-column>
+        <el-table-column
+          prop="dicNum"
+          label="排序"
+          show-overflow-tooltip
+        ></el-table-column>
+        <el-table-column label="操作" width="200">
+          <template slot-scope="scope">
+            <TableOperate :rowData="scope" @edit="edit" @delete="Delete" />
+          </template>
+        </el-table-column>
+      </el-table>
     </div>
 
-        <el-pagination
-            :key="elementui_page_component_key"
-            background
-            @size-change="sizeChange"
-            @current-change="changePage"
-            :current-page="params.current"
-            :page-sizes="[10, 20, 30]"
-            :page-size="params.size"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="total"
-          ></el-pagination>
+    <el-pagination
+      :key="elementui_page_component_key"
+      background
+      @size-change="sizeChange"
+      @current-change="changePage"
+      :current-page="params.current"
+      :page-sizes="[10, 20, 30]"
+      :page-size="params.size"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total"
+    ></el-pagination>
 
     <el-dialog
       :title="title"
@@ -89,7 +95,7 @@
           <el-col :span="10">
             <el-form-item label="模型：" prop="dicModel">
               <el-autocomplete
-                :disabled="formValidate.parentId=='0'?false:true"
+                :disabled="formValidate.parentId == '0' ? false : true"
                 popper-class="my-autocomplete"
                 v-model="formValidate.dicModel"
                 :fetch-suggestions="querySearch"
@@ -111,7 +117,7 @@
           <el-col :span="10">
             <el-form-item label="名称：" prop="dicName">
               <el-input
-              :disabled="formValidate.parentId=='0'?false:true"
+                :disabled="formValidate.parentId == '0' ? false : true"
                 v-model="formValidate.dicName"
                 autocomplete="off"
               ></el-input>
@@ -165,8 +171,14 @@
 }
 </style>
 <script>
-
-import { DicList, DicPage , DictyDelete , DicAdd , DicUpdate ,DicInfo } from "@a/system";
+import {
+  DicList,
+  DicPage,
+  DictyDelete,
+  DicAdd,
+  DicUpdate,
+  DicInfo
+} from "@a/system";
 
 export default {
   name: "DataDictionary",
@@ -203,13 +215,13 @@ export default {
         ],
         dicName: [{ required: true, message: "请输入名称", trigger: "blur" }]
       },
-      elementui_page_component_key:0
+      elementui_page_component_key: 0
     };
   },
   created() {},
   methods: {
     async querySearch(queryString, cb) {
-      let  data  = await DicList({
+      let data = await DicList({
         dicModel: queryString,
         descs: "a.update_time"
       });
@@ -239,7 +251,6 @@ export default {
     },
     //搜索重置
     reset() {
-      
       this.params = {};
       //列表查询和搜索
       this.search();
@@ -276,36 +287,36 @@ export default {
     //获取列表接口
     async List() {
       this.params.descs = "a.update_time";
-      let data = await DicPage( this.params );
-        this.total = data.total;
-        this.list = data.records;
+      let data = await DicPage(this.params);
+      this.total = data.total;
+      this.list = data.records;
     },
     //获取列表详情接口
     async getInfo(id) {
       let data = await DicInfo(id);
-        this.formValidate = data;
+      this.formValidate = data;
     },
 
     //新增保存接口
     async addData() {
-        await DicAdd(this.formValidate);
-        this.$message.success("操作成功");
-        this.search();
-        this.closeDialog();
+      await DicAdd(this.formValidate);
+      this.$message.success("操作成功");
+      this.search();
+      this.closeDialog();
     },
     //编辑保存接口
     async editData() {
-     await DicUpdate(this.formValidate , this.formValidate.dicId);
-        this.$message.success("操作成功");
-        this.search();
-        this.closeDialog();
+      await DicUpdate(this.formValidate, this.formValidate.dicId);
+      this.$message.success("操作成功");
+      this.search();
+      this.closeDialog();
     },
     //删除接口
     async delData(array) {
       await DictyDelete(array);
-        this.$message.success("删除成功");
-        // this.params.current = 1;
-        this.search();
+      this.$message.success("删除成功");
+      // this.params.current = 1;
+      this.search();
     },
     //每页多少条，切换显示条数
     sizeChange(val) {
@@ -381,7 +392,7 @@ export default {
     edit(index, row) {
       this.openDialog(row);
       this.id = row.dicId;
-      this.getInfo( row.dicId );
+      this.getInfo(row.dicId);
     },
     //删除
     Delete(index, row) {
@@ -397,18 +408,18 @@ export default {
         })
         .catch(() => {});
     },
-     //强制刷新组件
-    autoIncrasePageComKey: function () {
-      this.elementui_page_component_key ++
+    //强制刷新组件
+    autoIncrasePageComKey: function() {
+      this.elementui_page_component_key++;
     }
   },
   mounted() {
-    if(this.$route.query.current){
-      this.params.current=parseInt(this.$route.query.current)
+    if (this.$route.query.current) {
+      this.params.current = parseInt(this.$route.query.current);
       this.autoIncrasePageComKey();
     }
-    if(this.$route.query.size){
-      this.params.size=parseInt(this.$route.query.size)
+    if (this.$route.query.size) {
+      this.params.size = parseInt(this.$route.query.size);
       this.autoIncrasePageComKey();
     }
     this.search();

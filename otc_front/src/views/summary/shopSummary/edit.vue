@@ -12,18 +12,30 @@
       </div>
     </div>
     <div class="edit_content">
-      <el-form class="u_form" :model="formValidate" :rules="rules" ref="formValidate" label-width="100px">
+      <el-form
+        class="u_form"
+        :model="formValidate"
+        :rules="rules"
+        ref="formValidate"
+        label-width="100px"
+      >
         <el-row :gutter="20" type="flex" class="row-bg" justify="center">
           <el-col :span="10">
             <el-form-item label="钱包地址" prop="address" disabled>
-              <el-input v-model="formValidate.address" style="width: 100%;"></el-input>
+              <el-input
+                v-model="formValidate.address"
+                style="width: 100%;"
+              ></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20" type="flex" class="row-bg" justify="center">
           <el-col :span="10">
             <el-form-item label="金额" prop="money" disabled>
-              <el-input v-model="formValidate.money" style="width: 100%;"></el-input>
+              <el-input
+                v-model="formValidate.money"
+                style="width: 100%;"
+              ></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -32,7 +44,11 @@
   </div>
 </template>
 <script>
-import { TransferRecordInfo, TransferRecordSave, TransferRecordUpdate } from "@a/summary";
+import {
+  TransferRecordInfo,
+  TransferRecordSave,
+  TransferRecordUpdate
+} from "@a/summary";
 export default {
   name: "Edit",
   components: {},
@@ -54,19 +70,14 @@ export default {
       },
       data: [],
       rules: {
-        fromId: [
-          { required: true, message: '请输入发起人', trigger: 'blur' }
-        ],
+        fromId: [{ required: true, message: "请输入发起人", trigger: "blur" }],
         address: [
-          { required: true, message: '请输入钱包地址', trigger: 'blur' }
+          { required: true, message: "请输入钱包地址", trigger: "blur" }
         ],
         purposeId: [
-          { required: true, message: '请输入接收人', trigger: 'blur' }
+          { required: true, message: "请输入接收人", trigger: "blur" }
         ],
-        money: [
-          { required: true, message: '请输入金额', trigger: 'blur' }
-        ],
-
+        money: [{ required: true, message: "请输入金额", trigger: "blur" }]
       },
       dialogVisible: false,
       otherType: ""

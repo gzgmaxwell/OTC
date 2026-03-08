@@ -47,10 +47,13 @@
       @pagination="handleChangePage"
     >
       <template v-slot:speciesNum="slotProps">
-        {{ slotProps.row.speciesNum || '-' }}
+        {{ slotProps.row.speciesNum || "-" }}
       </template>
       <template v-slot:simpleType="slotProps">
-        <dict-tag :options="dict.type.sys_sample_type" :value="String(slotProps.row.simpleType)" />
+        <dict-tag
+          :options="dict.type.sys_sample_type"
+          :value="String(slotProps.row.simpleType)"
+        />
       </template>
       <template v-slot:action="slotProps">
         <el-button
@@ -75,7 +78,7 @@ export default {
   props: {
     title: {
       type: String,
-      default: ''
+      default: ""
     },
     dialogKey: {
       type: Number,
@@ -101,17 +104,65 @@ export default {
       total: 0,
       column: [
         { label: "序号", prop: "serialNumber", width: "80", type: "text" },
-        { label: "入库编号", prop: "rkRecordNumber", width: "", type: "text", tooltip: true },
-        { label: "物种编号", prop: "slot", width: "", slotName: "speciesNum", tooltip: true },
-        { label: "物种名称", prop: "speciesName", width: "", type: "text", tooltip: true },
-        { label: "样品类型", prop: "slot", width: "", slotName: "simpleType", tooltip: true },
-        { label: "位置编号", prop: "positionName", width: "", type: "text", tooltip: true },
-        { label: "入库人", prop: "createBy", width: "", type: "text", tooltip: true },
-        { label: "入库时间", prop: "createTime", width: "", type: "text", tooltip: true },
-        { label: "操作", prop: "slot", width: "100", slotName: "action", align: 'center' },
+        {
+          label: "入库编号",
+          prop: "rkRecordNumber",
+          width: "",
+          type: "text",
+          tooltip: true
+        },
+        {
+          label: "物种编号",
+          prop: "slot",
+          width: "",
+          slotName: "speciesNum",
+          tooltip: true
+        },
+        {
+          label: "物种名称",
+          prop: "speciesName",
+          width: "",
+          type: "text",
+          tooltip: true
+        },
+        {
+          label: "样品类型",
+          prop: "slot",
+          width: "",
+          slotName: "simpleType",
+          tooltip: true
+        },
+        {
+          label: "位置编号",
+          prop: "positionName",
+          width: "",
+          type: "text",
+          tooltip: true
+        },
+        {
+          label: "入库人",
+          prop: "createBy",
+          width: "",
+          type: "text",
+          tooltip: true
+        },
+        {
+          label: "入库时间",
+          prop: "createTime",
+          width: "",
+          type: "text",
+          tooltip: true
+        },
+        {
+          label: "操作",
+          prop: "slot",
+          width: "100",
+          slotName: "action",
+          align: "center"
+        }
       ],
       // 表格数据
-      tableList: [],
+      tableList: []
     };
   },
   created() {
@@ -120,7 +171,7 @@ export default {
   watch: {
     dialogKey: {
       handler(n) {
-        if(n) {
+        if (n) {
           this.getList();
         }
       }
@@ -130,20 +181,23 @@ export default {
     /** 查询公告列表 */
     getList() {
       this.loading = true;
-      getWarehouseListUnUse(this.queryParams).then((response) => {
-        this.tableList = response.rows;
-        this.queryParams.total = response.total;
-        this.loading = false;
-      }).catch(()=>{
-        this.tableList = [];
-        this.queryParams.total = 0;
-      }).finally(()=>{
-        this.loading = false;
-      });
+      getWarehouseListUnUse(this.queryParams)
+        .then(response => {
+          this.tableList = response.rows;
+          this.queryParams.total = response.total;
+          this.loading = false;
+        })
+        .catch(() => {
+          this.tableList = [];
+          this.queryParams.total = 0;
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
-      this.ids = selection.map((item) => item.speciesId);
+      this.ids = selection.map(item => item.speciesId);
       this.single = selection.length != 1;
       this.multiple = !selection.length;
     },
@@ -174,7 +228,7 @@ export default {
     /** 选择 */
     handleSelect(row) {
       this.$emit("selectSpecies", row);
-      this.cancel()
+      this.cancel();
     },
     /** 分页切换 */
     handleChangePage(page) {
@@ -182,8 +236,8 @@ export default {
       this.queryParams.pageNum = pageNum;
       this.queryParams.pageSize = pageSize;
       this.getList();
-    },
-  },
+    }
+  }
 };
 </script>
 

@@ -1,9 +1,6 @@
 <template>
-
-
-
-<div class="edit_page">
-      <div class="top_box">
+  <div class="edit_page">
+    <div class="top_box">
       <div class="title">
         {{ this.id ? "编辑信息" : "新增信息" }}
       </div>
@@ -13,8 +10,8 @@
         </ja-button>
         <el-button @click="backTo()">返回</el-button>
       </div>
-       </div>
-      <div class="edit_content">
+    </div>
+    <div class="edit_content">
       <el-form
         class="u_form"
         :model="formValidate"
@@ -22,59 +19,61 @@
         ref="formValidate"
         label-width="100px"
       >
-     
-
-                <el-row :gutter="20" type="flex" class="row-bg" justify="center">
-          <el-col :span="10" >
+        <el-row :gutter="20" type="flex" class="row-bg" justify="center">
+          <el-col :span="10">
             <el-form-item label="公司" prop="qymc">
-              <el-input v-model="formValidate.qymc" style="width: 100%;"></el-input>
+              <el-input
+                v-model="formValidate.qymc"
+                style="width: 100%;"
+              ></el-input>
             </el-form-item>
-          </el-col>	
-          <el-col :span="10" >
+          </el-col>
+          <el-col :span="10">
             <el-form-item label="船名" prop="cm">
-              <el-input v-model="formValidate.cm" style="width: 100%;"></el-input>
+              <el-input
+                v-model="formValidate.cm"
+                style="width: 100%;"
+              ></el-input>
             </el-form-item>
-          </el-col>	
-        </el-row>
-		
-        <el-row :gutter="20" type="flex" class="row-bg" justify="center">
-          <el-col :span="10" >
-            <el-form-item label="mmsi" prop="mmsi">
-              <el-input v-model="formValidate.mmsi" style="width: 100%;"></el-input>
-            </el-form-item>
-          </el-col>	
-          <el-col :span="10" >
-            <el-form-item label="呼号" prop="hh">
-              <el-input v-model="formValidate.hh" style="width: 100%;"></el-input>
-            </el-form-item>
-          </el-col>	
-        </el-row>
-		
-        <el-row :gutter="20" type="flex" class="row-bg" justify="center">
-          <el-col :span="10" >
-            <el-form-item label="总吨" prop="zd">
-              <el-input v-model="formValidate.zd" style="width: 100%;"></el-input>
-            </el-form-item>
-          </el-col>	
-          <el-col :span="10" >
           </el-col>
         </el-row>
 
+        <el-row :gutter="20" type="flex" class="row-bg" justify="center">
+          <el-col :span="10">
+            <el-form-item label="mmsi" prop="mmsi">
+              <el-input
+                v-model="formValidate.mmsi"
+                style="width: 100%;"
+              ></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="10">
+            <el-form-item label="呼号" prop="hh">
+              <el-input
+                v-model="formValidate.hh"
+                style="width: 100%;"
+              ></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
 
-       
-
-
+        <el-row :gutter="20" type="flex" class="row-bg" justify="center">
+          <el-col :span="10">
+            <el-form-item label="总吨" prop="zd">
+              <el-input
+                v-model="formValidate.zd"
+                style="width: 100%;"
+              ></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="10"> </el-col>
+        </el-row>
       </el-form>
-      </div>
+    </div>
   </div>
-
-
-
-
-
 </template>
 <script>
-import {DataYcInfo ,DataYcSave ,DataYcUpdate} from "@a/data";
+import { DataYcInfo, DataYcSave, DataYcUpdate } from "@a/data";
 
 export default {
   name: "Edit",
@@ -85,35 +84,39 @@ export default {
       title: "",
       params: {},
       formValidate: {
-        qymc: null,		
-        cm: null,		
-        mmsi: null,		
-        hh: null,		
-        zd: null,		
-        createBy: null,		
-        createTime: null,		
-        updateBy: null,		
-        updateTime: null,		
-        isDelete: null		
+        qymc: null,
+        cm: null,
+        mmsi: null,
+        hh: null,
+        zd: null,
+        createBy: null,
+        createTime: null,
+        updateBy: null,
+        updateTime: null,
+        isDelete: null
       },
       data: [],
       rules: {
         qymc: [
-          { required: true, message: '请输入公司', trigger: 'blur' } , {  max: 50, message: '长度最多为50', trigger: "blur" }
-		],
+          { required: true, message: "请输入公司", trigger: "blur" },
+          { max: 50, message: "长度最多为50", trigger: "blur" }
+        ],
         cm: [
-          { required: true, message: '请输入船名', trigger: 'blur' } , {  max: 50, message: '长度最多为50', trigger: "blur" }
-		],
+          { required: true, message: "请输入船名", trigger: "blur" },
+          { max: 50, message: "长度最多为50", trigger: "blur" }
+        ],
         mmsi: [
-          { required: true, message: '请输入mmsi', trigger: 'blur' } , {  max: 50, message: '长度最多为50', trigger: "blur" }
-		],
+          { required: true, message: "请输入mmsi", trigger: "blur" },
+          { max: 50, message: "长度最多为50", trigger: "blur" }
+        ],
         hh: [
-          { required: true, message: '请输入呼号', trigger: 'blur' } , {  max: 50, message: '长度最多为50', trigger: "blur" }
-		],
+          { required: true, message: "请输入呼号", trigger: "blur" },
+          { max: 50, message: "长度最多为50", trigger: "blur" }
+        ],
         zd: [
-          { required: true, message: '请输入总吨', trigger: 'blur' } , {  max: 50, message: '长度最多为50', trigger: "blur" }
-		],
-
+          { required: true, message: "请输入总吨", trigger: "blur" },
+          { max: 50, message: "长度最多为50", trigger: "blur" }
+        ]
       },
       dialogVisible: false,
       otherType: ""
@@ -122,26 +125,23 @@ export default {
   methods: {
     //获取列表详情接口
     async getInfo(id) {
-      
-      const  data = await DataYcInfo(id);
-  
-        this.formValidate = data;
-   
+      const data = await DataYcInfo(id);
+
+      this.formValidate = data;
     },
     //新增保存接口
     async addData() {
-        const  data = await DataYcSave(this.formValidate);
-        this.$message.success("新增成功");
-        this.resetForm();
-        this.backTo();
-     
+      const data = await DataYcSave(this.formValidate);
+      this.$message.success("新增成功");
+      this.resetForm();
+      this.backTo();
     },
     //编辑保存接口
     async editData() {
-        const  data = await DataYcUpdate(this.formValidate);
-        this.$message.success("修改成功");
-        this.resetForm();
-        this.backTo();
+      const data = await DataYcUpdate(this.formValidate);
+      this.$message.success("修改成功");
+      this.resetForm();
+      this.backTo();
     },
     //保存
     save(formName) {

@@ -6,34 +6,34 @@ const url = "/sys/admin";
 export const AdminList = params =>
   request({
     method: "get",
-    url: url+`/page`,
+    url: url + `/page`,
     params
   });
 // 获取详情
 export const AdminInfo = id =>
   request({
     method: "get",
-    url: url+"/get/"+id,
+    url: url + "/get/" + id
   });
 // 删除
 export const AdminDelete = data =>
   request({
     method: "post",
-    url: url+`/deletes`,
+    url: url + `/deletes`,
     data
   });
 // 新增
 export const AdminSave = data =>
   request({
     method: "post",
-    url: url+`/add`,
+    url: url + `/add`,
     data
   });
 // 编辑
 export const AdminUpdate = (data, id) =>
   request({
     method: "post",
-    url: url+"/put/"+id,
+    url: url + "/put/" + id,
     data
   });
 // 重置密码

@@ -4,7 +4,6 @@ const url = "/code";
 export const registerCode = params =>
   request({
     method: "get",
-    url: url+`/register`,
+    url: url + `/register`,
     params: params
-  })
-
+  });

@@ -30,38 +30,38 @@ export default {
   props: {
     total: {
       required: true,
-      type: Number,
+      type: Number
     },
     pageNum: {
       type: Number,
-      default: 1,
+      default: 1
     },
     pageSize: {
       type: Number,
-      default: 20,
+      default: 20
     },
     pageSizes: {
       type: Array,
       default() {
         return [10, 20, 30, 50];
-      },
+      }
     },
     layout: {
       type: String,
-      default: "total, prev, pager, next, jumper",
+      default: "total, prev, pager, next, jumper"
     },
     background: {
       type: Boolean,
-      default: true,
+      default: true
     },
     autoScroll: {
       type: Boolean,
-      default: true,
+      default: true
     },
     hidden: {
       type: Boolean,
-      default: false,
-    },
+      default: false
+    }
   },
   computed: {
     currentPage: {
@@ -70,7 +70,7 @@ export default {
       },
       set(val) {
         this.$emit("update:pageNum", val);
-      },
+      }
     },
     limit: {
       get() {
@@ -78,8 +78,8 @@ export default {
       },
       set(val) {
         this.$emit("update:pageSize", val);
-      },
-    },
+      }
+    }
   },
   methods: {
     handleSizeChange(val) {
@@ -94,8 +94,8 @@ export default {
       if (this.autoScroll) {
         scrollTo(0, 800);
       }
-    },
-  },
+    }
+  }
 };
 </script>
 

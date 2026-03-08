@@ -1,9 +1,6 @@
 <template>
-
-
-
-<div class="edit_page">
-      <div class="top_box">
+  <div class="edit_page">
+    <div class="top_box">
       <div class="title">
         {{ this.id ? "编辑信息" : "新增信息" }}
       </div>
@@ -13,8 +10,8 @@
         </ja-button>
         <el-button @click="backTo()">返回</el-button>
       </div>
-       </div>
-      <div class="edit_content">
+    </div>
+    <div class="edit_content">
       <el-form
         class="u_form"
         :model="formValidate"
@@ -22,44 +19,41 @@
         ref="formValidate"
         label-width="100px"
       >
-     
-
-                <el-row :gutter="20" type="flex" class="row-bg" justify="center">
-          <el-col :span="10" >
-            <el-form-item label="个人、企业...." prop="objId">
-              <el-input v-model="formValidate.objId" style="width: 100%;"></el-input>
-            </el-form-item>
-          </el-col>	
-          <el-col :span="10" >
-            <el-form-item label="附件类型" prop="attType">
-              <el-input v-model="formValidate.attType" style="width: 100%;"></el-input>
-            </el-form-item>
-          </el-col>	
-        </el-row>
-		
         <el-row :gutter="20" type="flex" class="row-bg" justify="center">
-          <el-col :span="10" >
-            <el-form-item label="附件地址" prop="url">
-              <el-input v-model="formValidate.url" style="width: 100%;"></el-input>
+          <el-col :span="10">
+            <el-form-item label="个人、企业...." prop="objId">
+              <el-input
+                v-model="formValidate.objId"
+                style="width: 100%;"
+              ></el-input>
             </el-form-item>
-          </el-col>	
+          </el-col>
+          <el-col :span="10">
+            <el-form-item label="附件类型" prop="attType">
+              <el-input
+                v-model="formValidate.attType"
+                style="width: 100%;"
+              ></el-input>
+            </el-form-item>
+          </el-col>
         </el-row>
 
-
-       
-
-
+        <el-row :gutter="20" type="flex" class="row-bg" justify="center">
+          <el-col :span="10">
+            <el-form-item label="附件地址" prop="url">
+              <el-input
+                v-model="formValidate.url"
+                style="width: 100%;"
+              ></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
       </el-form>
-      </div>
+    </div>
   </div>
-
-
-
-
-
 </template>
 <script>
-import {UserAttInfo ,UserAttSave ,UserAttUpdate} from "@a/system";
+import { UserAttInfo, UserAttSave, UserAttUpdate } from "@a/system";
 
 export default {
   name: "Edit",
@@ -70,27 +64,29 @@ export default {
       title: "",
       params: {},
       formValidate: {
-        objId: null,		
-        attType: null,		
-        url: null,		
-        createBy: null,		
-        createTime: null,		
-        updateBy: null,		
-        updateTime: null,		
-        isDelete: null		
+        objId: null,
+        attType: null,
+        url: null,
+        createBy: null,
+        createTime: null,
+        updateBy: null,
+        updateTime: null,
+        isDelete: null
       },
       data: [],
       rules: {
         objId: [
-          { required: true, message: '请输入个人、企业....', trigger: 'blur' } , {  max: 50, message: '长度最多为50', trigger: "blur" }
-		],
+          { required: true, message: "请输入个人、企业....", trigger: "blur" },
+          { max: 50, message: "长度最多为50", trigger: "blur" }
+        ],
         attType: [
-          { required: true, message: '请输入附件类型', trigger: 'blur' } , {  max: 50, message: '长度最多为50', trigger: "blur" }
-		],
+          { required: true, message: "请输入附件类型", trigger: "blur" },
+          { max: 50, message: "长度最多为50", trigger: "blur" }
+        ],
         url: [
-          { required: true, message: '请输入附件地址', trigger: 'blur' } , {  max: 50, message: '长度最多为50', trigger: "blur" }
-		],
-
+          { required: true, message: "请输入附件地址", trigger: "blur" },
+          { max: 50, message: "长度最多为50", trigger: "blur" }
+        ]
       },
       dialogVisible: false,
       otherType: ""
@@ -99,26 +95,23 @@ export default {
   methods: {
     //获取列表详情接口
     async getInfo(id) {
-      
-      const  data = await UserAttInfo(id);
-  
-        this.formValidate = data;
-   
+      const data = await UserAttInfo(id);
+
+      this.formValidate = data;
     },
     //新增保存接口
     async addData() {
-        const  data = await UserAttSave(this.formValidate);
-        this.$message.success("新增成功");
-        this.resetForm();
-        this.backTo();
-     
+      const data = await UserAttSave(this.formValidate);
+      this.$message.success("新增成功");
+      this.resetForm();
+      this.backTo();
     },
     //编辑保存接口
     async editData() {
-        const  data = await UserAttUpdate(this.formValidate);
-        this.$message.success("修改成功");
-        this.resetForm();
-        this.backTo();
+      const data = await UserAttUpdate(this.formValidate);
+      this.$message.success("修改成功");
+      this.resetForm();
+      this.backTo();
     },
     //保存
     save(formName) {

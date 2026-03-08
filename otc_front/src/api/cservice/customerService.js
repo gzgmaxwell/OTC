@@ -5,44 +5,40 @@ const url = "/customerService";
 export const CustomerServicePage = params =>
   request({
     method: "get",
-    url: url+"/page",
+    url: url + "/page",
     params
   });
 export const CustomerServiceList = params =>
   request({
     method: "get",
-    url: url+"/all",
+    url: url + "/all",
     params
   });
-
 
 // 获取详情
 export const CustomerServiceInfo = id =>
   request({
     method: "get",
-    url: url+"/get/"+id
+    url: url + "/get/" + id
   });
 
-
-  export const CustomerServiceSave = data =>
+export const CustomerServiceSave = data =>
   request({
     method: "post",
-    url: url+"/add",
+    url: url + "/add",
     data
   });
 
-  export const CustomerServiceUpdate = data =>
+export const CustomerServiceUpdate = data =>
   request({
     method: "put",
-    url: url+"/put/"+data.id,
+    url: url + "/put/" + data.id,
     data
-  });  
-  
- 
- export const CustomerServiceDelete = data =>
- request({
-   method: "delete",
-   url: url+"/deletes",
-   data
- });
-  
+  });
+
+export const CustomerServiceDelete = data =>
+  request({
+    method: "delete",
+    url: url + "/deletes",
+    data
+  });

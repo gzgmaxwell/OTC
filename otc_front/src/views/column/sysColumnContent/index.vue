@@ -2,8 +2,12 @@
   <div class="list_page">
     <div class="top_wrapper">
       <div class="search_box">
-          <el-input placeholder="标题" style="width: 30%;" v-model="params.title" @keyup.enter.native="search"></el-input>
-
+        <el-input
+          placeholder="标题"
+          style="width: 30%;"
+          v-model="params.title"
+          @keyup.enter.native="search"
+        ></el-input>
 
         <el-button type="primary" icon="el-icon-search" @click="search">
           搜索
@@ -26,7 +30,8 @@
             node-key="id"
             default-expand-all
             @node-click="nameNodeClick"
-            ref="tree">
+            ref="tree"
+          >
           </el-tree>
         </div>
         <div class="table_list" style="height:100%">
@@ -35,14 +40,29 @@
 
             <el-table-column prop="columnName" label="栏目"></el-table-column>
 
-            <el-table-column prop="statusName" label="发布状态"></el-table-column>
+            <el-table-column
+              prop="statusName"
+              label="发布状态"
+            ></el-table-column>
 
             <el-table-column label="操作" width="300">
               <template slot-scope="scope">
                 <!-- <el-button size="mini" @click="edit(scope.row)">查看</el-button> -->
-                <el-button size="mini" v-if="scope.row.status == '0'" @click="fbzt(scope.row,'1')" >发布</el-button >
-                <el-button size="mini" v-if="scope.row.status == '1'" @click="fbzt(scope.row,'0')" >停止发布</el-button >
-                <el-button size="mini" type="primary" @click="edit(scope.row)" >编辑</el-button >
+                <el-button
+                  size="mini"
+                  v-if="scope.row.status == '0'"
+                  @click="fbzt(scope.row, '1')"
+                  >发布</el-button
+                >
+                <el-button
+                  size="mini"
+                  v-if="scope.row.status == '1'"
+                  @click="fbzt(scope.row, '0')"
+                  >停止发布</el-button
+                >
+                <el-button size="mini" type="primary" @click="edit(scope.row)"
+                  >编辑</el-button
+                >
                 <el-button size="mini" type="danger" @click="Delete(scope.row)"
                   >删除</el-button
                 >
@@ -51,7 +71,6 @@
           </el-table>
         </div>
       </div>
-    
     </div>
     <el-pagination
       background
@@ -67,7 +86,12 @@
 </template>
 
 <script>
-import { SysColumnContentPage, SysColumnContentDelete,SysColumnTree ,SysColumnContenFbzt} from "@a/column";
+import {
+  SysColumnContentPage,
+  SysColumnContentDelete,
+  SysColumnTree,
+  SysColumnContenFbzt
+} from "@a/column";
 
 export default {
   name: "SysColumnContent",
@@ -75,14 +99,14 @@ export default {
   data() {
     return {
       id: "",
-      columnNameList:[ ],
+      columnNameList: [],
       defaultProps: {
-        children: 'children',
-        label: 'label'
+        children: "children",
+        label: "label"
       },
       params: {
         size: 10,
-        current: 1,
+        current: 1
       },
       total: 0,
       list: [], //表格数据
@@ -90,28 +114,28 @@ export default {
       select: "",
       isShow: false,
       showOperate: false,
-      fileList: [],
+      fileList: []
     };
   },
   created() {},
   methods: {
-    async fbzt(data,status){
-      var params={};
-      params.status=status;
-      params.id=data.id;
+    async fbzt(data, status) {
+      var params = {};
+      params.status = status;
+      params.id = data.id;
       await SysColumnContenFbzt(params);
-       this.search();
+      this.search();
     },
-    async getClumnTree(){
-          this.columnNameList= await SysColumnTree();
-         if(!isEmpty(this.columnNameList)){
-            this.params.columnId=this.columnNameList[0].id
-            this.$nextTick(() => {
-                this.$refs.tree.setCurrentKey(this.columnNameList[0].id);
-            })
-          }
+    async getClumnTree() {
+      this.columnNameList = await SysColumnTree();
+      if (!isEmpty(this.columnNameList)) {
+        this.params.columnId = this.columnNameList[0].id;
+        this.$nextTick(() => {
+          this.$refs.tree.setCurrentKey(this.columnNameList[0].id);
+        });
+      }
     },
-    nameNodeClick(data){
+    nameNodeClick(data) {
       this.params.columnId = data.id;
       this.List();
     },
@@ -125,7 +149,6 @@ export default {
     reset() {
       this.params = {};
       this.$refs.tree.setCurrentKey(null);
-
     },
     //返回搜索
     back() {
@@ -137,11 +160,11 @@ export default {
       this.$confirm("此操作将永久删除该数据, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "warning",
+        type: "warning"
       })
         .then(() => {
           var totalArr = [];
-          total.forEach((item) => {
+          total.forEach(item => {
             totalArr.push(item.id);
           });
           this.delData(totalArr);
@@ -187,7 +210,7 @@ export default {
     //新增
     newEdit() {
       this.$router.push({
-        name: "newSysColumnContent",
+        name: "newSysColumnContent"
       });
     },
     //编辑
@@ -195,8 +218,8 @@ export default {
       this.$router.push({
         name: "newSysColumnContent",
         query: {
-          id: row.id,
-        },
+          id: row.id
+        }
       });
     },
     //删除
@@ -204,7 +227,7 @@ export default {
       this.$confirm("此操作将永久删除该数据, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "warning",
+        type: "warning"
       })
         .then(() => {
           var arr = [];
@@ -212,38 +235,37 @@ export default {
           this.delData(arr);
         })
         .catch(() => {});
-    },
+    }
   },
- async mounted() {
-   await this.getClumnTree();
-   await this.search();
-  },
+  async mounted() {
+    await this.getClumnTree();
+    await this.search();
+  }
 };
 </script>
 <style scoped>
-.table_wrapper{
+.table_wrapper {
   padding-top: 20px;
-  border-top: 1px solid #EBEEF5;
+  border-top: 1px solid #ebeef5;
 }
-.content_wrap{
+.content_wrap {
   display: flex;
   height: 100%;
 }
-.tree_list{
+.tree_list {
   min-width: 240px;
   margin-right: 24px;
 }
-.tree_title{
+.tree_title {
   height: 50px;
   line-height: 50px;
   text-align: center;
-  color: #333;  
-  border: 1px solid #DCDFE6;
+  color: #333;
+  border: 1px solid #dcdfe6;
   margin-bottom: 12px;
 }
-.table_list{
+.table_list {
   flex: 1;
   height: 100%;
 }
 </style>
-

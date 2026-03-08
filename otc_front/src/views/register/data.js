@@ -6,6 +6,6 @@ export const configForm = [
     span: 12,
     placeholder: "手机号",
     // showLimit: true,
-    maxlength: 11,
+    maxlength: 11
   }
 ];

@@ -5,54 +5,47 @@ const url = "/lsShxx";
 export const LsShxxPage = params =>
   request({
     method: "get",
-    url: url+"/page",
+    url: url + "/page",
     params
   });
 export const LsShxxList = params =>
   request({
     method: "get",
-    url: url+"/all",
+    url: url + "/all",
     params
   });
-  
 
 // 获取详情
 export const LsShxxInfo = id =>
   request({
     method: "get",
-    url: url+"/get/"+id
+    url: url + "/get/" + id
   });
 
-  
-
-  export const LsShxxTj = data =>
+export const LsShxxTj = data =>
   request({
     method: "post",
-    url: url+"/tj",
+    url: url + "/tj",
     data
   });
 
-
-
-  export const LsShxxSave = data =>
+export const LsShxxSave = data =>
   request({
     method: "post",
-    url: url+"/add",
+    url: url + "/add",
     data
   });
 
-  export const LsShxxUpdate = data =>
+export const LsShxxUpdate = data =>
   request({
     method: "post",
-    url: url+"/put/"+data.id,
+    url: url + "/put/" + data.id,
     data
-  });  
-  
- 
- export const LsShxxDelete = data =>
- request({
-   method: "post",
-   url: url+"/deletes",
-   data
- });
-  
+  });
+
+export const LsShxxDelete = data =>
+  request({
+    method: "post",
+    url: url + "/deletes",
+    data
+  });

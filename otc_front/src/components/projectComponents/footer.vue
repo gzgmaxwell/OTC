@@ -1,7 +1,12 @@
 <template>
   <div class="page-footer">
     <div class="menu-list">
-      <div class="item" v-for="(item, index) in menuList" :key="index" @click="goTo(item)">
+      <div
+        class="item"
+        v-for="(item, index) in menuList"
+        :key="index"
+        @click="goTo(item)"
+      >
         <div class="ico" :style="`background-image:url(${item.ico})`"></div>
         <div class="title">{{ item.title }}</div>
       </div>
@@ -27,65 +32,65 @@ export default {
       {
         ico: require("@/assets/images/menu_ico.png"),
         title: "数据库",
-        path: "/database/dnaManager",
+        path: "/database/dnaManager"
       },
       {
         ico: require("@/assets/images/menu_ico2.png"),
         title: "核酸库",
-        path: "/nuclein/nucleinList",
+        path: "/nuclein/nucleinList"
       },
       {
         ico: require("@/assets/images/menu_ico3.png"),
         title: "组织库",
-        path: "/tissue/list",
+        path: "/tissue/list"
       },
       {
         ico: require("@/assets/images/menu_ico4.png"),
         title: "标本库",
-        path: "/repository/sample",
+        path: "/repository/sample"
       },
       {
         ico: require("@/assets/images/menu_ico5.png"),
         title: "活体库",
-        path: "/livingBody/list",
+        path: "/livingBody/list"
       },
       {
         ico: require("@/assets/images/menu_ico6.png"),
         title: "产卵场",
-        path: "/oviposition/list",
-      },
+        path: "/oviposition/list"
+      }
     ];
     const links = [
       {
         title: "XXXXX网站",
-        link: "https://www.baidu.com/",
+        link: "https://www.baidu.com/"
       },
       {
         title: "XXXXX网站",
-        link: "https://www.baidu.com/",
+        link: "https://www.baidu.com/"
       },
       {
         title: "XXXXX网站",
-        link: "https://www.baidu.com/",
+        link: "https://www.baidu.com/"
       },
       {
         title: "XXXXX网站",
-        link: "https://www.baidu.com/",
-      },
+        link: "https://www.baidu.com/"
+      }
     ];
     return {
       menuList,
-      links,
+      links
     };
   },
   methods: {
-    goTo(item){
+    goTo(item) {
       this.$router.push({
         path: item.path,
         query: {}
-      })
+      });
     }
-  },
+  }
 };
 </script>
 

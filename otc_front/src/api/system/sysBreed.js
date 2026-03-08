@@ -5,73 +5,71 @@ const url = "/sysBreed";
 export const SysBreedPage = params =>
   request({
     method: "get",
-    url: url+"/page",
+    url: url + "/page",
     params
   });
 export const SysBreedList = params =>
   request({
     method: "get",
-    url: url+"/all",
+    url: url + "/all",
     params
   });
 export const SysBreedTree = params =>
-request({
-  method: "get",
-  url: url+"/tree/all",
-  params
-});
+  request({
+    method: "get",
+    url: url + "/tree/all",
+    params
+  });
 export const BreedCascaderAll = params =>
-request({
-  method: "get",
-  url: url+"/cascader/all",
-  params
-});
+  request({
+    method: "get",
+    url: url + "/cascader/all",
+    params
+  });
 export const BreedCascader = params =>
-request({
-  method: "get",
-  url: url+"/cascader/2",
-  params
-});
+  request({
+    method: "get",
+    url: url + "/cascader/2",
+    params
+  });
 
 export const BreedFl = params =>
-request({
-  method: "get",
-  url: url+"/child",
-  params
-});
+  request({
+    method: "get",
+    url: url + "/child",
+    params
+  });
 // 获取详情
 export const SysBreedInfo = id =>
   request({
     method: "get",
-    url: url+"/get/"+id
+    url: url + "/get/" + id
   });
 // 获取获得下一级菜单分页
 export const SysBreedChildPage = params =>
   request({
     method: "get",
-    url: url+"/childPage",
+    url: url + "/childPage",
     params
   });
 
-  export const SysBreedSave = data =>
+export const SysBreedSave = data =>
   request({
     method: "post",
-    url: url+"/add",
+    url: url + "/add",
     data
   });
 
-  export const SysBreedUpdate = data =>
+export const SysBreedUpdate = data =>
   request({
     method: "post",
-    url: url+"/put/"+data.id,
+    url: url + "/put/" + data.id,
     data
-  });  
-  
- 
- export const SysBreedDelete = data =>
- request({
-   method: "post",
-   url: url+"/deletes",
-   data
- });
-  
+  });
+
+export const SysBreedDelete = data =>
+  request({
+    method: "post",
+    url: url + "/deletes",
+    data
+  });

@@ -5,44 +5,40 @@ const url = "/downloadRecord";
 export const DownloadRecordPage = params =>
   request({
     method: "get",
-    url: url+"/page",
+    url: url + "/page",
     params
   });
 export const DownloadRecordList = params =>
   request({
     method: "get",
-    url: url+"/all",
+    url: url + "/all",
     params
   });
-
 
 // 获取详情
 export const DownloadRecordInfo = id =>
   request({
     method: "get",
-    url: url+"/get/"+id
+    url: url + "/get/" + id
   });
 
-
-  export const DownloadRecordSave = data =>
+export const DownloadRecordSave = data =>
   request({
     method: "post",
-    url: url+"/add",
+    url: url + "/add",
     data
   });
 
-  export const DownloadRecordUpdate = data =>
+export const DownloadRecordUpdate = data =>
   request({
     method: "post",
-    url: url+"/put/"+data.id,
+    url: url + "/put/" + data.id,
     data
-  });  
-  
- 
- export const DownloadRecordDelete = data =>
- request({
-   method: "post",
-   url: url+"/deletes",
-   data
- });
-  
+  });
+
+export const DownloadRecordDelete = data =>
+  request({
+    method: "post",
+    url: url + "/deletes",
+    data
+  });

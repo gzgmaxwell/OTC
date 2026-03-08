@@ -3,7 +3,6 @@ import { Message } from "element-ui";
 import router from "@r";
 import config from "@p/config";
 class NewAxios {
-  
   handleError = error => {
     let { code, msg } = error;
     switch (code) {
@@ -27,7 +26,7 @@ class NewAxios {
         });
         break;
     }
-    
+
     return Promise.reject(error);
   };
   create() {
@@ -47,13 +46,12 @@ class NewAxios {
         response => {
           if (response.data && response.data.code == "200") {
             return Promise.resolve(response.data);
-          }else{
+          } else {
             this.handleError(response.data);
           }
         },
         error => {
-
-          this.handleError(error.response.data)
+          this.handleError(error.response.data);
           return Promise.resolve(error.response.data);
         }
       );

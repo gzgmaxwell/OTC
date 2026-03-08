@@ -37,7 +37,7 @@
     </div>
     <div class="top_wrapper">
       <div class="search_box">
-        <el-input placeholder="码商名称" v-model="params.transNumber" style="width: 30%; " @keyup.enter.native="search">
+        <el-input placeholder="账号" v-model="params.transNumber" style="width: 30%; " @keyup.enter.native="search">
         </el-input>
         <el-button type="primary" icon="el-icon-search" @click="search">
           搜索

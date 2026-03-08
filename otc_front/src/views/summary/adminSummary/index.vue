@@ -33,8 +33,8 @@
         <el-button icon="el-icon-refresh" @click="reset">重置</el-button>
       </div>
     </div>
-    <div class="table_wrapper">
-      <el-table ref="multipleTable" :data="list" border height="100%" stripe style="width: 100%">
+    <div class="table_wrapper" style="height: calc(100% - 300px);">
+      <el-table ref="multipleTable" :data="list" border height="100%" stripe style="width: 100%;">
         <el-table-column prop="fromNickName" label="码商名称"></el-table-column>
         <el-table-column prop="fromCodeName" label="收款金额"></el-table-column>
         <el-table-column prop="transNumber" label="出款金额"></el-table-column>

@@ -2,130 +2,109 @@
   <div class="edit_page">
     <div class="top_box">
       <div class="title">
-        {{ this.id ? "查看信息" : "新增信息" }}
+        查看信息
       </div>
       <div>
-        <!-- <ja-button type="primary" :click="save">
-          保存
-        </ja-button> -->
         <el-button @click="backTo()">返回</el-button>
       </div>
     </div>
     <div class="edit_content">
-      <el-form
-        class="u_form"
-        :model="formValidate"
-        :rules="rules"
-        ref="formValidate"
-        label-width="100px"
-      >
-        <el-row :gutter="20" type="flex" class="row-bg" justify="center">
-          <el-col :span="10">
-            <el-form-item label="钱包地址" prop="address" disabled>
-              <el-input
-                v-model="formValidate.address"
-                style="width: 100%;"
-              ></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20" type="flex" class="row-bg" justify="center">
-          <el-col :span="10">
-            <el-form-item label="金额" prop="money" disabled>
-              <el-input
-                v-model="formValidate.money"
-                style="width: 100%;"
-              ></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-      </el-form>
+      <div class="list_page">
+        <div class="top_wrapper">
+          <div class="search_box">
+            <el-input placeholder="收款账号" v-model="params.transNumber" style="width: 30%; " @keyup.enter.native="search">
+            </el-input>
+            <el-button type="primary" icon="el-icon-search" @click="search">
+              搜索
+            </el-button>
+            <el-button icon="el-icon-refresh" @click="reset">重置</el-button>
+          </div>
+        </div>
+        <div class="table_wrapper" style="height: calc(100% - 300px);">
+          <el-table ref="multipleTable" :data="list" border height="100%" stripe style="width: 100%">
+            <el-table-column prop="fromNickName" label="收款账号"></el-table-column>
+            <el-table-column prop="fromCodeName" label="收款金额"></el-table-column>
+            <el-table-column prop="transNumber" label="出款金额"></el-table-column>
+            <el-table-column prop="zdlxName" label="已付金额"></el-table-column>
+            <el-table-column prop="money" label="余额">
+              <template slot-scope="scope">
+                {{ formatCurrency(scope.row.money) }}
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+        <el-pagination background @size-change="sizeChange" @current-change="changePage" :current-page="params.current"
+          :page-sizes="[10, 20, 30]" :page-size="params.size" layout="total, sizes, prev, pager, next, jumper"
+          :total="total"></el-pagination>
+      </div>
     </div>
   </div>
 </template>
+
 <script>
-import {
-  TransferRecordInfo,
-  TransferRecordSave,
-  TransferRecordUpdate
-} from "@a/summary";
+import { TransferRecordPage } from "@a/summary";
 export default {
-  name: "Edit",
+  name: "TransferRecord",
   components: {},
   data() {
     return {
-      id: "",
-      title: "",
-      params: {},
-      formValidate: {
-        fromId: null,
-        address: null,
-        purposeId: null,
-        money: null,
-        createBy: null,
-        createTime: null,
-        updateBy: null,
-        updateTime: null,
-        isDelete: null
+      params: {
+        size: 10,
+        current: 1,
+        startTime: null,
+        endTime: null
       },
-      data: [],
-      rules: {
-        fromId: [{ required: true, message: "请输入发起人", trigger: "blur" }],
-        address: [
-          { required: true, message: "请输入钱包地址", trigger: "blur" }
-        ],
-        purposeId: [
-          { required: true, message: "请输入接收人", trigger: "blur" }
-        ],
-        money: [{ required: true, message: "请输入金额", trigger: "blur" }]
-      },
-      dialogVisible: false,
-      otherType: ""
+      total: 0,
+      list: [], //表格数据
+      money: 0
     };
   },
   methods: {
-    //获取列表详情接口
-    async getInfo(id) {
-      const data = await TransferRecordInfo(id);
-      this.formValidate = data;
+    formatCurrency(value) {
+      if (typeof value !== "number") return "0.00";
+      return value.toFixed(2);
     },
-    //新增保存接口
-    async addData() {
-      const data = await TransferRecordSave(this.formValidate);
-      this.$message.success("新增成功");
-      this.resetForm();
-      this.backTo();
-    },
-    //编辑保存接口
-    async editData() {
-      const data = await TransferRecordUpdate(this.formValidate);
-      this.$message.success("修改成功");
-      this.resetForm();
-      this.backTo();
-    },
-    //保存
-    save(formName) {
-      return this.$refs["formValidate"].validate().then(() => {
-        return this.id ? this.editData() : this.addData();
-      });
+    //搜索
+    search() {
+      this.params.current = 1;
+      this.List();
     },
     //重置
-    resetForm(formName) {
-      this.formValidate = {};
+    reset() {
+      this.params = {};
+      this.search();
+    },
+    //获取列表
+    async List() {
+      this.params.descs = "a.update_time";
+      const data = await TransferRecordPage(this.params);
+      this.total = data.page.total;
+      this.list = data.page.records;
+      this.money = data.money;
+      // 数据加载完成后，强制更新表格以确保合计行正确显示
+      this.$nextTick(() => {
+        this.$refs.multipleTable && this.$refs.multipleTable.doLayout();
+      });
+    },
+    //每页多少条，切换显示条数
+    sizeChange(val) {
+      this.params.size = val;
+      this.List();
+    },
+    //当前第几页，切换页码
+    changePage(val) {
+      this.params.current = val;
+      this.List();
     },
     //返回
     backTo() {
       this.$router.push({
-        name: "TransferRecord"
+        name: "VipSummary"
       });
     }
   },
   mounted() {
-    //拿到从列表页传过来的ID
-    this.id = this.$route.query.id;
-    if (this.id) {
-      this.getInfo(this.id);
-    }
+    this.search();
   }
 };
 </script>

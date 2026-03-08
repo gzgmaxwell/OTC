@@ -12,12 +12,7 @@
       <div class="list_page">
         <div class="top_wrapper">
           <div class="search_box">
-            <el-input
-              placeholder="收款账号"
-              v-model="params.transNumber"
-              style="width: 30%; "
-              @keyup.enter.native="search"
-            >
+            <el-input placeholder="收款账号" v-model="params.transNumber" style="width: 30%; " @keyup.enter.native="search">
             </el-input>
             <el-button type="primary" icon="el-icon-search" @click="search">
               搜索
@@ -25,29 +20,11 @@
             <el-button icon="el-icon-refresh" @click="reset">重置</el-button>
           </div>
         </div>
-        <div class="table_wrapper">
-          <el-table
-            ref="multipleTable"
-            :data="list"
-            border
-            height="100%"
-            stripe
-            style="width: 100%"
-            :show-summary="true"
-            :summary-method="getSummaries"
-          >
-            <el-table-column
-              prop="fromNickName"
-              label="收款账号"
-            ></el-table-column>
-            <el-table-column
-              prop="fromCodeName"
-              label="收款金额"
-            ></el-table-column>
-            <el-table-column
-              prop="transNumber"
-              label="出款金额"
-            ></el-table-column>
+        <div class="table_wrapper" style="height: calc(100% - 300px);">
+          <el-table ref="multipleTable" :data="list" border height="100%" stripe style="width: 100%">
+            <el-table-column prop="fromNickName" label="收款账号"></el-table-column>
+            <el-table-column prop="fromCodeName" label="收款金额"></el-table-column>
+            <el-table-column prop="transNumber" label="出款金额"></el-table-column>
             <el-table-column prop="zdlxName" label="已付金额"></el-table-column>
             <el-table-column prop="money" label="余额">
               <template slot-scope="scope">
@@ -56,16 +33,9 @@
             </el-table-column>
           </el-table>
         </div>
-        <el-pagination
-          background
-          @size-change="sizeChange"
-          @current-change="changePage"
-          :current-page="params.current"
-          :page-sizes="[10, 20, 30]"
-          :page-size="params.size"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="total"
-        ></el-pagination>
+        <el-pagination background @size-change="sizeChange" @current-change="changePage" :current-page="params.current"
+          :page-sizes="[10, 20, 30]" :page-size="params.size" layout="total, sizes, prev, pager, next, jumper"
+          :total="total"></el-pagination>
       </div>
     </div>
   </div>
@@ -90,36 +60,6 @@ export default {
     };
   },
   methods: {
-    getSummaries({ columns, data }) {
-      // 如果没有数据，返回空数组或默认值
-      if (!data || data.length === 0) {
-        return ["总计", "", "", "", "", "", "¥", "", ""];
-      }
-      const sums = [];
-      columns.forEach((column, index) => {
-        if (index === 0) {
-          sums[index] = "总计";
-          return;
-        }
-        const values = data.map(item => Number(item[column.property]));
-        if (!values.every(isNaN)) {
-          if (column.property === "money") {
-            const sum = this.money;
-            if (column.property === "money") {
-              sums[index] = "¥" + sum.toFixed(2);
-            } else {
-              sums[index] = sum;
-            }
-          } else {
-            sums[index] = "";
-          }
-        } else {
-          sums[index] = "";
-        }
-      });
-
-      return sums;
-    },
     formatCurrency(value) {
       if (typeof value !== "number") return "0.00";
       return value.toFixed(2);

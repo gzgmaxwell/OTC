@@ -1,1 +1,1 @@
-export * from "./transferRecord";
+export * from "./adminSummary";

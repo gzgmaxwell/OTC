@@ -2,24 +2,14 @@
   <div class="list_page">
     <div class="top_wrapper">
       <div class="search_box">
-        <el-input
-          placeholder="姓名"
-          style="width: 30%;"
-          v-model="params.fullName"
-          @keyup.enter.native="search"
-        ></el-input>
-        <el-input
-          placeholder="手机号"
-          style="width: 30%; margin-left: 5px;"
-          v-model="params.phoneNum"
-          @keyup.enter.native="search"
-        ></el-input>
-        <el-input
-          placeholder="身份证号"
-          style="width: 30%;margin-left: 5px;"
-          v-model="params.idNumber"
-          @keyup.enter.native="search"
-        ></el-input>
+        <el-input placeholder="姓名" style="width: 30%;" v-model="params.fullName"
+          @keyup.enter.native="search"></el-input>
+        <el-input placeholder="用户账号" style="width: 30%; margin-left: 5px;" v-model="params.userName"
+          @keyup.enter.native="search"></el-input>
+        <el-input placeholder="手机号" style="width: 30%; margin-left: 5px;" v-model="params.phoneNum"
+          @keyup.enter.native="search"></el-input>
+        <el-input placeholder="身份证号" style="width: 30%;margin-left: 5px;" v-model="params.idNumber"
+          @keyup.enter.native="search"></el-input>
 
         <el-button type="primary" icon="el-icon-search" @click="search">
           搜索
@@ -39,33 +29,19 @@
         <el-table-column prop="emailAddress" label="邮箱地址"></el-table-column>
         <el-table-column prop="money" label="余额"></el-table-column>
         <el-table-column prop="idNumber" label="身份证号"></el-table-column>
-
-        <el-table-column
-          prop="walletAddress"
-          label="钱包地址"
-        ></el-table-column>
-
+        <el-table-column prop="walletAddress" label="钱包地址"></el-table-column>
         <el-table-column label="操作" width="210">
           <template slot-scope="scope">
             <el-button size="mini" @click="edit(scope.row)">查看</el-button>
-            <el-button size="mini" type="primary" @click="edit(scope.row)"
-              >编辑</el-button
-            >
+            <el-button size="mini" type="primary" @click="edit(scope.row)">编辑</el-button>
             <!-- <el-button size="mini" type="danger" @click="Delete( scope.row)" >删除</el-button > -->
           </template>
         </el-table-column>
       </el-table>
     </div>
-    <el-pagination
-      background
-      @size-change="sizeChange"
-      @current-change="changePage"
-      :current-page="params.current"
-      :page-sizes="[10, 20, 30]"
-      :page-size="params.size"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="total"
-    ></el-pagination>
+    <el-pagination background @size-change="sizeChange" @current-change="changePage" :current-page="params.current"
+      :page-sizes="[10, 20, 30]" :page-size="params.size" layout="total, sizes, prev, pager, next, jumper"
+      :total="total"></el-pagination>
   </div>
 </template>
 
@@ -91,7 +67,7 @@ export default {
       fileList: []
     };
   },
-  created() {},
+  created() { },
   methods: {
     //搜索
     search() {
@@ -122,7 +98,7 @@ export default {
           });
           this.delData(totalArr);
         })
-        .catch(() => {});
+        .catch(() => { });
     },
     //获取列表
     async List() {
@@ -187,7 +163,7 @@ export default {
           arr.push(row.id);
           this.delData(arr);
         })
-        .catch(() => {});
+        .catch(() => { });
     }
   },
   mounted() {

@@ -1,5 +1,6 @@
 import request from "@p/request";
 const url = "/transferRecord";
+const summaryUrl = "/statistical";
 
 //转账记录分页
 export const TransferRecordPage = params =>
@@ -33,5 +34,11 @@ export const TransferRecordUpdate = data =>
   request({
     method: "put",
     url: url + "/put/" + data.id,
+    data
+  });
+export const statistical_count = data =>
+  request({
+    method: "post",
+    url: summaryUrl + "/count",
     data
   });

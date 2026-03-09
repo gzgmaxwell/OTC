@@ -188,7 +188,7 @@
             <button class="btn btn-download" @click="downLoadBtn">
               APP下载
             </button>
-            <button class="btn btn-login" @click="funLink">网页版登录</button>
+            <!-- <button class="btn btn-login" @click="funLink">网页版登录</button> -->
           </div>
         </div>
       </div>

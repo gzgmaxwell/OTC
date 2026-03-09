@@ -38,7 +38,7 @@
       <div class="container">
         <div class="flex-container">
           <button class="btn btn-download" @click="downLoadBtn">APP下载</button>
-          <button class="btn btn-login">网页版登录</button>
+          <!-- <button class="btn btn-login">网页版登录</button> -->
         </div>
       </div>
     </div>

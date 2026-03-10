@@ -19,3 +19,4 @@ export * from "./register";
 export * from "./loginDevice";
 export * from "./sysVersion";
 export * from "./whiteList";
+export * from "./configManage";

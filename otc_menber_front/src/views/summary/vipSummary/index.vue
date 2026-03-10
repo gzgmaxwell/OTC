@@ -1,4 +1,4 @@
-[2026/3/10 0:39] Way Andy: <template>
+<template>
   <div class="list_page">
     <div class="cardbox">
       <div class="summary_controls">
@@ -13,27 +13,33 @@
       <div class="summary_cards">
         <el-card class="summary_card">
           <div slot="header" class="clearfix">
-            <span>卖单总金额</span>
+            <span>收款金额</span>
           </div>
           <div class="summary_amount">¥ {{ res?.amountSell || 0 }}</div>
         </el-card>
         <el-card class="summary_card">
           <div slot="header" class="clearfix">
-            <span>买单总金额</span>
+            <span>出款金额</span>
           </div>
           <div class="summary_amount">¥ {{ res?.amountBuy || 0 }}</div>
         </el-card>
+        <!-- <el-card class="summary_card">
+          <div slot="header" class="clearfix">
+            <span>已付金额</span>
+          </div>
+          <div class="summary_amount">¥ {{ res?.amountSell || 0 }}</div>
+        </el-card> -->
         <el-card class="summary_card">
           <div slot="header" class="clearfix">
-            <span>注册总人数</span>
+            <span>余额</span>
           </div>
-          <div class="summary_amount">¥ {{ res?.totalUser || 0 }}</div>
+          <div class="summary_amount">¥ {{ res?.amount || 0 }}</div>
         </el-card>
       </div>
     </div>
     <div class="top_wrapper">
       <!-- <div class="search_box">
-        <el-input placeholder="码商名称" v-model="params.transNumber" style="width: 30%; " @keyup.enter.native="search">
+        <el-input placeholder="商户名称" v-model="params.transNumber" style="width: 30%; " @keyup.enter.native="search">
         </el-input>
         <el-button type="primary" icon="el-icon-search" @click="search">
           搜索
@@ -42,21 +48,17 @@
       </div> -->
     </div>
     <div class="table_wrapper" style="height: calc(100% - 300px);">
-      <el-table ref="multipleTable" :data="res.dataList || []" border height="100%" stripe style="width: 100%;">
-        <el-table-column prop="nickName" label="码商名称"></el-table-column>
-        <el-table-column prop="amountFirst" label="卖单金额"></el-table-column>
-        <el-table-column prop="amountSecond" label="买单金额"></el-table-column>
+      <el-table ref="multipleTable" :data="res?.dataList || []" border height="100%" stripe style="width: 100%;">
+        <el-table-column prop="nickName" label="名称"></el-table-column>
+        <el-table-column prop="amountSecond" label="收款金额"></el-table-column>
+        <el-table-column prop="amountFirst" label="出款金额"></el-table-column>
+        <el-table-column prop="money" label="支付金额"></el-table-column>
         <el-table-column prop="amountThird" label="余额"></el-table-column>
-        <!-- <el-table-column prop="amountThird" label="余额">
-          <template slot-scope="scope">
-            {{ formatCurrency(scope.row.amountThird) }}
-          </template>
-</el-table-column> -->
         <!-- <el-table-column label="操作" width="200">
           <template slot-scope="scope">
             <el-button size="mini" @click="edit(scope.row)">查看</el-button>
           </template>
-        </el-table-column> -->
+</el-table-column> -->
       </el-table>
     </div>
     <!-- <el-pagination background @size-change="sizeChange" @current-change="changePage" :current-page="params.current"
@@ -67,6 +69,7 @@
 
 <script>
 import { TransferRecordPage, statistical_count } from "@a/summary";
+import dayjs from "dayjs";
 export default {
   name: "TransferRecord",
   components: {},
@@ -82,6 +85,8 @@ export default {
       list: [], //表格数据
       money: 0,
       timeFilter: "thisMonth",
+      inTotal: 0,
+      outTotal: 0,
       res: {}
     };
   },
@@ -89,6 +94,29 @@ export default {
     formatCurrency(value) {
       if (typeof value !== "number") return "0.00";
       return value.toFixed(2);
+    },
+    getRangeByFilter() {
+      const now = dayjs();
+      if (this.timeFilter === "today") {
+        return {
+          startTime: now.startOf("day").format("YYYY-MM-DD HH:mm:ss"),
+          endTime: now.endOf("day").format("YYYY-MM-DD HH:mm:ss")
+        };
+      }
+      if (this.timeFilter === "week") {
+        const d = now.day();
+        const offset = (d + 6) % 7;
+        const start = now.startOf("day").subtract(offset, "day");
+        const end = start.add(6, "day").endOf("day");
+        return {
+          startTime: start.format("YYYY-MM-DD HH:mm:ss"),
+          endTime: end.format("YYYY-MM-DD HH:mm:ss")
+        };
+      }
+      return {
+        startTime: now.startOf("month").format("YYYY-MM-DD HH:mm:ss"),
+        endTime: now.endOf("month").format("YYYY-MM-DD HH:mm:ss")
+      };
     },
     sumByDirection(records, dir) {
       const key = dir === "in" ? "代收" : "代付";
@@ -98,45 +126,14 @@ export default {
     },
     async loadTotals() {
       const params = {
-        "queryUserKind": "1",  // 1平台，2码商，3商户
-        "timeType": this.timeFilter // today,thisWeek,lastWeek,lastMonth,thisMonth
-        // "userId": ''   //  用户Id  this.userInfo.userId 
+        "queryUserKind": "2",  // 1平台，2码商，3商户
+        "timeType": this.timeFilter, // today,thisWeek,lastWeek,lastMonth,thisMonth
+        "userId": this.userInfo.userId    //  用户Id  this.userInfo.userId 
       }
       try {
         statistical_count(params).then((res) => {
-          console.log(222, res)
           this.res = res || {};
         });
-        // const test = {
-        //   "code": "200",
-        //   "msg": "操作成功",
-        //   "data": {
-        //     "createBy": null,
-        //     "createName": null,
-        //     "createTime": null,
-        //     "updateBy": null,
-        //     "updateTime": null,
-        //     "updateName": null,
-        //     "isDelete": 0,
-        //     "queryType": null,
-        //     "amountSell": 220,// 卖单总金额 （代付）
-        //     "amountBuy": 562, // 买单总金额 （代收）
-        //     "totalUser": 2, // 注册总人数 （总人数）
-        //     "dataList": [
-        //       {
-        //         "userId": "2027753373462396929", // 用户id
-        //         "userName": null,
-        //         "nickName": "高二", //  ##用户昵称  （码商名称）
-        //         "amountFirst": 160,  // ##  总后台/ 码商后 卖单金额（出款金额）  商户平台 充值金额 
-        //         "amountSecond": 0,   // ## 买单金额  （收款金额）
-        //         "amountThird": 890,  // ## 余额  
-        //         "money": 0,
-        //         "time1": null
-        //       }
-        //     ]
-        //   }
-        // }
-        // this.res = test.data || {};
       } catch (e) {
         this.inTotal = 0;
         this.outTotal = 0;
@@ -153,6 +150,8 @@ export default {
       this.params = {};
       this.search();
     },
+
+    //获取列表
     async List() {
       this.params.descs = "a.update_time";
       const data = await TransferRecordPage(this.params);
@@ -178,7 +177,7 @@ export default {
     //编辑
     edit(row) {
       this.$router.push({
-        name: "adminSummaryEdit",
+        name: "shopSummaryEdit",
         query: {
           id: row.id
         }

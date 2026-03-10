@@ -4,8 +4,10 @@
       <div class="summary_controls">
         <el-radio-group v-model="timeFilter" size="small" @change="loadTotals">
           <el-radio-button label="today">当日</el-radio-button>
-          <el-radio-button label="week">本周</el-radio-button>
-          <el-radio-button label="month">本月</el-radio-button>
+          <el-radio-button label="thisWeek">本周</el-radio-button>
+          <el-radio-button label="lastWeek">上一周</el-radio-button>
+          <el-radio-button label="lastMonth">上一月</el-radio-button>
+          <el-radio-button label="thisMonth">本月</el-radio-button>
         </el-radio-group>
       </div>
       <div class="summary_cards">
@@ -13,36 +15,36 @@
           <div slot="header" class="clearfix">
             <span>充值总金额</span>
           </div>
-          <div class="summary_amount">¥ {{ formatCurrency(inTotal) }}</div>
+          <div class="summary_amount">¥ {{ res?.amount || 0 }}</div>
         </el-card>
         <el-card class="summary_card">
           <div slot="header" class="clearfix">
             <span>买单金额</span>
           </div>
-          <div class="summary_amount">¥ {{ formatCurrency(outTotal) }}</div>
+          <div class="summary_amount">¥ {{ res?.amountBuy || 0 }}</div>
         </el-card>
         <el-card class="summary_card">
           <div slot="header" class="clearfix">
             <span>卖单金额</span>
           </div>
-          <div class="summary_amount">¥ {{ formatCurrency(outTotal) }}</div>
+          <div class="summary_amount">¥ {{ res?.amountSell || 0 }}</div>
         </el-card>
       </div>
     </div>
     <div class="top_wrapper">
-      <div class="search_box">
+      <!-- <div class="search_box">
         <el-input placeholder="商户名称" v-model="params.transNumber" style="width: 30%; " @keyup.enter.native="search">
         </el-input>
         <el-button type="primary" icon="el-icon-search" @click="search">
           搜索
         </el-button>
         <el-button icon="el-icon-refresh" @click="reset">重置</el-button>
-      </div>
+      </div> -->
     </div>
     <div class="table_wrapper" style="height: calc(100% - 300px);">
-      <el-table ref="multipleTable" :data="list" border height="100%" stripe style="width: 100%;">
-        <el-table-column prop="fromNickName" label="商户名称"></el-table-column>
-        <el-table-column prop="fromCodeName" label="充值金额"></el-table-column>
+      <el-table ref="multipleTable" :data="res?.dataList || []" border height="100%" stripe style="width: 100%;">
+        <el-table-column prop="nickName" label="商户名称"></el-table-column>
+        <el-table-column prop="amountFirst" label="充值金额"></el-table-column>
         <!-- <el-table-column label="操作" width="200">
           <template slot-scope="scope">
             <el-button size="mini" @click="edit(scope.row)">查看</el-button>
@@ -50,14 +52,14 @@
 </el-table-column> -->
       </el-table>
     </div>
-    <el-pagination background @size-change="sizeChange" @current-change="changePage" :current-page="params.current"
+    <!-- <el-pagination background @size-change="sizeChange" @current-change="changePage" :current-page="params.current"
       :page-sizes="[10, 20, 30]" :page-size="params.size" layout="total, sizes, prev, pager, next, jumper"
-      :total="total"></el-pagination>
+      :total="total"></el-pagination> -->
   </div>
 </template>
 
 <script>
-import { TransferRecordPage } from "@a/summary";
+import { TransferRecordPage, statistical_count } from "@a/summary";
 import dayjs from "dayjs";
 export default {
   name: "TransferRecord",
@@ -73,9 +75,10 @@ export default {
       total: 0,
       list: [], //表格数据
       money: 0,
-      timeFilter: "today",
+      timeFilter: "thisMonth",
       inTotal: 0,
-      outTotal: 0
+      outTotal: 0,
+      res: {}
     };
   },
   methods: {
@@ -113,19 +116,15 @@ export default {
         .reduce((s, r) => s + (Number(r.money) || 0), 0);
     },
     async loadTotals() {
-      const range = this.getRangeByFilter();
-      const p = {
-        size: 1000,
-        current: 1,
-        startTime: range.startTime,
-        endTime: range.endTime,
-        descs: "a.update_time"
-      };
+      const params = {
+        "queryUserKind": "3",  // 1平台，2码商，3商户
+        "timeType": this.timeFilter // today,thisWeek,lastWeek,lastMonth,thisMonth
+        // "userId": ''   //  用户Id  this.userInfo.userId 
+      }
       try {
-        const data = await TransferRecordPage(p);
-        const recs = (data && data.page && data.page.records) || [];
-        this.inTotal = this.sumByDirection(recs, "in");
-        this.outTotal = this.sumByDirection(recs, "out");
+        statistical_count(params).then((res) => {
+          this.res = res || {};
+        });
       } catch (e) {
         this.inTotal = 0;
         this.outTotal = 0;

@@ -1,8 +1,8 @@
 import request from "@p/request";
-const url = "/sysVersion";
+const url = "/config";
 
 //app版本管理分页
-export const SysVersionPage1 = params =>
+export const configPage = params =>
   request({
     method: "get",
     url: url + "/page",
@@ -22,23 +22,23 @@ export const SysVersionInfo1 = id =>
     url: url + "/get/" + id
   });
 
-export const SysVersionSave1 = data =>
+export const configAdd = data =>
   request({
     method: "post",
     url: url + "/add",
     data
   });
 
-export const SysVersionUpdate1 = data =>
+export const configUpdate = (data, id) =>
   request({
     method: "put",
-    url: url + "/put/" + data.id,
+    url: url + "/update/" + id,
     data
   });
 
-export const SysVersionDelete = data =>
+export const configDeleteBatch = data =>
   request({
-    method: "delete",
-    url: url + "/deletes",
+    method: "post",
+    url: url + "/deleteBatch",
     data
   });

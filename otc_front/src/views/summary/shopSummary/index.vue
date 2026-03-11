@@ -42,7 +42,14 @@
       </div> -->
     </div>
     <div class="table_wrapper" style="height: calc(100% - 300px);">
-      <el-table ref="multipleTable" :data="res?.dataList || []" border height="100%" stripe style="width: 100%;">
+      <el-table
+        ref="multipleTable"
+        :data="res?.dataList || []"
+        border
+        height="100%"
+        stripe
+        style="width: 100%;"
+      >
         <el-table-column prop="nickName" label="商户名称"></el-table-column>
         <el-table-column prop="amountFirst" label="充值金额"></el-table-column>
         <!-- <el-table-column label="操作" width="200">
@@ -117,12 +124,12 @@ export default {
     },
     async loadTotals() {
       const params = {
-        "queryUserKind": "3",  // 1平台，2码商，3商户
-        "timeType": this.timeFilter // today,thisWeek,lastWeek,lastMonth,thisMonth
-        // "userId": ''   //  用户Id  this.userInfo.userId 
-      }
+        queryUserKind: "3", // 1平台，2码商，3商户
+        timeType: this.timeFilter // today,thisWeek,lastWeek,lastMonth,thisMonth
+        // "userId": ''   //  用户Id  this.userInfo.userId
+      };
       try {
-        statistical_count(params).then((res) => {
+        statistical_count(params).then(res => {
           this.res = res || {};
         });
       } catch (e) {

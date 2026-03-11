@@ -12,7 +12,12 @@
       <div class="list_page">
         <div class="top_wrapper">
           <div class="search_box">
-            <el-input placeholder="收款账号" v-model="params.transNumber" style="width: 30%; " @keyup.enter.native="search">
+            <el-input
+              placeholder="收款账号"
+              v-model="params.transNumber"
+              style="width: 30%; "
+              @keyup.enter.native="search"
+            >
             </el-input>
             <el-button type="primary" icon="el-icon-search" @click="search">
               搜索
@@ -21,10 +26,26 @@
           </div>
         </div>
         <div class="table_wrapper" style="height: calc(100% - 300px);">
-          <el-table ref="multipleTable" :data="list" border height="100%" stripe style="width: 100%">
-            <el-table-column prop="fromNickName" label="收款账号"></el-table-column>
-            <el-table-column prop="fromCodeName" label="收款金额"></el-table-column>
-            <el-table-column prop="transNumber" label="出款金额"></el-table-column>
+          <el-table
+            ref="multipleTable"
+            :data="list"
+            border
+            height="100%"
+            stripe
+            style="width: 100%"
+          >
+            <el-table-column
+              prop="fromNickName"
+              label="收款账号"
+            ></el-table-column>
+            <el-table-column
+              prop="fromCodeName"
+              label="收款金额"
+            ></el-table-column>
+            <el-table-column
+              prop="transNumber"
+              label="出款金额"
+            ></el-table-column>
             <el-table-column prop="zdlxName" label="已付金额"></el-table-column>
             <el-table-column prop="money" label="余额">
               <template slot-scope="scope">
@@ -33,9 +54,16 @@
             </el-table-column>
           </el-table>
         </div>
-        <el-pagination background @size-change="sizeChange" @current-change="changePage" :current-page="params.current"
-          :page-sizes="[10, 20, 30]" :page-size="params.size" layout="total, sizes, prev, pager, next, jumper"
-          :total="total"></el-pagination>
+        <el-pagination
+          background
+          @size-change="sizeChange"
+          @current-change="changePage"
+          :current-page="params.current"
+          :page-sizes="[10, 20, 30]"
+          :page-size="params.size"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="total"
+        ></el-pagination>
       </div>
     </div>
   </div>

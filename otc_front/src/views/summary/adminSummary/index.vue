@@ -1,4 +1,5 @@
-[2026/3/10 0:39] Way Andy: <template>
+[2026/3/10 0:39] Way Andy:
+<template>
   <div class="list_page">
     <div class="cardbox">
       <div class="summary_controls">
@@ -42,7 +43,14 @@
       </div> -->
     </div>
     <div class="table_wrapper" style="height: calc(100% - 300px);">
-      <el-table ref="multipleTable" :data="res.dataList || []" border height="100%" stripe style="width: 100%;">
+      <el-table
+        ref="multipleTable"
+        :data="res.dataList || []"
+        border
+        height="100%"
+        stripe
+        style="width: 100%;"
+      >
         <el-table-column prop="nickName" label="码商名称"></el-table-column>
         <el-table-column prop="amountFirst" label="卖单金额"></el-table-column>
         <el-table-column prop="amountSecond" label="买单金额"></el-table-column>
@@ -98,13 +106,13 @@ export default {
     },
     async loadTotals() {
       const params = {
-        "queryUserKind": "1",  // 1平台，2码商，3商户
-        "timeType": this.timeFilter // today,thisWeek,lastWeek,lastMonth,thisMonth
-        // "userId": ''   //  用户Id  this.userInfo.userId 
-      }
+        queryUserKind: "1", // 1平台，2码商，3商户
+        timeType: this.timeFilter // today,thisWeek,lastWeek,lastMonth,thisMonth
+        // "userId": ''   //  用户Id  this.userInfo.userId
+      };
       try {
-        statistical_count(params).then((res) => {
-          console.log(222, res)
+        statistical_count(params).then(res => {
+          console.log(222, res);
           this.res = res || {};
         });
         // const test = {
@@ -127,9 +135,9 @@ export default {
         //         "userId": "2027753373462396929", // 用户id
         //         "userName": null,
         //         "nickName": "高二", //  ##用户昵称  （码商名称）
-        //         "amountFirst": 160,  // ##  总后台/ 码商后 卖单金额（出款金额）  商户平台 充值金额 
+        //         "amountFirst": 160,  // ##  总后台/ 码商后 卖单金额（出款金额）  商户平台 充值金额
         //         "amountSecond": 0,   // ## 买单金额  （收款金额）
-        //         "amountThird": 890,  // ## 余额  
+        //         "amountThird": 890,  // ## 余额
         //         "money": 0,
         //         "time1": null
         //       }

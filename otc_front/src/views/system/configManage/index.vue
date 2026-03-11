@@ -2,7 +2,35 @@
   <div class="list_page">
     <div class="top_wrapper">
       <div class="search_box">
-        <el-input placeholder="配置名称" v-model="params.version" @keyup.enter.native="search"></el-input>
+        <el-input
+          placeholder="配置名称"
+          v-model="params.configName"
+          @keyup.enter.native="search"
+          style="width: 30%;"
+        >
+        </el-input>
+        <el-select
+          v-model="params.configType"
+          placeholder="配置类型"
+          @keyup.enter.native="search()"
+          style="width: 30%;margin-left: 5px;"
+        >
+          <el-option
+            v-for="item in optConfigType"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          >
+          </el-option>
+        </el-select>
+        <el-input
+          placeholder="配置编码"
+          v-model="params.configCode"
+          @keyup.enter.native="search"
+          style="width: 30%;margin-left: 5px;"
+        >
+        </el-input>
+
         <el-button type="primary" icon="el-icon-search" @click="search">
           搜索
         </el-button>
@@ -15,28 +43,48 @@
 
     <div class="table_wrapper">
       <el-table ref="multipleTable" :data="list" border height="100%">
-        <el-table-column prop="title" label="配置名称"></el-table-column>
-        <el-table-column prop="version" label="配置地址"></el-table-column>
-        <el-table-column prop="apkLink" label="描述"></el-table-column>
+        <el-table-column prop="configName" label="配置名称"></el-table-column>
+        <el-table-column prop="configType" label="配置类型">
+          <template slot-scope="scope">
+            {{
+              configTypeMap[String(scope.row.configType)] ||
+                scope.row.configType
+            }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="configCode" label="配置编码"></el-table-column>
+        <el-table-column prop="value1" label="配置值"></el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button size="mini" type="primary" @click="edit(scope.row)">编辑</el-button>
-            <el-button size="mini" type="danger" @click="Delete(scope.row)">删除</el-button>
+            <el-button size="mini" type="primary" @click="edit(scope.row)"
+              >编辑</el-button
+            >
+            <el-button size="mini" type="danger" @click="Delete(scope.row)"
+              >删除</el-button
+            >
           </template>
         </el-table-column>
       </el-table>
     </div>
-    <el-pagination background @size-change="sizeChange" @current-change="changePage" :current-page="params.current"
-      :page-sizes="[10, 20, 30]" :page-size="params.size" layout="total, sizes, prev, pager, next, jumper"
-      :total="total"></el-pagination>
+    <el-pagination
+      background
+      @size-change="sizeChange"
+      @current-change="changePage"
+      :current-page="params.current"
+      :page-sizes="[10, 20, 30]"
+      :page-size="params.size"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total"
+    ></el-pagination>
   </div>
 </template>
 
 <script>
-import { SysVersionPage1, SysVersionDelete1 } from "@a/system";
+import { configPage, configDeleteBatch } from "@a/system";
+import { optConfigType } from "@/utils/enum";
 
 export default {
-  name: "SysVersion",
+  name: "ConfigManage",
   components: {},
   data() {
     return {
@@ -47,7 +95,17 @@ export default {
       },
       total: 0,
       list: [], //表格数据
+      optConfigType: optConfigType
     };
+  },
+  computed: {
+    configTypeMap() {
+      const map = {};
+      (this.optConfigType || []).forEach(i => {
+        map[String(i.value)] = i.label;
+      });
+      return map;
+    }
   },
   methods: {
     //搜索
@@ -63,7 +121,7 @@ export default {
     //获取列表
     async List() {
       this.params.descs = "a.update_time";
-      const data = await SysVersionPage1(this.params);
+      const data = await configPage(this.params);
 
       this.total = data.total;
       this.list = data.records;
@@ -86,7 +144,7 @@ export default {
     },
     //删除接口
     async delData(array) {
-      await SysVersionDelete1(array);
+      await configDeleteBatch(array);
       this.$message.success("删除成功");
       this.search();
     },
@@ -100,9 +158,7 @@ export default {
     edit(row) {
       this.$router.push({
         name: "configManageEdit",
-        query: {
-          id: row.id
-        }
+        query: row
       });
     },
     //删除
@@ -117,7 +173,7 @@ export default {
           arr.push(row.id);
           this.delData(arr);
         })
-        .catch(() => { });
+        .catch(() => {});
     }
   },
   mounted() {

@@ -31,7 +31,7 @@ export const configAdd = data =>
 
 export const configUpdate = (data, id) =>
   request({
-    method: "put",
+    method: "post",
     url: url + "/update/" + id,
     data
   });

@@ -2,7 +2,7 @@
   <div class="list_page">
     <div class="top_wrapper">
       <div class="search_box">
-        <el-input placeholder="请输入版本号" v-model="params.version" @keyup.enter.native="search"></el-input>
+        <el-input placeholder="配置名称" v-model="params.version" @keyup.enter.native="search"></el-input>
         <el-button type="primary" icon="el-icon-search" @click="search">
           搜索
         </el-button>
@@ -15,9 +15,9 @@
 
     <div class="table_wrapper">
       <el-table ref="multipleTable" :data="list" border height="100%">
-        <el-table-column prop="title" label="标题"></el-table-column>
-        <el-table-column prop="version" label="版本号"></el-table-column>
-        <el-table-column prop="apkLink" label="下载链接"></el-table-column>
+        <el-table-column prop="title" label="配置名称"></el-table-column>
+        <el-table-column prop="version" label="配置地址"></el-table-column>
+        <el-table-column prop="apkLink" label="描述"></el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button size="mini" type="primary" @click="edit(scope.row)">编辑</el-button>

@@ -90,7 +90,7 @@ export default {
     //返回
     backTo() {
       this.$router.push({
-        name: "WithdrawalReview"
+        name: "WithdrawalRequest"
       });
     }
   },

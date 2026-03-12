@@ -7,6 +7,7 @@
         <el-button type="primary" icon="el-icon-search" @click="search">
           搜索
         </el-button>
+        <el-button size="mini" type="primary" @click="edit()">提现申请</el-button>
         <el-button icon="el-icon-refresh" @click="reset">重置</el-button>
       </div>
     </div>
@@ -19,7 +20,6 @@
         <el-table-column prop="updateTime" label="更新时间" width="160"></el-table-column>
         <el-table-column label="操作" width="210">
           <template slot-scope="scope">
-            <el-button size="mini" type="primary" @click="edit(scope.row)">提现审核</el-button>
             <el-button size="mini" type="danger" @click="Delete(scope.row)">删除</el-button>
           </template>
         </el-table-column>
@@ -76,12 +76,9 @@ export default {
       this.List();
     },
     //编辑
-    edit(row) {
+    edit() {
       this.$router.push({
-        name: "WithdrawalRequestEdit",
-        query: {
-          id: row.id
-        }
+        name: "WithdrawalRequestEdit"
       });
     }
   },

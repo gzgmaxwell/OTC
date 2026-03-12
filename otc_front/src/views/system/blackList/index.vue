@@ -24,7 +24,7 @@
 
 <script>
 import { WhiteListPage2222 } from "@a/system";
-
+import { blackUserReasonOptions } from "@/utils/enum";
 export default {
   name: "BalckList",
   components: {},

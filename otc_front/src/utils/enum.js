@@ -21,3 +21,9 @@ export const timeFilterOptions = [
   { value: "lastMonth", label: "上一月" },
   { value: "thisMonth", label: "本月" }
 ]
+
+export const blackUserReasonOptions = [
+  { value: "today", label: "拉黑" },
+  { value: "yesterday", label: "冻结账户" },
+  { value: "beforeThreeDays", label: "/限制提现" }
+]

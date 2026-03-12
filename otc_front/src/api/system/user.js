@@ -72,3 +72,11 @@ export const UserDelete = data =>
     url: url + "/deletes",
     data
   });
+
+
+export const UserUpdate2233 = data =>
+  request({
+    method: "post",
+    url: url + "/put/" + data.userId,
+    data
+  });

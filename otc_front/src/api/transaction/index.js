@@ -8,3 +8,5 @@ export * from "./userPayModify";
 export * from "./transferRecord";
 export * from "./transactionAppeal";
 export * from "./payOrder";
+export * from "./transactionAlert";
+export * from "./withdrawalReview";

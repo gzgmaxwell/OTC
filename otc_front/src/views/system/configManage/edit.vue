@@ -12,36 +12,19 @@
       </div>
     </div>
     <div class="edit_content">
-      <el-form
-        class="u_form"
-        :model="formValidate"
-        :rules="rules"
-        ref="formValidate"
-        label-width="100px"
-      >
+      <el-form class="u_form" :model="formValidate" :rules="rules" ref="formValidate" label-width="100px">
         <el-row :gutter="20" type="flex" class="row-bg" justify="center">
           <el-col :span="10">
             <el-form-item label="配置名称" prop="configName">
-              <el-input
-                v-model="formValidate.configName"
-                style="width: 100%;"
-              ></el-input>
+              <el-input v-model="formValidate.configName" style="width: 100%;"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="10">
             <el-form-item label="配置类型" prop="configType">
-              <el-select
-                style="width: 100%;"
-                v-model="formValidate.configType"
-                placeholder="请选择类型"
-                clearable
-              >
-                <el-option
-                  v-for="item in optConfigType"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                ></el-option>
+              <el-select :disabled="this.id ? true : false" style="width: 100%;" v-model="formValidate.configType"
+                placeholder="请选择类型" clearable>
+                <el-option v-for="item in optConfigType" :key="item.value" :label="item.label"
+                  :value="item.value"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -50,10 +33,8 @@
         <el-row :gutter="20" type="flex" class="row-bg" justify="center">
           <el-col :span="20">
             <el-form-item label="配置编码" prop="configCode">
-              <el-input
-                v-model="formValidate.configCode"
-                style="width: 100%;"
-              ></el-input>
+              <el-input :disabled="this.id ? true : false" v-model="formValidate.configCode"
+                style="width: 100%;"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -61,12 +42,7 @@
         <el-row :gutter="20" type="flex" class="row-bg" justify="center">
           <el-col :span="20">
             <el-form-item label="配置值" prop="value1">
-              <el-input
-                v-model="formValidate.value1"
-                style="width: 100%;"
-                type="textarea"
-                :rows="4"
-              ></el-input>
+              <el-input v-model="formValidate.value1" style="width: 100%;" type="textarea" :rows="4"></el-input>
             </el-form-item>
           </el-col>
         </el-row>

@@ -161,7 +161,7 @@
         <div class="main-title">
           <div class="title-888">888</div>
           <div class="subtitle">
-            使用808管理、世界通用的、恒定人民币汇率数字资产
+            使用888管理、世界通用的、恒定人民币汇率数字资产
           </div>
         </div>
 

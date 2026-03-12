@@ -316,7 +316,7 @@
             <img src="../../assets/img/888.png" class="linkIcon" width="109" />
           </div>
           <div class="subtitle">
-            使用808管理、世界通用的、恒定人民币汇率数字资产
+            使用888管理、世界通用的、恒定人民币汇率数字资产
           </div>
         </div>
 

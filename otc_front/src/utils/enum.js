@@ -12,3 +12,12 @@ export const optConfigType = [
     label: "开关"
   }
 ];
+export const timeFilterOptions = [
+  { value: "today", label: "当日" },
+  { value: "yesterday", label: "昨日" },
+  { value: "beforeThreeDays", label: "近三日" },
+  { value: "thisWeek", label: "本周" },
+  { value: "lastWeek", label: "上一周" },
+  { value: "lastMonth", label: "上一月" },
+  { value: "thisMonth", label: "本月" }
+]

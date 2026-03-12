@@ -3,11 +3,9 @@
     <div class="cardbox">
       <div class="summary_controls">
         <el-radio-group v-model="timeFilter" size="small" @change="loadTotals">
-          <el-radio-button label="today">当日</el-radio-button>
-          <el-radio-button label="thisWeek">本周</el-radio-button>
-          <el-radio-button label="lastWeek">上一周</el-radio-button>
-          <el-radio-button label="lastMonth">上一月</el-radio-button>
-          <el-radio-button label="thisMonth">本月</el-radio-button>
+          <el-radio-button v-for="item in timeFilterOptions" :key="item.value" :label="item.value">
+            {{ item.label }}
+          </el-radio-button>
         </el-radio-group>
       </div>
       <div class="summary_cards">
@@ -48,14 +46,7 @@
       </div> -->
     </div>
     <div class="table_wrapper" style="height: calc(100% - 300px);">
-      <el-table
-        ref="multipleTable"
-        :data="res?.dataList || []"
-        border
-        height="100%"
-        stripe
-        style="width: 100%;"
-      >
+      <el-table ref="multipleTable" :data="res?.dataList || []" border height="100%" stripe style="width: 100%;">
         <el-table-column prop="nickName" label="名称"></el-table-column>
         <el-table-column prop="amountSecond" label="收款金额"></el-table-column>
         <el-table-column prop="amountFirst" label="出款金额"></el-table-column>
@@ -76,6 +67,7 @@
 
 <script>
 import { TransferRecordPage, statistical_count } from "@a/summary";
+import { timeFilterOptions } from "@/utils/enum";
 import dayjs from "dayjs";
 export default {
   name: "TransferRecord",
@@ -92,6 +84,7 @@ export default {
       list: [], //表格数据
       money: 0,
       timeFilter: "thisMonth",
+      timeFilterOptions: timeFilterOptions,
       inTotal: 0,
       outTotal: 0,
       res: {}

@@ -5,6 +5,8 @@
       <div class="summary_controls">
         <el-radio-group v-model="timeFilter" size="small" @change="loadTotals">
           <el-radio-button label="today">当日</el-radio-button>
+          <el-radio-button label="yesterday">昨日</el-radio-button>
+          <el-radio-button label="beforeThreeDays">近三日</el-radio-button>
           <el-radio-button label="thisWeek">本周</el-radio-button>
           <el-radio-button label="lastWeek">上一周</el-radio-button>
           <el-radio-button label="lastMonth">上一月</el-radio-button>
@@ -43,14 +45,7 @@
       </div> -->
     </div>
     <div class="table_wrapper" style="height: calc(100% - 300px);">
-      <el-table
-        ref="multipleTable"
-        :data="res.dataList || []"
-        border
-        height="100%"
-        stripe
-        style="width: 100%;"
-      >
+      <el-table ref="multipleTable" :data="res.dataList || []" border height="100%" stripe style="width: 100%;">
         <el-table-column prop="nickName" label="码商名称"></el-table-column>
         <el-table-column prop="amountFirst" label="卖单金额"></el-table-column>
         <el-table-column prop="amountSecond" label="买单金额"></el-table-column>

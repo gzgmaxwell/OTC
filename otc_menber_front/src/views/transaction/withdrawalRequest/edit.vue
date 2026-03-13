@@ -2,7 +2,7 @@
   <div class="edit_page">
     <div class="top_box">
       <div class="title">
-        提现审核
+        申请提现
       </div>
       <div>
         <ja-button type="primary" :click="save">

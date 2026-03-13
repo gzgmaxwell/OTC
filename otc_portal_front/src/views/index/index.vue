@@ -442,7 +442,8 @@ export default {
         const url = "https://www.d-xilzd.com/otc/api/view/apk/pay888.apk";
         window.open(url, "_blank");
       } else if (this.device() === "IOS") {
-        const url = "https://vip99tf.ekk.ghzyaw.com/eKYUIm";
+        // const url = "https://vip99tf.ekk.ghzyaw.com/eKYUIm";
+        const url = "https://testflight.apple.com/join/tbRerpT6";
         window.open(url, "_blank");
       } else {
         const url = "https://www.d-xilzd.com/h5/login";

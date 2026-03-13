@@ -18,11 +18,11 @@
         <el-table-column prop="idNumber" label="身份证号"></el-table-column>
         <el-table-column prop="levelName" label="实名认证级别"></el-table-column>
         <el-table-column prop="updateTime" label="更新时间" width="160"></el-table-column>
-        <el-table-column label="操作" width="210">
+        <!-- <el-table-column label="操作" width="210">
           <template slot-scope="scope">
             <el-button size="mini" type="danger" @click="Delete(scope.row)">删除</el-button>
           </template>
-        </el-table-column>
+        </el-table-column> -->
       </el-table>
     </div>
     <el-pagination background @size-change="sizeChange" @current-change="changePage" :current-page="params.current"

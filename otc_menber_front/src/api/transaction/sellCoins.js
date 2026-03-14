@@ -42,3 +42,9 @@ export const SellCoinsDelete = data =>
     url: url + "/deletes",
     data
   });
+
+export const cancelOrderForVip = id =>
+  request({
+    method: "post",
+    url: url + "/cancelOrderForVip/" + id,
+  });

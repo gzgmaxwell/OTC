@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import { SellCoinsPage, SellCoinsDelete } from "@a/transaction";
+import { SellCoinsPage, SellCoinsDelete, cancelOrderForVip } from "@a/transaction";
 
 export default {
   name: "SellCoins",
@@ -107,6 +107,20 @@ export default {
             totalArr.push(item.id);
           });
           this.delData(totalArr);
+        })
+        .catch(() => { });
+    },
+    cancel(row) {
+      this.$confirm("此操作将取消订单, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          cancelOrderForVip(row.id).then(() => {
+            this.$message.success("取消订单成功");
+            this.search();
+          });
         })
         .catch(() => { });
     },

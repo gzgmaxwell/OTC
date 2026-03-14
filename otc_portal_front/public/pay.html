@@ -34,6 +34,11 @@
             align-items: center;
         }
 
+        /* logo区域 */
+        .logo {
+            margin-bottom: 12px;
+        }
+
         /* 标题区域 */
         .header {
             color: white;
@@ -286,10 +291,13 @@
 <body>
     <div class="container">
         <!-- 标题区域 -->
+        <div class="logo">
+            <img src="./pay888.png" alt="" width="80" height="80">
+        </div>
         <div class="header">
             <h1>888钱包充值秒到账</h1>
             <p>安全无忧 零封控</p>
-            <p>支持网页版H5支付无需下载APP</p>
+            <!-- <p>支持网页版H5支付无需下载APP</p> -->
         </div>
 
         <!-- 主卡片 -->
@@ -323,9 +331,9 @@
                 </div>
 
                 <!-- 独立的灰色按钮 -->
-                <button class="btn btn-secondary">
+                <!-- <button class="btn btn-secondary">
                     网页版H5支付(无需下载app)
-                </button>
+                </button> -->
             </div>
 
             <!-- 客服区域 -->
@@ -612,7 +620,7 @@
                 } else {
                     document.querySelector('.payment-timer').style.background = "#ffcdd2";
                     document.querySelector('.payment-timer').innerHTML = "付款超时";
-                    document.querySelector('.payment-timer').style.color ="#d32f2f";
+                    document.querySelector('.payment-timer').style.color = "#d32f2f";
                 }
             }
 

@@ -44,7 +44,8 @@
         <el-table-column label="操作" width="210">
           <template slot-scope="scope">
             <el-button size="mini" @click="edit(scope.row)">查看</el-button>
-            <el-button size="mini" type="danger" @click="cancel(scope.row)">取消</el-button>
+            <el-button size="mini" type="danger" @click="cancel(scope.row)"
+              v-if="scope.row.orderStatus === '1'">取消</el-button>
           </template>
         </el-table-column>
       </el-table>

@@ -2,24 +2,11 @@
   <div class="list_page">
     <div class="top_wrapper">
       <div class="search_box">
-        <el-input
-          placeholder="请输入姓名"
-          @keyup.enter.native="search"
-          v-model="params.fullName"
-        ></el-input>
+        <el-input placeholder="请输入姓名" @keyup.enter.native="search" v-model="params.fullName"></el-input>
 
-        <el-input
-          placeholder="请输入登录名"
-          @keyup.enter.native="search"
-          style="margin-left: 5%;"
-          v-model="params.userName"
-        ></el-input>
-        <el-button
-          style="margin-left: 5%;"
-          type="primary"
-          icon="el-icon-search"
-          @click="search"
-        >
+        <el-input placeholder="请输入登录名" @keyup.enter.native="search" style="margin-left: 5%;"
+          v-model="params.userName"></el-input>
+        <el-button style="margin-left: 5%;" type="primary" icon="el-icon-search" @click="search">
           搜索
         </el-button>
         <el-button icon="el-icon-refresh" @click="reset">重置</el-button>
@@ -31,58 +18,28 @@
     <div class="table_wrapper">
       <el-table ref="multipleTable" :data="list" border height="100%">
         <el-table-column prop="fullName" label="真实姓名"></el-table-column>
-        <el-table-column
-          prop="userName"
-          label="登录名"
-          show-overflow-tooltip
-        ></el-table-column>
-        <el-table-column
-          prop="postName"
-          label="角色"
-          show-overflow-tooltip
-        ></el-table-column>
-        <el-table-column
-          prop="updateTime"
-          label="更新时间"
-          show-overflow-tooltip
-        ></el-table-column>
+        <el-table-column prop="userName" label="登录名" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="postName" label="角色" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="updateTime" label="更新时间" show-overflow-tooltip></el-table-column>
 
         <el-table-column prop="lockStatusName" label="状态"></el-table-column>
 
         <el-table-column label="操作" width="280">
           <template slot-scope="scope">
             <el-button size="mini" @click="edit(scope.row)">查看</el-button>
-            <el-button size="mini" type="primary" @click="edit(scope.row)"
-              >编辑</el-button
-            >
-            <!-- <el-button size="mini" type="danger" @click="Delete( scope.row)" >删除</el-button >  -->
-            <el-button
-              size="mini"
-              type="danger"
-              v-if="scope.row.lockStatus == 1"
-              @click="disabled(scope.row.userId, 2)"
-              >禁用</el-button
-            >
-            <el-button
-              size="mini"
-              v-if="scope.row.lockStatus == 2"
-              @click="disabled(scope.row.userId, 1)"
-              >解禁</el-button
-            >
+            <el-button size="mini" type="primary" @click="edit(scope.row)">编辑</el-button>
+            <el-button size="mini" type="danger" @click="Delete(scope.row)">删除</el-button>
+            <el-button size="mini" type="danger" v-if="scope.row.lockStatus == 1"
+              @click="disabled(scope.row.userId, 2)">禁用</el-button>
+            <el-button size="mini" v-if="scope.row.lockStatus == 2"
+              @click="disabled(scope.row.userId, 1)">解禁</el-button>
           </template>
         </el-table-column>
       </el-table>
     </div>
-    <el-pagination
-      background
-      @size-change="sizeChange"
-      @current-change="changePage"
-      :current-page="params.current"
-      :page-sizes="[10, 20, 30]"
-      :page-size="params.size"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="total"
-    ></el-pagination>
+    <el-pagination background @size-change="sizeChange" @current-change="changePage" :current-page="params.current"
+      :page-sizes="[10, 20, 30]" :page-size="params.size" layout="total, sizes, prev, pager, next, jumper"
+      :total="total"></el-pagination>
   </div>
 </template>
 

@@ -32,6 +32,7 @@
         </el-table-column>
 
         <el-table-column prop="money" label="金额"></el-table-column>
+        <el-table-column prop="fullName" label="用户实名"></el-table-column>
 
         <el-table-column prop="balance" label="余额"></el-table-column>
 

@@ -26,7 +26,7 @@
         <el-table-column prop="orderNumber" label="订单编号"></el-table-column>
 
         <el-table-column prop="buyerNickName" label="买家昵称"></el-table-column>
-
+        <el-table-column prop="fullName" label="用户实名"></el-table-column>
         <el-table-column prop="buyerHeader" label="买家头像">
           <template slot-scope="scope">
             <img :src="scope.row.buyerHeader" v-if="scope.row.buyerHeader" style="width: 50px; height: 50px" />

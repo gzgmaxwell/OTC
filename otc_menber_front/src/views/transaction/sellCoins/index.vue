@@ -4,10 +4,12 @@
       <div class="search_box">
         <el-input placeholder="挂单编号" style="width: 30%;" v-model="params.hangingOrderNumber"
           @keyup.enter.native="search"></el-input>
-
+        <el-input placeholder="用户实名" style="width: 30%; margin-left: 5px;" v-model="params.fullName"
+          @keyup.enter.native="search"></el-input>
         <el-button type="primary" icon="el-icon-search" @click="search">
           搜索
         </el-button>
+
         <el-button icon="el-icon-refresh" @click="reset">重置</el-button>
         <el-button type="primary" icon="el-icon-plus" @click="newEdit()">
           添加

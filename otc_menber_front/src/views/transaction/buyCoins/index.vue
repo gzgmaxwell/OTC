@@ -14,6 +14,12 @@
           v-model="params.hangingOrderNumber"
           @keyup.enter.native="search"
         ></el-input>
+         <el-input
+          placeholder="用户实名"
+          style="width: 30%; margin-left: 5px;"
+          v-model="params.fullName"
+          @keyup.enter.native="search"
+        ></el-input>
 
         <el-button type="primary" icon="el-icon-search" @click="search">
           搜索

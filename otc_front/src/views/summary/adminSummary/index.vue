@@ -26,7 +26,7 @@
           <div slot="header" class="clearfix">
             <span>注册总人数</span>
           </div>
-          <div class="summary_amount">¥ {{ res?.totalUser || 0 }}</div>
+          <div class="summary_amount">人 {{ res?.totalUser || 0 }}</div>
         </el-card>
       </div>
     </div>

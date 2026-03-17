@@ -3,8 +3,8 @@
     <div class="top_wrapper">
       <div class="search_box">
         <el-input
-          placeholder="请输入付款人"
-          v-model="params.fromId"
+          placeholder="请输入付款人昵称"
+          v-model="params.fromNickName"
           @keyup.enter.native="search"
         ></el-input>
         <el-input

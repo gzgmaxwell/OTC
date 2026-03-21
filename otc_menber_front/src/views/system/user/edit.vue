@@ -222,7 +222,8 @@ export default {
       await UserSave(this.formValidate);
       this.$message.success("保存成功");
       this.$router.push({
-        name: "User"
+        name: "User",
+        query: this.$route.query.current ? { current: this.$route.query.current } : {}
       });
     },
     //编辑保存接口
@@ -230,7 +231,8 @@ export default {
       await UserUpdate(this.formValidate, this.id);
       this.$message.success("修改成功");
       this.$router.push({
-        name: "User"
+        name: "User",
+        query: this.$route.query.current ? { current: this.$route.query.current } : {}
       });
     },
 
@@ -261,7 +263,8 @@ export default {
     //返回
     backTo() {
       this.$router.push({
-        name: "User"
+        name: "User",
+        query: this.$route.query.current ? { current: this.$route.query.current } : {}
       });
     },
     async comfirmpassword() {

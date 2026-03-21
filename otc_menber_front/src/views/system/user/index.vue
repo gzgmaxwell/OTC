@@ -52,14 +52,28 @@ export default {
       params: {
         size: 10,
         current: 1,
-        userName: null
+        userName: null,
+        fullName: null
       },
       total: 0,
       list: [] //表格数据
     };
   },
   mounted() {
+    const current = Number(this.$route.query.current);
+    if (Number.isFinite(current) && current > 0) {
+      this.params.current = current;
+    }
     this.search();
+  },
+  watch: {
+    "$route.query.current"(val) {
+      const current = Number(val);
+      if (Number.isFinite(current) && current > 0 && current !== this.params.current) {
+        this.params.current = current;
+        this.List();
+      }
+    }
   },
   methods: {
     // 搜索
@@ -70,7 +84,18 @@ export default {
     // 重置
     reset() {
       // this.params.current = 1;
-      this.params = {};
+      this.params = {
+        size: 10,
+        current: 1,
+        userName: null,
+        fullName: null
+      };
+      this.$router.replace({
+        query: {
+          ...this.$route.query,
+          current: 1
+        }
+      });
       //列表查询和搜索
       // this.List();
     },
@@ -89,7 +114,13 @@ export default {
     },
     // 当前第几页，切换页码
     changePage(val) {
-      this.params.current = val;
+      this.params.current = Number(val);
+      this.$router.replace({
+        query: {
+          ...this.$route.query,
+          current: this.params.current
+        }
+      });
       this.List();
     },
     // 删除接口
@@ -98,7 +129,8 @@ export default {
       this.$router.push({
         name: "EditUser",
         query: {
-          id: uuid
+          id: uuid,
+          current: this.params.current
         }
       });
     },
@@ -107,7 +139,8 @@ export default {
       this.$router.push({
         name: "EditUser",
         query: {
-          id: row.userId
+          id: row.userId,
+          current: this.params.current
         }
       });
     },

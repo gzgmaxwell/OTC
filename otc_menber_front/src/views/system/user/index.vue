@@ -37,7 +37,7 @@
         </el-table-column>
       </el-table>
     </div>
-    <el-pagination background @size-change="sizeChange" @current-change="changePage" :current-page.sync="params.current"
+    <el-pagination background @size-change="sizeChange" @current-change="changePage" v-if="params.current" :current-page.sync="params.current"
       :page-sizes="[10, 20, 30]" :page-size="params.size" layout="total, sizes, prev, pager, next, jumper"
       :total="total"></el-pagination>
   </div>
@@ -51,7 +51,7 @@ export default {
     return {
       params: {
         size: 10,
-        current: 1,
+        current: null,
         userName: null,
         fullName: null
       },
@@ -63,10 +63,15 @@ export default {
     const current = Number(this.$route.query.current);
     if (Number.isFinite(current) && current > 0) {
       this.params.current = current;
+    } else {
+      this.params.current = 1;
     }
     this.search();
   },
   watch: {
+    "params.current"() {
+      this.updatePaginationActive();
+    },
     "$route.query.current"(val) {
       const current = Number(val);
       if (Number.isFinite(current) && current > 0 && current !== this.params.current) {
@@ -76,14 +81,28 @@ export default {
     }
   },
   methods: {
+    updatePaginationActive() {
+      this.$nextTick(() => {
+        const paginationEl = this.$el && this.$el.querySelector(".el-pagination");
+        if (!paginationEl) return;
+        const items = paginationEl.querySelectorAll(".el-pager li.number");
+        items.forEach(li => {
+          const n = Number(String(li.innerText || "").trim());
+          if (Number.isFinite(n) && n === Number(this.params.current)) {
+            li.classList.add("manual-active");
+          } else {
+            li.classList.remove("manual-active");
+          }
+        });
+      });
+    },
     // 搜索
     search() {
-      // this.params.current = 1;
       this.List();
     },
     // 重置
     reset() {
-      // this.params.current = 1;
+     
       this.params = {
         size: 10,
         current: 1,
@@ -97,7 +116,8 @@ export default {
         }
       });
       //列表查询和搜索
-      // this.List();
+       this.params.current = 1;
+      this.List();
     },
     // 获取列表
     async List() {
@@ -106,6 +126,7 @@ export default {
       const data = await UserPage(this.params);
       this.total = data.total;
       this.list = data.records;
+      this.updatePaginationActive();
     },
     // 每页多少条，切换显示条数
     sizeChange(val) {
@@ -153,7 +174,6 @@ export default {
       }).then(async () => {
         await UserDelete([row.userId]);
         this.$message.success("删除成功");
-        // this.params.current = 1;
         this.search();
       });
     },
@@ -166,10 +186,21 @@ export default {
       }).then(async () => {
         await UserLockStatus({ userId: userId, lockStatus: lockStatus });
         this.$message.success("操作成功");
-        // this.params.current = 1;
         this.search();
       });
     }
   }
 };
 </script>
+
+<style scoped>
+.list_page /deep/ .el-pagination .el-pager li.is-active:not(.manual-active) {
+  background-color: #fff;
+  color: #606266;
+}
+
+.list_page /deep/ .el-pagination .el-pager li.manual-active {
+  background-color: var(--primary);
+  color: #fff;
+}
+</style>

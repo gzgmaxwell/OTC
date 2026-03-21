@@ -37,7 +37,7 @@
         </el-table-column>
       </el-table>
     </div>
-    <el-pagination background @size-change="sizeChange" @current-change="changePage" :current-page="params.current"
+    <el-pagination background @size-change="sizeChange" @current-change="changePage" :current-page.sync="params.current"
       :page-sizes="[10, 20, 30]" :page-size="params.size" layout="total, sizes, prev, pager, next, jumper"
       :total="total"></el-pagination>
   </div>

@@ -26,6 +26,7 @@
     <div class="table_wrapper">
       <el-table ref="multipleTable" :data="list" border height="100%">
         <el-table-column prop="fullName" label="姓名"></el-table-column>
+        <el-table-column prop="fromNickName" label="付款人昵称"></el-table-column>
         <el-table-column prop="userName" label="用户帐号"></el-table-column>
         <el-table-column prop="phoneNum" label="手机号码"></el-table-column>
         <el-table-column prop="emailAddress" label="邮箱地址"></el-table-column>

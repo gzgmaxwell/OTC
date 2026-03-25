@@ -3,10 +3,11 @@
     <div class="top_wrapper">
       <div class="search_box">
         <el-input placeholder="请输入姓名" @keyup.enter.native="search" v-model="params.fullName"></el-input>
-
-        <el-input placeholder="请输入登录名" @keyup.enter.native="search" style="margin-left: 5%;"
+        <el-input placeholder="请输入昵称" @keyup.enter.native="search" style="margin-left: 5px;"
+          v-model="params.nickName"></el-input>
+        <el-input placeholder="请输入登录名" @keyup.enter.native="search" style="margin-left: 5px;"
           v-model="params.userName"></el-input>
-        <el-button style="margin-left: 5%;" type="primary" icon="el-icon-search" @click="search">
+        <el-button style="margin-left: 5px;" type="primary" icon="el-icon-search" @click="search">
           搜索
         </el-button>
         <el-button icon="el-icon-refresh" @click="reset">重置</el-button>
@@ -18,6 +19,7 @@
     <div class="table_wrapper">
       <el-table ref="multipleTable" :data="list" border height="100%">
         <el-table-column prop="fullName" label="真实姓名"></el-table-column>
+        <el-table-column prop="nickName" label="昵称"></el-table-column>
         <el-table-column prop="userName" label="登录名" show-overflow-tooltip></el-table-column>
         <el-table-column prop="postName" label="角色" show-overflow-tooltip></el-table-column>
         <el-table-column prop="updateTime" label="更新时间" show-overflow-tooltip></el-table-column>

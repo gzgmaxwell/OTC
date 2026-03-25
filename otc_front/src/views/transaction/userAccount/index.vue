@@ -2,7 +2,7 @@
   <div class="list_page">
     <div class="top_wrapper">
       <div class="search_box">
-        <el-input placeholder="付款人昵称" style="width: 30%;" v-model="params.fromNickName"
+        <el-input placeholder="付款人昵称" style="width: 30%;" v-model="params.nickName"
           @keyup.enter.native="search"></el-input>
         <el-input placeholder="用户编号" style="width: 30%;margin-left: 5px;" v-model="params.userId"
           @keyup.enter.native="search"></el-input>
@@ -29,7 +29,7 @@
       <el-table ref="multipleTable" :data="list" border height="100%">
         <el-table-column prop="fullName" label="姓名"></el-table-column>
         <el-table-column prop="userId" label="用户编号"></el-table-column>
-        <el-table-column prop="fromNickName" label="付款人昵称"></el-table-column>
+        <el-table-column prop="nickName" label="付款人昵称"></el-table-column>
         <el-table-column prop="userName" label="用户帐号"></el-table-column>
         <el-table-column prop="phoneNum" label="手机号码"></el-table-column>
         <el-table-column prop="emailAddress" label="邮箱地址"></el-table-column>

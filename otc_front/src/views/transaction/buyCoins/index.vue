@@ -2,18 +2,10 @@
   <div class="list_page">
     <div class="top_wrapper">
       <div class="search_box">
-        <el-input
-          placeholder="订单编号"
-          style="width: 30%;"
-          v-model="params.orderNumber"
-          @keyup.enter.native="search"
-        ></el-input>
-        <el-input
-          placeholder="卖单编号"
-          style="width: 30%; margin-left: 5px;"
-          v-model="params.hangingOrderNumber"
-          @keyup.enter.native="search"
-        ></el-input>
+        <el-input placeholder="订单号" style="width: 30%;" v-model="params.orderNumber"
+          @keyup.enter.native="search"></el-input>
+        <el-input placeholder="卖单编号" style="width: 30%; margin-left: 5px;" v-model="params.hangingOrderNumber"
+          @keyup.enter.native="search"></el-input>
 
         <el-button type="primary" icon="el-icon-search" @click="search">
           搜索
@@ -27,54 +19,26 @@
 
     <div class="table_wrapper">
       <el-table ref="multipleTable" :data="list" border height="100%">
-        <el-table-column prop="orderNumber" label="订单编号"></el-table-column>
-
-        <el-table-column
-          prop="buyerNickName"
-          label="买家昵称"
-        ></el-table-column>
-
+        <el-table-column prop="orderNumber" label="订单号"></el-table-column>
+        <el-table-column prop="id" label="订单编号"></el-table-column>
+        <el-table-column prop="buyerNickName" label="买家昵称"></el-table-column>
         <el-table-column prop="buyerHeader" label="买家头像">
           <template slot-scope="scope">
-            <img
-              :src="scope.row.buyerHeader"
-              v-if="scope.row.buyerHeader"
-              style="width: 50px; height: 50px"
-            />
+            <img :src="scope.row.buyerHeader" v-if="scope.row.buyerHeader" style="width: 50px; height: 50px" />
           </template>
         </el-table-column>
-
-        <el-table-column
-          prop="hangingOrderNumber"
-          label="卖家挂单编号"
-        ></el-table-column>
-
-        <el-table-column
-          prop="sellerNickName"
-          label="卖家昵称"
-        ></el-table-column>
-
+        <el-table-column prop="hangingOrderNumber" label="卖家挂单编号"></el-table-column>
+        <el-table-column prop="sellerNickName" label="卖家昵称"></el-table-column>
         <el-table-column prop="sellerHeader" label="卖家头像">
           <template slot-scope="scope">
-            <img
-              :src="scope.row.sellerHeader"
-              v-if="scope.row.sellerHeader"
-              style="width: 50px; height: 50px"
-            />
+            <img :src="scope.row.sellerHeader" v-if="scope.row.sellerHeader" style="width: 50px; height: 50px" />
           </template>
         </el-table-column>
 
         <el-table-column prop="money" label="购买金额"></el-table-column>
 
-        <el-table-column
-          prop="orderStatusName"
-          label="订单状态"
-        ></el-table-column>
-        <el-table-column
-          prop="updateTime"
-          label="更新时间"
-          width="160"
-        ></el-table-column>
+        <el-table-column prop="orderStatusName" label="订单状态"></el-table-column>
+        <el-table-column prop="updateTime" label="更新时间" width="160"></el-table-column>
 
         <el-table-column label="操作" width="210">
           <template slot-scope="scope">
@@ -85,16 +49,9 @@
         </el-table-column>
       </el-table>
     </div>
-    <el-pagination
-      background
-      @size-change="sizeChange"
-      @current-change="changePage"
-      :current-page="params.current"
-      :page-sizes="[10, 20, 30]"
-      :page-size="params.size"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="total"
-    ></el-pagination>
+    <el-pagination background @size-change="sizeChange" @current-change="changePage" :current-page="params.current"
+      :page-sizes="[10, 20, 30]" :page-size="params.size" layout="total, sizes, prev, pager, next, jumper"
+      :total="total"></el-pagination>
   </div>
 </template>
 
@@ -120,7 +77,7 @@ export default {
       fileList: []
     };
   },
-  created() {},
+  created() { },
   methods: {
     //搜索
     search() {
@@ -151,7 +108,7 @@ export default {
           });
           this.delData(totalArr);
         })
-        .catch(() => {});
+        .catch(() => { });
     },
     //获取列表
     async List() {
@@ -216,7 +173,7 @@ export default {
           arr.push(row.id);
           this.delData(arr);
         })
-        .catch(() => {});
+        .catch(() => { });
     }
   },
   mounted() {

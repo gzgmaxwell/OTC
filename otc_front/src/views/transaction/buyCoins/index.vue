@@ -45,6 +45,8 @@
             <el-button size="mini" @click="edit(scope.row)">查看</el-button>
             <!-- <el-button  size="mini" type="primary"  @click="edit(scope.row)" >编辑</el-button> -->
             <!-- <el-button size="mini" type="danger" @click="Delete( scope.row)" >删除</el-button > -->
+            <el-button size="mini" type="primary" v-if="scope.row.orderStatus == 2 || scope.row.orderStatus == 5"
+              @click="releaseBuyOrder(scope.row)">放行</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -56,7 +58,7 @@
 </template>
 
 <script>
-import { BuyCoinsPage, BuyCoinsDelete } from "@a/transaction";
+import { BuyCoinsPage, BuyCoinsDelete, releaseOrder } from "@a/transaction";
 
 export default {
   name: "BuyCoins",
@@ -79,6 +81,22 @@ export default {
   },
   created() { },
   methods: {
+    async releaseOrd(id) {
+      await releaseOrder(id);
+      this.$message.success("放行成功");
+      this.search();
+    },
+    async releaseBuyOrder(row) {
+      this.$confirm("此操作将放行订单, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.releaseOrd(row.id);
+        })
+        .catch(() => { });
+    },
     //搜索
     search() {
       this.params.current = 1;

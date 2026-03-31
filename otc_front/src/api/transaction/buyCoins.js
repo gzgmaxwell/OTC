@@ -42,3 +42,9 @@ export const BuyCoinsDelete = data =>
     url: url + "/deletes",
     data
   });
+
+export const releaseOrder = id =>
+  request({
+    method: "post",
+    url: url + "/release/" + id
+  });

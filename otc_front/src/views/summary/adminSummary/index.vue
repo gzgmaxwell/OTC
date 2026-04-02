@@ -8,10 +8,10 @@
             {{ item.label }}
           </el-radio-button>
         </el-radio-group>
-        <el-date-picker size="small" style="width: 50%; margin-left: 10px;" @change="selectTime" v-model="value2"
+        <!-- <el-date-picker size="small" style="width: 50%; margin-left: 10px;" @change="selectTime" v-model="value2"
           type="datetimerange" :picker-options="pickerOptions" value-format="yyyy-MM-dd HH:mm:ss" range-separator="至"
           start-placeholder="开始日期" end-placeholder="结束日期" align="right">
-        </el-date-picker>
+        </el-date-picker> -->
 
       </div>
       <div class="summary_cards">

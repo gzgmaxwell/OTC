@@ -8,6 +8,11 @@
             {{ item.label }}
           </el-radio-button>
         </el-radio-group>
+        <el-date-picker size="small" style="width: 50%; margin-left: 10px;" @change="selectTime" v-model="value2"
+          type="datetimerange" :picker-options="pickerOptions" value-format="yyyy-MM-dd HH:mm:ss" range-separator="至"
+          start-placeholder="开始日期" end-placeholder="结束日期" align="right">
+        </el-date-picker>
+
       </div>
       <div class="summary_cards">
         <el-card class="summary_card">
@@ -83,10 +88,48 @@ export default {
       money: 0,
       timeFilter: "thisMonth",
       timeFilterOptions: timeFilterOptions,
-      res: {}
+      res: {},
+      value2: "",
+      pickerOptions: {
+        shortcuts: [
+          {
+            text: "最近一周",
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit("pick", [start, end]);
+            }
+          },
+          {
+            text: "最近一个月",
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+              picker.$emit("pick", [start, end]);
+            }
+          },
+          {
+            text: "最近三个月",
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+              picker.$emit("pick", [start, end]);
+            }
+          }
+        ]
+      },
     };
   },
   methods: {
+    selectTime(val) {
+      if (val) {
+        this.params.startTime = val[0];
+        this.params.endTime = val[1];
+      }
+    },
     formatCurrency(value) {
       if (typeof value !== "number") return "0.00";
       return value.toFixed(2);

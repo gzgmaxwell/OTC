@@ -2,12 +2,7 @@
   <div class="list_page">
     <div class="top_wrapper">
       <div class="search_box">
-        <el-input
-          placeholder="操作模块"
-          v-model="params.module"
-          @keyup.enter.native="search"
-          style="width: 30%;"
-        >
+        <el-input placeholder="操作模块" v-model="params.module" @keyup.enter.native="search" style="width: 30%;">
         </el-input>
         <!-- <el-select
           v-model="params.configType"
@@ -23,19 +18,8 @@
           >
           </el-option>
         </el-select> -->
-        <el-input
-          placeholder="ID编号"
-          v-model="params.id"
-          @keyup.enter.native="search"
-          style="width: 30%;margin-left: 5px;"
-        >
-        </el-input>
-        <el-input
-          placeholder="操作人账号"
-          v-model="params.operateUsername"
-          @keyup.enter.native="search"
-          style="width: 30%;margin-left: 5px;"
-        >
+        <el-input placeholder="操作人账号" v-model="params.operateUsername" @keyup.enter.native="search"
+          style="width: 30%;margin-left: 5px;">
         </el-input>
 
         <el-button type="primary" icon="el-icon-search" @click="search">
@@ -51,20 +35,19 @@
     <div class="table_wrapper">
       <el-table ref="multipleTable" :data="list" border height="100%">
         <el-table-column prop="module" label="操作模块"></el-table-column>
-        <el-table-column prop="id" label="ID编号"></el-table-column>
-        <el-table-column prop="operateUserId" label="操作人ID"></el-table-column>
-        <el-table-column prop="operateUsername" label="操作人账号"></el-table-column>
-        <el-table-column prop="operateIp" label="操作IP"></el-table-column>
-        <!-- <el-table-column prop="operateTime" label="操作时间"></el-table-column> -->
         <el-table-column label="操作类型">
           <template slot-scope="scope">
             {{
               configTypeMap[String(scope.row.type)] ||
-                scope.row.type
+              scope.row.type
             }}
           </template>
         </el-table-column>
         <el-table-column prop="content" label="操作描述"></el-table-column>
+        <el-table-column prop="operateUsername" label="操作人账号"></el-table-column>
+        <el-table-column prop="operateIp" label="操作IP"></el-table-column>
+        <!-- <el-table-column prop="operateTime" label="操作时间"></el-table-column> -->
+
         <!-- <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button size="mini" type="primary" @click="edit(scope.row)"
@@ -77,16 +60,9 @@
         </el-table-column> -->
       </el-table>
     </div>
-    <el-pagination
-      background
-      @size-change="sizeChange"
-      @current-change="changePage"
-      :current-page="params.current"
-      :page-sizes="[10, 20, 30]"
-      :page-size="params.size"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="total"
-    ></el-pagination>
+    <el-pagination background @size-change="sizeChange" @current-change="changePage" :current-page="params.current"
+      :page-sizes="[10, 20, 30]" :page-size="params.size" layout="total, sizes, prev, pager, next, jumper"
+      :total="total"></el-pagination>
   </div>
 </template>
 
@@ -184,7 +160,7 @@ export default {
           arr.push(row.id);
           this.delData(arr);
         })
-        .catch(() => {});
+        .catch(() => { });
     }
   },
   mounted() {

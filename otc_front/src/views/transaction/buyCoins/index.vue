@@ -2,7 +2,7 @@
   <div class="list_page">
     <div class="top_wrapper">
       <div class="search_box">
-        <el-input placeholder="订单号" style="width: 30%;" v-model="params.orderNumber"
+        <el-input placeholder="买单编号" style="width: 30%;" v-model="params.orderNumber"
           @keyup.enter.native="search"></el-input>
         <el-input placeholder="卖单编号" style="width: 30%; margin-left: 5px;" v-model="params.hangingOrderNumber"
           @keyup.enter.native="search"></el-input>
@@ -19,7 +19,7 @@
 
     <div class="table_wrapper">
       <el-table ref="multipleTable" :data="list" border height="100%">
-        <el-table-column prop="orderNumber" label="订单号"></el-table-column>
+        <el-table-column prop="orderNumber" label="买单编号"></el-table-column>
         <el-table-column prop="id" label="订单编号"></el-table-column>
         <el-table-column prop="buyerNickName" label="买家昵称"></el-table-column>
         <el-table-column prop="buyerHeader" label="买家头像">

@@ -3,13 +3,13 @@
     <div class="top_wrapper">
       <div class="search_box">
         <el-input
-          placeholder="配置名称"
-          v-model="params.configName"
+          placeholder="操作模块"
+          v-model="params.module"
           @keyup.enter.native="search"
           style="width: 30%;"
         >
         </el-input>
-        <el-select
+        <!-- <el-select
           v-model="params.configType"
           placeholder="配置类型"
           @keyup.enter.native="search()"
@@ -22,10 +22,17 @@
             :value="item.value"
           >
           </el-option>
-        </el-select>
+        </el-select> -->
         <el-input
-          placeholder="配置编码"
-          v-model="params.configCode"
+          placeholder="ID编号"
+          v-model="params.id"
+          @keyup.enter.native="search"
+          style="width: 30%;margin-left: 5px;"
+        >
+        </el-input>
+        <el-input
+          placeholder="操作人账号"
+          v-model="params.operateUsername"
           @keyup.enter.native="search"
           style="width: 30%;margin-left: 5px;"
         >
@@ -35,26 +42,30 @@
           搜索
         </el-button>
         <el-button icon="el-icon-refresh" @click="reset">重置</el-button>
-        <el-button type="primary" icon="el-icon-plus" @click="newEdit()">
+        <!-- <el-button type="primary" icon="el-icon-plus" @click="newEdit()">
           添加
-        </el-button>
+        </el-button> -->
       </div>
     </div>
 
     <div class="table_wrapper">
       <el-table ref="multipleTable" :data="list" border height="100%">
-        <el-table-column prop="configName" label="配置名称"></el-table-column>
-        <el-table-column prop="configType" label="配置类型">
+        <el-table-column prop="module" label="操作模块"></el-table-column>
+        <el-table-column prop="id" label="ID编号"></el-table-column>
+        <el-table-column prop="operateUserId" label="操作人ID"></el-table-column>
+        <el-table-column prop="operateUsername" label="操作人账号"></el-table-column>
+        <el-table-column prop="operateIp" label="操作IP"></el-table-column>
+        <!-- <el-table-column prop="operateTime" label="操作时间"></el-table-column> -->
+        <el-table-column label="操作类型">
           <template slot-scope="scope">
             {{
-              configTypeMap[String(scope.row.configType)] ||
-                scope.row.configType
+              configTypeMap[String(scope.row.type)] ||
+                scope.row.type
             }}
           </template>
         </el-table-column>
-        <el-table-column prop="configCode" label="配置编码"></el-table-column>
-        <el-table-column prop="value1" label="配置值"></el-table-column>
-        <el-table-column label="操作">
+        <el-table-column prop="content" label="操作描述"></el-table-column>
+        <!-- <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button size="mini" type="primary" @click="edit(scope.row)"
               >编辑</el-button
@@ -63,7 +74,7 @@
               >删除</el-button
             >
           </template>
-        </el-table-column>
+        </el-table-column> -->
       </el-table>
     </div>
     <el-pagination
@@ -80,7 +91,7 @@
 </template>
 
 <script>
-import { configPage111, configDeleteBatch } from "@a/system";
+import { sysOperationLog_page, configDeleteBatch } from "@a/system";
 import { optConfigType } from "@/utils/enum";
 
 export default {
@@ -120,8 +131,8 @@ export default {
     },
     //获取列表
     async List() {
-      this.params.descs = "a.update_time";
-      const data = await configPage111(this.params);
+      // this.params.descs = "a.update_time";
+      const data = await sysOperationLog_page(this.params);
 
       this.total = data.total;
       this.list = data.records;

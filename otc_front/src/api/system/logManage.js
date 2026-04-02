@@ -1,8 +1,8 @@
 import request from "@p/request";
-const url = "/config";
+const url = "/sysOperationLog";
 
 //app版本管理分页
-export const configPage111 = params =>
+export const sysOperationLog_page = params =>
   request({
     method: "get",
     url: url + "/page",

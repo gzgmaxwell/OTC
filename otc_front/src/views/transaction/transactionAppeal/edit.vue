@@ -67,6 +67,7 @@
                 />
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
               </el-upload>
+              <div @click="dialogVisible = true">预览</div>
             </el-form-item>
           </el-col>
           <el-col :span="10">
@@ -80,6 +81,14 @@
           </el-col>
         </el-row>
       </el-form>
+      <el-dialog
+  title="预览图片"
+  :visible.sync="dialogVisible"
+  width="50%"
+  :before-close="handleClose">
+  <img :src="formValidate.pic" style="width: 100%; height: auto;" />
+
+</el-dialog>
     </div>
   </div>
 </template>
@@ -95,6 +104,7 @@ export default {
   components: {},
   data() {
     return {
+      dialogVisible: false,
       id: "",
       title: "",
       params: {},
@@ -127,6 +137,9 @@ export default {
     };
   },
   methods: {
+     handleClose() {
+      this.dialogVisible = false;
+      },
     handleSuccess(res, file) {
       this.formValidate.pic = res.url;
     },

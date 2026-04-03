@@ -48,10 +48,7 @@
           </el-col>
         </el-row>
       </el-form>
-      <el-dialog title="预览图片" :visible.sync="dialogVisible" width="50%" :before-close="handleClose">
-        <img :src="formValidate.pic" style="width: 100%; height: auto;" />
-
-      </el-dialog>
+      <preview ref="previewRef" :previewUrl="formValidate.pic" width="40%" />
     </div>
   </div>
 </template>
@@ -67,7 +64,6 @@ export default {
   components: {},
   data() {
     return {
-      dialogVisible: false,
       id: "",
       title: "",
       params: {},
@@ -102,11 +98,7 @@ export default {
 
   methods: {
     show() {
-      console.log(222,this);
-      this.dialogVisible = true;
-    },
-    handleClose() {
-      this.dialogVisible = false;
+      this.$refs.previewRef.open();
     },
     handleSuccess(res, file) {
       this.formValidate.pic = res.url;

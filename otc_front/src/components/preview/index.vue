@@ -1,20 +1,8 @@
 <template>
-  <el-dialog
-    title="查看"
-    :visible.sync="dialogVisible"
-    width="80%"
-    top="10vh"
-    append-to-body
-  >
+  <el-dialog title="查看" :visible.sync="dialogVisible" :width='width' top="10vh" append-to-body>
     <div class="preview-box">
-      <iframe
-        id="pdfIframe"
-        class="iframe-box"
-        :src="previewUrl"
-        width="100%"
-        height="100%"
-        style="border: none"
-      ></iframe>
+      <iframe id="pdfIframe" class="iframe-box" :src="previewUrl" width="100%" height="100%"
+        style="border: none"></iframe>
     </div>
   </el-dialog>
 </template>
@@ -25,6 +13,10 @@ export default {
     previewUrl: {
       type: String,
       default: ""
+    },
+    width: {
+      type: String,
+      default: "80%"
     }
   },
   data() {
@@ -47,6 +39,7 @@ export default {
 .preview-box {
   width: 100%;
   height: 600px;
+
   .iframe-box {
     width: 100%;
     height: 100%;

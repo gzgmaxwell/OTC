@@ -1,8 +1,8 @@
 <template>
   <el-dialog title="查看" :visible.sync="dialogVisible" :width='width' top="10vh" append-to-body>
     <div class="preview-box">
-      <iframe id="pdfIframe" class="iframe-box" :src="previewUrl" width="100%" height="100%"
-        style="border: none"></iframe>
+      <img id="pdfIframe" class="iframe-box" :src="previewUrl" width="100%" height="100%"
+        style="border: none"></img>
     </div>
   </el-dialog>
 </template>

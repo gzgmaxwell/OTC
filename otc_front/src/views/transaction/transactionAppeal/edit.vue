@@ -38,7 +38,7 @@
                 <img v-if="formValidate.pic" :src="formValidate.pic" class="avatar" />
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
               </el-upload>
-              <div @click="show">预览</div>
+              <div @click="() => { this.$refs.previewRef.open(); }" style="cursor: pointer;">预览</div>
             </el-form-item>
           </el-col>
           <el-col :span="10">
@@ -97,9 +97,6 @@ export default {
   },
 
   methods: {
-    show() {
-      this.$refs.previewRef.open();
-    },
     handleSuccess(res, file) {
       this.formValidate.pic = res.url;
     },

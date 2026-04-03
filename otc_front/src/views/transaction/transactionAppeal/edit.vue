@@ -102,7 +102,7 @@ export default {
 
   methods: {
     show() {
-      console.log(222,this.$preview);
+      console.log(222,this);
       this.dialogVisible = true;
     },
     handleClose() {

@@ -13,6 +13,7 @@ const components = {
 Vue.use({
   install() {
     Object.keys(components).map(key => {
+      console.log(1111,key, components[key]);
       Vue.component(key, components[key]);
     });
   }

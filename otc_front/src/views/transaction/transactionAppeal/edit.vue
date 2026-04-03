@@ -99,13 +99,10 @@ export default {
       otherType: ""
     };
   },
-  mounted() {
-   console.log(1111,this);
-   
-  },
+
   methods: {
     show() {
-      console.log(1111,this);
+      console.log(222,this.$preview);
       this.dialogVisible = true;
     },
     handleClose() {

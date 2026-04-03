@@ -7,44 +7,24 @@
       <div>
         <el-button type="primary" @click="sssh('2')">已解决</el-button>
 
-        <el-button size="mini" type="danger" @click="sssh('3')"
-          >未解决</el-button
-        >
+        <el-button size="mini" type="danger" @click="sssh('3')">未解决</el-button>
 
         <el-button @click="backTo()">返回</el-button>
       </div>
     </div>
     <div class="edit_content">
-      <el-form
-        class="u_form"
-        :model="formValidate"
-        :rules="rules"
-        ref="formValidate"
-        label-width="100px"
-      >
+      <el-form class="u_form" :model="formValidate" :rules="rules" ref="formValidate" label-width="100px">
         <el-row :gutter="20" type="flex" class="row-bg" justify="center">
           <el-col :span="10">
             <el-form-item label="内容" prop="centent">
-              <el-input
-                v-model="formValidate.centent"
-                disabled
-                style="width: 100%;"
-              ></el-input>
+              <el-input v-model="formValidate.centent" disabled style="width: 100%;"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="10">
             <el-form-item label="类型" prop="appealType">
-              <el-select
-                disabled
-                v-model="formValidate.appealType"
-                placeholder="请选择类型"
-              >
-                <el-option
-                  v-for="item in dics.appealType"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                ></el-option>
+              <el-select disabled v-model="formValidate.appealType" placeholder="请选择类型">
+                <el-option v-for="item in dics.appealType" :key="item.value" :label="item.label"
+                  :value="item.value"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -53,42 +33,25 @@
         <el-row :gutter="20" type="flex" class="row-bg" justify="center">
           <el-col :span="10">
             <el-form-item label="图片" prop="pic">
-              <el-upload
-                class="avatar-uploader"
-                :action="upload_url"
-                :show-file-list="false"
-                accept=".jpg, .jpeg, .JPG, .JPEG, .png"
-                :on-success="handleSuccess"
-              >
-                <img
-                  v-if="formValidate.pic"
-                  :src="formValidate.pic"
-                  class="avatar"
-                />
+              <el-upload class="avatar-uploader" :action="upload_url" :show-file-list="false"
+                accept=".jpg, .jpeg, .JPG, .JPEG, .png" :on-success="handleSuccess">
+                <img v-if="formValidate.pic" :src="formValidate.pic" class="avatar" />
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
               </el-upload>
-              <div @click="dialogVisible = true">预览</div>
+              <div @click="show">预览</div>
             </el-form-item>
           </el-col>
           <el-col :span="10">
             <el-form-item label="订单编号" prop="orderNumber">
-              <el-input
-                v-model="formValidate.orderNumber"
-                disabled
-                style="width: 100%;"
-              ></el-input>
+              <el-input v-model="formValidate.orderNumber" disabled style="width: 100%;"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
       </el-form>
-      <el-dialog
-  title="预览图片"
-  :visible.sync="dialogVisible"
-  width="50%"
-  :before-close="handleClose">
-  <img :src="formValidate.pic" style="width: 100%; height: auto;" />
+      <el-dialog title="预览图片" :visible.sync="dialogVisible" width="50%" :before-close="handleClose">
+        <img :src="formValidate.pic" style="width: 100%; height: auto;" />
 
-</el-dialog>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -136,10 +99,18 @@ export default {
       otherType: ""
     };
   },
+  mounted() {
+   console.log(1111,this);
+   
+  },
   methods: {
-     handleClose() {
+    show() {
+      console.log(1111,this);
+      this.dialogVisible = true;
+    },
+    handleClose() {
       this.dialogVisible = false;
-      },
+    },
     handleSuccess(res, file) {
       this.formValidate.pic = res.url;
     },
@@ -209,9 +180,11 @@ export default {
   position: relative;
   overflow: hidden;
 }
+
 .avatar-uploader .el-upload:hover {
   border-color: #409eff;
 }
+
 .avatar-uploader-icon {
   font-size: 28px;
   color: #8c939d;
@@ -220,6 +193,7 @@ export default {
   line-height: 178px;
   text-align: center;
 }
+
 .avatar {
   width: 178px;
   height: 178px;

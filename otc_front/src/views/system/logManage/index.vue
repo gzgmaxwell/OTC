@@ -21,6 +21,11 @@
         <el-input placeholder="操作人账号" v-model="params.operateUsername" @keyup.enter.native="search"
           style="width: 30%;margin-left: 5px;">
         </el-input>
+        <el-date-picker style="width: 50%; margin-left: 10px;" @change="selectTime" v-model="value2"
+          type="datetimerange" :picker-options="pickerOptions" value-format="yyyy-MM-dd HH:mm:ss" range-separator="至"
+          start-placeholder="开始日期" end-placeholder="结束日期" align="right">
+        </el-date-picker>
+
 
         <el-button type="primary" icon="el-icon-search" @click="search">
           搜索
@@ -35,18 +40,11 @@
     <div class="table_wrapper">
       <el-table ref="multipleTable" :data="list" border height="100%">
         <el-table-column prop="module" label="操作模块"></el-table-column>
-        <el-table-column label="操作类型">
-          <template slot-scope="scope">
-            {{
-              configTypeMap[String(scope.row.type)] ||
-              scope.row.type
-            }}
-          </template>
-        </el-table-column>
-        <el-table-column prop="content" label="操作描述"></el-table-column>
+        <el-table-column prop="type" label="操作内容"></el-table-column>
+        <el-table-column prop="content" label="操作行为"></el-table-column>
         <el-table-column prop="operateUsername" label="操作人账号"></el-table-column>
         <el-table-column prop="operateIp" label="操作IP"></el-table-column>
-        <!-- <el-table-column prop="operateTime" label="操作时间"></el-table-column> -->
+        <el-table-column prop="operateTime" label="操作时间"></el-table-column>
 
         <!-- <el-table-column label="操作">
           <template slot-scope="scope">
@@ -57,7 +55,7 @@
               >删除</el-button
             >
           </template>
-        </el-table-column> -->
+</el-table-column> -->
       </el-table>
     </div>
     <el-pagination background @size-change="sizeChange" @current-change="changePage" :current-page="params.current"
@@ -82,7 +80,39 @@ export default {
       },
       total: 0,
       list: [], //表格数据
-      optConfigType: optConfigType
+      optConfigType: optConfigType,
+      value2: "",
+      pickerOptions: {
+        shortcuts: [
+          {
+            text: "最近一周",
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit("pick", [start, end]);
+            }
+          },
+          {
+            text: "最近一个月",
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+              picker.$emit("pick", [start, end]);
+            }
+          },
+          {
+            text: "最近三个月",
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+              picker.$emit("pick", [start, end]);
+            }
+          }
+        ]
+      },
     };
   },
   computed: {
@@ -95,6 +125,12 @@ export default {
     }
   },
   methods: {
+    selectTime(val) {
+      if (val) {
+        this.params.startTime = val[0];
+        this.params.endTime = val[1];
+      }
+    },
     //搜索
     search() {
       this.params.current = 1;

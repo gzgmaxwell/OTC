@@ -8,10 +8,10 @@
             {{ item.label }}
           </el-radio-button>
         </el-radio-group>
-        <!-- <el-date-picker size="small" style="width: 50%; margin-left: 10px;" @change="selectTime" v-model="value2"
+        <el-date-picker size="small" style="width: 400px; margin-left: 10px;" @change="loadTotals" v-model="datetime"
           type="datetimerange" :picker-options="pickerOptions" value-format="yyyy-MM-dd HH:mm:ss" range-separator="至"
           start-placeholder="开始日期" end-placeholder="结束日期" align="right">
-        </el-date-picker> -->
+        </el-date-picker>
 
       </div>
       <div class="summary_cards">
@@ -89,7 +89,7 @@ export default {
       timeFilter: "thisMonth",
       timeFilterOptions: timeFilterOptions,
       res: {},
-      value2: "",
+      datetime: [],
       pickerOptions: {
         shortcuts: [
           {
@@ -124,12 +124,6 @@ export default {
     };
   },
   methods: {
-    selectTime(val) {
-      if (val) {
-        this.params.startTime = val[0];
-        this.params.endTime = val[1];
-      }
-    },
     formatCurrency(value) {
       if (typeof value !== "number") return "0.00";
       return value.toFixed(2);
@@ -146,41 +140,14 @@ export default {
         timeType: this.timeFilter // today,thisWeek,lastWeek,lastMonth,thisMonth
         // "userId": ''   //  用户Id  this.userInfo.userId
       };
+      if (this.datetime.length > 0) {
+        params.startTime = this.datetime[0];
+        params.endTime = this.datetime[1];
+      }
       try {
         statistical_count(params).then(res => {
-          console.log(222, res);
           this.res = res || {};
         });
-        // const test = {
-        //   "code": "200",
-        //   "msg": "操作成功",
-        //   "data": {
-        //     "createBy": null,
-        //     "createName": null,
-        //     "createTime": null,
-        //     "updateBy": null,
-        //     "updateTime": null,
-        //     "updateName": null,
-        //     "isDelete": 0,
-        //     "queryType": null,
-        //     "amountSell": 220,// 卖单总金额 （代付）
-        //     "amountBuy": 562, // 买单总金额 （代收）
-        //     "totalUser": 2, // 注册总人数 （总人数）
-        //     "dataList": [
-        //       {
-        //         "userId": "2027753373462396929", // 用户id
-        //         "userName": null,
-        //         "nickName": "高二", //  ##用户昵称  （码商名称）
-        //         "amountFirst": 160,  // ##  总后台/ 码商后 卖单金额（出款金额）  商户平台 充值金额
-        //         "amountSecond": 0,   // ## 买单金额  （收款金额）
-        //         "amountThird": 890,  // ## 余额
-        //         "money": 0,
-        //         "time1": null
-        //       }
-        //     ]
-        //   }
-        // }
-        // this.res = test.data || {};
       } catch (e) {
         this.inTotal = 0;
         this.outTotal = 0;

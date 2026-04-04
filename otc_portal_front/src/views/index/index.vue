@@ -443,7 +443,7 @@ export default {
         window.open(url, "_blank");
       } else if (this.device() === "IOS") {
         // const url = "https://testflight.apple.com/join/tbRerpT6"; 
-        const url = "https://testflight.apple.com/join/YHMbY5ry";
+        const url = "https://testflight.apple.com/join/Q4U3kDAS";
         window.open(url, "_blank");
       } else {
         const url = "https://www.d-xilzd.com/h5/login";

@@ -9,9 +9,11 @@
           <el-option v-for="item in optRateType" :key="item.value" :label="item.label" :value="item.value">
           </el-option>
         </el-select>
-        <el-input placeholder="创建账号" v-model="params.createName" @keyup.enter.native="search"
+        <el-select v-model="params.configCode" placeholder="费率编码" @keyup.enter.native="search()"
           style="width: 30%;margin-left: 5px;">
-        </el-input>
+          <el-option v-for="item in optConfigCode" :key="item.value" :label="item.label" :value="item.value">
+          </el-option>
+        </el-select>
 
         <el-button type="primary" icon="el-icon-search" @click="search">
           搜索
@@ -54,7 +56,7 @@
 
 <script>
 import { fee_page, fee_deleteBatch } from "@a/system";
-import { optRateType } from "@/utils/enum";
+import { optRateType, optConfigCode } from "@/utils/enum";
 
 export default {
   name: "ConfigManage",
@@ -68,7 +70,8 @@ export default {
       },
       total: 0,
       list: [], //表格数据
-      optRateType: optRateType
+      optRateType: optRateType,
+      optConfigCode: optConfigCode
     };
   },
   computed: {

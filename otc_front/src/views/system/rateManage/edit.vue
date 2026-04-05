@@ -75,7 +75,6 @@ export default {
       optConfigCode,
       optRateSwitch,
       formValidate: {
-        id: null,
         feeName: null,
         configCode: null,
         feeType: null,
@@ -124,7 +123,6 @@ export default {
     },
     //保存
     save() {
-      console.log(111);
       return this.$refs["formValidate"].validate().then(() => {
         return this.id ? this.editData() : this.addData();
       });

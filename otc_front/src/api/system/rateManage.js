@@ -22,3 +22,10 @@ export const fee_update = data =>
     url: url + "/update/" + data.id,
     data
   });
+
+export const fee_add = data =>
+  request({
+    method: "post",
+    url: url + "/add",
+    data
+  });

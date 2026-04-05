@@ -22,3 +22,4 @@ export * from "./whiteList";
 export * from "./configManage";
 export * from "./blackList";
 export * from "./logManage";
+export * from "./rateManage";

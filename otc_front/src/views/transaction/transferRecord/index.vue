@@ -49,8 +49,8 @@
             {{ formatCurrency(scope.row.money) }}
           </template>
         </el-table-column>
-
         <el-table-column prop="updateTime" label="更新时间" width="160"></el-table-column>
+        <!-- <el-table-column prop="feeAccount" label="手续费"></el-table-column> -->
 
         <el-table-column label="操作" width="200">
           <template slot-scope="scope">

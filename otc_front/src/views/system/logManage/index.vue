@@ -45,6 +45,8 @@
         <el-table-column prop="operateUsername" label="操作人账号"></el-table-column>
         <el-table-column prop="operateIp" label="操作IP"></el-table-column>
         <el-table-column prop="operateTime" label="操作时间"></el-table-column>
+        <el-table-column prop="traceId" label="traceId"></el-table-column>
+        <el-table-column prop="operationDetail" label="操作行为"></el-table-column>
 
         <!-- <el-table-column label="操作">
           <template slot-scope="scope">

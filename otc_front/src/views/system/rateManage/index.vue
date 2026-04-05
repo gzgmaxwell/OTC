@@ -36,6 +36,14 @@
             }}
           </template>
         </el-table-column>
+        <el-table-column prop="isEnable" label="是否启用">
+          <template slot-scope="scope">
+            {{
+              isEnableTypeMap[String(scope.row.isEnable)] ||
+              scope.row.isEnable
+            }}
+          </template>
+        </el-table-column>
         <el-table-column prop="updateTime" label="配置时间"></el-table-column>
         <el-table-column prop="createName" label="创建账号"></el-table-column>
         <el-table-column prop="feeValue1" label="费率"></el-table-column>
@@ -57,7 +65,7 @@
 
 <script>
 import { fee_page, fee_deleteBatch } from "@a/system";
-import { optRateType, optConfigCode } from "@/utils/enum";
+import { optRateType, optConfigCode, optRateSwitch } from "@/utils/enum";
 
 export default {
   name: "ConfigManage",
@@ -79,6 +87,13 @@ export default {
     configTypeMap() {
       const map = {};
       (this.optRateType || []).forEach(i => {
+        map[String(i.value)] = i.label;
+      });
+      return map;
+    },
+    isEnableTypeMap() {
+      const map = {};
+      (optRateSwitch || []).forEach(i => {
         map[String(i.value)] = i.label;
       });
       return map;

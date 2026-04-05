@@ -38,6 +38,7 @@
         </el-table-column>
         <el-table-column prop="updateTime" label="配置时间"></el-table-column>
         <el-table-column prop="createName" label="创建账号"></el-table-column>
+        <el-table-column prop="feeValue1" label="费率"></el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button size="mini" type="primary" @click="edit(scope.row)">编辑</el-button>

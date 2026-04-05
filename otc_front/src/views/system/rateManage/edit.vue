@@ -52,7 +52,7 @@
         </el-row>
         <el-row :gutter="20" type="flex" class="row-bg" justify="center">
           <el-col :span="20">
-            <el-form-item label="比例值" prop="feeValue1">
+            <el-form-item label="费率" prop="feeValue1">
               <el-input v-model="formValidate.feeValue1" style="width: 100%;"></el-input>
             </el-form-item>
           </el-col>
@@ -89,7 +89,7 @@ export default {
           { required: true, message: "请选择费率类型", trigger: "change" }
         ],
         feeValue1: [
-          { required: true, message: "请输入手续费", trigger: "blur" }
+          { required: true, message: "请输入费率", trigger: "blur" }
         ],
         configCode: [{ required: true, message: "请选择费率编码", trigger: "change" }],
         isEnable: [{ required: true, message: "请选择是否启用", trigger: "change" }]

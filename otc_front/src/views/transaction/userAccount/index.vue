@@ -34,6 +34,9 @@
         <el-table-column prop="phoneNum" label="手机号码"></el-table-column>
         <el-table-column prop="emailAddress" label="邮箱地址"></el-table-column>
         <el-table-column prop="money" label="余额"></el-table-column>
+        <el-table-column prop="moneyCharge" label="充值余额"></el-table-column>
+        <el-table-column prop="moneyWithdraw" label="提现余额"></el-table-column>
+        <el-table-column prop="moneyCommission" label="佣金余额"></el-table-column>
         <el-table-column prop="idNumber" label="身份证号"></el-table-column>
         <el-table-column prop="walletAddress" label="钱包地址"></el-table-column>
         <el-table-column label="操作" width="210">

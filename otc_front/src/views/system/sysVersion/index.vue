@@ -20,7 +20,7 @@
 
     <div class="table_wrapper">
       <el-table ref="multipleTable" :data="list" border height="100%">
-        <el-table-column prop="title" label="标题"></el-table-column>
+        <el-table-column prop="title" label="平台"></el-table-column>
 
         <el-table-column prop="version" label="版本号"></el-table-column>
 

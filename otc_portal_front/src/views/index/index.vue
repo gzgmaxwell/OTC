@@ -427,19 +427,19 @@ export default {
       };
       page_withoutAuth().then(res => {
         const { records } = res;
-        console.log("下载链接:", records);
+        const IOS_apkLink = records.find(item => item.title === 'IOS')?.apkLink;
+        const Android_apkLink = records.find(item => item.title === 'Android')?.apkLink;
+        if (this.device() === "Android") {
+          const url = Android_apkLink;
+          window.open(url, "_blank");
+        } else if (this.device() === "IOS") {
+          const url = IOS_apkLink;
+          window.open(url, "_blank");
+        } else {
+          const url = "https://www.d-xilzd.com/h5/login";
+          window.open(url, "_blank");
+        }
       }).catch(err => { })
-
-      // if (this.device() === "Android") {
-      //   const url = "https://www.d-xilzd.com/otc/api/view/apk/pay888.apk";
-      //   window.open(url, "_blank");
-      // } else if (this.device() === "IOS") {
-      //   const url = "https://testflight.apple.com/join/Q4U3kDAS";
-      //   window.open(url, "_blank");
-      // } else {
-      //   const url = "https://www.d-xilzd.com/h5/login";
-      //   window.open(url, "_blank");
-      // }
     },
     async downloadFile() {
       try {

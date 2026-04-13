@@ -12,36 +12,24 @@
       </div>
     </div>
     <div class="edit_content">
-      <el-form
-        class="u_form"
-        :model="formValidate"
-        :rules="rules"
-        ref="formValidate"
-        label-width="100px"
-      >
+      <el-form class="u_form" :model="formValidate" :rules="rules" ref="formValidate" label-width="100px">
         <el-row :gutter="20" type="flex" class="row-bg" justify="center">
           <el-col :span="10">
             <el-form-item label="强制更新：" prop="qzgx">
-              <el-select
-                style="width: 100%;"
-                v-model="formValidate.qzgx"
-                placeholder="请选择类型"
-              >
-                <el-option
-                  v-for="item in dics.qzgx"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                ></el-option>
+              <el-select style="width: 100%;" v-model="formValidate.qzgx" placeholder="请选择类型">
+                <el-option v-for="item in dics.qzgx" :key="item.value" :label="item.label"
+                  :value="item.value"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="10">
-            <el-form-item label="标题" prop="title">
-              <el-input
-                v-model="formValidate.title"
-                style="width: 100%;"
-              ></el-input>
+            <el-form-item label="平台" prop="title">
+              <!-- <el-input v-model="formValidate.title" style="width: 100%;"></el-input> -->
+              <el-select style="width: 100%;" v-model="formValidate.title" placeholder="平台类型">
+                <el-option v-for="item in optPlateform" :key="item.value" :label="item.label"
+                  :value="item.value"></el-option>
+              </el-select>
+
             </el-form-item>
           </el-col>
         </el-row>
@@ -49,10 +37,7 @@
         <el-row :gutter="20" type="flex" class="row-bg" justify="center">
           <el-col :span="20">
             <el-form-item label="版本号" prop="version">
-              <el-input
-                v-model="formValidate.version"
-                style="width: 100%;"
-              ></el-input>
+              <el-input v-model="formValidate.version" style="width: 100%;"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -60,21 +45,12 @@
         <el-row :gutter="20" type="flex" class="row-bg" justify="center">
           <el-col :span="20">
             <el-form-item label="下载链接" prop="apkLink">
-              <el-input
-                v-model="formValidate.apkLink"
-                style="width: 100%;"
-              ></el-input>
+              <el-input v-model="formValidate.apkLink" style="width: 100%;"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
 
-        <el-row
-          v-if="formValidate.id == 2"
-          :gutter="20"
-          type="flex"
-          class="row-bg"
-          justify="center"
-        >
+        <el-row v-if="formValidate.id == 2" :gutter="20" type="flex" class="row-bg" justify="center">
           <el-col :span="20">
             <el-form-item label="apk：" prop="apk">
               <!-- <el-upload
@@ -84,9 +60,7 @@
                             :before-upload="beforeUpload"
                             :on-success="handleSuccess"
                             :file-list="fileList"> -->
-              <el-button size="small" type="primary" @click="openPage()"
-                >点击上传</el-button
-              >
+              <el-button size="small" type="primary" @click="openPage()">点击上传</el-button>
               <!-- <div slot="tip" class="el-upload__tip">只能上传单个文件</div> -->
               <!-- </el-upload> -->
             </el-form-item>
@@ -98,6 +72,7 @@
 </template>
 <script>
 import { SysVersionInfo, SysVersionSave, SysVersionUpdate } from "@a/system";
+import { optPlateform } from "@/utils/enum";
 
 export default {
   name: "Edit",
@@ -108,6 +83,7 @@ export default {
       title: "",
       fileList: [], // 存储已上传文件列表
       params: {},
+      optPlateform: optPlateform,
       formValidate: {
         version: null,
         apkLink: null,
@@ -209,9 +185,11 @@ export default {
   position: relative;
   overflow: hidden;
 }
+
 .avatar-uploader .el-upload:hover {
   border-color: #409eff;
 }
+
 .avatar-uploader-icon {
   font-size: 28px;
   color: #8c939d;
@@ -220,6 +198,7 @@ export default {
   line-height: 178px;
   text-align: center;
 }
+
 .avatar {
   width: 178px;
   height: 178px;

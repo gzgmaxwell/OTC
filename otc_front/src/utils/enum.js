@@ -60,3 +60,14 @@ export const optConfigCode = [
     label: "手续费费率编码"
   },
 ];
+
+export const optPlateform = [
+  {
+    value: "IOS",
+    label: "IOS"
+  },
+  {
+    value: "Android",
+    label: "Android"
+  },
+];

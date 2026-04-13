@@ -2,20 +2,14 @@
   <div>
     <div style="max-width: 1024px; margin: 0 auto">
       <div data-v-207a772c class="w-full container_banner">
-        <div
-          data-v-207a772c
-          class="pc:w-[40.5rem] mx-auto flex flex-col pc:gap-[1.8rem] mob:gap-[0.8rem] items-center mob:px-[0.8rem]"
-        >
-          <div
-            data-v-207a772c
-            class="pc:text-[2.8rem] font-[600] pc:leading-[3.9rem] mob:text-[1.35rem] mob:leading-[1.8rem] text-[#091133] text-center"
-          >
+        <div data-v-207a772c
+          class="pc:w-[40.5rem] mx-auto flex flex-col pc:gap-[1.8rem] mob:gap-[0.8rem] items-center mob:px-[0.8rem]">
+          <div data-v-207a772c
+            class="pc:text-[2.8rem] font-[600] pc:leading-[3.9rem] mob:text-[1.35rem] mob:leading-[1.8rem] text-[#091133] text-center">
             {{ $t("title") }}
           </div>
-          <div
-            data-v-207a772c
-            class="pc:text-[1.2rem] font-[400] pc:leading-[1.8rem] mob:text-[0.7rem] mob:leading-[1.05rem] text-[#6F7CAA] text-center"
-          >
+          <div data-v-207a772c
+            class="pc:text-[1.2rem] font-[400] pc:leading-[1.8rem] mob:text-[0.7rem] mob:leading-[1.05rem] text-[#6F7CAA] text-center">
             {{ $t("desc") }}
           </div>
         </div>
@@ -203,8 +197,7 @@
               </div>
               <h3 class="feature-title">简单</h3>
               <p class="feature-description">
-                遵从<span class="highlight">"极致简单"</span
-                >的产品设计理念，小白用户也能快速上手！
+                遵从<span class="highlight">"极致简单"</span>的产品设计理念，小白用户也能快速上手！
               </p>
             </div>
 
@@ -226,8 +219,7 @@
               </div>
               <h3 class="feature-title">省心</h3>
               <p class="feature-description">
-                严格的风控和<span class="highlight">24小时人工服务</span
-                >，为您打造无忧OTC交易环境
+                严格的风控和<span class="highlight">24小时人工服务</span>，为您打造无忧OTC交易环境
               </p>
             </div>
 
@@ -369,32 +361,23 @@
       </div>
     </div>
 
-    <el-dialog
-      :title="$t('codeTitle')"
-      :visible.sync="showQrcodeDialog"
-      width="400px"
-      center
-      class="qrcode-dialog"
-    >
+    <el-dialog :title="$t('codeTitle')" :visible.sync="showQrcodeDialog" width="400px" center class="qrcode-dialog">
       <div class="qrcode-container">
         <!-- 这里使用一个示例二维码图片，实际项目中应替换为真实二维码 -->
         <img src="../../assets/images/code.png" class="qrcode-image" />
       </div>
       <p class="download-tip">{{ $t("codeTip") }}</p>
       <div style="display: flex; justify-content: space-around">
-        <el-button
-          @click="showQrcodeDialog = false"
-          style="padding: 8px 16px"
-          >{{ $t("close") }}</el-button
-        >
+        <el-button @click="showQrcodeDialog = false" style="padding: 8px 16px">{{ $t("close") }}</el-button>
         <!-- <el-button type="primary" @click="downloadFile" style="padding: 8px 16px;">{{$t('downLoadIndex')}}</el-button> -->
       </div>
     </el-dialog>
   </div>
 </template>
-  
-  <script >
+
+<script>
 import axios from "axios";
+import { page_withoutAuth } from "../../api/index";
 export default {
   props: {
     language: {
@@ -411,7 +394,6 @@ export default {
   watch: {
     language(newVal, oldVal) {
       console.log("language changed:", newVal);
-      // 这里写你语言变化后的逻辑
     },
   },
   mounted() {
@@ -437,18 +419,48 @@ export default {
       }
     },
     downLoadBtn() {
-      // this.showQrcodeDialog = true;
-      if (this.device() === "Android") {
-        const url = "https://www.d-xilzd.com/otc/api/view/apk/pay888.apk";
-        window.open(url, "_blank");
-      } else if (this.device() === "IOS") {
-        // const url = "https://testflight.apple.com/join/tbRerpT6"; 
-        const url = "https://testflight.apple.com/join/Q4U3kDAS";
-        window.open(url, "_blank");
-      } else {
-        const url = "https://www.d-xilzd.com/h5/login";
-        window.open(url, "_blank");
-      }
+      console.log("下载链接:", 111);
+      const params = {
+        current: 1,
+        size: 10,
+        descs: 'a.update_time'
+      };
+
+      // axios.get(
+      //   "https://www.d-xilzd.com/otc/api/sysVersion/page/withoutAuth",
+      //   {
+      //     params: params,
+      //   }
+      // ).then(res => {
+      //   const data = res.data;
+      //   console.log("下载链接:", data);
+      // }).catch(err => { })
+
+      page_withoutAuth().then(res => {
+        const data = res.data;
+        console.log("下载链接:", res);
+        if (this.device() === "Android") {
+          const url = "https://www.d-xilzd.com/otc/api/view/apk/pay888.apk";
+          window.open(url, "_blank");
+        } else if (this.device() === "IOS") {
+          const url = "https://testflight.apple.com/join/Q4U3kDAS";
+          window.open(url, "_blank");
+        } else {
+          const url = "https://www.d-xilzd.com/h5/login";
+          window.open(url, "_blank");
+        }
+      }).catch(err => { })
+      
+      // if (this.device() === "Android") {
+      //   const url = "https://www.d-xilzd.com/otc/api/view/apk/pay888.apk";
+      //   window.open(url, "_blank");
+      // } else if (this.device() === "IOS") {
+      //   const url = "https://testflight.apple.com/join/Q4U3kDAS";
+      //   window.open(url, "_blank");
+      // } else {
+      //   const url = "https://www.d-xilzd.com/h5/login";
+      //   window.open(url, "_blank");
+      // }
     },
     async downloadFile() {
       try {
@@ -465,28 +477,21 @@ export default {
         );
         this.imgUrl = response.data;
         console.log("用户创建成功:", response.data);
-        // alert('用户创建成功！');
-
-        // // 可以选择更新用户列表或清空表单
-        // this.users.push(response.data); // 简单地添加到现有列表
-        // this.newUser.name = '';
-        // this.newUser.email = '';
       } catch (err) {
         console.error("创建用户失败:", err);
-        // alert('创建用户失败: ' + (err.response?.data?.message || err.message || '未知错误'));
       } finally {
         this.creatingUser = false;
       }
 
       this.loading = false; // 停止加载
-      // this.resetForm("deactivateForm"); // 重置表单
     },
   },
 };
 </script>
-  
-  <style lang="scss" scoped >
+
+<style lang="scss" scoped>
 @import "../index.scss";
+
 .app-container {
   padding: 40px;
   text-align: center;
@@ -529,16 +534,19 @@ export default {
   background-image: url("../../assets/img/bg.png");
   background-size: cover;
   margin-top: 50px;
+
   .banner {
     max-width: 60%;
     display: flex;
     justify-content: center;
     margin: 0 auto;
+
     img {
       margin-top: 50px;
       max-height: 40%;
       height: auto;
-      display: block; /* 去掉底部小空隙 */
+      display: block;
+      /* 去掉底部小空隙 */
     }
   }
 }
@@ -546,12 +554,14 @@ export default {
 /* 外部灰色圆角矩形框 */
 .container_card {
   padding: 20px;
+
   .outer-frame {
     background-color: #f0f2f5;
     border-radius: 20px;
     padding: 20px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
     margin-bottom: 30px;
+
     /* 标题样式 */
     .page-title {
       text-align: center;
@@ -759,6 +769,7 @@ export default {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+
   .container {
     display: flex;
     flex-direction: column;
@@ -803,34 +814,26 @@ export default {
     align-items: center;
     background-color: #000000;
     /* 创建黑白二维码图案 */
-    background-image: linear-gradient(
-        90deg,
+    background-image: linear-gradient(90deg,
         transparent 25%,
         #fff 25%,
         #fff 75%,
-        transparent 75%
-      ),
-      linear-gradient(
-        180deg,
+        transparent 75%),
+      linear-gradient(180deg,
         transparent 25%,
         #fff 25%,
         #fff 75%,
-        transparent 75%
-      ),
-      linear-gradient(
-        90deg,
+        transparent 75%),
+      linear-gradient(90deg,
         transparent 35%,
         #fff 35%,
         #fff 65%,
-        transparent 65%
-      ),
-      linear-gradient(
-        180deg,
+        transparent 65%),
+      linear-gradient(180deg,
         transparent 35%,
         #fff 35%,
         #fff 65%,
-        transparent 65%
-      );
+        transparent 65%);
     background-size: 20% 20%, 20% 20%, 10% 10%, 10% 10%;
     background-position: 0 0, 0 0, 50% 50%, 50% 50%;
     background-repeat: repeat, repeat, repeat, repeat;
@@ -887,6 +890,7 @@ export default {
     background-repeat: no-repeat;
   }
 }
+
 .container_footer {
   background-color: #0066ff;
   background-size: 400px;
@@ -898,6 +902,7 @@ export default {
   padding: 20px;
   position: relative;
   overflow-x: hidden;
+
   .container {
     display: flex;
     flex-direction: column;
@@ -970,6 +975,7 @@ export default {
   .social-icons {
     display: flex;
     gap: 25px;
+
     .linkIcon {
       width: 24px;
       height: auto;
@@ -1119,6 +1125,7 @@ export default {
       opacity: 0;
       transform: translateY(20px);
     }
+
     to {
       opacity: 1;
       transform: translateY(0);
@@ -1139,14 +1146,18 @@ export default {
     animation-delay: 0.4s;
   }
 }
+
 .container_btn {
   margin-top: 20px;
   padding: 20px;
   display: flex;
   justify-content: center;
+
   .container {
-    align-items: stretch; /* 拉伸子元素以填满容器宽度 */
-    gap: 20px; /* 按钮之间的间距 */
+    align-items: stretch;
+    /* 拉伸子元素以填满容器宽度 */
+    gap: 20px;
+    /* 按钮之间的间距 */
   }
 
   /* 通用按钮样式 */
@@ -1191,12 +1202,10 @@ export default {
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(255, 255, 255, 0.2),
-      transparent
-    );
+    background: linear-gradient(90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent);
     transition: left 0.5s;
   }
 
@@ -1231,6 +1240,7 @@ export default {
   bottom: 40px;
   right: 30px;
   z-index: 99;
+
   div {
     width: 40px;
     height: 40px;

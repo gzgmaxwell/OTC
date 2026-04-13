@@ -419,12 +419,6 @@ export default {
       }
     },
     downLoadBtn() {
-      console.log("下载链接:", 111);
-      const params = {
-        current: 1,
-        size: 10,
-        descs: 'a.update_time'
-      };
       page_withoutAuth().then(res => {
         const { records } = res;
         const IOS_apkLink = records.find(item => item.title === 'IOS')?.apkLink;

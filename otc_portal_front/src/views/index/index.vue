@@ -426,10 +426,10 @@ export default {
         descs: 'a.update_time'
       };
       page_withoutAuth().then(res => {
-        const data = res.data;
-        console.log("下载链接:", data);
+        const { records } = res;
+        console.log("下载链接:", records);
       }).catch(err => { })
-      
+
       // if (this.device() === "Android") {
       //   const url = "https://www.d-xilzd.com/otc/api/view/apk/pay888.apk";
       //   window.open(url, "_blank");

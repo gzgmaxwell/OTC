@@ -1,7 +1,7 @@
 import request from "./request";
-export const page_withoutAuth = data =>
+export const page_withoutAuth = params =>
   request({
-    method: "post",
+    method: "get",
     url: "/sysVersion/page/withoutAuth",
-    data
+    params
   });

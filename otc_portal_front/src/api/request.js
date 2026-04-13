@@ -45,7 +45,7 @@ class NewAxios {
 
       instance.interceptors.request.use(
         config => {
-          config.headers["Authorization"] = window.getToken();
+          // config.headers["Authorization"] = window.getToken();
           config.headers["Content-Type"] = "application/json;charset=UTF-8";
           return config;
         },

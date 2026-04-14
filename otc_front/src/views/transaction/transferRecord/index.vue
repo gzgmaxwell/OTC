@@ -37,8 +37,8 @@
       <el-table ref="multipleTable" :data="list" border height="100%" stripe style="width: 100%" :show-summary="true"
         :summary-method="getSummaries">
         <el-table-column prop="id" label="交易ID"></el-table-column>
-         <el-table-column prop="transNumber" label="交易编号"></el-table-column>
-         <el-table-column prop="fromId" label="付款人编号"></el-table-column>
+        <el-table-column prop="transNumber" label="交易编号"></el-table-column>
+        <el-table-column prop="fromId" label="付款人编号"></el-table-column>
         <el-table-column prop="fromNickName" label="付款人昵称"></el-table-column>
         <el-table-column prop="fromCodeName" label="付款人码商"></el-table-column>
         <el-table-column prop="zdlxName" label="类型"></el-table-column>

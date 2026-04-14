@@ -389,6 +389,7 @@ export default {
     return {
       showQrcodeDialog: false,
       imgUrl: "",
+      records: [],
     };
   },
   watch: {
@@ -397,7 +398,11 @@ export default {
     },
   },
   mounted() {
-    console.log("mounted language:", this.language);
+    page_withoutAuth().then(res => {
+      this.records = res.records;
+    }).catch(err => {
+      this.$message.error("获取下载链接失败", err);
+    })
   },
   methods: {
     funLink() {
@@ -419,21 +424,21 @@ export default {
       }
     },
     downLoadBtn() {
-      page_withoutAuth().then(res => {
-        const { records } = res;
-        const IOS_apkLink = records.find(item => item.title === 'IOS')?.apkLink;
-        const Android_apkLink = records.find(item => item.title === 'Android')?.apkLink;
-        if (this.device() === "Android") {
-          const url = Android_apkLink;
-          window.open(url, "_blank");
-        } else if (this.device() === "IOS") {
-          const url = IOS_apkLink;
-          window.open(url, "_blank");
-        } else {
-          const url = "https://www.d-xilzd.com/h5/login";
-          window.open(url, "_blank");
-        }
-      }).catch(err => { })
+      if (!this.records.length) {
+        return this.$message.error("未获取到下载链接");
+      }
+      const IOS_apkLink = this.records.find(item => item.title === 'IOS')?.apkLink;
+      const Android_apkLink = this.records.find(item => item.title === 'Android')?.apkLink;
+      if (this.device() === "Android") {
+        const url = Android_apkLink;
+        window.open(url, "_blank");
+      } else if (this.device() === "IOS") {
+        const url = IOS_apkLink;
+        window.open(url, "_blank");
+      } else {
+        const url = "https://www.d-xilzd.com/h5/login";
+        window.open(url, "_blank");
+      }
     },
     async downloadFile() {
       try {

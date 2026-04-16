@@ -42,3 +42,10 @@ export const ResetPassword = id =>
     method: "post",
     url: `/user/pwd/${id}`
   });
+
+// 重置密码
+export const ResetPasswordPWD = (id, pwd) =>
+  request({
+    method: "post",
+    url: `/user/pwd/${id}?pwd=${pwd}`
+  });

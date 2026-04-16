@@ -14,7 +14,7 @@
     <div class="edit_content">
       <el-form class="u_form" :model="formValidate" :rules="rules" ref="formValidate" label-width="100px">
         <el-form-item label="账号：" prop="userName">
-          <el-input v-model="formValidate.userName" :disabled="!!id"></el-input>
+          <el-input v-model="formValidate.userName"></el-input>
         </el-form-item>
 
         <el-form-item label="手机号：" prop="phoneNum">
@@ -72,14 +72,9 @@
 
             </el-form-item> -->
 
-        <!-- <el-form-item v-if="id" label="密码：">
-          <el-button type="primary" @click="comfirmpassword">
-            重置密码
-          </el-button>
-        </el-form-item> -->
-        <el-form-item label="密码：">
-          <el-input v-model="pwd" show-password v-if="id" style="width: 70%;"></el-input>
-          <el-button type="primary" @click="comfirmpassword" style="width: 29%;margin-left: 1%;">
+        <el-form-item label="密码：" prop="userPassword">
+          <el-input v-model="formValidate.userPassword" show-password style="width: 70%;"></el-input>
+          <el-button v-if="id" type="primary" @click="comfirmpassword" style="width: 29%;margin-left: 1%;">
             重置密码
           </el-button>
         </el-form-item>
@@ -95,6 +90,7 @@ import {
   UserSave,
   UserUpdate,
   ResetPassword,
+  ResetPasswordPWD,
   PostCascader
 } from "@a/system";
 
@@ -129,10 +125,8 @@ export default {
         city: "",
         county: "",
         street: "",
-        userPassword: "123456",
-
+        userPassword: "123456"
       },
-      pwd: '',
       areaList2: [], //地区信息
       areaList3: [], //地区信息
       areaList4: [], //地区信息
@@ -154,6 +148,8 @@ export default {
     if (this.id) {
       this.getInfo();
     }
+
+    // this.getInst();
   },
   methods: {
     //获取地区信息
@@ -210,7 +206,7 @@ export default {
     },
     //编辑保存接口
     async editData() {
-      await UserUpdate({ ...this.formValidate, ...(this.pwd && { pwd: jm(this.pwd) }) }, this.id);
+      await UserUpdate(this.formValidate, this.id);
       this.$message.success("修改成功");
       this.$router.push({
         name: "User"
@@ -248,9 +244,10 @@ export default {
       });
     },
     async comfirmpassword() {
-      await ResetPassword(this.formValidate.userId);
+      const pwd = jm(this.formValidate.userPassword);
+      await ResetPasswordPWD(this.formValidate.userId, encodeURIComponent(pwd));
       this.$message.success("重置成功");
-      this.getInfo();
+      this.getInfo()
     }
   }
 };

@@ -12,15 +12,9 @@
       </div>
     </div>
     <div class="edit_content">
-      <el-form
-        class="u_form"
-        :model="formValidate"
-        :rules="rules"
-        ref="formValidate"
-        label-width="100px"
-      >
+      <el-form class="u_form" :model="formValidate" :rules="rules" ref="formValidate" label-width="100px">
         <el-form-item label="账号：" prop="userName">
-          <el-input v-model="formValidate.userName"></el-input>
+          <el-input v-model="formValidate.userName" :disabled="!!id"></el-input>
         </el-form-item>
 
         <el-form-item label="手机号：" prop="phoneNum">
@@ -32,18 +26,9 @@
         </el-form-item>
 
         <el-form-item label="头像：" prop="header">
-          <el-upload
-            class="avatar-uploader"
-            :action="upload_url"
-            :show-file-list="false"
-            accept=".jpg, .jpeg, .JPG, .JPEG, .png"
-            :on-success="handleIconSuccess"
-          >
-            <img
-              v-if="formValidate.header"
-              :src="formValidate.header"
-              class="avatar"
-            />
+          <el-upload class="avatar-uploader" :action="upload_url" :show-file-list="false"
+            accept=".jpg, .jpeg, .JPG, .JPEG, .png" :on-success="handleIconSuccess">
+            <img v-if="formValidate.header" :src="formValidate.header" class="avatar" />
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
         </el-form-item>
@@ -66,15 +51,8 @@
         </el-form-item> -->
 
         <el-form-item label="角色：" prop="post">
-          <SelectTree
-            :checkedKeys.sync="formValidate.post"
-            :checkStrictly="true"
-            multiple
-            :defaultProps="postProps"
-            :nodeKey="'value'"
-            :data="posts"
-            :width="100"
-          />
+          <SelectTree :checkedKeys.sync="formValidate.post" :checkStrictly="true" multiple :defaultProps="postProps"
+            :nodeKey="'value'" :data="posts" :width="100" />
         </el-form-item>
 
         <!--          
@@ -94,16 +72,16 @@
 
             </el-form-item> -->
 
-        <el-form-item v-if="id" label="密码：">
+        <!-- <el-form-item v-if="id" label="密码：">
           <el-button type="primary" @click="comfirmpassword">
             重置密码
           </el-button>
-        </el-form-item>
-        <el-form-item v-else label="密码：" prop="userPassword">
-          <el-input
-            v-model="formValidate.userPassword"
-            show-password
-          ></el-input>
+        </el-form-item> -->
+        <el-form-item label="密码：">
+          <el-input v-model="pwd" show-password v-if="id" style="width: 70%;"></el-input>
+          <el-button type="primary" @click="comfirmpassword" style="width: 29%;margin-left: 1%;">
+            重置密码
+          </el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -151,8 +129,10 @@ export default {
         city: "",
         county: "",
         street: "",
-        userPassword: "123456"
+        userPassword: "123456",
+
       },
+      pwd: '',
       areaList2: [], //地区信息
       areaList3: [], //地区信息
       areaList4: [], //地区信息
@@ -173,10 +153,7 @@ export default {
     await this.getAreaCascade();
     if (this.id) {
       this.getInfo();
-    } else {
     }
-
-    // this.getInst();
   },
   methods: {
     //获取地区信息
@@ -233,7 +210,7 @@ export default {
     },
     //编辑保存接口
     async editData() {
-      await UserUpdate(this.formValidate, this.id);
+      await UserUpdate({ ...this.formValidate, ...(this.pwd && { pwd: jm(this.pwd) }) }, this.id);
       this.$message.success("修改成功");
       this.$router.push({
         name: "User"
@@ -273,6 +250,7 @@ export default {
     async comfirmpassword() {
       await ResetPassword(this.formValidate.userId);
       this.$message.success("重置成功");
+      this.getInfo();
     }
   }
 };
@@ -286,9 +264,11 @@ export default {
   position: relative;
   overflow: hidden;
 }
+
 .avatar-uploader .el-upload:hover {
   border-color: #409eff;
 }
+
 .avatar-uploader-icon {
   font-size: 28px;
   color: #8c939d;
@@ -297,6 +277,7 @@ export default {
   line-height: 178px;
   text-align: center;
 }
+
 .avatar {
   width: 178px;
   height: 178px;

@@ -3,6 +3,8 @@
     <div class="top_wrapper">
       <div class="search_box">
         <el-input placeholder="请输入姓名" @keyup.enter.native="search" v-model="params.fullName"></el-input>
+        <el-input placeholder="请输入手机号码" @keyup.enter.native="search" style="margin-left: 5px;"
+          v-model="params.phoneNum"></el-input>
         <el-input placeholder="请输入用户编号" @keyup.enter.native="search" style="margin-left: 5px;"
           v-model="params.userId"></el-input>
         <el-input placeholder="请输入昵称" @keyup.enter.native="search" style="margin-left: 5px;"
@@ -21,6 +23,7 @@
     <div class="table_wrapper">
       <el-table ref="multipleTable" :data="list" border height="100%">
         <el-table-column prop="fullName" label="真实姓名"></el-table-column>
+        <el-table-column prop="phoneNum" label="手机号码"></el-table-column>
         <el-table-column prop="userId" label="用户编号" width="180"></el-table-column>
         <el-table-column prop="nickName" label="昵称"></el-table-column>
         <el-table-column prop="userName" label="登录名" show-overflow-tooltip></el-table-column>

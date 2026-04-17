@@ -21,6 +21,10 @@
         <el-table-column prop="note1" label="备注"></el-table-column>
         <el-table-column prop="nickName" label="用户昵称"></el-table-column>
         <el-table-column prop="phoneNum" label="用户电话"></el-table-column>
+        <el-table-column prop="createTime" label="操作时间"></el-table-column>
+        <el-table-column prop="buyTimes" label="买单次数"></el-table-column>
+        <el-table-column prop="sellTimes" label="卖单次数"></el-table-column>
+        <el-table-column prop="createUserNickName" label="操作人昵称"></el-table-column>
         <el-table-column label="操作" width="200">
           <template slot-scope="scope">
             <el-button size="mini" type="danger" @click="Delete(scope.row)">移除黑名单</el-button>

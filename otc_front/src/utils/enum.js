@@ -22,11 +22,7 @@ export const timeFilterOptions = [
   { value: "thisMonth", label: "本月" }
 ]
 
-export const blackUserReasonOptions = [
-  { value: "today", label: "拉黑" },
-  { value: "yesterday", label: "冻结账户" },
-  { value: "beforeThreeDays", label: "/限制提现" }
-]
+
 
 export const optRateType = [
   {
@@ -71,3 +67,19 @@ export const optPlateform = [
     label: "Android"
   },
 ];
+
+export const blackUserReason_enum = {
+  today:'today',
+  yesterday:'yesterday',
+  beforeThreeDays:'beforeThreeDays'
+}
+export const blackUserReasonOptions = [
+  { value: blackUserReason_enum.today, label: "拉黑" },
+  { value: blackUserReason_enum.yesterday, label: "冻结账户" },
+  { value: blackUserReason_enum.beforeThreeDays, label: "限制提现" }
+]
+export const blackUserReasonOptions111 = [
+  { value: "today", label: "拉黑" },
+  { value: "yesterday", label: "冻结账户" },
+  { value: "beforeThreeDays", label: "/限制提现" }
+]

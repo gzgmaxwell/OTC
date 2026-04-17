@@ -69,17 +69,15 @@ export const optPlateform = [
 ];
 
 export const blackUserReason_enum = {
-  today:'today',
-  yesterday:'yesterday',
-  beforeThreeDays:'beforeThreeDays'
+  limit: 0,
+  freeze: 1,
 }
-export const blackUserReasonOptions = [
-  { value: blackUserReason_enum.today, label: "拉黑" },
-  { value: blackUserReason_enum.yesterday, label: "冻结账户" },
-  { value: blackUserReason_enum.beforeThreeDays, label: "限制提现" }
+export const blackUserReasonOpt = [
+  { value: blackUserReason_enum.limit, label: "限时封禁" },
+  { value: blackUserReason_enum.freeze, label: "永久封禁" },
 ]
-export const blackUserReasonOptions111 = [
-  { value: "today", label: "拉黑" },
-  { value: "yesterday", label: "冻结账户" },
-  { value: "beforeThreeDays", label: "/限制提现" }
+export const authOpt = [
+  { value: "1", label: "买" },
+  { value: "2", label: "卖" },
+  { value: "3", label: "转账" }
 ]

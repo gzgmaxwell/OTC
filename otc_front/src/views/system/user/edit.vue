@@ -73,7 +73,8 @@
             </el-form-item> -->
 
         <el-form-item label="密码：" prop="userPassword">
-          <el-input v-model="formValidate.userPassword" show-password style="width: 70%;"></el-input>
+          <el-input v-if="!id" v-model="formValidate.userPassword" show-password></el-input>
+          <el-input v-if="id" v-model="pwd" show-password style="width: 70%;"></el-input>
           <el-button v-if="id" type="primary" @click="comfirmpassword" style="width: 29%;margin-left: 1%;">
             重置密码
           </el-button>
@@ -127,6 +128,7 @@ export default {
         street: "",
         userPassword: "123456"
       },
+      pwd: "",
       areaList2: [], //地区信息
       areaList3: [], //地区信息
       areaList4: [], //地区信息
@@ -244,8 +246,8 @@ export default {
       });
     },
     async comfirmpassword() {
-      const pwd = jm(this.formValidate.userPassword);
-      await ResetPasswordPWD(this.formValidate.userId, encodeURIComponent(pwd));
+      const pwd = jm(this.pwd);
+      await ResetPasswordPWD(this.formValidate.userId, pwd);
       this.$message.success("重置成功");
       this.getInfo()
     }

@@ -22,7 +22,7 @@
         <el-form-item label="备注：">
           <el-input v-model="formValidate.note1"></el-input>
         </el-form-item>
-        <el-form-item label="操作权限：" v-if="compcChecked(formValidate.recType)">
+        <el-form-item label="限制功能：" v-if="compcChecked(formValidate.recType)">
           <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll"
             @change="handleCheckAllChange">全选</el-checkbox>
           <el-checkbox-group v-model="formValidate.limitResource" @change="handleCheckedChange">

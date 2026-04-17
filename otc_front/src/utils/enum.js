@@ -77,7 +77,7 @@ export const blackUserReasonOpt = [
   { value: blackUserReason_enum.freeze, label: "永久封禁" },
 ]
 export const authOpt = [
-  { value: "1", label: "买" },
-  { value: "2", label: "卖" },
+  { value: "1", label: "买币" },
+  { value: "2", label: "卖币" },
   { value: "3", label: "转账" }
 ]

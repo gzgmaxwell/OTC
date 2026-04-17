@@ -13,7 +13,7 @@
     <div class="table_wrapper">
       <el-table ref="multipleTable" :data="list" border height="100%">
         <el-table-column prop="userId" label="用户ID"></el-table-column>
-        <el-table-column label="类型等级">
+        <el-table-column label="拉黑原因">
           <template slot-scope="scope">
             <span>{{ blackUserReasonOptComp(scope.row.recType) }}</span>
           </template>

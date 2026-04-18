@@ -18,6 +18,7 @@
             <span>{{ blackUserReasonOptComp(scope.row.recType) }}</span>
           </template>
         </el-table-column>
+        <el-table-column prop="limitResource" label="限制功能"></el-table-column>
         <el-table-column prop="note1" label="备注"></el-table-column>
         <el-table-column prop="nickName" label="用户昵称"></el-table-column>
         <el-table-column prop="phoneNum" label="用户电话"></el-table-column>

@@ -1,5 +1,5 @@
 import request from "@p/request";
-const url = "/merchant";
+const url = "/transferRecord";
 
 //转账记录分页
 export const shop_page = params =>

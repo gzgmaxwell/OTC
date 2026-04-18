@@ -2,9 +2,11 @@
   <div class="list_page">
     <div class="top_wrapper">
       <div class="search_box">
-        <el-input placeholder="商户名" v-model="params.fromNickName" style="width: 30%; "
+        <el-input placeholder="会员ID" v-model="params.userId" style="width: 30%; "
           @keyup.enter.native="search"></el-input>
-        <el-input placeholder="流水单号" v-model="params.transNumber" style="width: 30%;margin-left: 10px; "
+        <el-input placeholder="商户ID" v-model="params.merchantId" style="width: 30%;margin-left: 10px; "
+          @keyup.enter.native="search"></el-input>
+        <el-input placeholder="商户账号" v-model="params.merchantName" style="width: 30%;margin-left: 10px; "
           @keyup.enter.native="search"></el-input>
         <el-date-picker style="width: 50%; margin-left: 10px;" @change="selectTime" v-model="value2"
           type="datetimerange" :picker-options="pickerOptions" value-format="yyyy-MM-dd HH:mm:ss" range-separator="至"
@@ -20,18 +22,15 @@
 
     <div class="table_wrapper">
       <el-table ref="multipleTable" :data="list" border height="100%" stripe style="width: 100%">
-        <el-table-column prop="fromNickName" label="商户名"></el-table-column>
-        <el-table-column prop="transNumber" label="流水单号"></el-table-column>
-        <el-table-column prop="address" label="钱包地址"></el-table-column>
-        <el-table-column prop="purposeId" label="转帐发起人ID"></el-table-column>
-        <el-table-column prop="purposeNickName" label="转账发起人昵称"></el-table-column>
-        <el-table-column prop="money" label="转账金额">
-          <template slot-scope="scope">
-            {{ formatCurrency(scope.row.money) }}
-          </template>
-        </el-table-column>
-
-        <el-table-column prop="createTime" label="记录时间" width="160"></el-table-column>
+        <el-table-column prop="userId" label="会员ID"></el-table-column>
+        <el-table-column prop="userName" label="会员账号"></el-table-column>
+        <el-table-column prop="userNickName" label="会员名称"></el-table-column>
+        <el-table-column prop="merchantId" label="商户ID"></el-table-column>
+        <el-table-column prop="merchantName" label="商户账号"></el-table-column>
+        <el-table-column prop="merchantNickName" label="商户名称"></el-table-column>
+        <el-table-column prop="userStatus" label="会员状态"></el-table-column>
+        <el-table-column prop="remark" label="备注"></el-table-column>
+        <el-table-column prop="createTime" label="创建时间" width="160"></el-table-column>
 
 
         <!-- <el-table-column label="操作" width="200">
@@ -39,7 +38,7 @@
             <el-button size="mini" @click="edit(scope.row)">查看</el-button>
             <el-button size="mini" type="danger" @click="Delete(scope.row)">删除</el-button>
           </template>
-        </el-table-column> -->
+</el-table-column> -->
       </el-table>
     </div>
     <el-pagination background @size-change="sizeChange" @current-change="changePage" :current-page="params.current"
@@ -49,9 +48,7 @@
 </template>
 
 <script>
-import { shop_page, TransferRecordDelete } from "@a/merchant";
-
-import { QuerySelect } from "@a/system";
+import { shop_page, TransferRecordDelete, member_list } from "@a/merchant";
 
 export default {
   name: "TransferRecord",
@@ -99,7 +96,6 @@ export default {
       },
       total: 0,
       list: [], //表格数据
-      money: 0,
       selectedList: [], //批量删除的数组
       select: "",
       isShow: false,
@@ -109,40 +105,6 @@ export default {
   },
   created() { },
   methods: {
-    getSummaries({ columns, data }) {
-      // 如果没有数据，返回空数组或默认值
-      if (!data || data.length === 0) {
-        return ["总计", "", "", "", "", "", "¥", "", ""];
-      }
-
-      const sums = [];
-      columns.forEach((column, index) => {
-        if (index === 0) {
-          sums[index] = "总计";
-          return;
-        }
-
-        const values = data.map(item => Number(item[column.property]));
-
-        if (!values.every(isNaN)) {
-          if (column.property === "money") {
-            const sum = this.money;
-
-            if (column.property === "money") {
-              sums[index] = "¥" + sum.toFixed(2);
-            } else {
-              sums[index] = sum;
-            }
-          } else {
-            sums[index] = "";
-          }
-        } else {
-          sums[index] = "";
-        }
-      });
-
-      return sums;
-    },
     formatCurrency(value) {
       if (typeof value !== "number") return "0.00";
       return value.toFixed(2);
@@ -188,17 +150,10 @@ export default {
     },
     //获取列表
     async List() {
-      debugger
       this.params.descs = "a.update_time";
-      const data = await shop_page(this.params);
-
+      const data = await member_list(this.params);
       this.total = data.page.total;
       this.list = data.page.records;
-      this.money = data.money;
-      // 数据加载完成后，强制更新表格以确保合计行正确显示
-      this.$nextTick(() => {
-        this.$refs.multipleTable && this.$refs.multipleTable.doLayout();
-      });
     },
     //每页多少条，切换显示条数
     sizeChange(val) {

@@ -2,10 +2,10 @@ import request from "@p/request";
 const url = "/merchant";
 
 //转账记录分页
-export const member_list = params =>
+export const shop_page = params =>
   request({
     method: "get",
-    url: url + "/member/list",
+    url: url + "/shop/page",
     params
   });
 export const TransferRecordDelete = data =>

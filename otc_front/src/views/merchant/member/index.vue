@@ -152,8 +152,9 @@ export default {
     async List() {
       this.params.descs = "a.update_time";
       const data = await member_list(this.params);
-      this.total = data.page.total;
-      this.list = data.page.records;
+      console.log(data);
+      this.total = data.total;
+      this.list = data.records;
     },
     //每页多少条，切换显示条数
     sizeChange(val) {

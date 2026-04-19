@@ -15,6 +15,7 @@
           搜索
         </el-button>
         <el-button icon="el-icon-refresh" @click="reset">重置</el-button>
+        <el-button type="primary" @click="exportData">导出</el-button>
       </div>
     </div>
 
@@ -30,7 +31,7 @@
             {{ formatCurrency(scope.row.money) }}
           </template>
         </el-table-column>
-
+        <el-table-column prop="balance" label="余额" width="160"></el-table-column>
         <el-table-column prop="createTime" label="记录时间" width="160"></el-table-column>
 
 
@@ -49,7 +50,7 @@
 </template>
 
 <script>
-import { shop_page, TransferRecordDelete } from "@a/merchant";
+import { shop_page, TransferRecordDelete, shop_page_export } from "@a/merchant";
 
 import { QuerySelect } from "@a/system";
 
@@ -152,6 +153,13 @@ export default {
         this.params.startTime = val[0];
         this.params.endTime = val[1];
       }
+    },
+    exportData() {
+      // window.open(`/merchant/transferRecord/export?${new URLSearchParams(this.params).toString()}`);
+      shop_page_export({}).then(res => {
+        console.log(res);
+        window.open(res.data);
+      });
     },
     //搜索
     search() {

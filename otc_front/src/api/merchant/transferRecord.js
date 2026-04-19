@@ -1,11 +1,11 @@
 import request from "@p/request";
-const url = "/merchant";
+const url = "/transferRecord";
 
 //转账记录分页
-export const member_list = params =>
+export const shop_page = params =>
   request({
     method: "get",
-    url: url + "/member/list",
+    url: url + "/shop/page",
     params
   });
 export const TransferRecordDelete = data =>
@@ -13,4 +13,11 @@ export const TransferRecordDelete = data =>
     method: "delete",
     url: url + "/deletes",
     data
+  });
+
+export const shop_page_export = params =>
+  request({
+    method: "get",
+    url: url + "/shop/page/export",
+    params
   });

@@ -5,6 +5,14 @@ import { Message } from "element-ui";
 import router from "@r";
 import config from "@p/config";
 class NewAxios {
+  readBlobAsText(blob) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsText(blob);
+    });
+  }
   handleError = result => {
     let { code, data, msg } = result;
 
@@ -40,14 +48,14 @@ class NewAxios {
         });
         break;
     }
-    return Promise.reject(error);
+    return Promise.reject(result);
   };
   create() {
     return options => {
       const instance = axios.create({
         baseURL: config.http_url + "/api",
         timeout: 1000 * 30,
-        responseType: 'blob', // 关键：指定响应类型为 blob
+        responseType: "blob"
       });
       instance.interceptors.request.use(
         config => {
@@ -58,16 +66,30 @@ class NewAxios {
         error => Promise.reject(error)
       );
       instance.interceptors.response.use(
-        response => {
-          if (response.data && response.data.code == "200") {
-            return Promise.resolve(response.data.data);
+        async response => {
+          const contentType = (response.headers && response.headers["content-type"]) || "";
+
+          if (contentType.includes("application/json") && response.data instanceof Blob) {
+            const text = await this.readBlobAsText(response.data);
+            const json = JSON.parse(text || "{}");
+            if (json && json.code == "200") return Promise.resolve(json.data);
+            return this.handleError(json);
           }
-          return this.handleError(response.data);
+
+          return Promise.resolve(response);
         },
         error => {
-          return error.response
-            ? this.handleError(error.response)
-            : Promise.reject(error);
+          if (!error.response) return Promise.reject(error);
+
+          const res = error.response;
+          const contentType = (res.headers && res.headers["content-type"]) || "";
+          if (contentType.includes("application/json") && res.data instanceof Blob) {
+            return this.readBlobAsText(res.data)
+              .then(text => JSON.parse(text || "{}"))
+              .then(json => this.handleError(json));
+          }
+
+          return Promise.reject(error);
         }
       );
       return instance(options);

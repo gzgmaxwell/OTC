@@ -156,15 +156,34 @@ export default {
     },
     exportData() {
       // window.location.href = "https://www.d-xilzd.com/otc/api/transferRecord/shop/page/export";
-      shop_page_export({}).then(response => {
-        console.log(111,response);
-        const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement('a');
+      shop_page_export(this.params).then(response => {
+        const disposition =
+          (response.headers && response.headers["content-disposition"]) || "";
+        const contentType =
+          (response.headers && response.headers["content-type"]) ||
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+
+        let filename = "资金明细.xlsx";
+        const matchStar = disposition.match(/filename\*\s*=\s*UTF-8''([^;]+)/i);
+        const matchNormal = disposition.match(/filename\s*=\s*("?)([^";]+)\1/i);
+        if (matchStar && matchStar[1]) filename = decodeURIComponent(matchStar[1]);
+        else if (matchNormal && matchNormal[2]) filename = matchNormal[2];
+        if (!/\.(xlsx|xls)$/i.test(filename)) filename = `${filename}.xlsx`;
+
+        const blob = new Blob([response.data], { type: contentType });
+        if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+          window.navigator.msSaveOrOpenBlob(blob, filename);
+          return;
+        }
+
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement("a");
         link.href = url;
-        link.setAttribute('download', '资金明细');
+        link.setAttribute("download", filename);
         document.body.appendChild(link);
         link.click();
         link.remove();
+        window.URL.revokeObjectURL(url);
       });
     },
     //搜索
@@ -202,7 +221,6 @@ export default {
     },
     //获取列表
     async List() {
-      debugger
       this.params.descs = "a.update_time";
       const data = await shop_page(this.params);
 

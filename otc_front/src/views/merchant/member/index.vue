@@ -2,7 +2,7 @@
   <div class="list_page">
     <div class="top_wrapper">
       <div class="search_box">
-        <el-input placeholder="会员ID" v-model="params.id" style="width: 30%; "
+        <el-input placeholder="会员ID" v-model="params.userId" style="width: 30%; "
           @keyup.enter.native="search"></el-input>
         <el-input placeholder="商户ID" v-model="params.merchantId" style="width: 30%;margin-left: 10px; "
           @keyup.enter.native="search"></el-input>
@@ -22,7 +22,7 @@
 
     <div class="table_wrapper">
       <el-table ref="multipleTable" :data="list" border height="100%" stripe style="width: 100%">
-        <el-table-column prop="id" label="会员ID"></el-table-column>
+        <el-table-column prop="userId" label="会员ID"></el-table-column>
         <el-table-column prop="userName" label="会员账号"></el-table-column>
         <el-table-column prop="userNickName" label="会员名称"></el-table-column>
         <el-table-column prop="merchantId" label="商户ID"></el-table-column>

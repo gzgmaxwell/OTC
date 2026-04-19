@@ -155,17 +155,17 @@ export default {
       }
     },
     exportData() {
-      window.location.href = "https://www.d-xilzd.com/otc/api/transferRecord/shop/page/export";
-      // shop_page_export({}).then(response => {
-      //   console.log(111,response);
-      //   const url = window.URL.createObjectURL(new Blob([response.data]));
-      //   const link = document.createElement('a');
-      //   link.href = url;
-      //   link.setAttribute('download', '资金明细');
-      //   document.body.appendChild(link);
-      //   link.click();
-      //   link.remove();
-      // });
+      // window.location.href = "https://www.d-xilzd.com/otc/api/transferRecord/shop/page/export";
+      shop_page_export({}).then(response => {
+        console.log(111,response);
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', '资金明细');
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+      });
     },
     //搜索
     search() {

@@ -1,4 +1,5 @@
 import request from "@p/request";
+import requestDown from "@p/requestDown";
 const url = "/transferRecord";
 
 //转账记录分页
@@ -16,7 +17,7 @@ export const TransferRecordDelete = data =>
   });
 
 export const shop_page_export = params =>
-  request({
+  requestDown({
     method: "get",
     url: url + "/shop/page/export",
     params

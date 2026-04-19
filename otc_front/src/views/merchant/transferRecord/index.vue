@@ -25,7 +25,7 @@
         <el-table-column prop="transNumber" label="流水单号"></el-table-column>
         <el-table-column prop="address" label="钱包地址"></el-table-column>
         <el-table-column prop="purposeId" label="转帐发起人ID"></el-table-column>
-        <el-table-column prop="purposeNickName" label="转账发起人昵称"></el-table-column>
+        <el-table-column prop="purposeNickName" label="昵称"></el-table-column>
         <el-table-column prop="money" label="转账金额">
           <template slot-scope="scope">
             {{ formatCurrency(scope.row.money) }}
@@ -155,10 +155,14 @@ export default {
       }
     },
     exportData() {
-      // window.open(`/merchant/transferRecord/export?${new URLSearchParams(this.params).toString()}`);
-      shop_page_export({}).then(res => {
-        console.log(res);
-        window.open(res.data);
+      shop_page_export({}).then(response => {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', '资金明细');
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
       });
     },
     //搜索

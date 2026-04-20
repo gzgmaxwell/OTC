@@ -15,34 +15,84 @@
       <el-form class="u_form" :model="formValidate" :rules="rules" ref="formValidate" label-width="100px">
         <el-row :gutter="20" type="flex" class="row-bg" justify="center">
           <el-col :span="10">
-            <el-form-item label="配置名称" prop="configName">
-              <el-input v-model="formValidate.configName" style="width: 100%;"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="10">
-            <el-form-item label="收款类型" prop="configType">
-              <el-select :disabled="this.id ? true : false" style="width: 100%;" v-model="formValidate.configType"
-                placeholder="请选择类型" clearable>
+            <el-form-item label="付款类型" prop="payType">
+              <el-select style="width: 100%;" v-model="formValidate.payType" placeholder="请选择类型" clearable>
                 <el-option v-for="item in optPayType" :key="item.value" :label="item.label"
                   :value="item.value"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
+          <el-col :span="10">
+            <el-form-item label="用户ID" prop="userId">
+              <el-input v-model="formValidate.userId" style="width: 100%;"></el-input>
+            </el-form-item>
+          </el-col>
         </el-row>
 
         <el-row :gutter="20" type="flex" class="row-bg" justify="center">
-          <el-col :span="20">
-            <el-form-item label="配置编码" prop="configCode">
-              <el-input :disabled="this.id ? true : false" v-model="formValidate.configCode"
-                style="width: 100%;"></el-input>
+          <el-col :span="10">
+            <el-form-item label="用户账号" prop="userName">
+              <el-input v-model="formValidate.userName" style="width: 100%;"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="10">
+            <el-form-item label=" 姓名" prop="name">
+              <el-input v-model="formValidate.name" style="width: 100%;"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row :gutter="20" type="flex" class="row-bg" justify="center">
+          <el-col :span="10">
+            <el-form-item label="提现类型" prop="withdrawType">
+              <el-select style="width: 100%;" v-model="formValidate.withdrawType" placeholder="请选择类型" clearable>
+                <el-option v-for="item in optWithdrawType" :key="item.value" :label="item.label"
+                  :value="item.value"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="10">
+            <el-form-item label="货币地址" prop="fcbAddress">
+              <el-input v-model="formValidate.fcbAddress" style="width: 100%;"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row :gutter="20" type="flex" class="row-bg" justify="center">
+          <el-col :span="10">
+            <el-form-item label="银行卡姓名" prop="idCardName">
+              <el-input v-model="formValidate.idCardName" style="width: 100%;"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="10">
+            <el-form-item label="银行名称" prop="bankCaller">
+              <el-input v-model="formValidate.bankCaller" style="width: 100%;"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
 
         <el-row :gutter="20" type="flex" class="row-bg" justify="center">
           <el-col :span="20">
-            <el-form-item label="配置值" prop="value1">
-              <el-input v-model="formValidate.value1" style="width: 100%;" type="textarea" :rows="4"></el-input>
+            <el-form-item label="银行编码" prop="bankCode">
+              <el-input v-model="formValidate.bankCode" style="width: 100%;"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20" type="flex" class="row-bg" justify="center">
+          <el-col :span="20">
+            <el-form-item label="收款码图" prop="paymentQr">
+              <el-upload class="avatar-uploader" :action="upload_url" :show-file-list="false"
+                accept=".jpg, .jpeg, .JPG, .JPEG, .png" :on-success="handleIconSuccess">
+                <img v-if="formValidate.paymentQr" :src="formValidate.paymentQr" class="avatar" />
+                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+              </el-upload>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20" type="flex" class="row-bg" justify="center">
+          <el-col :span="20">
+            <el-form-item label="备注">
+              <el-input v-model="formValidate.remark" style="width: 100%;"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -51,8 +101,9 @@
   </div>
 </template>
 <script>
-import { configAdd, configUpdate } from "@a/system";
-import { optCominPayType } from "@/utils/enum";
+import { merchant_addOrUpdate } from "@a/merchant/receiveCard";
+
+import { optWithdrawType, optCominPayType } from "@/utils/enum";
 
 export default {
   name: "ConfigManageEdit",
@@ -61,29 +112,60 @@ export default {
     return {
       id: "",
       optPayType: optCominPayType,
+      optWithdrawType: optWithdrawType,
       formValidate: {
         id: null,
-        configName: null,
-        value1: null,
-        configType: null,
-        configCode: null
+        payType: null, // 付款类型
+        userId: null, // 用户ID
+        userName: null, //用户账号/商户账号
+        name: null, // 姓名
+        withdrawType: null, // 提现类型
+        fcbAddress: null, // 货币地址
+        idCardName: null, // 银行卡姓名
+        bankCaller: null, // 银行名称
+        bankCode: null, // 银行编码
+        paymentQr: null, // 收款码图
+        remark: null, // 备注
       },
       rules: {
-        configName: [
-          { required: true, message: "请输入配置名称", trigger: "blur" }
+        payType: [
+          { required: true, message: "请选择付款类型", trigger: "blur" }
         ],
-        configType: [
-          { required: true, message: "请选择配置类型", trigger: "change" }
+        userId: [
+          { required: true, message: "请输入用户ID", trigger: "blur" }
         ],
-        configCode: [
-          { required: true, message: "请输入配置编码", trigger: "blur" }
+        userName: [
+          { required: true, message: "请输入用户账号/商户账号", trigger: "blur" }
         ],
-        value1: [{ required: true, message: "请输入配置值", trigger: "blur" }]
+        name: [
+          { required: true, message: "请输入姓名", trigger: "blur" }
+        ],
+        withdrawType: [
+          { required: true, message: "请输入提现类型", trigger: "blur" }
+        ],
+        fcbAddress: [
+          { required: true, message: "请输入货币地址", trigger: "blur" }
+        ],
+        idCardName: [
+          { required: true, message: "请输入银行卡姓名", trigger: "blur" }
+        ],
+        bankCaller: [
+          { required: true, message: "请输入银行名称", trigger: "blur" }
+        ],
+        bankCode: [
+          { required: true, message: "请输入银行编码", trigger: "blur" }
+        ],
+        paymentQr: [
+          { required: true, message: "请上传收款码图", trigger: "blur" }
+        ]
       },
       dialogVisible: false
     };
   },
   methods: {
+    handleIconSuccess(res, file) {
+      this.formValidate.paymentQr = res.url;
+    },
     getInfo(id) {
       this.formValidate.configName = this.$route.query.configName;
       this.formValidate.configType = this.$route.query.configType;
@@ -91,24 +173,20 @@ export default {
       this.formValidate.value1 = this.$route.query.value1;
       this.formValidate.id = this.$route.query.id;
     },
-    //新增保存接口
-    async addData() {
-      await configAdd(this.formValidate);
-      this.$message.success("新增成功");
-      this.resetForm();
-      this.backTo();
-    },
     //编辑保存接口
-    async editData() {
-      await configUpdate(this.formValidate, this.$route.query.id);
-      this.$message.success("修改成功");
-      this.resetForm();
-      this.backTo();
+    editData() {
+      console.log(333, this.formValidate);
+      merchant_addOrUpdate(this.formValidate).then(res => {
+        this.$message.success("操作成功");
+        this.resetForm();
+        this.backTo();
+      });
     },
     //保存
     save() {
       return this.$refs["formValidate"].validate().then(() => {
-        return this.id ? this.editData() : this.addData();
+        console.log(222, this.formValidate);
+        this.editData;
       });
     },
 
@@ -132,6 +210,7 @@ export default {
   mounted() {
     this.id = this.$route.query.id;
     if (this.id) {
+      this.formValidate.id = this.id;
       this.getInfo(this.id);
     }
   }

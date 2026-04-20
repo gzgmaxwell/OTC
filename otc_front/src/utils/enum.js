@@ -102,3 +102,26 @@ export const optCominPayType = [
     label: "银行卡"
   }
 ];
+
+export const optWithdrawType = [
+  {
+    value: "1",
+    label: "银行卡"
+  },
+  {
+    value: "2",
+    label: "支付宝"
+  },
+  {
+    value: "3",
+    label: "微信"
+  },
+  {
+    value: "4",
+    label: "USDT"
+  },
+  {
+    value: "5",
+    label: "数字人民币"
+  }
+];

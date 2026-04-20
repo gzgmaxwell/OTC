@@ -80,7 +80,7 @@
         </el-row>
         <el-row :gutter="20" type="flex" class="row-bg" justify="center">
           <el-col :span="20">
-            <el-form-item label="收款码图" prop="paymentQr">
+            <el-form-item label="收款码图" >
               <el-upload class="avatar-uploader" :action="upload_url" :show-file-list="false"
                 accept=".jpg, .jpeg, .JPG, .JPEG, .png" :on-success="handleIconSuccess">
                 <img v-if="formValidate.paymentQr" :src="formValidate.paymentQr" class="avatar" />
@@ -114,7 +114,6 @@ export default {
       optPayType: optCominPayType,
       optWithdrawType: optWithdrawType,
       formValidate: {
-        id: null,
         payType: null, // 付款类型
         userId: null, // 用户ID
         userName: null, //用户账号/商户账号
@@ -167,11 +166,20 @@ export default {
       this.formValidate.paymentQr = res.url;
     },
     getInfo(id) {
-      this.formValidate.configName = this.$route.query.configName;
-      this.formValidate.configType = this.$route.query.configType;
-      this.formValidate.configCode = this.$route.query.configCode;
-      this.formValidate.value1 = this.$route.query.value1;
-      this.formValidate.id = this.$route.query.id;
+      const query = this.$route.query || {};
+      this.formValidate.id = query.id || id || null;
+      this.formValidate.payType = query.payType ?? this.formValidate.payType;
+      this.formValidate.userId = query.userId ?? this.formValidate.userId;
+      this.formValidate.userName = query.userName ?? this.formValidate.userName;
+      this.formValidate.name = query.name ?? this.formValidate.name;
+      this.formValidate.withdrawType =
+        query.withdrawType ?? this.formValidate.withdrawType;
+      this.formValidate.fcbAddress = query.fcbAddress ?? this.formValidate.fcbAddress;
+      this.formValidate.idCardName = query.idCardName ?? this.formValidate.idCardName;
+      this.formValidate.bankCaller = query.bankCaller ?? this.formValidate.bankCaller;
+      this.formValidate.bankCode = query.bankCode ?? this.formValidate.bankCode;
+      this.formValidate.paymentQr = query.paymentQr ?? this.formValidate.paymentQr;
+      this.formValidate.remark = query.remark ?? this.formValidate.remark;
     },
     //编辑保存接口
     editData() {
@@ -185,8 +193,7 @@ export default {
     //保存
     save() {
       return this.$refs["formValidate"].validate().then(() => {
-        console.log(222, this.formValidate);
-        this.editData;
+        return this.editData();
       });
     },
 
@@ -194,10 +201,17 @@ export default {
     resetForm() {
       this.formValidate = {
         id: null,
-        configName: null,
-        value1: null,
-        configType: null,
-        configCode: null
+        payType: null,
+        userId: null,
+        userName: null,
+        name: null,
+        withdrawType: null,
+        fcbAddress: null,
+        idCardName: null,
+        bankCaller: null,
+        bankCode: null,
+        paymentQr: null,
+        remark: null
       };
     },
     //返回

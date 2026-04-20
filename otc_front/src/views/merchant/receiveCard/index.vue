@@ -2,19 +2,19 @@
   <div class="list_page">
     <div class="top_wrapper">
       <div class="search_box">
-        <el-input placeholder="商户名" v-model="params.fromNickName" style="width: 30%; "
+        <!-- <el-input placeholder="用户ID" v-model="params.userId" style="width: 30%; "
+          @keyup.enter.native="search"></el-input> -->
+        <el-input placeholder="用户账号" v-model="params.userName" style="width: 40%;"
           @keyup.enter.native="search"></el-input>
-        <el-input placeholder="流水单号" v-model="params.transNumber" style="width: 30%;margin-left: 10px; "
-          @keyup.enter.native="search"></el-input>
-        <el-date-picker style="width: 50%; margin-left: 10px;" @change="selectTime" v-model="value2"
+        <!-- <el-date-picker style="width: 50%; margin-left: 10px;" @change="selectTime" v-model="value2"
           type="datetimerange" :picker-options="pickerOptions" value-format="yyyy-MM-dd HH:mm:ss" range-separator="至"
           start-placeholder="开始日期" end-placeholder="结束日期" align="right">
-        </el-date-picker>
+        </el-date-picker> -->
 
-        <el-select v-model="params.payType" style="width: 30%;margin-left: 5px;" placeholder="请选择">
+        <!-- <el-select v-model="params.payType" style="width: 30%;margin-left: 5px;" placeholder="请选择">
           <el-option v-for="(item, index) in optPayType" :key="index" :label="item.label"
             :value="item.value"></el-option>
-        </el-select>
+        </el-select> -->
 
         <el-button type="primary" icon="el-icon-search" @click="search">
           搜索
@@ -26,25 +26,34 @@
 
     <div class="table_wrapper">
       <el-table ref="multipleTable" :data="list" border height="100%" stripe style="width: 100%">
-        <el-table-column prop="fromNickName" label="商户名"></el-table-column>
-        <el-table-column prop="transNumber" label="流水单号"></el-table-column>
-        <el-table-column prop="address" label="钱包地址"></el-table-column>
-        <el-table-column prop="purposeId" label="转帐发起人ID"></el-table-column>
-        <el-table-column prop="purposeNickName" label="转账发起人昵称"></el-table-column>
-        <el-table-column prop="money" label="转账金额">
+        <el-table-column prop="payType" label="付款类型">
           <template slot-scope="scope">
-            {{ formatCurrency(scope.row.money) }}
+            {{ compcChecked(scope.row.payType) }}
           </template>
         </el-table-column>
-
-        <el-table-column prop="createTime" label="记录时间" width="160"></el-table-column>
-
-
+        <el-table-column prop="userId" label="用户ID"></el-table-column>
+        <el-table-column prop="userName" label="用户账号"></el-table-column>
+        <el-table-column prop="name" label="姓名"></el-table-column>
+        <el-table-column prop="withdrawType" label="提现类型">
+          <template slot-scope="scope">
+            {{ compcChecked111(scope.row.withdrawType) }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="fcbAddress" label="货币地址"></el-table-column>
+        <el-table-column prop="idCardName" label="银行卡姓名"></el-table-column>
+        <el-table-column prop="bankCaller" label="银行名称"></el-table-column>
+        <el-table-column prop="bankCode" label="银行编码"></el-table-column>
+        <el-table-column prop="paymentQr" label="收款码图">
+          <template slot-scope="scope">
+            <img :src="scope.row.paymentQr" style="width: 50px; height: 50px" />
+          </template>
+        </el-table-column>
+        <el-table-column prop="remark" label="备注"></el-table-column>
         <el-table-column label="操作" width="200">
           <template slot-scope="scope">
             <el-button size="mini" type="primary" @click="edit(scope.row)">编辑</el-button>
           </template>
-        </el-table-column> 
+        </el-table-column>
       </el-table>
     </div>
     <el-pagination background @size-change="sizeChange" @current-change="changePage" :current-page="params.current"
@@ -54,8 +63,9 @@
 </template>
 
 <script>
-import { TransferRecordDelete,merchant_payMethodList } from "@a/merchant";
-import { optPayType } from "@/utils/enum";
+import { TransferRecordDelete, merchant_payMethodList } from "@a/merchant";
+import { optPayType, optWithdrawType, optCominPayType } from "@/utils/enum";
+
 export default {
   name: "TransferRecord",
   components: {},
@@ -111,6 +121,14 @@ export default {
       fileList: []
     };
   },
+  computed: {
+    compcChecked() {
+      return (val) => optCominPayType.find(item => item.value === val)?.label;
+    },
+    compcChecked111() {
+      return (val) => optWithdrawType.find(item => item.value === val)?.label;
+    }
+  },
   methods: {
     formatCurrency(value) {
       if (typeof value !== "number") return "0.00";
@@ -137,23 +155,6 @@ export default {
     //返回搜索
     back() {
       this.isShow = false;
-    },
-
-    //批量删除
-    totalDel(total) {
-      this.$confirm("此操作将永久删除该数据, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          var totalArr = [];
-          total.forEach(item => {
-            totalArr.push(item.id);
-          });
-          this.delData(totalArr);
-        })
-        .catch(() => { });
     },
     //获取列表
     async List() {
@@ -193,24 +194,8 @@ export default {
     edit(row) {
       this.$router.push({
         name: "ReceiveCardEdit",
-        query: {
-          id: row.id
-        }
+        query: row
       });
-    },
-    //删除
-    Delete(row) {
-      this.$confirm("此操作将永久删除该数据, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          var arr = [];
-          arr.push(row.id);
-          this.delData(arr);
-        })
-        .catch(() => { });
     }
   },
   mounted() {

@@ -80,7 +80,7 @@
         </el-row>
         <el-row :gutter="20" type="flex" class="row-bg" justify="center">
           <el-col :span="20">
-            <el-form-item label="收款码图" >
+            <el-form-item label="收款码图">
               <el-upload class="avatar-uploader" :action="upload_url" :show-file-list="false"
                 accept=".jpg, .jpeg, .JPG, .JPEG, .png" :on-success="handleIconSuccess">
                 <img v-if="formValidate.paymentQr" :src="formValidate.paymentQr" class="avatar" />
@@ -183,7 +183,6 @@ export default {
     },
     //编辑保存接口
     editData() {
-      console.log(333, this.formValidate);
       merchant_addOrUpdate(this.formValidate).then(res => {
         this.$message.success("操作成功");
         this.resetForm();

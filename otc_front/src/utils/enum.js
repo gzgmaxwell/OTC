@@ -88,3 +88,17 @@ export const optPayType = [
   { value: "3", label: "转账" }
 ]
 
+export const optCominPayType = [
+  {
+    value: "1",
+    label: "支付宝"
+  },
+  {
+    value: "2",
+    label: "微信"
+  },
+  {
+    value: "3",
+    label: "银行卡"
+  }
+];

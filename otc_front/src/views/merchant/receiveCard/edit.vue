@@ -20,10 +20,10 @@
             </el-form-item>
           </el-col>
           <el-col :span="10">
-            <el-form-item label="配置类型" prop="configType">
+            <el-form-item label="收款类型" prop="configType">
               <el-select :disabled="this.id ? true : false" style="width: 100%;" v-model="formValidate.configType"
                 placeholder="请选择类型" clearable>
-                <el-option v-for="item in optConfigType" :key="item.value" :label="item.label"
+                <el-option v-for="item in optPayType" :key="item.value" :label="item.label"
                   :value="item.value"></el-option>
               </el-select>
             </el-form-item>
@@ -52,7 +52,7 @@
 </template>
 <script>
 import { configAdd, configUpdate } from "@a/system";
-import { optConfigType } from "@/utils/enum";
+import { optCominPayType } from "@/utils/enum";
 
 export default {
   name: "ConfigManageEdit",
@@ -60,7 +60,7 @@ export default {
   data() {
     return {
       id: "",
-      optConfigType,
+      optPayType: optCominPayType,
       formValidate: {
         id: null,
         configName: null,

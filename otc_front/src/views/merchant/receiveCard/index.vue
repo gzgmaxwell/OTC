@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import { shop_page, TransferRecordDelete } from "@a/merchant";
+import { TransferRecordDelete,merchant_payMethodList } from "@a/merchant";
 import { optPayType } from "@/utils/enum";
 export default {
   name: "TransferRecord",
@@ -111,42 +111,7 @@ export default {
       fileList: []
     };
   },
-  created() { },
   methods: {
-    getSummaries({ columns, data }) {
-      // 如果没有数据，返回空数组或默认值
-      if (!data || data.length === 0) {
-        return ["总计", "", "", "", "", "", "¥", "", ""];
-      }
-
-      const sums = [];
-      columns.forEach((column, index) => {
-        if (index === 0) {
-          sums[index] = "总计";
-          return;
-        }
-
-        const values = data.map(item => Number(item[column.property]));
-
-        if (!values.every(isNaN)) {
-          if (column.property === "money") {
-            const sum = this.money;
-
-            if (column.property === "money") {
-              sums[index] = "¥" + sum.toFixed(2);
-            } else {
-              sums[index] = sum;
-            }
-          } else {
-            sums[index] = "";
-          }
-        } else {
-          sums[index] = "";
-        }
-      });
-
-      return sums;
-    },
     formatCurrency(value) {
       if (typeof value !== "number") return "0.00";
       return value.toFixed(2);
@@ -192,17 +157,10 @@ export default {
     },
     //获取列表
     async List() {
-      debugger
       this.params.descs = "a.update_time";
-      const data = await shop_page(this.params);
-
-      this.total = data.page.total;
-      this.list = data.page.records;
-      this.money = data.money;
-      // 数据加载完成后，强制更新表格以确保合计行正确显示
-      this.$nextTick(() => {
-        this.$refs.multipleTable && this.$refs.multipleTable.doLayout();
-      });
+      const data = await merchant_payMethodList(this.params);
+      this.total = data.total;
+      this.list = data.records;
     },
     //每页多少条，切换显示条数
     sizeChange(val) {
@@ -218,18 +176,11 @@ export default {
     selectChange(val) {
       this.selectedList = val;
     },
-    //设置表格表头颜色
-    tableHeaderColor({ row, column, rowIndex, columnIndex }) {
-      if (rowIndex === 0) {
-        return "background: #f2f2f2;color: #333;font-weight: 500;";
-      }
-    },
+
     //删除接口
     async delData(array) {
       await TransferRecordDelete(array);
-
       this.$message.success("删除成功");
-
       this.search();
     },
     //新增

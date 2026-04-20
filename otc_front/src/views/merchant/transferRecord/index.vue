@@ -156,6 +156,7 @@ export default {
     },
     exportData() {
       // window.location.href = "https://www.d-xilzd.com/otc/api/transferRecord/shop/page/export";
+      this.params.descs = "a.update_time";
       shop_page_export(this.params).then(response => {
         const disposition =
           (response.headers && response.headers["content-disposition"]) || "";

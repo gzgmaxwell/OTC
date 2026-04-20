@@ -1,5 +1,4 @@
 import request from "@p/request";
-import requestDown from "@p/requestDown";
 const url = "/transferRecord";
 
 //转账记录分页

@@ -27,9 +27,9 @@
         <el-table-column prop="phoneNum" label="商户手机号码"></el-table-column>
         <el-table-column prop="lockStatusName" label="锁定状态"></el-table-column>
         <el-table-column prop="fullName" label="商户会员名"></el-table-column>
-        <el-table-column prop="nickName" label="网关地址"></el-table-column>
-        <el-table-column prop="nickName" label="api密钥"></el-table-column>
-        <el-table-column prop="nickName" label="接口ip白名单"></el-table-column>
+        <el-table-column prop="gatewayAddress" label="网关地址"></el-table-column>
+        <el-table-column prop="appKey" label="api密钥"></el-table-column>
+        <el-table-column prop="ip" label="接口ip白名单"></el-table-column>
         <el-table-column prop="postName" label="商户平台"></el-table-column>
         <el-table-column label="操作" width="450">
           <template slot-scope="scope">

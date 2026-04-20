@@ -17,8 +17,9 @@ export const TransferRecordDelete = data =>
   });
 
 export const shop_page_export = params =>
-  requestDown({
+  request({
     method: "get",
     url: url + "/shop/page/export",
+    responseType: "blob", //这里最重要,不要去掉
     params
   });

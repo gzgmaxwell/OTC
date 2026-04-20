@@ -5,6 +5,14 @@ import { Message } from "element-ui";
 import router from "@r";
 import config from "@p/config";
 class NewAxios {
+  readBlobAsText(blob) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsText(blob);
+    });
+  }
   handleError = result => {
     let { code, data, msg } = result;
 
@@ -40,7 +48,7 @@ class NewAxios {
         });
         break;
     }
-    return Promise.reject(error);
+    return Promise.reject(result);
   };
   create() {
     return options => {
@@ -57,16 +65,42 @@ class NewAxios {
         error => Promise.reject(error)
       );
       instance.interceptors.response.use(
-        response => {
+        async response => {
+          const responseType = response.config && response.config.responseType;
+          const isStream = responseType === "blob" || responseType === "arraybuffer";
+
+          if (isStream) {
+            const contentType =
+              (response.headers && response.headers["content-type"]) || "";
+            if (contentType.includes("application/json") && response.data instanceof Blob) {
+              const text = await this.readBlobAsText(response.data);
+              const json = JSON.parse(text || "{}");
+              if (json && json.code == "200") return Promise.resolve(json.data);
+              return this.handleError(json);
+            }
+            return Promise.resolve(response);
+          }
+
           if (response.data && response.data.code == "200") {
             return Promise.resolve(response.data.data);
           }
           return this.handleError(response.data);
         },
         error => {
-          return error.response
-            ? this.handleError(error.response)
-            : Promise.reject(error);
+          if (!error.response) return Promise.reject(error);
+
+          const res = error.response;
+          const responseType = res.config && res.config.responseType;
+          const isStream = responseType === "blob" || responseType === "arraybuffer";
+          const contentType = (res.headers && res.headers["content-type"]) || "";
+
+          if (isStream && contentType.includes("application/json") && res.data instanceof Blob) {
+            return this.readBlobAsText(res.data)
+              .then(text => JSON.parse(text || "{}"))
+              .then(json => this.handleError(json));
+          }
+
+          return this.handleError(res.data || res);
         }
       );
       return instance(options);

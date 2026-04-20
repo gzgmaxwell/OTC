@@ -81,3 +81,10 @@ export const authOpt = [
   { value: "2", label: "卖币" },
   { value: "3", label: "转账" }
 ]
+
+export const optPayType = [
+  { value: "1", label: "买币" },
+  { value: "2", label: "卖币" },
+  { value: "3", label: "转账" }
+]
+

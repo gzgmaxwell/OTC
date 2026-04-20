@@ -11,6 +11,11 @@
           start-placeholder="开始日期" end-placeholder="结束日期" align="right">
         </el-date-picker>
 
+        <el-select v-model="params.payType" style="width: 30%;margin-left: 5px;" placeholder="请选择">
+          <el-option v-for="(item, index) in optPayType" :key="index" :label="item.label"
+            :value="item.value"></el-option>
+        </el-select>
+
         <el-button type="primary" icon="el-icon-search" @click="search">
           搜索
         </el-button>
@@ -50,9 +55,7 @@
 
 <script>
 import { shop_page, TransferRecordDelete } from "@a/merchant";
-
-import { QuerySelect } from "@a/system";
-
+import { optPayType } from "@/utils/enum";
 export default {
   name: "TransferRecord",
   components: {},
@@ -90,6 +93,7 @@ export default {
           }
         ]
       },
+      optPayType: optPayType,
       id: "",
       params: {
         size: 10,

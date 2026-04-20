@@ -21,6 +21,7 @@
     <div class="table_wrapper">
       <el-table ref="multipleTable" :data="list" border height="100%">
         <el-table-column prop="ip" label="ip"></el-table-column>
+        <el-table-column prop="userId" label="用户编号"></el-table-column>
 
         <el-table-column label="操作">
           <template slot-scope="scope">

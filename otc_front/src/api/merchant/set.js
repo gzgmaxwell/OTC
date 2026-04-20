@@ -17,7 +17,7 @@ export const merchant_get = id =>
 export const paymentMethod_get = id =>
   request({
     method: "get",
-    url: "/paymentMethod/get/" + id
+    url: "/merchant/payMethod/" + id
   });
 
 export const merchant_secretKey = id =>

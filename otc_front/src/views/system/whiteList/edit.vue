@@ -12,21 +12,16 @@
       </div>
     </div>
     <div class="edit_content">
-      <el-form
-        class="u_form"
-        :model="formValidate"
-        :rules="rules"
-        ref="formValidate"
-        label-width="100px"
-      >
+      <el-form class="u_form" :model="formValidate" :rules="rules" ref="formValidate" label-width="100px">
         <el-row :gutter="20" type="flex" class="row-bg" justify="center">
           <el-col :span="10">
             <el-form-item label="ip" prop="ip">
-              <el-input
-                v-model="formValidate.ip"
-                @change="handleChange"
-                style="width: 100%;"
-              ></el-input>
+              <el-input v-model="formValidate.ip" @change="handleChange" style="width: 100%;"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="10">
+            <el-form-item label="用户编号" prop="userId">
+              <el-input v-model="formValidate.userId" style="width: 100%;"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -51,11 +46,13 @@ export default {
         createTime: null,
         updateBy: null,
         updateTime: null,
-        isDelete: null
+        isDelete: null,
+        userId: null
       },
       data: [],
       rules: {
-        ip: [{ required: true, message: "请输入ip", trigger: "blur" }]
+        ip: [{ required: true, message: "请输入ip", trigger: "blur" }],
+        userId: [{ required: true, message: "请输入用户编号", trigger: "blur" }]
       },
       dialogVisible: false,
       otherType: ""
@@ -68,7 +65,6 @@ export default {
     //获取列表详情接口
     async getInfo(id) {
       const data = await WhiteListInfo(id);
-
       this.formValidate = data;
     },
     //新增保存接口
@@ -106,7 +102,6 @@ export default {
   mounted() {
     //拿到从列表页传过来的ID
     this.id = this.$route.query.id;
-
     if (this.id) {
       this.getInfo(this.id);
     }

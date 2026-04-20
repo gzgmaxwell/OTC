@@ -155,16 +155,16 @@ export default {
       }
     },
     exportData() {
-      // window.location.href = "https://www.d-xilzd.com/otc/api/transferRecord/shop/page/export";
       this.params.descs = "a.update_time";
       shop_page_export(this.params).then(response => {
+        console.log(111,response);
         const disposition =
           (response.headers && response.headers["content-disposition"]) || "";
         const contentType =
           (response.headers && response.headers["content-type"]) ||
           "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 
-        let filename = "资金明细.xlsx";
+        let filename = "账变记录.xlsx";
         const matchStar = disposition.match(/filename\*\s*=\s*UTF-8''([^;]+)/i);
         const matchNormal = disposition.match(/filename\s*=\s*("?)([^";]+)\1/i);
         if (matchStar && matchStar[1]) filename = decodeURIComponent(matchStar[1]);

@@ -20,6 +20,7 @@
           搜索
         </el-button>
         <el-button icon="el-icon-refresh" @click="reset">重置</el-button>
+        <el-button size="mini" type="primary" @click="newEdit">新增</el-button>
       </div>
     </div>
 
@@ -39,12 +40,11 @@
         <el-table-column prop="createTime" label="记录时间" width="160"></el-table-column>
 
 
-        <!-- <el-table-column label="操作" width="200">
+        <el-table-column label="操作" width="200">
           <template slot-scope="scope">
-            <el-button size="mini" @click="edit(scope.row)">查看</el-button>
-            <el-button size="mini" type="danger" @click="Delete(scope.row)">删除</el-button>
+            <el-button size="mini" type="primary" @click="edit(scope.row)">编辑</el-button>
           </template>
-        </el-table-column> -->
+        </el-table-column> 
       </el-table>
     </div>
     <el-pagination background @size-change="sizeChange" @current-change="changePage" :current-page="params.current"
@@ -235,13 +235,13 @@ export default {
     //新增
     newEdit() {
       this.$router.push({
-        name: "newTransferRecord"
+        name: "ReceiveCardEdit"
       });
     },
     //编辑
     edit(row) {
       this.$router.push({
-        name: "newTransferRecord",
+        name: "ReceiveCardEdit",
         query: {
           id: row.id
         }

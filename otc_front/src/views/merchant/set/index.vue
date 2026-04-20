@@ -2,43 +2,44 @@
   <div class="list_page">
     <div class="top_wrapper">
       <div class="search_box">
-        <el-input placeholder="会员ID" v-model="params.userId" style="width: 30%; "
-          @keyup.enter.native="search"></el-input>
-        <el-input placeholder="商户ID" v-model="params.merchantId" style="width: 30%;margin-left: 10px; "
-          @keyup.enter.native="search"></el-input>
-        <el-input placeholder="商户账号" v-model="params.merchantName" style="width: 30%;margin-left: 10px; "
-          @keyup.enter.native="search"></el-input>
-        <el-date-picker style="width: 50%; margin-left: 10px;" @change="selectTime" v-model="value2"
-          type="datetimerange" :picker-options="pickerOptions" value-format="yyyy-MM-dd HH:mm:ss" range-separator="至"
-          start-placeholder="开始日期" end-placeholder="结束日期" align="right">
-        </el-date-picker>
-
-        <el-button type="primary" icon="el-icon-search" @click="search">
+        <el-input placeholder="商户会员名" @keyup.enter.native="search" v-model="params.fullName"></el-input>
+        <el-input placeholder="商户手机号码" @keyup.enter.native="search" style="margin-left: 5px;"
+          v-model="params.phoneNum"></el-input>
+        <el-input placeholder="商户ID" @keyup.enter.native="search" style="margin-left: 5px;"
+          v-model="params.userId"></el-input>
+        <el-input placeholder="名称" @keyup.enter.native="search" style="margin-left: 5px;"
+          v-model="params.nickName"></el-input>
+        <el-input placeholder="商户平台" @keyup.enter.native="search" style="margin-left: 5px;"
+          v-model="params.postName"></el-input>
+        <el-button style="margin-left: 5px;" type="primary" icon="el-icon-search" @click="search">
           搜索
         </el-button>
         <el-button icon="el-icon-refresh" @click="reset">重置</el-button>
+        <!-- <el-button type="primary" icon="el-icon-plus" @click="newEdit()">
+          添加
+        </el-button> -->
       </div>
     </div>
-
     <div class="table_wrapper">
-      <el-table ref="multipleTable" :data="list" border height="100%" stripe style="width: 100%">
-        <el-table-column prop="userId" label="会员ID"></el-table-column>
-        <el-table-column prop="userName" label="会员账号"></el-table-column>
-        <el-table-column prop="userNickName" label="会员名称"></el-table-column>
-        <el-table-column prop="merchantId" label="商户ID"></el-table-column>
-        <el-table-column prop="merchantName" label="商户账号"></el-table-column>
-        <el-table-column prop="merchantNickName" label="商户名称"></el-table-column>
-        <el-table-column prop="userStatus" label="会员状态"></el-table-column>
-        <el-table-column prop="remark" label="备注"></el-table-column>
-        <el-table-column prop="createTime" label="创建时间" width="160"></el-table-column>
+      <el-table ref="multipleTable" :data="list" border height="100%">
+        <el-table-column prop="userId" label="商户ID" width="180"></el-table-column>
+        <el-table-column prop="userName" label="商户登录账号" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="phoneNum" label="商户手机号码"></el-table-column>
+        <el-table-column prop="lockStatusName" label="锁定状态"></el-table-column>
+        <el-table-column prop="fullName" label="商户会员名"></el-table-column>
+        <el-table-column prop="idNumber" label="身份证号"></el-table-column>
+        <el-table-column prop="nickName" label="名称"></el-table-column>
+        <el-table-column prop="postName" label="商户平台"></el-table-column>
 
-
-        <!-- <el-table-column label="操作" width="200">
+        <el-table-column label="操作" width="450">
           <template slot-scope="scope">
-            <el-button size="mini" @click="edit(scope.row)">查看</el-button>
-            <el-button size="mini" type="danger" @click="Delete(scope.row)">删除</el-button>
+            <el-button size="mini" @click="secretKey(scope.row)">查看密钥</el-button>
+            <el-button size="mini" type="primary" @click="edit(scope.row)">编辑</el-button>
+            <el-button size="mini" type="primary" @click="whitelist(scope.row)">API白名单</el-button>
+            <el-button size="mini" type="primary">手续费</el-button>
+            <el-button size="mini" type="primary" @click="paymentMethod(scope.row)">收款码</el-button>
           </template>
-</el-table-column> -->
+        </el-table-column>
       </el-table>
     </div>
     <el-pagination background @size-change="sizeChange" @current-change="changePage" :current-page="params.current"
@@ -48,174 +49,77 @@
 </template>
 
 <script>
-import { shop_page, TransferRecordDelete, member_list } from "@a/merchant";
-
+import { merchant_list } from "@a/merchant";
 export default {
-  name: "TransferRecord",
-  components: {},
+  name: "Admin",
   data() {
     return {
-      value2: "",
-      pickerOptions: {
-        shortcuts: [
-          {
-            text: "最近一周",
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-              picker.$emit("pick", [start, end]);
-            }
-          },
-          {
-            text: "最近一个月",
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-              picker.$emit("pick", [start, end]);
-            }
-          },
-          {
-            text: "最近三个月",
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-              picker.$emit("pick", [start, end]);
-            }
-          }
-        ]
-      },
-      id: "",
       params: {
         size: 10,
         current: 1,
-        startTime: null,
-        endTime: null
+        userName: null
       },
       total: 0,
-      list: [], //表格数据
-      selectedList: [], //批量删除的数组
-      select: "",
-      isShow: false,
-      showOperate: false,
-      fileList: []
+      list: [] //表格数据
     };
   },
-  created() { },
+  mounted() {
+    this.search();
+  },
   methods: {
-    formatCurrency(value) {
-      if (typeof value !== "number") return "0.00";
-      return value.toFixed(2);
+    async editBlackUser(row) {
+      this.$router.push({
+        name: "EditBlackUser",
+        query: row
+      });
     },
-    selectTime(val) {
-      if (val) {
-        this.params.startTime = val[0];
-        this.params.endTime = val[1];
-      }
+    paymentMethod(row) {
+      this.$router.push({
+        name: "SetPaymentMethod",
+        query: row
+      });
     },
-    //搜索
+    whitelist(row) {
+      this.$router.push({
+        name: "SetWhitelist",
+        query: row
+      });
+    },
+    secretKey(row) {
+      this.$router.push({
+        name: "SetSecretKey",
+        query: row
+      });
+    },
     search() {
-      this.params.current = 1;
-      //列表查询和搜索
       this.List();
     },
-    //重置
     reset() {
       this.params = {};
-      this.value2 = "";
-      this.search();
+      this.List();
     },
-    //返回搜索
-    back() {
-      this.isShow = false;
-    },
-
-    //批量删除
-    totalDel(total) {
-      this.$confirm("此操作将永久删除该数据, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          var totalArr = [];
-          total.forEach(item => {
-            totalArr.push(item.id);
-          });
-          this.delData(totalArr);
-        })
-        .catch(() => { });
-    },
-    //获取列表
     async List() {
       this.params.descs = "a.update_time";
-      const data = await member_list(this.params);
-      console.log(data);
+      const data = await merchant_list(this.params);
       this.total = data.total;
       this.list = data.records;
     },
-    //每页多少条，切换显示条数
     sizeChange(val) {
       this.params.size = val;
       this.List();
     },
-    //当前第几页，切换页码
     changePage(val) {
       this.params.current = val;
       this.List();
     },
-    //选择批量删除的数据
-    selectChange(val) {
-      this.selectedList = val;
-    },
-    //设置表格表头颜色
-    tableHeaderColor({ row, column, rowIndex, columnIndex }) {
-      if (rowIndex === 0) {
-        return "background: #f2f2f2;color: #333;font-weight: 500;";
-      }
-    },
-    //删除接口
-    async delData(array) {
-      await TransferRecordDelete(array);
-
-      this.$message.success("删除成功");
-
-      this.search();
-    },
-    //新增
-    newEdit() {
-      this.$router.push({
-        name: "newTransferRecord"
-      });
-    },
-    //编辑
     edit(row) {
       this.$router.push({
-        name: "newTransferRecord",
+        name: "SetEdit",
         query: {
-          id: row.id
+          id: row.userId
         }
       });
-    },
-    //删除
-    Delete(row) {
-      this.$confirm("此操作将永久删除该数据, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          var arr = [];
-          arr.push(row.id);
-          this.delData(arr);
-        })
-        .catch(() => { });
     }
-  },
-  mounted() {
-    this.search();
   }
 };
 </script>

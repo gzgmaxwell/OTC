@@ -157,7 +157,6 @@ export default {
     exportData() {
       this.params.descs = "a.update_time";
       shop_page_export(this.params).then(response => {
-        console.log(111,response);
         const disposition =
           (response.headers && response.headers["content-disposition"]) || "";
         const contentType =

@@ -14,7 +14,7 @@ export const merchant_get = id =>
     url: "/merchant/get/" + id
   });
 
-export const paymentMethod_get = id =>
+export const merchant_payMethod = id =>
   request({
     method: "get",
     url: "/merchant/payMethod/" + id

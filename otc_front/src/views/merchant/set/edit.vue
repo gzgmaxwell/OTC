@@ -12,7 +12,7 @@
       </div>
     </div>
     <div class="edit_content">
-      <el-form class="u_form" :model="formValidate" :rules="rules" ref="formValidate" label-width="180px">
+      <el-form class="u_form" :model="formValidate" :rules="rules" ref="formValidate" label-width="200px">
         <div>
           <div>基本信息</div>
           <el-row :gutter="20" type="flex" class="row-bg" justify="center">
@@ -117,7 +117,7 @@
           <el-row :gutter="20" type="flex" class="row-bg" justify="center">
             <el-col :span="10">
               <el-form-item label="API充值开关">
-                <el-switch v-model="formValidate.userFeeInfo.echargeEnable" active-color="#13ce66"
+                <el-switch v-model="formValidate.userFeeInfo.rechargeEnable" active-color="#13ce66"
                   inactive-color="#ff4949" active-value="0" inactive-value="1" />
               </el-form-item>
             </el-col>
@@ -150,6 +150,13 @@
             <el-col :span="10">
               <el-form-item label="最大API存款金额">
                 <el-input v-model="formValidate.userFeeInfo.maxDepositAmount"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20" type="flex" class="row-bg" justify="center">
+            <el-col :span="20">
+              <el-form-item label="最大API代付金额">
+                <el-input v-model="formValidate.userFeeInfo.maxProcessAmount"></el-input>
               </el-form-item>
             </el-col>
           </el-row>

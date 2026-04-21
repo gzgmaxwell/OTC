@@ -32,3 +32,10 @@ export const merchant_whitelist = data =>
     url: "/merchant/whitelist",
     data
   });
+
+export const merchant_put = (data, id) =>
+  request({
+    method: "post",
+    url: "/merchant/put/" + id,
+    data
+  });

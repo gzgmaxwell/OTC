@@ -45,12 +45,7 @@
   </div>
 </template>
 <script>
-import {
-  UserInfo,
-  UserSave,
-  UserUpdate,
-} from "@a/system";
-import { merchant_get, merchant_put } from "@a/merchant/set";
+import { merchant_get, merchant_put } from "@a/merchant";
 
 export default {
   name: "Edit",
@@ -96,14 +91,7 @@ export default {
       const data = await merchant_get(this.id);
       this.formValidate = data;
     },
-    //新增保存接口
-    async addData() {
-      await UserSave(this.formValidate);
-      this.$message.success("保存成功");
-      this.$router.push({
-        name: "User"
-      });
-    },
+
     //编辑保存接口
     async editData() {
       await merchant_put(this.formValidate, this.id);
@@ -116,7 +104,7 @@ export default {
     //保存
     save() {
       return this.$refs["formValidate"].validate().then(() => {
-        return this.id ? this.editData() : this.addData();
+        return this.editData();
       });
     },
     //返回

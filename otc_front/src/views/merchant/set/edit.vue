@@ -12,34 +12,110 @@
       </div>
     </div>
     <div class="edit_content">
-      <el-form class="u_form" :model="formValidate" :rules="rules" ref="formValidate" label-width="100px">
-        <el-form-item label="账号：" prop="userName">
-          <el-input v-model="formValidate.userName"></el-input>
-        </el-form-item>
+      <el-form class="u_form" :model="formValidate" :rules="rules" ref="formValidate" label-width="180px">
+        <div>
+          <div>基本信息</div>
+          <el-row :gutter="20" type="flex" class="row-bg" justify="center">
+            <el-col :span="10">
+              <el-form-item label="账号：" prop="userName">
+                <el-input v-model="formValidate.userName"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="10">
+              <el-form-item label="手机号：" prop="phoneNum">
+                <el-input v-model="formValidate.phoneNum"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
 
-        <el-form-item label="手机号：" prop="phoneNum">
-          <el-input v-model="formValidate.phoneNum"></el-input>
-        </el-form-item>
+          <el-row :gutter="20" type="flex" class="row-bg" justify="center">
+            <el-col :span="10">
+              <el-form-item label="邮箱地址：" prop="emailAddress">
+                <el-input v-model="formValidate.emailAddress"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="10">
+              <el-form-item label="姓名：">
+                <el-input v-model="formValidate.fullName"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
 
-        <el-form-item label="邮箱地址：" prop="emailAddress">
-          <el-input v-model="formValidate.emailAddress"></el-input>
-        </el-form-item>
+          <el-row :gutter="20" type="flex" class="row-bg" justify="center">
+            <el-col :span="10">
+              <el-form-item label="头像：" prop="header">
+                <el-upload class="avatar-uploader" :action="upload_url" :show-file-list="false"
+                  accept=".jpg, .jpeg, .JPG, .JPEG, .png" :on-success="handleIconSuccess">
+                  <img v-if="formValidate.header" :src="formValidate.header" class="avatar" />
+                  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                </el-upload>
+              </el-form-item>
+            </el-col>
+            <el-col :span="10">
+              <el-form-item label="昵称：" prop="nickName">
+                <el-input v-model="formValidate.nickName"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </div>
 
-        <el-form-item label="头像：" prop="header">
-          <el-upload class="avatar-uploader" :action="upload_url" :show-file-list="false"
-            accept=".jpg, .jpeg, .JPG, .JPEG, .png" :on-success="handleIconSuccess">
-            <img v-if="formValidate.header" :src="formValidate.header" class="avatar" />
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-          </el-upload>
-        </el-form-item>
+        <div>
+          <div>费用信息</div>
+          <el-row :gutter="20" type="flex" class="row-bg" justify="center">
+            <el-col :span="10">
+              <el-form-item label="收银台上分手续费：">
+                <el-input v-model="formValidate.userFeeInfo.upFee"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="10">
+              <el-form-item label="含四方上分手续费：">
+                <el-input v-model="formValidate.userFeeInfo.sifangFee"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20" type="flex" class="row-bg" justify="center">
+            <el-col :span="10">
+              <el-form-item label="代买单-代付手续费(银)：">
+                <el-input v-model="formValidate.userFeeInfo.upFeePayYinYin"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="10">
+              <el-form-item label="代买单-代付手续费(支)：">
+                <el-input v-model="formValidate.userFeeInfo.upFeePayZhiYin"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20" type="flex" class="row-bg" justify="center">
+            <el-col :span="10">
+              <el-form-item label="代付强制需审核：">
+                <el-switch v-model="formValidate.userFeeInfo.upFeePayForceAudit" active-color="#13ce66"
+                  inactive-color="#ff4949" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="10">
+              <el-form-item label="是否开启API充值：">
+                <el-switch v-model="formValidate.userFeeInfo.upFeePayOpen" active-color="#13ce66"
+                  inactive-color="#ff4949" />
+              </el-form-item>
+            </el-col>
+          </el-row>
 
-        <el-form-item label="姓名：">
-          <el-input v-model="formValidate.fullName"></el-input>
-        </el-form-item>
+          <el-row :gutter="20" type="flex" class="row-bg" justify="center">
+            <el-col :span="10">
+              <el-form-item label="是否开启API代付：">
+                <el-switch v-model="formValidate.userFeeInfo.upFeePayOpenPay" active-color="#13ce66"
+                  inactive-color="#ff4949" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="10">
+              <el-form-item label="商户买卖币昵称：">
+                <el-input v-model="formValidate.userFeeInfo.nickName"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
 
-        <el-form-item label="昵称：" prop="nickName">
-          <el-input v-model="formValidate.nickName"></el-input>
-        </el-form-item>
+        </div>
+
       </el-form>
     </div>
   </div>
@@ -64,7 +140,17 @@ export default {
         city: "",
         county: "",
         street: "",
-        userPassword: "123456"
+        userPassword: "123456",
+        userFeeInfo: {
+          upFee: undefined,
+          sifangFee: undefined,
+          upFeePayYinYin: undefined,
+          upFeePayZhiYin: undefined,
+          upFeePayForceAudit: false,
+          upFeePayOpen: false,
+          upFeePayOpenPay: false,
+          nickName: undefined,
+        }
       },
       rules: {
         userName: [{ required: true, message: "请输入账号", trigger: "blur" }],
@@ -89,7 +175,20 @@ export default {
     //获取列表详情接口
     async getInfo() {
       const data = await merchant_get(this.id);
-      this.formValidate = data;
+      const extendData = {
+        ...data,
+        userFeeInfo: {
+          upFee: undefined,
+          sifangFee: undefined,
+          upFeePayYinYin: undefined,
+          upFeePayZhiYin: undefined,
+          upFeePayForceAudit: false,
+          upFeePayOpen: false,
+          upFeePayOpenPay: false,
+          nickName: undefined,
+        }
+      };
+      this.formValidate = extendData;
     },
 
     //编辑保存接口

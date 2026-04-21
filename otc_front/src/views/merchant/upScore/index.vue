@@ -11,8 +11,11 @@
           @keyup.enter.native="search" />
         <el-input placeholder="存款时间" v-model="params.create_time" style="width: 30%;margin-left: 10px; "
           @keyup.enter.native="search" />
-        <el-input placeholder="下单模式" v-model="params.orderModel" style="width: 30%;margin-left: 10px; "
-          @keyup.enter.native="search" />
+
+        <el-select v-model="params.orderModel" style="width: 30%;margin-left: 5px;" placeholder="下单模式">
+          <el-option v-for="(item, index) in optOrderModel" :key="index" :label="item.label"
+            :value="item.value"></el-option>
+        </el-select>
         <el-input placeholder="用户ip" v-model="params.ip" style="width: 30%;margin-left: 10px; "
           @keyup.enter.native="search" />
         <!-- <el-date-picker style="width: 50%; margin-left: 10px;" @change="selectTime" v-model="value2"
@@ -46,14 +49,18 @@
         <el-table-column prop="callBackResult" label="回调结果"></el-table-column>
         <el-table-column prop="callBackTimes" label="回调次数"></el-table-column>
         <el-table-column prop="remarks" label="操怍备注"></el-table-column>
-        <el-table-column prop="orderModel" label="下单模式"></el-table-column>
+        <el-table-column label="下单模式">
+          <template slot-scope="scope">
+            {{ compcChecked(scope.row.orderModel) }}
+          </template>
+        </el-table-column>
         <el-table-column prop="handingFeeAmount" label="手续费"></el-table-column>
         <!-- <el-table-column label="操作" width="200">
           <template slot-scope="scope">
             <el-button size="mini" @click="edit(scope.row)">查看</el-button>
             <el-button size="mini" type="danger" @click="Delete(scope.row)">删除</el-button>
           </template>
-        </el-table-column> -->
+</el-table-column> -->
       </el-table>
     </div>
     <el-pagination background @size-change="sizeChange" @current-change="changePage" :current-page="params.current"
@@ -64,12 +71,14 @@
 
 <script>
 import { TransferRecordDelete, shangfen_list } from "@a/merchant";
+import { optOrderModel } from "@/utils/enum";
 
 export default {
   name: "TransferRecord",
   components: {},
   data() {
     return {
+      optOrderModel: optOrderModel,
       value2: "",
       pickerOptions: {
         shortcuts: [
@@ -117,6 +126,11 @@ export default {
       showOperate: false,
       fileList: []
     };
+  },
+  computed: {
+    compcChecked() {
+      return (val) => optOrderModel.find(item => item.value === val)?.label;
+    },
   },
   methods: {
     selectTime(val) {

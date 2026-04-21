@@ -125,3 +125,30 @@ export const optWithdrawType = [
     label: "数字人民币"
   }
 ];
+
+export const optOrderModel = [
+  {
+    value: "1",
+    label: "商户后台买币"
+  },
+  {
+    value: "2",
+    label: "APP扫码下单"
+  },
+  {
+    value: "3",
+    label: "嵌入式下单"
+  },
+  {
+    value: "4",
+    label: "[挂单]收银台"
+  },
+  {
+    value: "5",
+    label: "[下单]收银台(自选)"
+  },
+  {
+    value: "5",
+    label: "[下单]收银台(固额)"
+  }
+];

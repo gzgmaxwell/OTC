@@ -2,16 +2,24 @@
   <div class="list_page">
     <div class="top_wrapper">
       <div class="search_box">
-        <el-input placeholder="会员ID" v-model="params.id" style="width: 30%; "
-          @keyup.enter.native="search"></el-input>
-        <el-input placeholder="商户ID" v-model="params.merchantId" style="width: 30%;margin-left: 10px; "
-          @keyup.enter.native="search"></el-input>
-        <el-input placeholder="商户账号" v-model="params.merchantName" style="width: 30%;margin-left: 10px; "
-          @keyup.enter.native="search"></el-input>
-        <el-date-picker style="width: 50%; margin-left: 10px;" @change="selectTime" v-model="value2"
+        <el-input placeholder="商户ID" v-model="params.userId" style="width: 30%; " @keyup.enter.native="search" />
+        <el-input placeholder="商户账号" v-model="params.merchantUserName" style="width: 30%;margin-left: 10px; "
+          @keyup.enter.native="search" />
+        <el-input placeholder="系统订单号" v-model="params.transNumber" style="width: 30%;margin-left: 10px; "
+          @keyup.enter.native="search" />
+        <el-input placeholder="提款人钱包" v-model="params.merchantNickName" style="width: 30%;margin-left: 10px; "
+          @keyup.enter.native="search" />
+        <el-input placeholder="提现时间" v-model="params.createTime" style="width: 30%;margin-left: 10px; "
+          @keyup.enter.native="search" />
+        <el-input placeholder="下单模式" v-model="params.orderModel" style="width: 30%;margin-left: 10px; "
+          @keyup.enter.native="search" />
+        <el-input placeholder="订单状态" v-model="params.orderStatus" style="width: 30%;margin-left: 10px; "
+          @keyup.enter.native="search" />
+        <el-input placeholder="提现模式" v-model="params.withdrawType" style="width: 30%;margin-left: 10px; "
+          @keyup.enter.native="search" />
+        <!-- <el-date-picker style="width: 50%; margin-left: 10px;" @change="selectTime" v-model="value2"
           type="datetimerange" :picker-options="pickerOptions" value-format="yyyy-MM-dd HH:mm:ss" range-separator="至"
-          start-placeholder="开始日期" end-placeholder="结束日期" align="right">
-        </el-date-picker>
+          start-placeholder="开始日期" end-placeholder="结束日期" align="right" /> -->
 
         <el-button type="primary" icon="el-icon-search" @click="search">
           搜索
@@ -22,17 +30,21 @@
 
     <div class="table_wrapper">
       <el-table ref="multipleTable" :data="list" border height="100%" stripe style="width: 100%">
-        <el-table-column prop="id" label="会员ID"></el-table-column>
-        <el-table-column prop="userName" label="会员账号"></el-table-column>
-        <el-table-column prop="userNickName" label="会员名称"></el-table-column>
-        <el-table-column prop="merchantId" label="商户ID"></el-table-column>
-        <el-table-column prop="merchantName" label="商户账号"></el-table-column>
-        <el-table-column prop="merchantNickName" label="商户名称"></el-table-column>
-        <el-table-column prop="userStatus" label="会员状态"></el-table-column>
-        <el-table-column prop="remark" label="备注"></el-table-column>
-        <el-table-column prop="createTime" label="创建时间" width="160"></el-table-column>
-
-
+        <el-table-column prop="id" label="商户订单号"></el-table-column>
+        <el-table-column prop="merchantUserName" label="商户账号"></el-table-column>
+        <el-table-column prop="userId" label="商户ID"></el-table-column>
+        <el-table-column prop="transNumber" label="系统订单号"></el-table-column>
+        <el-table-column prop="withdrawType" label="提现类型"></el-table-column>
+        <el-table-column prop="merchantNickName" label="商户会员名"></el-table-column>
+        <el-table-column prop="money" label="提款金额"></el-table-column>
+        <el-table-column prop="sucessCommitAmount" label="已成功金额"></el-table-column>
+        <el-table-column prop="balance" label="交易后余额"></el-table-column>
+        <el-table-column prop="address" label="提款人钱包"></el-table-column>
+        <el-table-column prop="createTime" label="提现时间"></el-table-column>
+        <el-table-column prop="updateTime" label="更新时间"></el-table-column>
+        <el-table-column prop="createTime" label="完成时间"></el-table-column>
+        <el-table-column prop="orderStatus" label="订单状态"></el-table-column>
+        <el-table-column prop="remarks" label="商户备注"></el-table-column>
         <!-- <el-table-column label="操作" width="200">
           <template slot-scope="scope">
             <el-button size="mini" @click="edit(scope.row)">查看</el-button>
@@ -48,7 +60,7 @@
 </template>
 
 <script>
-import { shop_page, TransferRecordDelete, member_list } from "@a/merchant";
+import { TransferRecordDelete, xiafen_list, } from "@a/merchant";
 
 export default {
   name: "TransferRecord",
@@ -103,12 +115,7 @@ export default {
       fileList: []
     };
   },
-  created() { },
   methods: {
-    formatCurrency(value) {
-      if (typeof value !== "number") return "0.00";
-      return value.toFixed(2);
-    },
     selectTime(val) {
       if (val) {
         this.params.startTime = val[0];
@@ -151,8 +158,7 @@ export default {
     //获取列表
     async List() {
       this.params.descs = "a.update_time";
-      const data = await member_list(this.params);
-      console.log(data);
+      const data = await xiafen_list(this.params);
       this.total = data.total;
       this.list = data.records;
     },
@@ -169,12 +175,6 @@ export default {
     //选择批量删除的数据
     selectChange(val) {
       this.selectedList = val;
-    },
-    //设置表格表头颜色
-    tableHeaderColor({ row, column, rowIndex, columnIndex }) {
-      if (rowIndex === 0) {
-        return "background: #f2f2f2;color: #333;font-weight: 500;";
-      }
     },
     //删除接口
     async delData(array) {

@@ -15,9 +15,9 @@
           搜索
         </el-button>
         <el-button icon="el-icon-refresh" @click="reset">重置</el-button>
-        <!-- <el-button type="primary" icon="el-icon-plus" @click="newEdit()">
-          添加
-        </el-button> -->
+        <el-button type="primary" icon="el-icon-plus" @click="newEdit()">
+          新增商户
+        </el-button>
       </div>
     </div>
     <div class="table_wrapper">
@@ -111,6 +111,11 @@ export default {
     changePage(val) {
       this.params.current = val;
       this.List();
+    },
+    newEdit() {
+      this.$router.push({
+        name: "SetEdit",
+      });
     },
     edit(row) {
       this.$router.push({

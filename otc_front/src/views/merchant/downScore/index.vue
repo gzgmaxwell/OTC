@@ -7,7 +7,7 @@
           @keyup.enter.native="search" />
         <el-input placeholder="系统订单号" v-model="params.transNumber" style="width: 30%;margin-left: 10px; "
           @keyup.enter.native="search" />
-        <el-input placeholder="提款人钱包" v-model="params.merchantNickName" style="width: 30%;margin-left: 10px; "
+        <el-input placeholder="商户会员名" v-model="params.nickName" style="width: 30%;margin-left: 10px; "
           @keyup.enter.native="search" />
         <el-input placeholder="提现时间" v-model="params.createTime" style="width: 30%;margin-left: 10px; "
           @keyup.enter.native="search" />
@@ -37,7 +37,7 @@
         <el-table-column prop="userId" label="商户ID"></el-table-column>
         <el-table-column prop="transNumber" label="系统订单号"></el-table-column>
         <el-table-column prop="withdrawType" label="提现类型"></el-table-column>
-        <el-table-column prop="merchantNickName" label="商户会员名"></el-table-column>
+        <el-table-column prop="nickName" label="商户会员名"></el-table-column>
         <el-table-column prop="money" label="提款金额"></el-table-column>
         <el-table-column prop="sucessCommitAmount" label="已成功金额"></el-table-column>
         <el-table-column prop="balance" label="交易后余额"></el-table-column>

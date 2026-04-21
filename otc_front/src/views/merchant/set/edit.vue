@@ -63,53 +63,93 @@
           <div>费用信息</div>
           <el-row :gutter="20" type="flex" class="row-bg" justify="center">
             <el-col :span="10">
-              <el-form-item label="收银台上分手续费：">
-                <el-input v-model="formValidate.userFeeInfo.upFee"></el-input>
+              <el-form-item label="api代付手续费比例（小数）">
+                <el-input v-model="formValidate.userFeeInfo.feeBehalfRate"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="10">
-              <el-form-item label="含四方上分手续费：">
-                <el-input v-model="formValidate.userFeeInfo.sifangFee"></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20" type="flex" class="row-bg" justify="center">
-            <el-col :span="10">
-              <el-form-item label="代买单-代付手续费(银)：">
-                <el-input v-model="formValidate.userFeeInfo.upFeePayYinYin"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="10">
-              <el-form-item label="代买单-代付手续费(支)：">
-                <el-input v-model="formValidate.userFeeInfo.upFeePayZhiYin"></el-input>
+              <el-form-item label="提现手续费比例（小数）">
+                <el-input v-model="formValidate.userFeeInfo.feeWithdrawRate"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row :gutter="20" type="flex" class="row-bg" justify="center">
             <el-col :span="10">
-              <el-form-item label="代付强制需审核：">
-                <el-switch v-model="formValidate.userFeeInfo.upFeePayForceAudit" active-color="#13ce66"
-                  inactive-color="#ff4949" />
+              <el-form-item label="买币手续费比例 (小数)">
+                <el-input v-model="formValidate.userFeeInfo.feeBuyfcbRate"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="10">
-              <el-form-item label="是否开启API充值：">
-                <el-switch v-model="formValidate.userFeeInfo.upFeePayOpen" active-color="#13ce66"
-                  inactive-color="#ff4949" />
+              <el-form-item label="上分手续费（收银台）(小数)">
+                <el-input v-model="formValidate.userFeeInfo.feeUpScoreCashierDesk"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
 
           <el-row :gutter="20" type="flex" class="row-bg" justify="center">
             <el-col :span="10">
-              <el-form-item label="是否开启API代付：">
-                <el-switch v-model="formValidate.userFeeInfo.upFeePayOpenPay" active-color="#13ce66"
-                  inactive-color="#ff4949" />
+              <el-form-item label="上分手续费（含四方）">
+                <el-input v-model="formValidate.userFeeInfo.feeUpScoreGatherAlldir"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="10">
-              <el-form-item label="商户买卖币昵称：">
-                <el-input v-model="formValidate.userFeeInfo.nickName"></el-input>
+              <el-form-item label="待卖单-代付手续费（银）">
+                <el-input v-model="formValidate.userFeeInfo.feeProcessRateBank"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+
+          <el-row :gutter="20" type="flex" class="row-bg" justify="center">
+            <el-col :span="10">
+              <el-form-item label="待卖单-代付手续费（支）">
+                <el-input v-model="formValidate.userFeeInfo.feeProcessRateAlipay"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="10">
+              <el-form-item label="代付强制审核开关">
+                <el-switch v-model="formValidate.userFeeInfo.processForcecheckEnable" active-color="#13ce66"
+                  inactive-color="#ff4949" active-value="0" inactive-value="1" />
+              </el-form-item>
+            </el-col>
+
+          </el-row>
+
+          <el-row :gutter="20" type="flex" class="row-bg" justify="center">
+            <el-col :span="10">
+              <el-form-item label="API充值开关">
+                <el-switch v-model="formValidate.userFeeInfo.echargeEnable" active-color="#13ce66"
+                  inactive-color="#ff4949" active-value="0" inactive-value="1" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="10">
+              <el-form-item label="API 充值代付">
+                <el-switch v-model="formValidate.userFeeInfo.processEnable" active-color="#13ce66"
+                  inactive-color="#ff4949" active-value="0" inactive-value="1" />
+              </el-form-item>
+            </el-col>
+          </el-row>
+
+          <el-row :gutter="20" type="flex" class="row-bg" justify="center">
+            <el-col :span="10">
+              <el-form-item label="代付需审核金额">
+                <el-input v-model="formValidate.userFeeInfo.processCheckamount"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="10">
+              <el-form-item label="最小API存款金额">
+                <el-input v-model="formValidate.userFeeInfo.minDepositAmount"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20" type="flex" class="row-bg" justify="center">
+            <el-col :span="10">
+              <el-form-item label="最小API存款金额">
+                <el-input v-model="formValidate.userFeeInfo.minProcessAmount"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="10">
+              <el-form-item label="最大API存款金额">
+                <el-input v-model="formValidate.userFeeInfo.maxDepositAmount"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -142,14 +182,16 @@ export default {
         street: "",
         userPassword: "123456",
         userFeeInfo: {
-          upFee: undefined,
-          sifangFee: undefined,
-          upFeePayYinYin: undefined,
-          upFeePayZhiYin: undefined,
-          upFeePayForceAudit: false,
-          upFeePayOpen: false,
-          upFeePayOpenPay: false,
-          nickName: undefined,
+          processCheckamount: undefined,
+          minDepositAmount: undefined,
+          minProcessAmount: undefined,
+          maxDepositAmount: undefined,
+          maxProcessAmount: undefined,
+          feeProcessRateBank: undefined,
+          feeProcessRateAlipay: undefined,
+          processForcecheckEnable: 0,
+          echargeEnable: 0,
+          processEnable: 0,
         }
       },
       rules: {
@@ -178,17 +220,20 @@ export default {
       const extendData = {
         ...data,
         userFeeInfo: {
-          upFee: undefined,
-          sifangFee: undefined,
-          upFeePayYinYin: undefined,
-          upFeePayZhiYin: undefined,
-          upFeePayForceAudit: false,
-          upFeePayOpen: false,
-          upFeePayOpenPay: false,
-          nickName: undefined,
+          processCheckamount: undefined,
+          minDepositAmount: undefined,
+          minProcessAmount: undefined,
+          maxDepositAmount: undefined,
+          maxProcessAmount: undefined,
+          feeProcessRateBank: undefined,
+          feeProcessRateAlipay: undefined,
+          processForcecheckEnable: 0,
+          echargeEnable: 0,
+          processEnable: 0,
         }
       };
-      this.formValidate = extendData;
+      this.formValidate = extendData
+        ;
     },
 
     //编辑保存接口

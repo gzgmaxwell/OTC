@@ -9,8 +9,8 @@
           @keyup.enter.native="search" />
         <el-input placeholder="商户会员名" v-model="params.nickName" style="width: 30%;margin-left: 10px; "
           @keyup.enter.native="search" />
-        <el-input placeholder="提现时间" v-model="params.createTime" style="width: 30%;margin-left: 10px; "
-          @keyup.enter.native="search" />
+        <!-- <el-input placeholder="提现时间" v-model="params.createTime" style="width: 30%;margin-left: 10px; "
+          @keyup.enter.native="search" /> -->
         <el-select v-model="params.orderModel" style="width: 30%;margin-left: 5px;" placeholder="下单模式">
           <el-option v-for="(item, index) in optOrderModel" :key="index" :label="item.label"
             :value="item.value"></el-option>
@@ -19,9 +19,9 @@
           @keyup.enter.native="search" />
         <el-input placeholder="提现模式" v-model="params.withdrawType" style="width: 30%;margin-left: 10px; "
           @keyup.enter.native="search" />
-        <!-- <el-date-picker style="width: 50%; margin-left: 10px;" @change="selectTime" v-model="value2"
-          type="datetimerange" :picker-options="pickerOptions" value-format="yyyy-MM-dd HH:mm:ss" range-separator="至"
-          start-placeholder="开始日期" end-placeholder="结束日期" align="right" /> -->
+        <el-date-picker style="width: 50%; margin-left: 10px;" @change="selectTime" v-model="value2"
+          type="datetimerange" :picker-options="pickerOptions" value-format="yyyy-MM-dd HH:mm:ss" range-separator="-"
+          start-placeholder="开始日期" end-placeholder="结束日期" align="right" />
 
         <el-button type="primary" icon="el-icon-search" @click="search">
           搜索
@@ -51,6 +51,7 @@
             {{ compcChecked(scope.row.orderModel) }}
           </template>
         </el-table-column>
+        <el-table-column prop="payTotalMoney" label="下分总金额"></el-table-column>
         <el-table-column prop="remarks" label="商户备注"></el-table-column>
         <!-- <el-table-column label="操作" width="200">
           <template slot-scope="scope">

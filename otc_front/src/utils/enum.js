@@ -152,3 +152,29 @@ export const optOrderModel = [
     label: "[下单]收银台(固额)"
   }
 ];
+
+export const enum_orderStatus = {
+  checking: "checking",
+  paying: "paying",
+  success: "success",
+  fail: "fail"
+}
+export const optOrderStatus = [
+  {
+    value: enum_orderStatus.checking,
+    label: "审核中"
+  },
+  {
+    value: enum_orderStatus.paying,
+    label: "提现付款中"
+  },
+  {
+    value: enum_orderStatus.success,
+    label: "成功"
+  },
+  {
+    value: enum_orderStatus.fail,
+    label: "失败"
+  },
+];
+

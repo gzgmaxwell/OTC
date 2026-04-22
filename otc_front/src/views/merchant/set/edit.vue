@@ -59,7 +59,7 @@
           </el-row>
           <el-row :gutter="20" type="flex" class="row-bg" justify="center">
             <el-col :span="20">
-              <el-form-item label="密码">
+              <el-form-item label="密码" v-if="!id">
                 <el-input v-model="formValidate.userPassword" show-password></el-input>
               </el-form-item>
             </el-col>

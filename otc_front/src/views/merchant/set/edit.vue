@@ -73,6 +73,7 @@
               </el-form-item>
             </el-col>
           </el-row>
+
           <el-row :gutter="20" type="flex" class="row-bg" justify="center">
             <el-col :span="10">
               <el-form-item label="买币手续费比例 (小数)">
@@ -101,7 +102,7 @@
 
           <el-row :gutter="20" type="flex" class="row-bg" justify="center">
             <el-col :span="10">
-              <el-form-item label="待卖单-代付手续费（支）">
+              <el-form-item label="待卖单-代付手续费（阿里）">
                 <el-input v-model="formValidate.userFeeInfo.feeProcessRateAlipay"></el-input>
               </el-form-item>
             </el-col>
@@ -113,7 +114,6 @@
             </el-col>
 
           </el-row>
-
           <el-row :gutter="20" type="flex" class="row-bg" justify="center">
             <el-col :span="10">
               <el-form-item label="API充值开关">
@@ -122,7 +122,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="10">
-              <el-form-item label="API 充值代付">
+              <el-form-item label="API充值代付开关">
                 <el-switch v-model="formValidate.userFeeInfo.processEnable" active-color="#13ce66"
                   inactive-color="#ff4949" active-value="0" inactive-value="1" />
               </el-form-item>
@@ -141,9 +141,10 @@
               </el-form-item>
             </el-col>
           </el-row>
+
           <el-row :gutter="20" type="flex" class="row-bg" justify="center">
             <el-col :span="10">
-              <el-form-item label="最小API存款金额">
+              <el-form-item label="最小代付金额">
                 <el-input v-model="formValidate.userFeeInfo.minProcessAmount"></el-input>
               </el-form-item>
             </el-col>
@@ -153,6 +154,7 @@
               </el-form-item>
             </el-col>
           </el-row>
+
           <el-row :gutter="20" type="flex" class="row-bg" justify="center">
             <el-col :span="20">
               <el-form-item label="最大API代付金额">

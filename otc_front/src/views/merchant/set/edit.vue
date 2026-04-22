@@ -199,6 +199,11 @@ export default {
         street: "",
         userPassword: "123456",
         userFeeInfo: {
+          feeBehalfRate: undefined,
+          feeWithdrawRate: undefined,
+          feeBuyfcbRate: undefined,
+          feeUpScoreCashierDesk: undefined,
+          feeUpScoreGatherAlldir: undefined,
           processCheckamount: undefined,
           minDepositAmount: undefined,
           minProcessAmount: undefined,
@@ -207,7 +212,7 @@ export default {
           feeProcessRateBank: undefined,
           feeProcessRateAlipay: undefined,
           processForcecheckEnable: 0,
-          echargeEnable: 0,
+          rechargeEnable: 0,
           processEnable: 0,
         }
       },
@@ -236,6 +241,11 @@ export default {
       const data = await merchant_get(this.id);
       let userFeeInfo = {
         userId: data.userId,
+        feeBehalfRate: undefined,
+        feeWithdrawRate: undefined,
+        feeBuyfcbRate: undefined,
+        feeUpScoreCashierDesk: undefined,
+        feeUpScoreGatherAlldir: undefined,
         processCheckamount: undefined,
         minDepositAmount: undefined,
         minProcessAmount: undefined,
@@ -244,7 +254,7 @@ export default {
         feeProcessRateBank: undefined,
         feeProcessRateAlipay: undefined,
         processForcecheckEnable: 0,
-        echargeEnable: 0,
+        rechargeEnable: 0,
         processEnable: 0,
       }
       if (data.userFeeInfo) {
@@ -252,7 +262,7 @@ export default {
       }
       const extendData = {
         ...data,
-        ...userFeeInfo
+        userFeeInfo
       };
       this.formValidate = extendData;
     },

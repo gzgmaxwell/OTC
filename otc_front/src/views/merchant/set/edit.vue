@@ -132,7 +132,6 @@
               <el-form-item label="API充值代付开关">
                 <el-switch v-model="formValidate.userFeeInfo.processEnable" active-color="#13ce66"
                   inactive-color="#ff4949" active-value="0" inactive-value="1" />
-                <el-input v-if="!id" v-model="formValidate.userPassword" show-password></el-input>
               </el-form-item>
             </el-col>
           </el-row>

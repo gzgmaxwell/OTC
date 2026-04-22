@@ -57,6 +57,13 @@
               </el-form-item>
             </el-col>
           </el-row>
+          <el-row :gutter="20" type="flex" class="row-bg" justify="center">
+            <el-col :span="20">
+              <el-form-item label="密码">
+                <el-input v-model="formValidate.userPassword" show-password></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
         </div>
 
         <div>
@@ -125,6 +132,7 @@
               <el-form-item label="API充值代付开关">
                 <el-switch v-model="formValidate.userFeeInfo.processEnable" active-color="#13ce66"
                   inactive-color="#ff4949" active-value="0" inactive-value="1" />
+                <el-input v-if="!id" v-model="formValidate.userPassword" show-password></el-input>
               </el-form-item>
             </el-col>
           </el-row>

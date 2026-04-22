@@ -170,7 +170,7 @@
   </div>
 </template>
 <script>
-import { merchant_get, merchant_put } from "@a/merchant";
+import { merchant_get, merchant_put, merchant_saveOrUpdate } from "@a/merchant";
 
 export default {
   name: "Edit",
@@ -229,6 +229,8 @@ export default {
       const extendData = {
         ...data,
         userFeeInfo: {
+          userId: data.userId,
+          // id: data.userId,
           processCheckamount: undefined,
           minDepositAmount: undefined,
           minProcessAmount: undefined,
@@ -247,8 +249,9 @@ export default {
 
     //编辑保存接口
     async editData() {
-      await merchant_put(this.formValidate, this.id);
-      this.$message.success("修改成功");
+      // await merchant_put(this.formValidate, this.id);
+      await merchant_saveOrUpdate(this.formValidate);
+      this.$message.success("保存成功");
       this.$router.push({
         name: "MerchantSet"
       });

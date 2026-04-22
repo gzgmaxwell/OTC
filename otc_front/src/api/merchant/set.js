@@ -39,3 +39,10 @@ export const merchant_put = (data, id) =>
     url: "/merchant/put/" + id,
     data
   });
+
+export const merchant_saveOrUpdate = (data) =>
+  request({
+    method: "post",
+    url: "/merchant/saveOrUpdate",
+    data
+  });

@@ -234,25 +234,27 @@ export default {
     //获取列表详情接口
     async getInfo() {
       const data = await merchant_get(this.id);
+      let userFeeInfo = {
+        userId: data.userId,
+        processCheckamount: undefined,
+        minDepositAmount: undefined,
+        minProcessAmount: undefined,
+        maxDepositAmount: undefined,
+        maxProcessAmount: undefined,
+        feeProcessRateBank: undefined,
+        feeProcessRateAlipay: undefined,
+        processForcecheckEnable: 0,
+        echargeEnable: 0,
+        processEnable: 0,
+      }
+      if (data.userFeeInfo) {
+        userFeeInfo = data.userFeeInfo
+      }
       const extendData = {
         ...data,
-        userFeeInfo: {
-          userId: data.userId,
-          // id: data.userId,
-          processCheckamount: undefined,
-          minDepositAmount: undefined,
-          minProcessAmount: undefined,
-          maxDepositAmount: undefined,
-          maxProcessAmount: undefined,
-          feeProcessRateBank: undefined,
-          feeProcessRateAlipay: undefined,
-          processForcecheckEnable: 0,
-          echargeEnable: 0,
-          processEnable: 0,
-        }
+        ...userFeeInfo
       };
-      this.formValidate = extendData
-        ;
+      this.formValidate = extendData;
     },
 
     //编辑保存接口

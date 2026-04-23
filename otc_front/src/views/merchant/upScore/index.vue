@@ -30,6 +30,9 @@
     </div>
 
     <div class="table_wrapper">
+      <div style="padding-bottom: 10px;">
+        上分总金额：{{ incomeTotaMoney }}
+      </div>
       <el-table ref="multipleTable" :data="list" border height="100%" stripe style="width: 100%">
         <el-table-column prop="id" label="商户订单号"></el-table-column>
         <el-table-column prop="merchantUserName" label="商户名"></el-table-column>
@@ -48,7 +51,7 @@
         <el-table-column prop="merchantRemark" label="商户备注"></el-table-column>
         <el-table-column prop="callBackResult" label="回调结果"></el-table-column>
         <el-table-column prop="callBackTimes" label="回调次数"></el-table-column>
-        <el-table-column prop="incomeTotaMoney" label="上分总金额"></el-table-column>
+        <!-- <el-table-column prop="incomeTotaMoney" label="上分总金额"></el-table-column> -->
         <el-table-column prop="remarks" label="操怍备注"></el-table-column>
         <el-table-column label="下单模式">
           <template slot-scope="scope">
@@ -121,6 +124,7 @@ export default {
       },
       total: 0,
       list: [], //表格数据
+      incomeTotaMoney: undefined,
       selectedList: [], //批量删除的数组
       select: "",
       isShow: false,
@@ -177,8 +181,9 @@ export default {
     async List() {
       this.params.descs = "a.update_time";
       const data = await shangfen_list(this.params);
-      this.total = data.total;
-      this.list = data.records;
+      this.total = data.page.total;
+      this.list = data.page.records;
+      this.incomeTotaMoney = data.incomeTotaMoney;
     },
     //每页多少条，切换显示条数
     sizeChange(val) {

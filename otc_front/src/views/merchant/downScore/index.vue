@@ -31,6 +31,9 @@
     </div>
 
     <div class="table_wrapper">
+      <div style="padding-bottom: 10px;">
+        下分总金额：{{ payTotalMoney }}
+      </div>
       <el-table ref="multipleTable" :data="list" border height="100%" stripe style="width: 100%">
         <el-table-column prop="id" label="商户订单号"></el-table-column>
         <el-table-column prop="merchantUserName" label="商户账号"></el-table-column>
@@ -51,7 +54,7 @@
             {{ compcChecked(scope.row.orderModel) }}
           </template>
         </el-table-column>
-        <el-table-column prop="payTotalMoney" label="下分总金额"></el-table-column>
+        <!-- <el-table-column prop="payTotalMoney" label="下分总金额"></el-table-column> -->
         <el-table-column prop="remarks" label="商户备注"></el-table-column>
         <!-- <el-table-column label="操作" width="200">
           <template slot-scope="scope">
@@ -118,6 +121,7 @@ export default {
       },
       total: 0,
       list: [], //表格数据
+      payTotalMoney: undefined, //下分总Money
       selectedList: [], //批量删除的数组
       select: "",
       isShow: false,
@@ -174,8 +178,9 @@ export default {
     async List() {
       this.params.descs = "a.update_time";
       const data = await xiafen_list(this.params);
-      this.total = data.total;
-      this.list = data.records;
+      this.total = data.page.total;
+      this.list = data.page.records;
+      this.payTotalMoney = data.payTotalMoney;
     },
     //每页多少条，切换显示条数
     sizeChange(val) {
@@ -194,9 +199,7 @@ export default {
     //删除接口
     async delData(array) {
       await TransferRecordDelete(array);
-
       this.$message.success("删除成功");
-
       this.search();
     },
     //新增

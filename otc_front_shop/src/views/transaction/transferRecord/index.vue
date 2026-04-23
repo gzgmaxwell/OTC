@@ -202,7 +202,6 @@ export default {
       if (val) {
         this.params.startTime = val[0];
         this.params.endTime = val[1];
-      } else {
       }
     },
     async getCodeUser() {

@@ -23,25 +23,32 @@ export const timeFilterOptions = [
 ]
 
 
+export const enum_withdrawType = {
+  bank: "1",
+  alipay: "2",
+  wechat: "3",
+  usdt: "4",
+  digitalRmb: "5"
+}
 export const optWithdrawType = [
   {
-    value: "1",
+    value: enum_withdrawType.bank,
     label: "银行卡"
   },
   {
-    value: "2",
+    value: enum_withdrawType.alipay,
     label: "支付宝"
   },
   {
-    value: "3",
+    value: enum_withdrawType.wechat,
     label: "微信"
   },
   {
-    value: "4",
+    value: enum_withdrawType.usdt,
     label: "USDT"
   },
   {
-    value: "5",
+    value: enum_withdrawType.digitalRmb,
     label: "数字人民币"
   }
 ];

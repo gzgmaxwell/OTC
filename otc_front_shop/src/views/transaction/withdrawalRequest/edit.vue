@@ -13,20 +13,29 @@
     </div>
     <div class="edit_content">
       <el-form class="u_form" :model="formValidate" :rules="rules" ref="formValidate" label-width="100px">
+        <el-form-item label="账户余额：">
+          <span>{{ banlence }}</span>
+        </el-form-item>
         <el-form-item label="账户" prop="accountAddress">
           <el-input v-model="formValidate.accountAddress"></el-input>
         </el-form-item>
         <el-form-item label="金额" prop="money">
-          <el-input v-model="formValidate.money"></el-input>
-        </el-form-item>
-        <el-form-item label="币种名称" prop="cashName">
-          <el-input v-model="formValidate.cashName"></el-input>
+          <el-input v-model="formValidate.money" @change="changeMoney"></el-input>
         </el-form-item>
         <el-form-item label="提现类型" prop="type">
-          <el-select v-model="formValidate.type" placeholder="提现类型" style="width: 100%;">
+          <el-select v-model="formValidate.type" placeholder="提现类型" style="width: 100%;" @change="changeType">
             <el-option v-for="(item, index) in optWithdrawType" :key="index" :label="item.label"
               :value="item.value"></el-option>
           </el-select>
+        </el-form-item>
+        <el-form-item label="汇率" prop="exchangeRate">
+          <el-input v-model="formValidate.exchangeRate" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="货币数量" prop="quantity">
+          <el-input v-model="formValidate.quantity" :disabled="disabled"></el-input>
+        </el-form-item>
+        <el-form-item label="币种名称" prop="cashName">
+          <el-input v-model="formValidate.cashName"></el-input>
         </el-form-item>
         <el-form-item label="交易描述" prop="transDes">
           <el-input v-model="formValidate.transDes"></el-input>
@@ -37,26 +46,23 @@
         <el-form-item label="提现信息" prop="info">
           <el-input v-model="formValidate.info"></el-input>
         </el-form-item>
-        <el-form-item label="货币数量" prop="quantity">
-          <el-input v-model="formValidate.quantity"></el-input>
-        </el-form-item>
-        <el-form-item label="汇率" prop="exchangeRate">
-          <el-input v-model="formValidate.exchangeRate"></el-input>
-        </el-form-item>
+
       </el-form>
     </div>
   </div>
 </template>
 <script>
-import { withdrawOrder_createWithdraw } from "@a/transaction";
-import { optOrderModel, optOrderStatus, enum_orderStatus, optWithdrawType } from "@/utils/enum";
+import { withdrawOrder_createWithdraw, config_queryCode, queryUserBalance } from "@a/transaction";
+import { optOrderModel, optOrderStatus, enum_orderStatus, optWithdrawType, enum_withdrawType } from "@/utils/enum";
 
 export default {
   name: "Edit",
   components: {},
   data() {
     return {
+      banlence: 0,
       optWithdrawType,
+      disabled: false,
       formValidate: {
         accountAddress: undefined,
         money: undefined,
@@ -66,7 +72,7 @@ export default {
         account: undefined,
         info: undefined,
         quantity: undefined,
-        exchangeRate: undefined
+        exchangeRate: 1
       },
       rules: {
         accountAddress: [{ required: true, message: "请输入账户", trigger: "change" }],
@@ -82,6 +88,31 @@ export default {
     };
   },
   methods: {
+    changeMoney() {
+      if (enum_withdrawType.usdt === this.formValidate.type && this.formValidate.exchangeRate) {
+        this.formValidate.quantity = Number(this.formValidate.money) / Number(this.formValidate.exchangeRate);
+      }
+    },
+    changeType(value) {
+      this.formValidate.type = value;
+      if (enum_withdrawType.usdt === value) {
+        this.disabled = true;
+        const userName = JSON.parse(localStorage.getItem("UserInfo")).userName
+        config_queryCode({
+          codeName: "exchange_rate",
+          userName: userName
+        }).then(res => {
+          const exchangeRate = res.value1;
+          this.formValidate.exchangeRate = exchangeRate;
+          if (this.formValidate.money) {
+            this.formValidate.quantity = Number(this.formValidate.money) / Number(this.formValidate.exchangeRate);
+          }
+        });
+      } else {
+        this.formValidate.exchangeRate = 1;
+        this.disabled = false;
+      }
+    },
     //获取列表详情接口
     getInfo() {
       this.formValidate = this.$route.query;
@@ -116,6 +147,9 @@ export default {
     if (this.$route.query.id) {
       this.getInfo(this.$route.query.id);
     }
+    queryUserBalance({ userId: JSON.parse(localStorage.getItem("UserInfo")).userId }).then(res => {
+      this.banlence = res;
+    });
   }
 };
 </script>

@@ -15,3 +15,17 @@ export const withdrawOrder_createWithdraw = data =>
     url: url + "/createWithdraw",
     data
   });
+
+export const config_queryCode = data =>
+  request({
+    method: "post",
+    url: "/config/queryCode",
+    data,
+  });
+
+export const queryUserBalance = data =>
+  request({
+    method: "post",
+    url: "/userAccount/queryUserBalance",
+    data,
+  });

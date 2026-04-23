@@ -2,18 +2,16 @@
   <div class="list_page">
     <div class="top_wrapper">
       <div class="search_box">
-        <el-input placeholder="商户ID" v-model="params.userId" style="width: 30%; " @keyup.enter.native="search" />
-        <el-input placeholder="商户名" v-model="params.merchantUserName" style="width: 30%;margin-left: 10px; "
+        <el-input placeholder="商户名称" v-model="params.merchantUserName" style="width: 30%; "
           @keyup.enter.native="search" />
-        <el-input placeholder="商户订单号" v-model="params.transNumber" style="width: 30%;margin-left: 10px; "
+        <el-input placeholder="商户名ID" v-model="params.merchantUserId" style="width: 30%;margin-left: 10px; "
           @keyup.enter.native="search" />
-        <el-input placeholder="商户会员名" v-model="params.nickName" style="width: 30%;margin-left: 10px; "
-          @keyup.enter.native="search" />
-        <el-select v-model="params.orderModel" style="width: 30%;margin-left: 5px;" placeholder="下单模式">
+
+        <!-- <el-select v-model="params.orderModel" style="width: 30%;margin-left: 5px;" placeholder="下单模式">
           <el-option v-for="(item, index) in optOrderModel" :key="index" :label="item.label"
             :value="item.value"></el-option>
-        </el-select>
-        <el-select v-model="params.orderModel" style="width: 30%;margin-left: 5px;" placeholder="状态">
+        </el-select> -->
+        <el-select v-model="params.status" style="width: 30%;margin-left: 5px;" placeholder="审核状态">
           <el-option v-for="(item, index) in optOrderStatus" :key="index" :label="item.label"
             :value="item.value"></el-option>
         </el-select>
@@ -31,32 +29,39 @@
 
     <div class="table_wrapper">
       <el-table ref="multipleTable" :data="list" border height="100%" stripe style="width: 100%">
-        <el-table-column prop="id" label="商户订单号"></el-table-column>
-        <el-table-column prop="merchantUserName" label="商户名"></el-table-column>
-        <el-table-column prop="userId" label="商户ID"></el-table-column>
-        <el-table-column prop="transNumber" label="系统订单号"></el-table-column>
-        <el-table-column prop="nickName" label="商户会员名"></el-table-column>
-        <el-table-column prop="money" label="存款金额"></el-table-column>
-        <el-table-column prop="sucessCommitAmount" label="已成功金额"></el-table-column>
-        <el-table-column prop="balance" label="交易后余额"></el-table-column>
-        <el-table-column prop="address" label="付款人钱包"></el-table-column>
-        <el-table-column prop="createTime" label="订单时间"></el-table-column>
-        <el-table-column label="下单模式">
+        <el-table-column prop="merchantUserName" label="商户名称"></el-table-column>
+        <el-table-column prop="merchantUserId" label="商户ID"></el-table-column>
+        <el-table-column prop="ip" label="提现ip"></el-table-column>
+        <el-table-column prop="accountAddress" label="账户"></el-table-column>
+        <el-table-column prop="orderNumber" label="订单号"></el-table-column>
+        <el-table-column prop="money" label="提现金额"></el-table-column>
+        <el-table-column prop="balance" label="余额"></el-table-column>
+        <el-table-column prop="cashName" label="货币名称"></el-table-column>
+        <el-table-column label="提现类型">
           <template slot-scope="scope">
-            {{ compcChecked(scope.row.orderModel) }}
+            {{ compType(scope.row.type) }}
           </template>
         </el-table-column>
-        <el-table-column label="状态">
+        <el-table-column prop="moneySucess" label="成功金额"></el-table-column>
+        <el-table-column prop="transDes" label="交易描述"></el-table-column>
+        <el-table-column label="审核状态">
           <template slot-scope="scope">
-            {{ compcChecked(scope.row.orderModel) }}
+            {{ compStatus(scope.row.status) }}
           </template>
         </el-table-column>
-        <el-table-column prop="handingFeeAmount" label="手续费"></el-table-column>
-        <el-table-column label="操作" width="200">
+        <el-table-column prop="checkTime" label="记录时间"></el-table-column>
+        <el-table-column prop="finishTime" label="完成时间"></el-table-column>
+        <el-table-column prop="account" label="提现账号"></el-table-column>
+        <el-table-column prop="info" label="提现信息"></el-table-column>
+        <el-table-column prop="quantity" label="货币数量"></el-table-column>
+        <el-table-column prop="exchangeRate" label="汇率"></el-table-column>
+        <el-table-column prop="paymentVoucher" label="付款凭证"></el-table-column>
+        <el-table-column label="操作" width="200" fixed="right">
           <template slot-scope="scope">
-            <el-button type="primary" size="mini" @click="edit(scope.row)">审核</el-button>
+            <el-button type="primary" size="mini" @click="edit(scope.row)"
+              v-if="compcCheck(scope.row.status)">审核</el-button>
             <el-button size="mini" type="primary" @click="Delete(scope.row)"
-              v-if="compcCheckedAndy(scope.row)">已打款</el-button>
+              v-if="compcCheckedAndy(scope.row.status)">付款完成</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -68,8 +73,8 @@
 </template>
 
 <script>
-import { TransferRecordDelete, shangfen_list, shop_page_export } from "@a/merchant";
-import { optOrderModel, optOrderStatus, enum_orderStatus } from "@/utils/enum";
+import { TransferRecordDelete, withdrawOrder_list, shop_page_export, merchant_finishPay } from "@a/merchant";
+import { optOrderModel, optOrderStatus, enum_orderStatus, optWithdrawType } from "@/utils/enum";
 
 export default {
   name: "TransferRecord",
@@ -127,12 +132,17 @@ export default {
     };
   },
   computed: {
-    compcChecked() {
-      return (val) => optOrderModel.find(item => item.value === val)?.label;
+    compType() {
+      return (val) => optWithdrawType.find(item => item.value === val)?.label;
+    },
+    compStatus() {
+      return (val) => optOrderStatus.find(item => item.value == val)?.label;
     },
     compcCheckedAndy() {
-      // return (val) => optOrderStatus.find(item => item.value === val)?.label;
-      return (val) => true;
+      return (val) => val == enum_orderStatus.paying;
+    },
+    compcCheck() {
+      return (val) => val == enum_orderStatus.checking;
     },
   },
   methods: {
@@ -210,7 +220,7 @@ export default {
     //获取列表
     async List() {
       this.params.descs = "a.update_time";
-      const data = await shangfen_list(this.params);
+      const data = await withdrawOrder_list(this.params);
       this.total = data.total;
       this.list = data.records;
     },
@@ -247,17 +257,13 @@ export default {
       });
     },
     Delete(row) {
-      this.$confirm("此操作确认已打款, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
+      this.$router.push({
+        name: "WithdrawalFinish",
+        query: {
+          id: row.id,
+          transDes: row.transDes
+        }
       })
-        .then(() => {
-          var arr = [];
-          arr.push(row.id);
-          this.delData(arr);
-        })
-        .catch(() => { });
     }
   },
   mounted() {

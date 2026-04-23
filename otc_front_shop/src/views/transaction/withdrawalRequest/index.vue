@@ -2,8 +2,8 @@
   <div class="list_page">
     <div class="top_wrapper">
       <div class="search_box">
-        <el-input placeholder="请输入姓名" style="width: 30%;" v-model="params.name" @keyup.enter.native="search"></el-input>
-
+        <el-input placeholder="商户名称" style="width: 30%;" v-model="params.merchantUserName"
+          @keyup.enter.native="search" />
         <el-button type="primary" icon="el-icon-search" @click="search">
           搜索
         </el-button>
@@ -14,15 +14,26 @@
 
     <div class="table_wrapper">
       <el-table ref="multipleTable" :data="list" border height="100%">
-        <el-table-column prop="name" label="姓名"></el-table-column>
-        <el-table-column prop="idNumber" label="身份证号"></el-table-column>
-        <el-table-column prop="levelName" label="实名认证级别"></el-table-column>
-        <el-table-column prop="updateTime" label="更新时间" width="160"></el-table-column>
-        <el-table-column label="操作" width="210">
+        <el-table-column prop="merchantUserName" label="商户名称"></el-table-column>
+        <el-table-column prop="merchantUserId" label="商户ID"></el-table-column>
+        <el-table-column prop="accountAddress" label="账户"></el-table-column>
+        <el-table-column prop="money" label="金额"></el-table-column>
+        <el-table-column prop="cashName" label="币种名称"></el-table-column>
+        <el-table-column label="提现类型">
+          <template slot-scope="scope">
+            {{ compType(scope.row?.type) }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="transDes" label="交易描述"></el-table-column>
+        <el-table-column prop="account" label="提现账号"></el-table-column>
+        <el-table-column prop="info" label="提现信息"></el-table-column>
+        <el-table-column prop="quantity" label="货币数量"></el-table-column>
+        <el-table-column prop="exchangeRate" label="汇率"></el-table-column>
+        <!-- <el-table-column label="操作" width="210">
           <template slot-scope="scope">
             <el-button size="mini" type="danger" @click="Delete(scope.row)">删除</el-button>
           </template>
-        </el-table-column>
+</el-table-column> -->
       </el-table>
     </div>
     <el-pagination background @size-change="sizeChange" @current-change="changePage" :current-page="params.current"
@@ -32,7 +43,8 @@
 </template>
 
 <script>
-import { UserRealAuthPage222444 } from "@a/transaction";
+import { withdrawOrder_list } from "@a/transaction";
+import { optWithdrawType } from "@/utils/enum";
 
 export default {
   name: "UserRealAuth",
@@ -47,7 +59,11 @@ export default {
       list: [], //表格数据
     };
   },
-  created() { },
+  computed: {
+    compType() {
+      return (val) => optWithdrawType.find(item => item.value === val)?.label;
+    },
+  },
   methods: {
     //搜索
     search() {
@@ -61,7 +77,9 @@ export default {
     //获取列表
     async List() {
       this.params.descs = "a.update_time";
-      const data = await UserRealAuthPage222444(this.params);
+      const userId = JSON.parse(localStorage.getItem("UserInfo")).userId
+      // this.params.merchantUserId = userId;
+      const data = await withdrawOrder_list(this.params);
       this.total = data.total;
       this.list = data.records;
     },

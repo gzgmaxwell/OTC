@@ -1,17 +1,17 @@
 import request from "@p/request";
-const url = "/userRealAuth";
+const url = "/withdrawOrder";
 
 //用户实名认证分页
-export const UserRealAuthPage222444 = params =>
+export const withdrawOrder_list = params =>
   request({
     method: "get",
-    url: url + "/page",
+    url: url + "/list",
     params
   });
 
-export const UserRealAuthUpdate566 = data =>
+export const withdrawOrder_createWithdraw = data =>
   request({
     method: "post",
-    url: url + "/put/" + data.id,
+    url: url + "/createWithdraw",
     data
   });

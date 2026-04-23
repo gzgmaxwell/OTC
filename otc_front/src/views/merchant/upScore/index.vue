@@ -20,7 +20,8 @@
           @keyup.enter.native="search" />
         <el-date-picker style="width: 50%; margin-left: 10px;" @change="selectTime" v-model="value2"
           type="datetimerange" :picker-options="pickerOptions" value-format="yyyy-MM-dd HH:mm:ss" range-separator="-"
-          start-placeholder="开始日期" end-placeholder="结束日期" align="right" />
+          start-placeholder="开始日期" end-placeholder="结束日期" align="right"
+          :default-time="['00:00:00', '23:59:59']" />
 
         <el-button type="primary" icon="el-icon-search" @click="search">
           搜索
@@ -138,11 +139,18 @@ export default {
     },
   },
   methods: {
+    normalizeEndTime(endTime) {
+      if (typeof endTime !== "string") return endTime;
+      if (/^\d{4}-\d{2}-\d{2}$/.test(endTime)) return `${endTime} 23:59:59`;
+      if (/^\d{4}-\d{2}-\d{2}\s+00:00:00$/.test(endTime)) {
+        return endTime.replace("00:00:00", "23:59:59");
+      }
+      return endTime;
+    },
     selectTime(val) {
-      console.log(val);
       if (val) {
         this.params.startTime = val[0];
-        this.params.endTime = val[1];
+        this.params.endTime = this.normalizeEndTime(val[1]);
       }
     },
     //搜索

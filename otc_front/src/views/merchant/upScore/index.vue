@@ -64,7 +64,7 @@
             <el-button size="mini" @click="edit(scope.row)">查看</el-button>
             <el-button size="mini" type="danger" @click="Delete(scope.row)">删除</el-button>
           </template>
-</el-table-column> -->
+        </el-table-column> -->
       </el-table>
     </div>
     <el-pagination background @size-change="sizeChange" @current-change="changePage" :current-page="params.current"
@@ -139,6 +139,7 @@ export default {
   },
   methods: {
     selectTime(val) {
+      console.log(val);
       if (val) {
         this.params.startTime = val[0];
         this.params.endTime = val[1];

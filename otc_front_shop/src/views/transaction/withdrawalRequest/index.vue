@@ -78,7 +78,7 @@ export default {
     async List() {
       this.params.descs = "a.update_time";
       const userId = JSON.parse(localStorage.getItem("UserInfo")).userId
-      // this.params.merchantUserId = userId;
+      this.params.merchantUserId = userId;
       const data = await withdrawOrder_list(this.params);
       this.total = data.total;
       this.list = data.records;

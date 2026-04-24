@@ -14,3 +14,10 @@ export const operation_create = (data) =>
     url: url + "/operation/create",
     data
   });
+
+export const operation_userInfos = params =>
+  request({
+    method: "get",
+    url: url + "/operation/userInfos",
+    params
+  });

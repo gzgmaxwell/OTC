@@ -14,14 +14,18 @@
     <div class="edit_content">
       <el-form class="u_form" :model="formValidate" :rules="rules" ref="formValidate" label-width="120px">
         <el-form-item label="用户id" prop="userId">
-          <el-input v-model="formValidate.userId"></el-input>
+          <el-select v-model="formValidate.userId" filterable remote reserve-keyword placeholder="请输入关键词"
+            style="width: 100%;" @change="changeUserId" :loading="loading">
+            <el-option v-for="item, index in options" :key="index" :label="`${item.nickName}--${item.userId}`"
+              :value="item.userId" />
+          </el-select>
         </el-form-item>
         <el-form-item :label="compcChecked()" prop="money">
           <el-input v-model="formValidate.money"
             oninput="value=value.replace(/[^\d.]/g,'').replace(/(\..*)\./g,'$1')"></el-input>
         </el-form-item>
         <el-form-item label="余额" prop="balance">
-          <el-input v-model="formValidate.balance"></el-input>
+          <el-input v-model="formValidate.balance" disabled></el-input>
         </el-form-item>
         <el-form-item label="账户类型" prop="type">
           <el-select style="width: 100%;" v-model="formValidate.type" placeholder="请选择账户类型" clearable>
@@ -38,7 +42,7 @@
   </div>
 </template>
 <script>
-import { operation_create } from "@a/finance";
+import { operation_create, operation_page, operation_userInfos } from "@a/finance";
 import { optAccountType, optOperationType, enum_OperationType } from "@/utils/enum";
 
 export default {
@@ -47,6 +51,8 @@ export default {
   data() {
     return {
       id: "",
+      options: [],
+      loading: false,
       optAccountType: optAccountType,
       optOperationType,
       formValidate: {
@@ -85,6 +91,25 @@ export default {
     },
   },
   methods: {
+    changeUserId(val) {
+      const balance = this.options.find(v => v.userId === val).balance
+      this.formValidate.balance = balance
+    },
+    remoteMethod(query) {
+      if (query !== '') {
+        this.loading = true;
+        operation_userInfos({
+          size: 10,
+          current: 1,
+          query: query,
+        }).then(res => {
+          this.loading = false;
+          this.options = res.records
+        })
+      } else {
+        this.options = [];
+      }
+    },
     getInfo(id) {
       // this.formValidate.remark = this.$route.query.remark 
     },
@@ -120,6 +145,11 @@ export default {
     }
   },
   mounted() {
+    operation_userInfos().then(res => {
+      console.log(333, res);
+      this.loading = false;
+      this.options = res
+    })
     this.id = this.$route.query.id;
     if (this.id) {
       this.getInfo(this.id);

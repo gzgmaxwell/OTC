@@ -13,8 +13,8 @@
           搜索
         </el-button>
         <el-button icon="el-icon-refresh" @click="reset">重置</el-button>
-        <el-button type="primary" @click="newEditAdd()"> 加钱</el-button>
-        <el-button type="primary" @click="newEditSub()"> 扣款</el-button>
+        <el-button type="primary" @click="newEditAdd()"> 手动加款</el-button>
+        <el-button type="primary" @click="newEditSub()"> 手动扣款</el-button>
       </div>
     </div>
 

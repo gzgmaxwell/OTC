@@ -28,11 +28,11 @@
               :value="item.value"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="汇率" prop="exchangeRate">
+        <el-form-item label="手续费" prop="exchangeRate">
           <el-input v-model="formValidate.exchangeRate" disabled></el-input>
         </el-form-item>
-        <el-form-item label="货币数量" prop="quantity">
-          <el-input v-model="formValidate.quantity" :disabled="disabled"></el-input>
+        <el-form-item label="货币数量" prop="quantity" disabled>
+          <el-input v-model="formValidate.quantity"></el-input>
         </el-form-item>
         <el-form-item label="币种名称" prop="cashName">
           <el-input v-model="formValidate.cashName"></el-input>
@@ -72,7 +72,7 @@ export default {
         account: undefined,
         info: undefined,
         quantity: undefined,
-        exchangeRate: 1
+        exchangeRate: 0
       },
       rules: {
         accountAddress: [{ required: true, message: "请输入账户", trigger: "change" }],
@@ -88,30 +88,32 @@ export default {
     };
   },
   methods: {
-    changeMoney() {
-      if (enum_withdrawType.usdt === this.formValidate.type && this.formValidate.exchangeRate) {
-        this.formValidate.quantity = Number(this.formValidate.money) / Number(this.formValidate.exchangeRate);
-      }
+    changeMoney(val) {
+      this.formValidate.quantity = val;
+      // if (enum_withdrawType.usdt === this.formValidate.type && this.formValidate.exchangeRate) {
+      //   this.formValidate.quantity = Number(this.formValidate.money) / Number(this.formValidate.exchangeRate);
+      // }
     },
     changeType(value) {
-      this.formValidate.type = value;
-      if (enum_withdrawType.usdt === value) {
-        this.disabled = true;
-        const userName = JSON.parse(localStorage.getItem("UserInfo")).userName
-        config_queryCode({
-          codeName: "exchange_rate",
-          userName: userName
-        }).then(res => {
-          const exchangeRate = res.value1;
-          this.formValidate.exchangeRate = exchangeRate;
-          if (this.formValidate.money) {
-            this.formValidate.quantity = Number(this.formValidate.money) / Number(this.formValidate.exchangeRate);
-          }
-        });
-      } else {
-        this.formValidate.exchangeRate = 1;
-        this.disabled = false;
-      }
+      // this.formValidate.type = value;
+      // if (enum_withdrawType.usdt === value) {
+      //   this.disabled = true;
+      //   const userName = JSON.parse(localStorage.getItem("UserInfo")).userName
+      //   config_queryCode({
+      //     codeName: "exchange_rate",
+      //     userName: userName
+      //   }).then(res => {
+      //     const exchangeRate = res.value1;
+      //     this.formValidate.exchangeRate = exchangeRate;
+      //     if (this.formValidate.money) {
+      //       this.formValidate.quantity = Number(this.formValidate.money) / Number(this.formValidate.exchangeRate);
+      //     }
+      //   });
+      // } else {
+      //   this.formValidate.exchangeRate = 0;
+      //   this.formValidate.quantity = undefined;
+      //   this.disabled = false;
+      // }
     },
     //获取列表详情接口
     getInfo() {

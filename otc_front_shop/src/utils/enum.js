@@ -52,3 +52,29 @@ export const optWithdrawType = [
     label: "数字人民币"
   }
 ];
+
+
+export const enum_orderStatus = {
+  checking: "0",
+  paying: "1",
+  success: "3",
+  fail: "2"
+}
+export const optOrderStatus = [
+  {
+    value: enum_orderStatus.checking,
+    label: "待审核"
+  },
+  {
+    value: enum_orderStatus.paying,
+    label: "打款中"
+  },
+  {
+    value: enum_orderStatus.success,
+    label: "已完成"
+  },
+  {
+    value: enum_orderStatus.fail,
+    label: "已拒绝"
+  },
+];

@@ -178,3 +178,34 @@ export const optOrderStatus = [
   },
 ];
 
+
+export const enum_accountType = {
+  GD: "1",
+  USDT: "2",
+  TRX: "3",
+  ACCU: "4",
+  KUANG: "5",
+}
+export const optAccountType = [
+  {
+    value: enum_accountType.GD,
+    label: "GD币"
+  },
+  {
+    value: enum_accountType.USDT,
+    label: "泰达币"
+  },
+  {
+    value: enum_accountType.TRX,
+    label: "波场"
+  },
+  {
+    value: enum_accountType.ACUU,
+    label: "积分"
+  },
+  {
+    value: enum_accountType.KUANG,
+    label: "矿工币"
+  }
+];
+

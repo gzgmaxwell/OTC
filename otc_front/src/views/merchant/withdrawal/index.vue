@@ -55,7 +55,11 @@
         <el-table-column prop="info" label="提现信息"></el-table-column>
         <el-table-column prop="quantity" label="货币数量"></el-table-column>
         <el-table-column prop="exchangeRate" label="汇率"></el-table-column>
-        <el-table-column prop="paymentVoucher" label="付款凭证"></el-table-column>
+        <el-table-column prop="paymentVoucher" label="付款凭证">
+          <template slot-scope="scope">
+            <el-image :src="scope.row.paymentVoucher" fit="fill" :preview-src-list="[scope.row.paymentVoucher]" />
+          </template>
+        </el-table-column>
         <el-table-column label="操作" width="200" fixed="right">
           <template slot-scope="scope">
             <el-button type="primary" size="mini" @click="edit(scope.row)"

@@ -1,16 +1,16 @@
 import request from "@p/request";
-const url = "/merchant";
+const url = "/account";
 
 //转账记录分页
-export const xiafen_list = params =>
+export const operation_page = params =>
   request({
     method: "get",
-    url: url + "/xiafen/list",
+    url: url + "/operation/page",
     params
   });
-export const merchant_addOrUpdate = (data) =>
+export const operation_create = (data) =>
   request({
     method: "post",
-    url: url + "/addOrUpdate",
+    url: url + "/operation/create",
     data
   });

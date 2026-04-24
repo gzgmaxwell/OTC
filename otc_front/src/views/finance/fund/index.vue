@@ -3,10 +3,8 @@
     <div class="top_wrapper">
       <div class="search_box">
         <el-input placeholder="商户ID" v-model="params.userId" style="width: 30%; " @keyup.enter.native="search" />
-        <el-input placeholder="商户账号" v-model="params.merchantUserName" style="width: 30%;margin-left: 10px; "
-          @keyup.enter.native="search" />
-        <el-select v-model="params.orderModel" style="width: 30%;margin-left: 5px;" placeholder="下单模式">
-          <el-option v-for="(item, index) in optOrderModel" :key="index" :label="item.label"
+        <el-select v-model="params.type" style="width: 30%;margin-left: 5px;" placeholder="账户类型">
+          <el-option v-for="(item, index) in optAccountType" :key="index" :label="item.label" clearable
             :value="item.value"></el-option>
         </el-select>
         <el-date-picker style="width: 50%; margin-left: 10px;" @change="selectTime" v-model="value2"
@@ -25,11 +23,12 @@
 
     <div class="table_wrapper">
       <el-table ref="multipleTable" :data="list" border height="100%" stripe style="width: 100%">
+        <el-table-column prop="userId" label="用户ID"></el-table-column>
         <el-table-column prop="money" label="金额"></el-table-column>
         <el-table-column prop="balance" label="余额"></el-table-column>
         <el-table-column label="账户类型">
           <template slot-scope="scope">
-            {{ compcChecked(scope.row.orderModel) }}
+            {{ compcChecked(scope.row.type) }}
           </template>
         </el-table-column>
         <el-table-column prop="walletAddress" label="钱包地址"></el-table-column>
@@ -48,15 +47,15 @@
 </template>
 
 <script>
-import { TransferRecordDelete, xiafen_list } from "@a/finance";
-import { optOrderModel } from "@/utils/enum";
+import { operation_page } from "@a/finance";
+import { optAccountType } from "@/utils/enum";
 
 export default {
   name: "TransferRecord",
   components: {},
   data() {
     return {
-      optOrderModel: optOrderModel,
+      optAccountType: optAccountType,
       value2: "",
       pickerOptions: {
         shortcuts: [
@@ -93,6 +92,7 @@ export default {
       params: {
         size: 10,
         current: 1,
+        type: undefined,
         startTime: null,
         endTime: null
       },
@@ -107,7 +107,7 @@ export default {
   },
   computed: {
     compcChecked() {
-      return (val) => optOrderModel.find(item => item.value === val)?.label;
+      return (val) => optAccountType.find(item => item.value == val)?.label;
     },
   },
   methods: {
@@ -153,9 +153,9 @@ export default {
     //获取列表
     async List() {
       this.params.descs = "a.update_time";
-      const data = await xiafen_list(this.params);
-      this.total = data.page.total;
-      this.list = data.page.records;
+      const data = await operation_page(this.params);
+      this.total = data.total;
+      this.list = data.records;
     },
     //每页多少条，切换显示条数
     sizeChange(val) {

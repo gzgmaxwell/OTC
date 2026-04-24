@@ -47,6 +47,7 @@ export default {
       },
       rules: {
         transDes: [{ required: false, message: "请输入交易描述", trigger: "blur" }],
+        paymentVoucher: [{ required: true, message: "请上传付款凭证", trigger: "change" }],
       }
     };
   },
@@ -71,6 +72,9 @@ export default {
 
     //保存
     save() {
+      if (!this.formValidate.paymentVoucher) {
+        return this.$message.error("请上传付款凭证");
+      }
       return this.$refs["formValidate"].validate().then(() => {
         return this.editData();
       });

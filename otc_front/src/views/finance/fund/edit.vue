@@ -13,6 +13,9 @@
     </div>
     <div class="edit_content">
       <el-form class="u_form" :model="formValidate" :rules="rules" ref="formValidate" label-width="100px">
+        <el-form-item label="用户id" prop="userId">
+          <el-input v-model="formValidate.userId"></el-input>
+        </el-form-item>
         <el-form-item label="金额" prop="money">
           <el-input v-model="formValidate.money"></el-input>
         </el-form-item>
@@ -24,16 +27,13 @@
             <el-option v-for="item in optWithdrawType" :key="item.value" :label="item.label" :value="item.value" />
           </el-select>
         </el-form-item>
-        <el-form-item label="钱包地址" prop="walletAddress">
-          <el-input v-model="formValidate.walletAddress"></el-input>
-        </el-form-item>
       </el-form>
     </div>
   </div>
 </template>
 <script>
-import { merchant_addOrUpdate } from "@a/merchant/receiveCard";
-import { optWithdrawType } from "@/utils/enum";
+import { operation_create } from "@a/finance";
+import { optAccountType } from "@/utils/enum";
 
 export default {
   name: "ConfigManageEdit",
@@ -41,21 +41,24 @@ export default {
   data() {
     return {
       id: "",
-      optWithdrawType: optWithdrawType,
+      optWithdrawType: optAccountType,
       formValidate: {
+        userId: undefined,// '2036101816762703874' || JSON.parse(localStorage.getItem("UserInfo"))?.userId,
         money: undefined,
         balance: undefined,
-        type: undefined,
-        walletAddress: undefined,
+        operationType: 1, //  0：加钱，1：扣款
       },
       rules: {
+        userId: [
+          { required: true, message: "请输入用户id", trigger: "blur" }
+        ],
         money: [
           { required: true, message: "请输入金额", trigger: "blur" }
         ],
         balance: [
           { required: true, message: "请输入余额", trigger: "blur" }
         ],
-        type: [
+        operationType: [
           { required: true, message: "请选择账户类型", trigger: "blur" }
         ],
         walletAddress: [
@@ -71,8 +74,8 @@ export default {
     },
     //编辑保存接口
     editData() {
-      merchant_addOrUpdate(this.formValidate).then(res => {
-        this.$message.success("操作成功");
+      operation_create(this.formValidate).then(res => {
+        this.$message.success("保存成功");
         this.resetForm();
         this.backTo();
       });

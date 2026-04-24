@@ -19,6 +19,11 @@
         <el-table-column prop="accountAddress" label="账户"></el-table-column>
         <el-table-column prop="money" label="金额"></el-table-column>
         <el-table-column prop="cashName" label="币种名称"></el-table-column>
+        <el-table-column label="审核状态">
+          <template slot-scope="scope">
+            {{ compStatus(scope.row.status) }}
+          </template>
+        </el-table-column>
         <el-table-column label="提现类型">
           <template slot-scope="scope">
             {{ compType(scope.row?.type) }}
@@ -28,7 +33,7 @@
         <el-table-column prop="account" label="提现账号"></el-table-column>
         <el-table-column prop="info" label="提现信息"></el-table-column>
         <el-table-column prop="quantity" label="货币数量"></el-table-column>
-        <el-table-column prop="exchangeRate" label="汇率"></el-table-column>
+        <el-table-column prop="exchangeRate" label="手续费"></el-table-column>
         <!-- <el-table-column label="操作" width="210">
           <template slot-scope="scope">
             <el-button size="mini" type="danger" @click="Delete(scope.row)">删除</el-button>
@@ -44,7 +49,7 @@
 
 <script>
 import { withdrawOrder_list } from "@a/transaction";
-import { optWithdrawType } from "@/utils/enum";
+import { optWithdrawType, optOrderStatus } from "@/utils/enum";
 
 export default {
   name: "UserRealAuth",
@@ -62,6 +67,9 @@ export default {
   computed: {
     compType() {
       return (val) => optWithdrawType.find(item => item.value === val)?.label;
+    },
+    compStatus() {
+      return (val) => optOrderStatus.find(item => item.value == val)?.label;
     },
   },
   methods: {

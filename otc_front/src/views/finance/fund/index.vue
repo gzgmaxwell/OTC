@@ -6,16 +6,9 @@
         <el-select v-model="params.type" style="width: 30%;margin-left: 5px;" placeholder="账户类型">
           <el-option v-for="(item, index) in optAccountType" :key="index" :label="item.label" :value="item.value" />
         </el-select>
-
-        <el-select v-model="params.status" style="width: 30%;margin-left: 5px;" placeholder="审核状态">
-          <el-option v-for="(item, index) in optOrderStatus" :key="index" :label="item.label"
-            :value="item.value"></el-option>
-        </el-select>
-
         <el-date-picker style="width: 50%; margin-left: 10px;" @change="selectTime" v-model="value2"
           type="datetimerange" :picker-options="pickerOptions" value-format="yyyy-MM-dd HH:mm:ss" range-separator="-"
           start-placeholder="开始日期" end-placeholder="结束日期" align="right" :default-time="['00:00:00', '23:59:59']" />
-
         <el-button type="primary" icon="el-icon-search" @click="search">
           搜索
         </el-button>
@@ -101,6 +94,7 @@ export default {
       params: {
         size: 10,
         current: 1,
+        type: '',
         startTime: null,
         endTime: null
       },
@@ -135,6 +129,7 @@ export default {
     },
     reset() {
       this.params = {};
+      this.params.type = '';
       this.value2 = "";
       this.search();
     },

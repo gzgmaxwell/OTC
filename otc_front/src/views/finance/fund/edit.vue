@@ -52,7 +52,7 @@ export default {
         userId: undefined,// '2036101816762703874' || JSON.parse(localStorage.getItem("UserInfo"))?.userId,
         money: undefined,
         balance: undefined,
-        type: undefined,
+        type: '',
         operationType: this.$route.query.operationType, //  0：加钱，1：扣款
       },
       rules: {

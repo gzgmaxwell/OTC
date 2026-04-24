@@ -2,26 +2,16 @@
   <div class="list_page">
     <div class="top_wrapper">
       <div class="search_box">
-        <el-input placeholder="商户ID" v-model="params.userId" style="width: 30%; " @keyup.enter.native="search" />
-        <el-input placeholder="商户账号" v-model="params.merchantUserName" style="width: 30%;margin-left: 10px; "
+        <el-input placeholder="用户id" v-model="params.userId" style="width: 30%; " @keyup.enter.native="search" />
+        <el-input placeholder="交易流水号" v-model="params.transNumber" style="width: 30%;margin-left: 10px; "
           @keyup.enter.native="search" />
-        <el-input placeholder="系统订单号" v-model="params.transNumber" style="width: 30%;margin-left: 10px; "
-          @keyup.enter.native="search" />
-        <el-input placeholder="商户会员名" v-model="params.nickName" style="width: 30%;margin-left: 10px; "
-          @keyup.enter.native="search" />
-        <!-- <el-input placeholder="提现时间" v-model="params.createTime" style="width: 30%;margin-left: 10px; "
-          @keyup.enter.native="search" /> -->
-        <el-select v-model="params.orderModel" style="width: 30%;margin-left: 5px;" placeholder="下单模式">
+        <!-- <el-select v-model="params.orderModel" style="width: 30%;margin-left: 5px;" placeholder="下单模式">
           <el-option v-for="(item, index) in optOrderModel" :key="index" :label="item.label"
             :value="item.value"></el-option>
-        </el-select>
-        <el-input placeholder="订单状态" v-model="params.orderStatus" style="width: 30%;margin-left: 10px; "
-          @keyup.enter.native="search" />
-        <el-input placeholder="提现模式" v-model="params.withdrawType" style="width: 30%;margin-left: 10px; "
-          @keyup.enter.native="search" />
-        <el-date-picker style="width: 50%; margin-left: 10px;" @change="selectTime" v-model="value2"
+        </el-select> -->
+        <!-- <el-date-picker style="width: 50%; margin-left: 10px;" @change="selectTime" v-model="value2"
           type="datetimerange" :picker-options="pickerOptions" value-format="yyyy-MM-dd HH:mm:ss" range-separator="-"
-          start-placeholder="开始日期" end-placeholder="结束日期" align="right" :default-time="['00:00:00', '23:59:59']" />
+          start-placeholder="开始日期" end-placeholder="结束日期" align="right" :default-time="['00:00:00', '23:59:59']" /> -->
 
         <el-button type="primary" icon="el-icon-search" @click="search">
           搜索
@@ -31,31 +21,23 @@
     </div>
 
     <div class="table_wrapper">
-      <div style="padding-bottom: 10px;">
-        下分总金额：{{ payTotalMoney }}
-      </div>
       <el-table ref="multipleTable" :data="list" border height="100%" stripe style="width: 100%">
-        <el-table-column prop="id" label="商户订单号"></el-table-column>
-        <el-table-column prop="merchantUserName" label="商户账号"></el-table-column>
-        <el-table-column prop="userId" label="商户ID"></el-table-column>
-        <el-table-column prop="transNumber" label="系统订单号"></el-table-column>
-        <el-table-column prop="withdrawType" label="提现类型"></el-table-column>
-        <el-table-column prop="nickName" label="商户会员名"></el-table-column>
-        <el-table-column prop="money" label="提款金额"></el-table-column>
-        <el-table-column prop="sucessCommitAmount" label="已成功金额"></el-table-column>
+        <el-table-column prop="transNumber" label="交易流水号"></el-table-column>
         <el-table-column prop="balance" label="交易后余额"></el-table-column>
-        <el-table-column prop="address" label="提款人钱包"></el-table-column>
-        <el-table-column prop="createTime" label="提现时间"></el-table-column>
-        <el-table-column prop="updateTime" label="更新时间"></el-table-column>
-        <el-table-column prop="createTime" label="完成时间"></el-table-column>
-        <el-table-column prop="orderStatus" label="订单状态"></el-table-column>
-        <el-table-column label="下单模式">
+        <el-table-column prop="userId" label="用户id"></el-table-column>
+        <el-table-column prop="nickName" label="用户名"></el-table-column>
+        <el-table-column prop="balance" label="交易后余额"></el-table-column>
+        <el-table-column prop="title" label="交易描述"></el-table-column>
+        <el-table-column prop="money" label="交易金额"></el-table-column>
+        <el-table-column prop="operator" label="操作人"></el-table-column>
+        <el-table-column prop="updateBy" label="操作人工号"></el-table-column>
+        <el-table-column prop="createTime" label="记录时间"></el-table-column>
+
+        <el-table-column label="交易类型">
           <template slot-scope="scope">
-            {{ compcChecked(scope.row.orderModel) }}
+            {{ compcChecked(scope.row.zdlx) }}
           </template>
         </el-table-column>
-        <!-- <el-table-column prop="payTotalMoney" label="下分总金额"></el-table-column> -->
-        <el-table-column prop="remarks" label="商户备注"></el-table-column>
         <!-- <el-table-column label="操作" width="200">
           <template slot-scope="scope">
             <el-button size="mini" @click="edit(scope.row)">查看</el-button>
@@ -71,8 +53,8 @@
 </template>
 
 <script>
-import { TransferRecordDelete, xiafen_list, } from "@a/merchant";
-import { optOrderModel } from "@/utils/enum";
+import { operation_fund_page } from "@a/finance";
+import { optOrderModel, optCominPayType } from "@/utils/enum";
 
 export default {
   name: "TransferRecord",
@@ -121,7 +103,6 @@ export default {
       },
       total: 0,
       list: [], //表格数据
-      payTotalMoney: undefined, //下分总Money
       selectedList: [], //批量删除的数组
       select: "",
       isShow: false,
@@ -131,7 +112,7 @@ export default {
   },
   computed: {
     compcChecked() {
-      return (val) => optOrderModel.find(item => item.value === val)?.label;
+      return (val) => optCominPayType.find(item => item.value === val)?.label;
     },
   },
   methods: {
@@ -177,10 +158,9 @@ export default {
     //获取列表
     async List() {
       this.params.descs = "a.update_time";
-      const data = await xiafen_list(this.params);
-      this.total = data.page.total;
-      this.list = data.page.records;
-      this.payTotalMoney = data.payTotalMoney;
+      const data = await operation_fund_page(this.params);
+      this.total = data.total;
+      this.list = data.records;
     },
     //每页多少条，切换显示条数
     sizeChange(val) {

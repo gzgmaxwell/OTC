@@ -17,7 +17,8 @@
           <el-input v-model="formValidate.userId"></el-input>
         </el-form-item>
         <el-form-item :label="compcChecked()" prop="money">
-          <el-input v-model="formValidate.money"></el-input>
+          <el-input v-model="formValidate.money"
+            oninput="value=value.replace(/[^\d.]/g,'').replace(/(\..*)\./g,'$1')"></el-input>
         </el-form-item>
         <el-form-item label="余额" prop="balance">
           <el-input v-model="formValidate.balance"></el-input>

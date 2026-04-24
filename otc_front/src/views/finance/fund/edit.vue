@@ -12,11 +12,11 @@
       </div>
     </div>
     <div class="edit_content">
-      <el-form class="u_form" :model="formValidate" :rules="rules" ref="formValidate" label-width="100px">
+      <el-form class="u_form" :model="formValidate" :rules="rules" ref="formValidate" label-width="120px">
         <el-form-item label="用户id" prop="userId">
           <el-input v-model="formValidate.userId"></el-input>
         </el-form-item>
-        <el-form-item label="金额" prop="money">
+        <el-form-item :label="compcChecked()" prop="money">
           <el-input v-model="formValidate.money"></el-input>
         </el-form-item>
         <el-form-item label="余额" prop="balance">
@@ -38,7 +38,7 @@
 </template>
 <script>
 import { operation_create } from "@a/finance";
-import { optAccountType, optOperationType } from "@/utils/enum";
+import { optAccountType, optOperationType, enum_OperationType } from "@/utils/enum";
 
 export default {
   name: "ConfigManageEdit",
@@ -77,6 +77,11 @@ export default {
       },
       dialogVisible: false
     };
+  },
+  computed: {
+    compcChecked() {
+      return () => enum_OperationType.add == this.$route.query.operationType ? "手动加款金额" : "手动扣款金额";
+    },
   },
   methods: {
     getInfo(id) {

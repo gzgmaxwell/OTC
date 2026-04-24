@@ -216,11 +216,11 @@ export const enum_OperationType = {
 export const optOperationType = [
   {
     value: enum_OperationType.add,
-    label: "加钱"
+    label: "手动加款"
   },
   {
     value: enum_OperationType.sub,
-    label: "扣款"
+    label: "手动扣款"
   }
 ];
 

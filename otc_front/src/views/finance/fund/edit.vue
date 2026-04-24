@@ -24,16 +24,21 @@
         </el-form-item>
         <el-form-item label="账户类型" prop="type">
           <el-select style="width: 100%;" v-model="formValidate.type" placeholder="请选择账户类型" clearable>
-            <el-option v-for="item in optWithdrawType" :key="item.value" :label="item.label" :value="item.value" />
+            <el-option v-for="item in optAccountType" :key="item.value" :label="item.label" :value="item.value" />
           </el-select>
         </el-form-item>
+        <!-- <el-form-item label="操作类型" prop="operationType">
+          <el-radio-group v-model="formValidate.ElFormItemoperationType">
+            <el-radio :label="item.value" :key="item.value" v-for="item in optOperationType">{{ item.label }}</el-radio>
+          </el-radio-group>
+        </el-form-item> -->
       </el-form>
     </div>
   </div>
 </template>
 <script>
 import { operation_create } from "@a/finance";
-import { optAccountType } from "@/utils/enum";
+import { optAccountType, optOperationType } from "@/utils/enum";
 
 export default {
   name: "ConfigManageEdit",
@@ -41,12 +46,14 @@ export default {
   data() {
     return {
       id: "",
-      optWithdrawType: optAccountType,
+      optAccountType: optAccountType,
+      optOperationType,
       formValidate: {
         userId: undefined,// '2036101816762703874' || JSON.parse(localStorage.getItem("UserInfo"))?.userId,
         money: undefined,
         balance: undefined,
-        operationType: 1, //  0：加钱，1：扣款
+        type: undefined,
+        operationType: this.$route.query.operationType, //  0：加钱，1：扣款
       },
       rules: {
         userId: [
@@ -58,8 +65,11 @@ export default {
         balance: [
           { required: true, message: "请输入余额", trigger: "blur" }
         ],
-        operationType: [
+        type: [
           { required: true, message: "请选择账户类型", trigger: "blur" }
+        ],
+        operationType: [
+          { required: true, message: "请选择操作类型", trigger: "blur" }
         ],
         walletAddress: [
           { required: true, message: "请输入钱包地址", trigger: "blur" }

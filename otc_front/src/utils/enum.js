@@ -189,7 +189,7 @@ export const enum_accountType = {
 export const optAccountType = [
   {
     value: enum_accountType.GD,
-    label: "GD币"
+    label: "FCB币"
   },
   {
     value: enum_accountType.USDT,
@@ -206,6 +206,21 @@ export const optAccountType = [
   {
     value: enum_accountType.KUANG,
     label: "矿工币"
+  }
+];
+
+export const enum_OperationType = {
+  add: "0",
+  sub: "1",
+}
+export const optOperationType = [
+  {
+    value: enum_OperationType.add,
+    label: "加钱"
+  },
+  {
+    value: enum_OperationType.sub,
+    label: "扣款"
   }
 ];
 

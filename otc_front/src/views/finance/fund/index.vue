@@ -4,9 +4,14 @@
       <div class="search_box">
         <el-input placeholder="商户ID" v-model="params.userId" style="width: 30%; " @keyup.enter.native="search" />
         <el-select v-model="params.type" style="width: 30%;margin-left: 5px;" placeholder="账户类型">
-          <el-option v-for="(item, index) in optAccountType" :key="index" :label="item.label" clearable
+          <el-option v-for="(item, index) in optAccountType" :key="index" :label="item.label" :value="item.value" />
+        </el-select>
+
+        <el-select v-model="params.status" style="width: 30%;margin-left: 5px;" placeholder="审核状态">
+          <el-option v-for="(item, index) in optOrderStatus" :key="index" :label="item.label"
             :value="item.value"></el-option>
         </el-select>
+
         <el-date-picker style="width: 50%; margin-left: 10px;" @change="selectTime" v-model="value2"
           type="datetimerange" :picker-options="pickerOptions" value-format="yyyy-MM-dd HH:mm:ss" range-separator="-"
           start-placeholder="开始日期" end-placeholder="结束日期" align="right" :default-time="['00:00:00', '23:59:59']" />
@@ -15,9 +20,8 @@
           搜索
         </el-button>
         <el-button icon="el-icon-refresh" @click="reset">重置</el-button>
-        <el-button type="primary" @click="newEdit()">
-          新增
-        </el-button>
+        <el-button type="primary" @click="newEditAdd()"> 加钱</el-button>
+        <el-button type="primary" @click="newEditSub()"> 扣款</el-button>
       </div>
     </div>
 
@@ -32,6 +36,11 @@
           </template>
         </el-table-column>
         <el-table-column prop="walletAddress" label="钱包地址"></el-table-column>
+        <el-table-column label="操作类型">
+          <template slot-scope="scope">
+            {{ compcOperationType(scope.row.operationType) }}
+          </template>
+        </el-table-column>
         <!-- <el-table-column label="操作" width="200">
           <template slot-scope="scope">
             <el-button size="mini" @click="edit(scope.row)">查看</el-button>
@@ -48,14 +57,14 @@
 
 <script>
 import { operation_page } from "@a/finance";
-import { optAccountType } from "@/utils/enum";
+import { optAccountType, optOperationType, enum_OperationType } from "@/utils/enum";
 
 export default {
   name: "TransferRecord",
   components: {},
   data() {
     return {
-      optAccountType: optAccountType,
+      optAccountType,
       value2: "",
       pickerOptions: {
         shortcuts: [
@@ -92,7 +101,6 @@ export default {
       params: {
         size: 10,
         current: 1,
-        type: undefined,
         startTime: null,
         endTime: null
       },
@@ -109,6 +117,9 @@ export default {
     compcChecked() {
       return (val) => optAccountType.find(item => item.value == val)?.label;
     },
+    compcOperationType() {
+      return (val) => optOperationType.find(item => item.value == val)?.label;
+    },
   },
   methods: {
     selectTime(val) {
@@ -120,21 +131,17 @@ export default {
     //搜索
     search() {
       this.params.current = 1;
-      //列表查询和搜索
       this.List();
     },
-    //重置
     reset() {
       this.params = {};
       this.value2 = "";
       this.search();
     },
-    //返回搜索
     back() {
       this.isShow = false;
     },
 
-    //批量删除
     totalDel(total) {
       this.$confirm("此操作将永久删除该数据, 是否继续?", "提示", {
         confirmButtonText: "确定",
@@ -150,24 +157,20 @@ export default {
         })
         .catch(() => { });
     },
-    //获取列表
     async List() {
       this.params.descs = "a.update_time";
       const data = await operation_page(this.params);
       this.total = data.total;
       this.list = data.records;
     },
-    //每页多少条，切换显示条数
     sizeChange(val) {
       this.params.size = val;
       this.List();
     },
-    //当前第几页，切换页码
     changePage(val) {
       this.params.current = val;
       this.List();
     },
-    //选择批量删除的数据
     selectChange(val) {
       this.selectedList = val;
     },
@@ -177,10 +180,20 @@ export default {
       this.$message.success("删除成功");
       this.search();
     },
-    //新增
-    newEdit() {
+    newEditAdd() {
       this.$router.push({
-        name: "FundEdit"
+        name: "FundEdit",
+        query: {
+          operationType: enum_OperationType.add
+        }
+      });
+    },
+    newEditSub() {
+      this.$router.push({
+        name: "FundEdit",
+        query: {
+          operationType: enum_OperationType.sub
+        }
       });
     },
     //编辑

@@ -31,8 +31,8 @@
         <el-form-item label="手续费" prop="exchangeRate">
           <el-input v-model="formValidate.exchangeRate" disabled></el-input>
         </el-form-item>
-        <el-form-item label="货币数量" prop="quantity" disabled>
-          <el-input v-model="formValidate.quantity"></el-input>
+        <el-form-item label="货币数量" prop="quantity">
+          <el-input v-model="formValidate.quantity" disabled></el-input>
         </el-form-item>
         <el-form-item label="币种名称" prop="cashName">
           <el-input v-model="formValidate.cashName"></el-input>

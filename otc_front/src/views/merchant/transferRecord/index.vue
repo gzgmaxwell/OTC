@@ -6,10 +6,9 @@
           @keyup.enter.native="search"></el-input>
         <el-input placeholder="流水单号" v-model="params.transNumber" style="width: 30%;margin-left: 10px; "
           @keyup.enter.native="search"></el-input>
-        <el-date-picker style="width: 50%; margin-left: 10px;" @change="selectTime" v-model="value2"
-          type="datetimerange" :picker-options="pickerOptions" value-format="yyyy-MM-dd HH:mm:ss" range-separator="至"
-          start-placeholder="开始日期" end-placeholder="结束日期" align="right">
-        </el-date-picker>
+       <el-date-picker style="width: 50%; margin-left: 10px;" @change="selectTime" v-model="value2"
+          type="datetimerange" :picker-options="pickerOptions" value-format="yyyy-MM-dd HH:mm:ss" range-separator="-"
+          start-placeholder="开始日期" end-placeholder="结束日期" align="right" :default-time="['00:00:00', '23:59:59']" />
 
         <el-button type="primary" icon="el-icon-search" @click="search">
           搜索

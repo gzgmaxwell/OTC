@@ -22,7 +22,8 @@
       <el-table ref="multipleTable" :data="list" border height="100%" stripe style="width: 100%">
         <el-table-column prop="userId" label="用户ID"></el-table-column>
         <el-table-column prop="money" label="金额"></el-table-column>
-        <el-table-column prop="balance" label="余额"></el-table-column>
+        <el-table-column prop="balance" label="发起者余额"></el-table-column>
+        <el-table-column prop="balance2" label="接收者余额"></el-table-column>
         <el-table-column label="账户类型">
           <template slot-scope="scope">
             {{ compcChecked(scope.row.type) }}

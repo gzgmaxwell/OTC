@@ -64,7 +64,7 @@
 </template>
 
 <script>
-import { BuyCoinsPage, BuyCoinsDelete, releaseOrder, BuyCoinsPage22222 } from "@a/transaction";
+import { BuyCoinsPage, BuyCoinsDelete, releaseOrder } from "@a/transaction";
 import { optOrderBuy } from "@/utils/enum";
 
 export default {
@@ -149,7 +149,6 @@ export default {
       this.params.current = 1;
       //列表查询和搜索
       this.List();
-      this.getSumMoney();
     },
     //重置
     reset() {
@@ -176,18 +175,13 @@ export default {
         })
         .catch(() => { });
     },
-    getSumMoney() {
-      BuyCoinsPage22222(this.params).then(res => {
-        this.money = res.records.length;
-      })
-    },
     //获取列表
     async List() {
       this.params.descs = "a.update_time";
       const data = await BuyCoinsPage(this.params);
-
-      this.total = data.total;
-      this.list = data.records;
+      this.money = data.totalAmount;
+      this.total = data.page.total;
+      this.list = data.page.records;
     },
     //每页多少条，切换显示条数
     sizeChange(val) {

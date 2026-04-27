@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import { SellCoinsPage, SellCoinsDelete, SellCoinsPage33333 } from "@a/transaction";
+import { SellCoinsPage, SellCoinsDelete } from "@a/transaction";
 import { optOrderSell } from "@/utils/enum";
 export default {
   name: "SellCoins",
@@ -150,18 +150,13 @@ export default {
         })
         .catch(() => { });
     },
-    getSumMoney() {
-      SellCoinsPage33333(this.params).then(res => {
-        this.money = res.records.length;
-      })
-    },
     //获取列表
     async List() {
       this.params.descs = "a.update_time";
       const data = await SellCoinsPage(this.params);
-
-      this.total = data.total;
-      this.list = data.records;
+      this.money = data.totalAmount;
+      this.total = data.page.total;
+      this.list = data.page.records;
     },
     //每页多少条，切换显示条数
     sizeChange(val) {

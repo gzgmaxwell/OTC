@@ -48,11 +48,3 @@ export const releaseOrder = id =>
     method: "post",
     url: url + "/release/" + id
   });
-
-
-export const BuyCoinsPage22222 = params =>
-  request({
-    method: "get",
-    url: url + "/page",
-    params
-  });

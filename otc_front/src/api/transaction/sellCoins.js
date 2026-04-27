@@ -42,11 +42,3 @@ export const SellCoinsDelete = data =>
     url: url + "/deletes",
     data
   });
-
-
-export const SellCoinsPage33333 = params =>
-  request({
-    method: "get",
-    url: url + "/page",
-    params
-  });

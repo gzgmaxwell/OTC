@@ -224,3 +224,57 @@ export const optOperationType = [
   }
 ];
 
+export const enum_order_buy = {
+  pending: "1", // 1：待付款
+  paid: "2", // 2：已付款
+  released: "3", // 3：已放行
+  cancelled: "4", // 4：已取消
+  payTimeout: "5" // 5：付款超时
+}
+export const optOrderBuy = [
+  {
+    value: enum_order_buy.pending,
+    label: "待付款"
+  },
+  {
+    value: enum_order_buy.paid,
+    label: "已付款"
+  },
+  {
+    value: enum_order_buy.released,
+    label: "已放行"
+  },
+  {
+    value: enum_order_buy.cancelled,
+    label: "已取消"
+  },
+  {
+    value: enum_order_buy.payTimeout,
+    label: "付款超时"
+  }
+];
+
+export const enum_order_sell = {
+  PendingOrder: "1", // 1：挂单中
+  Trading: "2", // 2：交易中
+  Completed: "3", // 3：交易完成
+  Cancelled: "4", // 4：已取消
+}
+export const optOrderSell = [
+  {
+    value: enum_order_sell.PendingOrder,
+    label: "挂单中"
+  },
+  {
+    value: enum_order_sell.Trading,
+    label: "交易中"
+  },
+  {
+    value: enum_order_sell.Completed,
+    label: "交易完成"
+  },
+  {
+    value: enum_order_sell.Cancelled,
+    label: "已取消"
+  },
+];

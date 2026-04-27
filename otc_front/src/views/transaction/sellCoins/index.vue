@@ -2,12 +2,15 @@
   <div class="list_page">
     <div class="top_wrapper">
       <div class="search_box">
-        <el-input
-          placeholder="挂单编号"
-          style="width: 30%;"
-          v-model="params.hangingOrderNumber"
-          @keyup.enter.native="search"
-        ></el-input>
+        <el-input placeholder="挂单编号" style="width: 30%;" v-model="params.hangingOrderNumber"
+          @keyup.enter.native="search"></el-input>
+        <el-select v-model="params.orderStatus" style="width: 30%;margin-left: 5px;" placeholder="订单状态"
+          @keyup.enter.native="search">
+          <el-option v-for="(item, index) in optOrderSell" :key="index" :label="item.label" :value="item.value" />
+        </el-select>
+        <el-date-picker style="width: 50%; margin-left: 10px;" @change="selectTime" v-model="value2"
+          type="datetimerange" :picker-options="pickerOptions" value-format="yyyy-MM-dd HH:mm:ss" range-separator="-"
+          start-placeholder="开始日期" end-placeholder="结束日期" align="right" :default-time="['00:00:00', '23:59:59']" />
 
         <el-button type="primary" icon="el-icon-search" @click="search">
           搜索
@@ -20,48 +23,22 @@
     </div>
 
     <div class="table_wrapper">
+      <div style="margin-bottom: 10px;">挂单金额总计：{{ money }}</div>
       <el-table ref="multipleTable" :data="list" border height="100%">
-        <el-table-column
-          prop="hangingOrderNumber"
-          label="挂单编号"
-        ></el-table-column>
-
-        <el-table-column
-          prop="sellerNickName"
-          label="卖家昵称"
-        ></el-table-column>
-
+        <el-table-column prop="hangingOrderNumber" label="挂单编号"></el-table-column>
+        <el-table-column prop="sellerNickName" label="卖家昵称"></el-table-column>
         <el-table-column prop="sellerHeader" label="卖家头像">
           <template slot-scope="scope">
-            <img
-              :src="scope.row.sellerHeader"
-              v-if="scope.row.sellerHeader"
-              style="width: 50px; height: 50px"
-            />
+            <img :src="scope.row.sellerHeader" v-if="scope.row.sellerHeader" style="width: 50px; height: 50px" />
           </template>
         </el-table-column>
-
         <el-table-column prop="money" label="金额"></el-table-column>
-
         <el-table-column prop="balance" label="余额"></el-table-column>
-
         <el-table-column prop="cfcfName" label="拆分方式"></el-table-column>
-
         <el-table-column prop="zdgm" label="最低购买"></el-table-column>
-
         <el-table-column prop="payTypeStr" label="付款方式"></el-table-column>
-
-        <el-table-column
-          prop="orderStatusName"
-          label="订单状态"
-        ></el-table-column>
-
-        <el-table-column
-          prop="updateTime"
-          label="更新时间"
-          width="160"
-        ></el-table-column>
-
+        <el-table-column prop="orderStatusName" label="订单状态"></el-table-column>
+        <el-table-column prop="updateTime" label="更新时间" width="160"></el-table-column>
         <el-table-column label="操作" width="210">
           <template slot-scope="scope">
             <el-button size="mini" @click="edit(scope.row)">查看</el-button>
@@ -71,22 +48,15 @@
         </el-table-column>
       </el-table>
     </div>
-    <el-pagination
-      background
-      @size-change="sizeChange"
-      @current-change="changePage"
-      :current-page="params.current"
-      :page-sizes="[10, 20, 30]"
-      :page-size="params.size"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="total"
-    ></el-pagination>
+    <el-pagination background @size-change="sizeChange" @current-change="changePage" :current-page="params.current"
+      :page-sizes="[10, 20, 30]" :page-size="params.size" layout="total, sizes, prev, pager, next, jumper"
+      :total="total"></el-pagination>
   </div>
 </template>
 
 <script>
-import { SellCoinsPage, SellCoinsDelete } from "@a/transaction";
-
+import { SellCoinsPage, SellCoinsDelete, SellCoinsPage33333 } from "@a/transaction";
+import { optOrderSell } from "@/utils/enum";
 export default {
   name: "SellCoins",
   components: {},
@@ -97,22 +67,63 @@ export default {
         size: 10,
         current: 1
       },
+      money: undefined,
       total: 0,
       list: [], //表格数据
       selectedList: [], //批量删除的数组
+      optOrderSell,
       select: "",
       isShow: false,
       showOperate: false,
-      fileList: []
+      fileList: [],
+      value2: "",
+      pickerOptions: {
+        shortcuts: [
+          {
+            text: "最近一周",
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit("pick", [start, end]);
+            }
+          },
+          {
+            text: "最近一个月",
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+              picker.$emit("pick", [start, end]);
+            }
+          },
+          {
+            text: "最近三个月",
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+              picker.$emit("pick", [start, end]);
+            }
+          }
+        ]
+      },
     };
   },
-  created() {},
+  created() { },
   methods: {
+    selectTime(val) {
+      if (val) {
+        this.params.startTime = val[0];
+        this.params.endTime = val[1];
+      }
+    },
     //搜索
     search() {
       this.params.current = 1;
       //列表查询和搜索
       this.List();
+      this.getSumMoney();
     },
     //重置
     reset() {
@@ -137,7 +148,12 @@ export default {
           });
           this.delData(totalArr);
         })
-        .catch(() => {});
+        .catch(() => { });
+    },
+    getSumMoney() {
+      SellCoinsPage33333(this.params).then(res => {
+        this.money = res.records.length;
+      })
     },
     //获取列表
     async List() {
@@ -202,7 +218,7 @@ export default {
           arr.push(row.id);
           this.delData(arr);
         })
-        .catch(() => {});
+        .catch(() => { });
     }
   },
   mounted() {

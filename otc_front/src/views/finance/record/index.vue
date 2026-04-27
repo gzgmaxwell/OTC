@@ -22,18 +22,21 @@
 
     <div class="table_wrapper">
       <el-table ref="multipleTable" :data="list" border height="100%" stripe style="width: 100%">
-        <el-table-column prop="transNumber" label="交易流水号"></el-table-column>
-        <el-table-column prop="balance" label="交易后余额"></el-table-column>
-        <el-table-column prop="userId" label="用户id"></el-table-column>
-        <el-table-column prop="nickName" label="用户名"></el-table-column>
-        <el-table-column prop="balance" label="交易后余额"></el-table-column>
+        <el-table-column prop="transNumber" label="交易流水号" width="110"></el-table-column>
+        <el-table-column prop="balance" label="转出人余额" width="110"></el-table-column>
+        <el-table-column prop="fromId" label="转出人用户id" width="110"></el-table-column>
+        <el-table-column prop="fromNickName" label="转出人"></el-table-column>
+        <!-- <el-table-column prop="userId" label="用户id"></el-table-column> -->
+        <!-- <el-table-column prop="nickName" label="用户名"></el-table-column> -->
+        <el-table-column prop="purposeId" label="接收人用户id" width="120"></el-table-column>
+        <el-table-column prop="balance2" label="接收人余额" width="100"></el-table-column>
+        <el-table-column prop="purposeNickName" label="接收人"></el-table-column>
         <el-table-column prop="title" label="交易描述"></el-table-column>
         <el-table-column prop="money" label="交易金额"></el-table-column>
         <el-table-column prop="operator" label="操作人"></el-table-column>
-        <el-table-column prop="updateBy" label="操作人工号"></el-table-column>
+        <el-table-column prop="updateBy" label="操作人工号" width="100"></el-table-column>
         <el-table-column prop="createTime" label="记录时间"></el-table-column>
-
-        <el-table-column label="交易类型">
+        <el-table-column label="交易类型" fixed="right" width="100">
           <template slot-scope="scope">
             {{ compcChecked(scope.row.zdlx) }}
           </template>

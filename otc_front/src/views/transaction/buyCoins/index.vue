@@ -2,11 +2,16 @@
   <div class="list_page">
     <div class="top_wrapper">
       <div class="search_box">
-        <el-input placeholder="买单编号" style="width: 30%;" v-model="params.orderNumber"
-          @keyup.enter.native="search"></el-input>
+        <el-input placeholder="买单编号" style="width: 30%;" v-model="params.orderNumber" @keyup.enter.native="search" />
         <el-input placeholder="卖单编号" style="width: 30%; margin-left: 5px;" v-model="params.hangingOrderNumber"
-          @keyup.enter.native="search"></el-input>
-
+          @keyup.enter.native="search" />
+        <el-select v-model="params.orderStatus" style="width: 30%;margin-left: 5px;" placeholder="订单状态"
+          @keyup.enter.native="search">
+          <el-option v-for="(item, index) in optOrderBuy" :key="index" :label="item.label" :value="item.value" />
+        </el-select>
+        <el-date-picker style="width: 50%; margin-left: 10px;" @change="selectTime" v-model="value2"
+          type="datetimerange" :picker-options="pickerOptions" value-format="yyyy-MM-dd HH:mm:ss" range-separator="-"
+          start-placeholder="开始日期" end-placeholder="结束日期" align="right" :default-time="['00:00:00', '23:59:59']" />
         <el-button type="primary" icon="el-icon-search" @click="search">
           搜索
         </el-button>
@@ -18,6 +23,7 @@
     </div>
 
     <div class="table_wrapper">
+      <div style="margin-bottom: 10px;">购买金额总计：{{ money }}</div>
       <el-table ref="multipleTable" :data="list" border height="100%">
         <el-table-column prop="orderNumber" label="买单编号"></el-table-column>
         <el-table-column prop="id" label="订单编号"></el-table-column>
@@ -58,7 +64,8 @@
 </template>
 
 <script>
-import { BuyCoinsPage, BuyCoinsDelete, releaseOrder } from "@a/transaction";
+import { BuyCoinsPage, BuyCoinsDelete, releaseOrder, BuyCoinsPage22222 } from "@a/transaction";
+import { optOrderBuy } from "@/utils/enum";
 
 export default {
   name: "BuyCoins",
@@ -70,17 +77,57 @@ export default {
         size: 10,
         current: 1
       },
+      money: undefined,
       total: 0,
       list: [], //表格数据
       selectedList: [], //批量删除的数组
+      optOrderBuy,
       select: "",
       isShow: false,
       showOperate: false,
-      fileList: []
+      fileList: [],
+      value2: "",
+      pickerOptions: {
+        shortcuts: [
+          {
+            text: "最近一周",
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit("pick", [start, end]);
+            }
+          },
+          {
+            text: "最近一个月",
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+              picker.$emit("pick", [start, end]);
+            }
+          },
+          {
+            text: "最近三个月",
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+              picker.$emit("pick", [start, end]);
+            }
+          }
+        ]
+      },
     };
   },
   created() { },
   methods: {
+    selectTime(val) {
+      if (val) {
+        this.params.startTime = val[0];
+        this.params.endTime = val[1];
+      }
+    },
     async releaseOrd(id) {
       await releaseOrder(id);
       this.$message.success("放行成功");
@@ -102,6 +149,7 @@ export default {
       this.params.current = 1;
       //列表查询和搜索
       this.List();
+      this.getSumMoney();
     },
     //重置
     reset() {
@@ -127,6 +175,11 @@ export default {
           this.delData(totalArr);
         })
         .catch(() => { });
+    },
+    getSumMoney() {
+      BuyCoinsPage22222(this.params).then(res => {
+        this.money = res.records.length;
+      })
     },
     //获取列表
     async List() {

@@ -2,9 +2,9 @@
   <div class="list_page">
     <div class="top_wrapper">
       <div class="search_box">
-        <el-input placeholder="商户名" v-model="params.merchantNickName" style="width: 30%; "
-          @keyup.enter.native="search"></el-input>
-        <el-input placeholder="流水单号" v-model="params.transNumber" style="width: 30%;margin-left: 10px; "
+        <!-- <el-input placeholder="商户名" v-model="params.merchantNickName" style="width: 30%; "
+          @keyup.enter.native="search"></el-input> -->
+        <el-input placeholder="流水单号" v-model="params.transNumber" style="width: 30%;"
           @keyup.enter.native="search"></el-input>
        <el-date-picker style="width: 50%; margin-left: 10px;" @change="selectTime" v-model="value2"
           type="datetimerange" :picker-options="pickerOptions" value-format="yyyy-MM-dd HH:mm:ss" range-separator="-"
@@ -95,7 +95,8 @@ export default {
         size: 10,
         current: 1,
         startTime: null,
-        endTime: null
+        endTime: null,
+        userId: JSON.parse(localStorage.getItem("UserInfo")).userId
       },
       total: 0,
       list: [], //表格数据

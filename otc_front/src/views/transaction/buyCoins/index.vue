@@ -5,7 +5,7 @@
         <el-input placeholder="买单编号" style="width: 30%;" v-model="params.orderNumber" @keyup.enter.native="search" />
         <el-input placeholder="卖单编号" style="width: 30%; margin-left: 5px;" v-model="params.hangingOrderNumber"
           @keyup.enter.native="search" />
-        <el-select v-model="params.orderStatus" style="width: 30%;margin-left: 5px;" placeholder="订单状态"
+        <el-select v-model="params.buyOrderStatus" style="width: 30%;margin-left: 5px;" placeholder="订单状态"
           @keyup.enter.native="search">
           <el-option v-for="(item, index) in optOrderBuy" :key="index" :label="item.label" :value="item.value" />
         </el-select>

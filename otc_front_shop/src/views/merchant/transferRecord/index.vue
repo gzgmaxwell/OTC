@@ -96,7 +96,6 @@ export default {
         current: 1,
         startTime: null,
         endTime: null,
-        userId: JSON.parse(localStorage.getItem("UserInfo")).userId
       },
       total: 0,
       list: [], //表格数据
@@ -222,6 +221,7 @@ export default {
     //获取列表
     async List() {
       this.params.descs = "a.update_time";
+      this.params.userId = JSON.parse(localStorage.getItem("UserInfo")).userId;
       const data = await shop_page(this.params);
 
       this.total = data.page.total;

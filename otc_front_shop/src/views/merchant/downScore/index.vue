@@ -5,8 +5,7 @@
         <!-- <el-input placeholder="商户ID" v-model="params.userId" style="width: 30%; " @keyup.enter.native="search" />
         <el-input placeholder="商户账号" v-model="params.merchantUserName" style="width: 30%;margin-left: 10px; "
           @keyup.enter.native="search" /> -->
-        <el-input placeholder="系统订单号" v-model="params.transNumber" style="width: 30%; "
-          @keyup.enter.native="search" />
+        <el-input placeholder="系统订单号" v-model="params.transNumber" style="width: 30%; " @keyup.enter.native="search" />
         <el-input placeholder="商户会员名" v-model="params.nickName" style="width: 30%;margin-left: 10px; "
           @keyup.enter.native="search" />
         <!-- <el-input placeholder="提现时间" v-model="params.createTime" style="width: 30%;margin-left: 10px; "
@@ -177,6 +176,7 @@ export default {
     //获取列表
     async List() {
       this.params.descs = "a.update_time";
+      this.params.userId = JSON.parse(localStorage.getItem("UserInfo")).userId;
       const data = await xiafen_list(this.params);
       this.total = data.page.total;
       this.list = data.page.records;

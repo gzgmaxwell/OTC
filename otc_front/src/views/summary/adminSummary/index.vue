@@ -47,7 +47,7 @@
     </div>
     <div class="table_wrapper" style="height: calc(100% - 300px);">
       <el-table ref="multipleTable" :data="res.dataList || []" border height="100%" stripe style="width: 100%;">
-        <el-table-column prop="nickName" label="码商名称"></el-table-column>
+        <el-table-column prop="nickName" label="账户名称"></el-table-column>
         <el-table-column prop="amountFirst" label="卖单金额"></el-table-column>
         <el-table-column prop="amountSecond" label="买单金额"></el-table-column>
         <el-table-column prop="amountThird" label="余额"></el-table-column>

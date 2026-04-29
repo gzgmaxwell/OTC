@@ -7,6 +7,9 @@
             {{ item.label }}
           </el-radio-button>
         </el-radio-group>
+        <el-date-picker size="small" style="width: 400px; margin-left: 10px;" @change="loadTotals" v-model="datetime"
+          type="datetimerange" :picker-options="pickerOptions" value-format="yyyy-MM-dd HH:mm:ss" range-separator="-"
+          start-placeholder="开始日期" end-placeholder="结束日期" align="right" :default-time="['00:00:00', '23:59:59']" />
       </div>
       <div class="summary_cards">
         <el-card class="summary_card">
@@ -59,7 +62,6 @@
 <script>
 import { TransferRecordPage, statistical_count } from "@a/summary";
 import { timeFilterOptions } from "@/utils/enum";
-import dayjs from "dayjs";
 export default {
   name: "TransferRecord",
   components: {},
@@ -76,65 +78,59 @@ export default {
       money: 0,
       timeFilter: "thisMonth",
       timeFilterOptions: timeFilterOptions,
-      inTotal: 0,
-      outTotal: 0,
-      res: {}
+      datetime: [],
+      res: {},
+      pickerOptions: {
+        shortcuts: [
+          {
+            text: "最近一周",
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit("pick", [start, end]);
+            }
+          },
+          {
+            text: "最近一个月",
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+              picker.$emit("pick", [start, end]);
+            }
+          },
+          {
+            text: "最近三个月",
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+              picker.$emit("pick", [start, end]);
+            }
+          }
+        ]
+      },
     };
   },
   methods: {
-    formatCurrency(value) {
-      if (typeof value !== "number") return "0.00";
-      return value.toFixed(2);
-    },
-    getRangeByFilter() {
-      const now = dayjs();
-      if (this.timeFilter === "today") {
-        return {
-          startTime: now.startOf("day").format("YYYY-MM-DD HH:mm:ss"),
-          endTime: now.endOf("day").format("YYYY-MM-DD HH:mm:ss")
-        };
-      }
-      if (this.timeFilter === "week") {
-        const d = now.day();
-        const offset = (d + 6) % 7;
-        const start = now.startOf("day").subtract(offset, "day");
-        const end = start.add(6, "day").endOf("day");
-        return {
-          startTime: start.format("YYYY-MM-DD HH:mm:ss"),
-          endTime: end.format("YYYY-MM-DD HH:mm:ss")
-        };
-      }
-      return {
-        startTime: now.startOf("month").format("YYYY-MM-DD HH:mm:ss"),
-        endTime: now.endOf("month").format("YYYY-MM-DD HH:mm:ss")
-      };
-    },
-    sumByDirection(records, dir) {
-      const key = dir === "in" ? "代收" : "代付";
-      return (records || [])
-        .filter(r => ((r.zdlxName || "") + "").indexOf(key) !== -1)
-        .reduce((s, r) => s + (Number(r.money) || 0), 0);
-    },
     async loadTotals() {
       const params = {
         queryUserKind: "3", // 1平台，2码商，3商户
         timeType: this.timeFilter // today,thisWeek,lastWeek,lastMonth,thisMonth
         // "userId": ''   //  用户Id  this.userInfo.userId
       };
-      try {
-        statistical_count(params).then(res => {
-          this.res = res || {};
-        });
-      } catch (e) {
-        this.inTotal = 0;
-        this.outTotal = 0;
+      if (this.datetime.length > 0) {
+        params.startTime = this.datetime[0];
+        params.endTime = this.datetime[1];
       }
+      statistical_count(params).then(res => {
+        this.res = res || {};
+      });
     },
     //搜索
     search() {
       this.params.current = 1;
-      //列表查询和搜索
-      this.List();
     },
     //重置
     reset() {

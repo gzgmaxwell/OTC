@@ -48,8 +48,8 @@
     <div class="table_wrapper" style="height: calc(100% - 300px);">
       <el-table ref="multipleTable" :data="res.dataList || []" border height="100%" stripe style="width: 100%;">
         <el-table-column prop="nickName" label="账户名称"></el-table-column>
-        <el-table-column prop="amountFirst" label="卖单金额"></el-table-column>
-        <el-table-column prop="amountSecond" label="买单金额"></el-table-column>
+        <el-table-column prop="amountFirst" label="买单金额"></el-table-column>
+        <el-table-column prop="amountSecond" label="卖单金额"></el-table-column>
         <el-table-column prop="amountThird" label="余额"></el-table-column>
         <!-- <el-table-column prop="amountThird" label="余额">
           <template slot-scope="scope">
@@ -124,16 +124,6 @@ export default {
     };
   },
   methods: {
-    formatCurrency(value) {
-      if (typeof value !== "number") return "0.00";
-      return value.toFixed(2);
-    },
-    sumByDirection(records, dir) {
-      const key = dir === "in" ? "代收" : "代付";
-      return (records || [])
-        .filter(r => ((r.zdlxName || "") + "").indexOf(key) !== -1)
-        .reduce((s, r) => s + (Number(r.money) || 0), 0);
-    },
     async loadTotals() {
       const params = {
         queryUserKind: "1", // 1平台，2码商，3商户
@@ -156,8 +146,6 @@ export default {
     //搜索
     search() {
       this.params.current = 1;
-      //列表查询和搜索
-      this.List();
     },
     //重置
     reset() {

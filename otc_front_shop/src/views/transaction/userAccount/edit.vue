@@ -20,7 +20,7 @@
         label-width="100px"
       >
         <el-form-item label="余额" prop="money">
-          <el-input v-model="formValidate.money"></el-input>
+          <el-input disabled v-model="formValidate.money"></el-input>
         </el-form-item>
 
         <el-form-item label="钱包地址" prop="walletAddress">

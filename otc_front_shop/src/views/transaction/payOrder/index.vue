@@ -105,8 +105,6 @@
 
 <script>
 import { TransferRecordDelete, TransferPayOrderShop } from "@a/transaction";
-import { nextTick } from "vue";
-
 import { QuerySelect } from "@a/system";
 
 export default {
@@ -253,6 +251,7 @@ export default {
     //获取列表
     async List() {
       this.params.descs = "a.update_time";
+      this.params.userId = JSON.parse(localStorage.getItem("UserInfo")).userId;
       // const data = await TransferRecordPage(this.params);
       const data = await TransferPayOrderShop(this.params);
 

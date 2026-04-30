@@ -9,9 +9,9 @@
           <el-option v-for="(item, index) in optOrderModel" :key="index" :label="item.label"
             :value="item.value"></el-option>
         </el-select> -->
-        <!-- <el-date-picker style="width: 50%; margin-left: 10px;" @change="selectTime" v-model="value2"
+        <el-date-picker style="width: 50%; margin-left: 10px;" @change="selectTime" v-model="value2"
           type="datetimerange" :picker-options="pickerOptions" value-format="yyyy-MM-dd HH:mm:ss" range-separator="-"
-          start-placeholder="开始日期" end-placeholder="结束日期" align="right" :default-time="['00:00:00', '23:59:59']" /> -->
+          start-placeholder="开始日期" end-placeholder="结束日期" align="right" :default-time="['00:00:00', '23:59:59']" />
 
         <el-button type="primary" icon="el-icon-search" @click="search">
           搜索

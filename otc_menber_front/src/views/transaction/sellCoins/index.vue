@@ -8,6 +8,11 @@
           @keyup.enter.native="search"></el-input>
         <el-input placeholder="金额" style="width: 30%; margin-left: 5px;" v-model="params.money"
           @keyup.enter.native="search"></el-input>
+
+        <el-date-picker style="width: 50%; margin-left: 10px;" @change="selectTime" v-model="value2"
+          type="datetimerange" :picker-options="pickerOptions" value-format="yyyy-MM-dd HH:mm:ss" range-separator="-"
+          start-placeholder="开始日期" end-placeholder="结束日期" align="right" :default-time="['00:00:00', '23:59:59']" />
+
         <el-button type="primary" icon="el-icon-search" @click="search">
           搜索
         </el-button>
@@ -20,6 +25,7 @@
     </div>
 
     <div class="table_wrapper">
+      <div style="margin-bottom: 10px;">挂单金额总计：{{ money }}</div>
       <el-table ref="multipleTable" :data="list" border height="100%">
         <el-table-column prop="hangingOrderNumber" label="挂单编号"></el-table-column>
 
@@ -80,11 +86,49 @@ export default {
       select: "",
       isShow: false,
       showOperate: false,
-      fileList: []
+      fileList: [],
+      value2: "",
+      pickerOptions: {
+        shortcuts: [
+          {
+            text: "最近一周",
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit("pick", [start, end]);
+            }
+          },
+          {
+            text: "最近一个月",
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+              picker.$emit("pick", [start, end]);
+            }
+          },
+          {
+            text: "最近三个月",
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+              picker.$emit("pick", [start, end]);
+            }
+          }
+        ]
+      },
     };
   },
   created() { },
   methods: {
+    selectTime(val) {
+      if (val) {
+        this.params.startTime = val[0];
+        this.params.endTime = val[1];
+      }
+    },
     //搜索
     search() {
       this.params.current = 1;
@@ -134,9 +178,9 @@ export default {
     async List() {
       this.params.descs = "a.update_time";
       const data = await SellCoinsPage(this.params);
-
-      this.total = data.total;
-      this.list = data.records;
+      this.money = data.totalAmount;
+      this.total = data.page.total;
+      this.list = data.page.records;
     },
     //每页多少条，切换显示条数
     sizeChange(val) {

@@ -21,7 +21,8 @@
         <el-table-column prop="title" label="标题"></el-table-column>
         <el-table-column prop="orderId" label="订单编号"></el-table-column>
         <el-table-column prop="orderStatusName" label="订单状态"></el-table-column>
-        <el-table-column label="操作">
+        <el-table-column prop="createTime" label="充值时间" width="160"></el-table-column>
+        <el-table-column label="操作" fixed="right">
           <template slot-scope="scope">
             <el-button size="mini" @click="edit(scope.row)">查看</el-button>
           </template>

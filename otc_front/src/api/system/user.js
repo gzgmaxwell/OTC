@@ -72,3 +72,9 @@ export const UserDelete = data =>
     url: url + "/deletes",
     data
   });
+export const userPayModify_resetPayPassword = data =>
+  request({
+    method: "post",
+    url: "/userPayModify/resetPayPassword",
+    data
+  });

@@ -31,7 +31,7 @@
         <el-table-column prop="updateTime" label="更新时间" show-overflow-tooltip></el-table-column>
 
         <!-- <el-table-column prop="lockStatusName" label="状态"></el-table-column> -->
-        <el-table-column prop="lockStatus" label="状态">
+        <el-table-column prop="lockStatus" label="状态" width="200">
           <template slot-scope="scope">
             <el-switch v-model="scope.row.lockStatus" active-color="#13ce66" inactive-color="#ff4949"
               @change="gxztChange(scope.row)" active-text="启用" inactive-text="禁用" active-value="1" inactive-value="2">
@@ -39,11 +39,13 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="操作" width="450">
+        <el-table-column label="操作" width="500" fixed="right">
           <template slot-scope="scope">
-            <el-button size="mini" @click="edit(scope.row)">查看</el-button>
+            <!-- <el-button size="mini" @click="edit(scope.row)">查看</el-button> -->
             <el-button size="mini" type="primary" @click="edit(scope.row)">编辑</el-button>
             <el-button size="mini" type="danger" @click="Delete(scope.row)">删除</el-button>
+            <el-button size="mini" type="primary" @click="resetPaymentPassword(scope.row)">重置支付密码</el-button>
+
 
             <el-button size="mini" @click="removeGgyzm(scope.row)">重置谷歌验证码</el-button>
             <el-button size="mini" type="primary" @click="editBlackUser(scope.row)">加入黑名单</el-button>
@@ -64,7 +66,8 @@ import {
   UserPage,
   UserDelete,
   UserLockStatus,
-  RemoveSecretKey
+  RemoveSecretKey,
+  userPayModify_resetPayPassword
 } from "@a/system";
 export default {
   name: "Admin",
@@ -167,6 +170,16 @@ export default {
         this.$message.success("删除成功");
         // this.params.current = 1;
         this.search();
+      });
+    },
+    resetPaymentPassword(row) {
+      this.$confirm("此操作将重置支付密码, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(async () => {
+        await userPayModify_resetPayPassword({ userId: row.userId});
+        this.$message.success("操作成功");
       });
     },
     //禁用

@@ -15,16 +15,37 @@
       <el-form class="u_form" :model="formValidate" :rules="rules" ref="formValidate" label-width="100px">
         <el-row :gutter="20" type="flex" class="row-bg" justify="center">
           <el-col :span="10">
+            <el-form-item label="用户id" prop="userId">
+              <el-select v-model="formValidate.userId" filterable remote reserve-keyword placeholder="请输入关键词"
+                style="width: 100%;" :loading="loading">
+                <el-option v-for="item, index in options" :key="index" :label="`${item.nickName}--${item.userId}`"
+                  :value="item.userId" />
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="10">
             <el-form-item label="费率名称" prop="feeName">
               <el-input v-model="formValidate.feeName" style="width: 100%;"></el-input>
             </el-form-item>
           </el-col>
+        </el-row>
+
+        <el-row :gutter="20" type="flex" class="row-bg" justify="center">
+
           <el-col :span="10">
             <el-form-item label="费率类型" prop="feeType">
               <el-select style="width: 100%;" :disabled="id ? true : false" v-model="formValidate.feeType"
-                placeholder="请选择类型" clearable>
-                <el-option v-for="item in optRateType" :key="item.value" :label="item.label"
-                  :value="item.value"></el-option>
+                @change="changeFeeType" placeholder="请选择类型" clearable>
+                <el-option v-for="item in optRateType" :key="item.value" :label="item.label" :value="item.value" />
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="10">
+            <el-form-item label="种 类" prop="category">
+              <el-select style="width: 100%;" v-model="formValidate.category" placeholder="请选择种类"
+                :disabled="id ? true : false" clearable>
+                <el-option v-for="item in compCategory(formValidate.feeType)" :key="item.value" :label="item.label"
+                  :value="item.value" />
               </el-select>
             </el-form-item>
           </el-col>
@@ -63,7 +84,8 @@
 </template>
 <script>
 import { fee_update, fee_add } from "@a/system";
-import { optRateType, optConfigCode, optRateSwitch } from "@/utils/enum";
+import { optRateType, optCategory, optCategorySix, optConfigCode, optRateSwitch, enum_rateType } from "@/utils/enum";
+import { operation_userInfos } from "@a/finance";
 
 export default {
   name: "ConfigManageEdit",
@@ -71,10 +93,15 @@ export default {
   data() {
     return {
       id: "",
+      loading: false,
+      options: [],
       optRateType,
+      optCategory,
       optConfigCode,
       optRateSwitch,
       formValidate: {
+        userId: null,
+        category: null,
         feeName: null,
         configCode: null,
         feeType: null,
@@ -82,6 +109,9 @@ export default {
         isEnable: null,
       },
       rules: {
+        category: [
+          { required: true, message: "请输入种类", trigger: "blur" }
+        ],
         feeName: [
           { required: true, message: "请输入费率名称", trigger: "blur" }
         ],
@@ -97,8 +127,18 @@ export default {
       dialogVisible: false
     };
   },
+  computed: {
+    compCategory() {
+      return (val) => val === enum_rateType.shouxu ? optCategorySix : optCategory;
+    },
+  },
   methods: {
+    changeFeeType() {
+      this.formValidate.category = '';
+    },
     getInfo(id) {
+      this.formValidate.userId = this.$route.query.userId;
+      this.formValidate.category = this.$route.query.category;
       this.formValidate.feeName = this.$route.query.feeName;
       this.formValidate.feeType = this.$route.query.feeType;
       this.formValidate.feeValue1 = this.$route.query.feeValue1;
@@ -147,6 +187,10 @@ export default {
     }
   },
   mounted() {
+    operation_userInfos().then(res => {
+      this.loading = false;
+      this.options = res
+    })
     this.id = this.$route.query.feeId;
     if (this.id) {
       this.getInfo(this.id);

@@ -19,7 +19,7 @@
           </div>
           <div class="summary_amount">¥ {{ res?.amount || 0 }}</div>
         </el-card>
-        <el-card class="summary_card">
+        <!-- <el-card class="summary_card">
           <div slot="header" class="clearfix">
             <span>买单金额</span>
           </div>
@@ -30,7 +30,7 @@
             <span>卖单金额</span>
           </div>
           <div class="summary_amount">¥ {{ res?.amountSell || 0 }}</div>
-        </el-card>
+        </el-card> -->
       </div>
     </div>
     <div class="top_wrapper">

@@ -27,7 +27,7 @@
 
     <div class="table_wrapper">
       <el-table ref="multipleTable" :data="list" border height="100%">
-        <el-table-column prop="feeName" label="费率名称"></el-table-column>
+        <el-table-column prop="userId" label="用户id"></el-table-column>
         <el-table-column prop="feeType" label="费率类型">
           <template slot-scope="scope">
             {{
@@ -36,6 +36,15 @@
             }}
           </template>
         </el-table-column>
+        <el-table-column prop="category" label="种 类">
+          <template slot-scope="scope">
+            {{
+              compCategory(scope.row)
+            }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="feeName" label="费率名称"></el-table-column>
+
         <el-table-column prop="isEnable" label="是否启用">
           <template slot-scope="scope">
             {{
@@ -65,7 +74,7 @@
 
 <script>
 import { fee_page, fee_deleteBatch } from "@a/system";
-import { optRateType, optConfigCode, optRateSwitch } from "@/utils/enum";
+import { optRateType, optConfigCode, optRateSwitch, optCategory, optCategorySix, enum_rateType } from "@/utils/enum";
 
 export default {
   name: "ConfigManage",
@@ -97,7 +106,24 @@ export default {
         map[String(i.value)] = i.label;
       });
       return map;
-    }
+    },
+    isCategory() {
+      const map = {};
+      (optCategory || []).forEach(i => {
+        map[String(i.value)] = i.label;
+      });
+      return map;
+    },
+    compCategory() {
+      // scope.row.feeType, scope.row.category
+      return (val) => {
+        if (val.feeType === enum_rateType.shouxu) {
+          return optCategorySix.find(item => item.value === val.category)?.label;
+        } else {
+          return optCategory.find(item => item.value === val.category)?.label || val.category;
+        }
+      }
+    },
   },
   methods: {
     //搜索

@@ -146,7 +146,6 @@ export default {
   },
   mounted() {
     operation_userInfos().then(res => {
-      console.log(333, res);
       this.loading = false;
       this.options = res
     })

@@ -23,18 +23,6 @@ export const timeFilterOptions = [
 ]
 
 
-
-export const optRateType = [
-  {
-    value: "001",
-    label: "手续费"
-  },
-  {
-    value: "002",
-    label: "佣金"
-  },
-];
-
 export const optRateSwitch = [
   {
     value: 1,
@@ -277,4 +265,79 @@ export const optOrderSell = [
     value: enum_order_sell.Cancelled,
     label: "已取消"
   },
+];
+
+
+
+export const enum_rateType = {
+  shouxu: "001", // 手续费
+  yongjin: "002", // 佣金
+}
+
+export const optRateType = [
+  {
+    value: enum_rateType.shouxu,
+    label: "手续费"
+  },
+  {
+    value: enum_rateType.yongjin,
+    label: "佣金"
+  },
+];
+
+export const enum_category = {
+  userCharge: "1", //1.用户充值：免费
+  userWithdrawl: "2", //  2.用户提现：免费
+  shopCharge: "3", // 3.商户充值：免费
+  shopWithdrawl: "4", //  4.商户提现：免费
+  shopEach: "5", // 5.商户互转：免费
+  userEach: "6", //  用户互转：2% (用户互转需要收取2%手续费，建议通过市场交易，还有返佣) 返佣（挂单的返佣）：
+  bank: "1", // 1.银行卡：0.2%
+  alipay: "2", // 2.支付宝：0.1%
+  wechat: "3", // 3.微信：0.1%
+}
+
+
+
+export const optCategory = [
+  {
+    value: enum_category.alipay,
+    label: "支付宝"
+  },
+  {
+    value: enum_category.wechat,
+    label: "微信"
+  },
+  {
+    value: enum_category.bank,
+    label: "银行卡"
+  }
+];
+
+
+export const optCategorySix = [
+  {
+    value: enum_category.userCharge,
+    label: "用户充值"
+  },
+  {
+    value: enum_category.userWithdrawl,
+    label: "用户提现"
+  },
+  {
+    value: enum_category.shopCharge,
+    label: "商户充值"
+  },
+  {
+    value: enum_category.shopWithdrawl,
+    label: "商户提现"
+  },
+  {
+    value: enum_category.shopEach,
+    label: "商户互转"
+  },
+  {
+    value: enum_category.userEach,
+    label: "用户互转"
+  }
 ];

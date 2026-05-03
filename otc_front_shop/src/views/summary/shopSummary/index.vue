@@ -15,9 +15,15 @@
       <div class="summary_cards">
         <el-card class="summary_card">
           <div slot="header" class="clearfix">
-            <span>充值总金额</span>
+            <span>充值金额</span>
           </div>
-          <div class="summary_amount">¥ {{ res?.amount || 0 }}</div>
+          <div class="summary_amount">¥ {{ res?.rechargeAmount || 0 }}</div>
+        </el-card>
+        <el-card class="summary_card">
+          <div slot="header" class="clearfix">
+            <span>转账金额</span>
+          </div>
+          <div class="summary_amount">¥ {{ res?.transferAmount || 0 }}</div>
         </el-card>
         <!-- <el-card class="summary_card">
           <div slot="header" class="clearfix">

@@ -15,6 +15,12 @@
       <div class="summary_cards">
         <el-card class="summary_card">
           <div slot="header" class="clearfix">
+            <span>总金额</span>
+          </div>
+          <div class="summary_amount">¥ {{ res?.amount || 0 }}</div>
+        </el-card>
+        <el-card class="summary_card">
+          <div slot="header" class="clearfix">
             <span>充值金额</span>
           </div>
           <div class="summary_amount">¥ {{ res?.rechargeAmount || 0 }}</div>
@@ -52,7 +58,9 @@
     <div class="table_wrapper" style="height: calc(100% - 300px);">
       <el-table ref="multipleTable" :data="res?.dataList || []" border height="100%" stripe style="width: 100%;">
         <el-table-column prop="nickName" label="商户名称"></el-table-column>
-        <el-table-column prop="amountFirst" label="充值金额"></el-table-column>
+        <el-table-column prop="amount" label="总金额"></el-table-column>
+        <el-table-column prop="rechargeAmount" label="充值金额"></el-table-column>
+        <el-table-column prop="transferAmount" label="转账金额"></el-table-column>
         <!-- <el-table-column label="操作" width="200">
           <template slot-scope="scope">
             <el-button size="mini" @click="edit(scope.row)">查看</el-button>

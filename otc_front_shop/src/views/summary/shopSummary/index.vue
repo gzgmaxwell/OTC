@@ -17,7 +17,7 @@
           <div slot="header" class="clearfix">
             <span>总金额</span>
           </div>
-          <div class="summary_amount">¥ {{ res?.amount || 0 }}</div>
+          <div class="summary_amount">¥ {{ res?.amountFirst || 0 }}</div>
         </el-card>
         <el-card class="summary_card">
           <div slot="header" class="clearfix">

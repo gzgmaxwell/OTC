@@ -46,11 +46,11 @@
         <el-table-column prop="orderStatusName" label="订单状态"></el-table-column>
         <el-table-column prop="updateTime" label="更新时间" width="160"></el-table-column>
 
-        <el-table-column label="操作" width="210">
+        <el-table-column label="操作" width="320" fixed="right">
           <template slot-scope="scope">
             <el-button size="mini" @click="edit(scope.row)">查看</el-button>
-            <!-- <el-button  size="mini" type="primary"  @click="edit(scope.row)" >编辑</el-button> -->
-            <!-- <el-button size="mini" type="danger" @click="Delete( scope.row)" >删除</el-button > -->
+            <el-button size="mini" type="primary" @click="addBlack(scope.row)">加入黑名单</el-button>
+            <el-button size="mini" type="danger" @click="Close(scope.row)">关闭</el-button>
             <el-button size="mini" type="primary" v-if="scope.row.orderStatus == 2 || scope.row.orderStatus == 5"
               @click="releaseBuyOrder(scope.row)">放行</el-button>
           </template>
@@ -64,7 +64,7 @@
 </template>
 
 <script>
-import { BuyCoinsPage, BuyCoinsDelete, releaseOrder } from "@a/transaction";
+import { BuyCoinsPage, BuyCoinsDelete, releaseOrder, buyCoins_close } from "@a/transaction";
 import { optOrderBuy } from "@/utils/enum";
 
 export default {
@@ -226,6 +226,12 @@ export default {
         }
       });
     },
+    addBlack(row) {
+      this.$router.push({
+        name: "BuyCoinsAddBlack",
+        query: row,
+      });
+    },
     //删除
     Delete(row) {
       this.$confirm("此操作将永久删除该数据, 是否继续?", "提示", {
@@ -239,8 +245,24 @@ export default {
           this.delData(arr);
         })
         .catch(() => { });
+    },
+    //删除
+    Close(row) {
+      this.$confirm("此操作将关闭订单, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          buyCoins_close({ id: row.id }).then(() => {
+            this.$message.success("关闭成功");
+            this.List();
+          });
+        })
+        .catch(() => { });
     }
   },
+
   mounted() {
     this.search();
   }

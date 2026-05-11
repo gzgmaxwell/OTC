@@ -48,3 +48,10 @@ export const releaseOrder = id =>
     method: "post",
     url: url + "/release/" + id
   });
+
+export const buyCoins_close = data =>
+  request({
+    method: "post",
+    url: url + "/close",
+    data
+  });

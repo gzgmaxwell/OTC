@@ -12,38 +12,19 @@
       </div>
     </div>
     <div class="edit_content">
-      <el-form
-        class="u_form"
-        :model="formValidate"
-        :rules="rules"
-        ref="formValidate"
-        label-width="100px"
-      >
+      <el-form class="u_form" :model="formValidate" :rules="rules" ref="formValidate" label-width="100px">
         <el-row :gutter="20" type="flex" class="row-bg" justify="center">
           <el-col :span="10">
             <el-form-item label="购买金额" prop="money">
-              <el-input
-                v-model="formValidate.money"
-                disabled
-                style="width: 100%;"
-              ></el-input>
+              <el-input v-model="formValidate.money" disabled style="width: 100%;"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="10">
             <el-form-item label="卖家订单" prop="orgOrderId">
-              <el-select
-                disabled
-                collapse-tags
-                v-model="formValidate.orgOrderId"
-                placeholder="请选择"
-                style="width: 100%;"
-              >
-                <el-option
-                  v-for="(item, index) in sellOrders"
-                  :key="index"
-                  :label="item.cfcfName + '   ' + item.balance"
-                  :value="item.id"
-                >
+              <el-select disabled collapse-tags v-model="formValidate.orgOrderId" placeholder="请选择"
+                style="width: 100%;">
+                <el-option v-for="(item, index) in sellOrders" :key="index"
+                  :label="item.cfcfName + '   ' + item.balance" :value="item.id">
                 </el-option>
               </el-select>
             </el-form-item>
@@ -53,19 +34,12 @@
         <el-row :gutter="20" type="flex" class="row-bg" justify="center">
           <el-col :span="10">
             <el-form-item label="买家昵称">
-              <span
-                v-html="formValidate.buyerNickName"
-                style="width: 100%;"
-              ></span>
+              <span v-html="formValidate.buyerNickName" style="width: 100%;"></span>
             </el-form-item>
           </el-col>
           <el-col :span="10">
             <el-form-item label="买家头像">
-              <img
-                :src="formValidate.buyerHeader"
-                v-if="formValidate.buyerHeader"
-                style="width: 100px; height: 80px"
-              />
+              <img :src="formValidate.buyerHeader" v-if="formValidate.buyerHeader" style="width: 100px; height: 80px" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -73,40 +47,43 @@
         <el-row :gutter="20" type="flex" class="row-bg" justify="center">
           <el-col :span="10">
             <el-form-item label="挂单编号">
-              <span
-                v-html="formValidate.hangingOrderNumber"
-                style="width: 100%;"
-              ></span>
+              <span v-html="formValidate.hangingOrderNumber" style="width: 100%;"></span>
             </el-form-item>
           </el-col>
           <el-col :span="10">
             <el-form-item label="卖家昵称">
-              <span
-                v-html="formValidate.sellerNickName"
-                style="width: 100%;"
-              ></span>
+              <span v-html="formValidate.sellerNickName" style="width: 100%;"></span>
             </el-form-item>
           </el-col>
         </el-row>
 
+
         <el-row :gutter="20" type="flex" class="row-bg" justify="center">
           <el-col :span="10">
             <el-form-item label="卖家头像">
-              <img
-                :src="formValidate.sellerHeader"
-                v-if="formValidate.sellerHeader"
-                style="width: 100px; height: 80px"
-              />
+              <img :src="formValidate.sellerHeader" v-if="formValidate.sellerHeader"
+                style="width: 100px; height: 80px" />
             </el-form-item>
           </el-col>
           <el-col :span="10">
             <el-form-item label="订单状态">
-              <span
-                v-html="formValidate.orderStatusName"
-                style="width: 100%;"
-              ></span>
+              <span v-html="formValidate.orderStatusName" style="width: 100%;"></span>
             </el-form-item>
           </el-col>
+        </el-row>
+        <el-row :gutter="20" type="flex" class="row-bg" justify="center">
+          <el-col :span="10">
+            <el-form-item label="买家付款凭证">
+              <el-image :src="formValidate.payAccount.zfbEwm || formValidate.voucherBuyPayedUrl" fit="fill"
+                :preview-src-list="[formValidate.payAccount.zfbEwm || formValidate.voucherBuyPayedUrl]" />
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="10">
+            <el-form-item label="">
+            </el-form-item>
+          </el-col>
+
         </el-row>
       </el-form>
     </div>

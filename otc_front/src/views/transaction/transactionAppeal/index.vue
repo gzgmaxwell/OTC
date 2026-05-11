@@ -2,30 +2,14 @@
   <div class="list_page">
     <div class="top_wrapper">
       <div class="search_box">
-        <el-input
-          placeholder="姓名"
-          style="width: 30%; "
-          v-model="params.fullName"
-          @keyup.enter.native="search"
-        ></el-input>
-        <el-input
-          placeholder="手机号"
-          style="width: 30%; margin-left: 5px;"
-          v-model="params.phoneNum"
-          @keyup.enter.native="search"
-        ></el-input>
-        <el-input
-          placeholder="身份证号"
-          style="width: 30%;margin-left: 5px;"
-          v-model="params.idNumber"
-          @keyup.enter.native="search"
-        ></el-input>
-        <el-input
-          placeholder="订单编号"
-          style="width: 30%;margin-left: 5px;"
-          v-model="params.orderNumber"
-          @keyup.enter.native="search"
-        ></el-input>
+        <el-input placeholder="姓名" style="width: 30%; " v-model="params.fullName"
+          @keyup.enter.native="search"></el-input>
+        <el-input placeholder="手机号" style="width: 30%; margin-left: 5px;" v-model="params.phoneNum"
+          @keyup.enter.native="search"></el-input>
+        <el-input placeholder="身份证号" style="width: 30%;margin-left: 5px;" v-model="params.idNumber"
+          @keyup.enter.native="search"></el-input>
+        <el-input placeholder="订单号" style="width: 30%;margin-left: 5px;" v-model="params.orderNumber"
+          @keyup.enter.native="search"></el-input>
 
         <el-button type="primary" icon="el-icon-search" @click="search">
           搜索
@@ -36,57 +20,36 @@
 
     <div class="table_wrapper">
       <el-table ref="multipleTable" :data="list" border height="100%">
-        <el-table-column
-          prop="appealStatusName"
-          label="申诉状态"
-        ></el-table-column>
+        <el-table-column prop="appealStatusName" label="申诉状态"></el-table-column>
 
         <el-table-column prop="appealTypeName" label="类型"></el-table-column>
 
         <el-table-column prop="pic" label="图片">
           <template slot-scope="scope">
-            <img
-              :src="scope.row.pic"
-              v-if="scope.row.pic"
-              style="width: 50px; height: 50px"
-            />
+            <img :src="scope.row.pic" v-if="scope.row.pic" style="width: 50px; height: 50px" />
           </template>
         </el-table-column>
-
-        <el-table-column prop="orderNumber" label="订单编号"></el-table-column>
-
+        <el-table-column prop="id" label="订单编号"></el-table-column>
+        <el-table-column prop="orderNumber" label="订单号"></el-table-column>
         <el-table-column prop="fullName" label="姓名"></el-table-column>
         <el-table-column prop="userName" label="用户帐号"></el-table-column>
         <el-table-column prop="phoneNum" label="手机号码"></el-table-column>
         <el-table-column prop="emailAddress" label="邮箱地址"></el-table-column>
 
-        <el-table-column
-          prop="updateTime"
-          label="更新时间"
-          width="160"
-        ></el-table-column>
+        <el-table-column prop="updateTime" label="更新时间" width="160"></el-table-column>
 
         <el-table-column label="操作" width="210">
           <template slot-scope="scope">
             <!-- <el-button size="mini" @click="edit(scope.row)">处理</el-button> -->
-            <el-button size="mini" type="primary" @click="edit(scope.row)"
-              >处理</el-button
-            >
+            <el-button size="mini" type="primary" @click="edit(scope.row)">处理</el-button>
             <!-- <el-button size="mini" type="danger" @click="Delete( scope.row)" >删除</el-button > -->
           </template>
         </el-table-column>
       </el-table>
     </div>
-    <el-pagination
-      background
-      @size-change="sizeChange"
-      @current-change="changePage"
-      :current-page="params.current"
-      :page-sizes="[10, 20, 30]"
-      :page-size="params.size"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="total"
-    ></el-pagination>
+    <el-pagination background @size-change="sizeChange" @current-change="changePage" :current-page="params.current"
+      :page-sizes="[10, 20, 30]" :page-size="params.size" layout="total, sizes, prev, pager, next, jumper"
+      :total="total"></el-pagination>
   </div>
 </template>
 
@@ -112,7 +75,7 @@ export default {
       fileList: []
     };
   },
-  created() {},
+  created() { },
   methods: {
     //搜索
     search() {
@@ -143,7 +106,7 @@ export default {
           });
           this.delData(totalArr);
         })
-        .catch(() => {});
+        .catch(() => { });
     },
     //获取列表
     async List() {
@@ -208,7 +171,7 @@ export default {
           arr.push(row.id);
           this.delData(arr);
         })
-        .catch(() => {});
+        .catch(() => { });
     }
   },
   mounted() {

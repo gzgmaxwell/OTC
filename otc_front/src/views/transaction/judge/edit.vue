@@ -74,14 +74,14 @@
         <el-row :gutter="20" type="flex" class="row-bg" justify="center">
           <el-col :span="10">
             <el-form-item label="买家付款凭证">
-              <el-image v-if="formValidate.voucherBuyPayedUrl" :src="formValidate.voucherBuyPayedUrl" fit="fill"
-                :preview-src-list="[formValidate.voucherBuyPayedUrl]" />
+              <el-image v-for="item, index in compcStr2Arr(formValidate.voucherBuyPayedUrl)" :key="index" :src="item"
+                fit="fill" :preview-src-list="[item]" />
             </el-form-item>
           </el-col>
           <el-col :span="10">
             <el-form-item label="卖家付款凭证">
-              <el-image v-if="formValidate.voucherSellerUnreceivedUrl" :src="formValidate.voucherSellerUnreceivedUrl" fit="fill"
-                :preview-src-list="[formValidate.voucherSellerUnreceivedUrl]" />
+              <el-image v-for="item, index in compcStr2Arr(formValidate.voucherSellerUnreceivedUrl)" :key="index" :src="item"
+                fit="fill" :preview-src-list="[item]" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -144,6 +144,11 @@ export default {
       otherType: "",
       sellOrders: []
     };
+  },
+  computed: {
+    compcStr2Arr() {
+      return (str) => str ? str.split(",") : [];
+    }
   },
   methods: {
     async getSellOrders() {

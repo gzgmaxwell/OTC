@@ -5,10 +5,10 @@
         <el-input placeholder="买单编号" style="width: 30%;" v-model="params.orderNumber" @keyup.enter.native="search" />
         <el-input placeholder="卖单编号" style="width: 30%; margin-left: 5px;" v-model="params.hangingOrderNumber"
           @keyup.enter.native="search" />
-        <el-select v-model="params.buyOrderStatus" style="width: 30%;margin-left: 5px;" placeholder="订单状态"
+        <!-- <el-select v-model="params.buyOrderStatus" style="width: 30%;margin-left: 5px;" placeholder="订单状态"
           @keyup.enter.native="search">
           <el-option v-for="(item, index) in optOrderBuy" :key="index" :label="item.label" :value="item.value" />
-        </el-select>
+        </el-select> -->
         <el-date-picker style="width: 50%; margin-left: 10px;" @change="selectTime" v-model="value2"
           type="datetimerange" :picker-options="pickerOptions" value-format="yyyy-MM-dd HH:mm:ss" range-separator="-"
           start-placeholder="开始日期" end-placeholder="结束日期" align="right" :default-time="['00:00:00', '23:59:59']" />
@@ -76,6 +76,7 @@ export default {
       params: {
         size: 10,
         current: 1,
+        buyOrderStatus:'6' // 待裁定
       },
       money: undefined,
       total: 0,
@@ -220,7 +221,7 @@ export default {
     //编辑
     edit(row) {
       this.$router.push({
-        name: "newBuyCoins",
+        name: "JudgeEdit",
         query: {
           id: row.id
         }
@@ -228,7 +229,7 @@ export default {
     },
     addBlack(row) {
       this.$router.push({
-        name: "BuyCoinsAddBlack",
+        name: "JudgeAddBlack",
         query: row,
       });
     },

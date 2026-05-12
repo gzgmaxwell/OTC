@@ -84,9 +84,7 @@ export default {
         limitResource
       });
       this.$message.success("保存成功");
-      this.$router.push({
-        name: "BuyCoins"
-      });
+      this.backTo();
     },
     //保存
     save() {
@@ -98,7 +96,7 @@ export default {
     //返回
     backTo() {
       this.$router.push({
-        name: "BuyCoins"
+        name: "Judge"
       });
     }
   }

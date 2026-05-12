@@ -74,16 +74,16 @@
         <el-row :gutter="20" type="flex" class="row-bg" justify="center">
           <el-col :span="10">
             <el-form-item label="买家付款凭证">
-              <el-image :src="formValidate.voucherBuyPayedUrl" fit="fill"
+              <el-image v-if="formValidate.voucherBuyPayedUrl" :src="formValidate.voucherBuyPayedUrl" fit="fill"
                 :preview-src-list="[formValidate.voucherBuyPayedUrl]" />
             </el-form-item>
           </el-col>
-
           <el-col :span="10">
-            <el-form-item label="">
+            <el-form-item label="卖家付款凭证">
+              <el-image v-if="formValidate.voucherSellerUnreceivedUrl" :src="formValidate.voucherSellerUnreceivedUrl" fit="fill"
+                :preview-src-list="[formValidate.voucherSellerUnreceivedUrl]" />
             </el-form-item>
           </el-col>
-
         </el-row>
       </el-form>
     </div>
@@ -185,7 +185,7 @@ export default {
     //返回
     backTo() {
       this.$router.push({
-        name: "BuyCoins"
+        name: "Judge"
       });
     }
   },

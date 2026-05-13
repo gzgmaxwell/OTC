@@ -8,6 +8,9 @@
         <!-- <ja-button type="primary" :click="save">
           保存
         </ja-button> -->
+        <el-button type="primary" @click="openBlackDialog">加入黑名单</el-button>
+        <el-button type="danger" @click="closeBuyOrder">关闭</el-button>
+        <el-button type="primary" v-if="canRelease" @click="releaseBuyOrder">放行</el-button>
         <el-button @click="backTo()">返回</el-button>
       </div>
     </div>
@@ -87,6 +90,8 @@
         </el-row>
       </el-form>
     </div>
+
+    <add-black :visible.sync="blackDialogVisible" :user-id="blackUserId" />
   </div>
 </template>
 <script>
@@ -94,12 +99,17 @@ import {
   BuyCoinsInfo,
   BuyCoinsSave,
   BuyCoinsUpdate,
-  SellCoinsList
+  SellCoinsList,
+  releaseOrder,
+  buyCoins_close
 } from "@a/transaction";
+import AddBlack from "./addBlack";
 
 export default {
   name: "Edit",
-  components: {},
+  components: {
+    AddBlack
+  },
   data() {
     return {
       id: "",
@@ -142,12 +152,20 @@ export default {
       },
       dialogVisible: false,
       otherType: "",
-      sellOrders: []
+      sellOrders: [],
+      blackDialogVisible: false
     };
   },
   computed: {
     compcStr2Arr() {
       return (str) => str ? str.split(",") : [];
+    },
+    canRelease() {
+      const orderStatus = Number(this.formValidate.orderStatus);
+      return [2, 5, 6].includes(orderStatus);
+    },
+    blackUserId() {
+      return this.formValidate.id || this.id;
     }
   },
   methods: {
@@ -162,29 +180,62 @@ export default {
 
       this.formValidate = data;
     },
+    openBlackDialog() {
+      this.blackDialogVisible = true;
+    },
+    async releaseOrd(id) {
+      await releaseOrder(id);
+      this.$message.success("放行成功");
+      this.getInfo(id);
+    },
+    async releaseBuyOrder() {
+      this.$confirm("此操作将放行订单, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.releaseOrd(this.formValidate.id || this.id);
+        })
+        .catch(() => { });
+    },
+    closeBuyOrder() {
+      this.$confirm("此操作将关闭订单, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          buyCoins_close({ id: this.formValidate.id || this.id }).then(() => {
+            this.$message.success("关闭成功");
+            this.getInfo(this.formValidate.id || this.id);
+          });
+        })
+        .catch(() => { });
+    },
     //新增保存接口
     async addData() {
-      const data = await BuyCoinsSave(this.formValidate);
+      await BuyCoinsSave(this.formValidate);
       this.$message.success("新增成功");
       this.resetForm();
       this.backTo();
     },
     //编辑保存接口
     async editData() {
-      const data = await BuyCoinsUpdate(this.formValidate);
+      await BuyCoinsUpdate(this.formValidate);
       this.$message.success("修改成功");
       this.resetForm();
       this.backTo();
     },
     //保存
-    save(formName) {
+    save() {
       return this.$refs["formValidate"].validate().then(() => {
         return this.id ? this.editData() : this.addData();
       });
     },
 
     //重置
-    resetForm(formName) {
+    resetForm() {
       this.formValidate = {};
     },
     //返回

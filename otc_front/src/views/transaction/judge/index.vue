@@ -48,10 +48,10 @@
 
         <el-table-column label="操作" width="320" fixed="right">
           <template slot-scope="scope">
-            <el-button size="mini" @click="edit(scope.row)">查看</el-button>
+            <el-button size="mini" @click="edit(scope.row)">裁定</el-button>
             <el-button size="mini" type="primary" @click="addBlack(scope.row)">加入黑名单</el-button>
             <el-button size="mini" type="danger" @click="Close(scope.row)">关闭</el-button>
-            <el-button size="mini" type="primary" v-if="scope.row.orderStatus == 2 || scope.row.orderStatus == 5"
+            <el-button size="mini" type="primary" v-if="scope.row.orderStatus == 2 || scope.row.orderStatus == 5 || scope.row.orderStatus == 6"
               @click="releaseBuyOrder(scope.row)">放行</el-button>
           </template>
         </el-table-column>

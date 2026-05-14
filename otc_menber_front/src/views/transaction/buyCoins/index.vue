@@ -28,7 +28,7 @@
 
     <div class="table_wrapper">
       <div style="margin-bottom: 10px;">购买金额总计：{{ money }}</div>
-      <el-table ref="multipleTable" :data="list" border height="100%">
+      <el-table ref="multipleTable" :data="list" border height="calc(100% - 30px)">
         <el-table-column prop="orderNumber" label="订单编号"></el-table-column>
 
         <el-table-column prop="buyerNickName" label="买家昵称"></el-table-column>

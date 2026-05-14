@@ -26,7 +26,7 @@
 
     <div class="table_wrapper">
       <div style="margin-bottom: 10px;">挂单金额总计：{{ money }}</div>
-      <el-table ref="multipleTable" :data="list" border height="100%">
+      <el-table ref="multipleTable" :data="list" border height="calc(100% - 30px)">
         <el-table-column prop="hangingOrderNumber" label="挂单编号"></el-table-column>
 
         <el-table-column prop="sellerNickName" label="卖家昵称"></el-table-column>
@@ -52,7 +52,7 @@
 
         <el-table-column prop="updateTime" label="更新时间" width="160"></el-table-column>
 
-        <el-table-column label="操作" width="210">
+        <el-table-column label="操作" width="210" fixed="right">
           <template slot-scope="scope">
             <el-button size="mini" @click="edit(scope.row)">查看</el-button>
             <el-button size="mini" type="danger" @click="cancel(scope.row)"

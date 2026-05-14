@@ -2,13 +2,15 @@
   <div class="edit_page">
     <div class="top_box">
       <div class="title">
-        {{ this.id ? "编辑信息" : "新增信息" }}
+        {{ this.id ? "查看信息" : "新增信息" }}
       </div>
       <div>
-        <el-button type="primary" @click="sssh('2')">已解决</el-button>
-
-        <el-button size="mini" type="danger" @click="sssh('3')">未解决</el-button>
-
+        <!-- <ja-button type="primary" :click="save">
+          保存
+        </ja-button> -->
+        <el-button type="primary" @click="openBlackDialog">加入黑名单</el-button>
+        <el-button type="danger" @click="closeBuyOrder">关闭</el-button>
+        <el-button type="primary" v-if="canRelease" @click="releaseBuyOrder">放行</el-button>
         <el-button @click="backTo()">返回</el-button>
       </div>
     </div>
@@ -16,15 +18,17 @@
       <el-form class="u_form" :model="formValidate" :rules="rules" ref="formValidate" label-width="100px">
         <el-row :gutter="20" type="flex" class="row-bg" justify="center">
           <el-col :span="10">
-            <el-form-item label="内容" prop="centent">
-              <el-input v-model="formValidate.centent" disabled style="width: 100%;"></el-input>
+            <el-form-item label="购买金额" prop="money">
+              <el-input v-model="formValidate.buyCoins.money" disabled style="width: 100%;"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="10">
-            <el-form-item label="类型" prop="appealType">
-              <el-select disabled v-model="formValidate.appealType" placeholder="请选择类型">
-                <el-option v-for="item in dics.appealType" :key="item.value" :label="item.label"
-                  :value="item.value"></el-option>
+            <el-form-item label="卖家订单" prop="orgOrderId">
+              <el-select disabled collapse-tags v-model="formValidate.buyCoins.orgOrderId" placeholder="请选择"
+                style="width: 100%;">
+                <el-option v-for="(item, index) in sellOrders" :key="index"
+                  :label="item.cfcfName + '   ' + item.balance" :value="item.id">
+                </el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -32,112 +36,206 @@
 
         <el-row :gutter="20" type="flex" class="row-bg" justify="center">
           <el-col :span="10">
-            <el-form-item label="图片" prop="pic">
-              <el-upload class="avatar-uploader" :action="upload_url" :show-file-list="false"
-                accept=".jpg, .jpeg, .JPG, .JPEG, .png" :on-success="handleSuccess">
-                <img v-if="formValidate.pic" :src="formValidate.pic" class="avatar" />
-                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-              </el-upload>
-              <div @click="() => { this.$refs.previewRef.open(); }" style="cursor: pointer;">预览</div>
+            <el-form-item label="买家昵称">
+              <span v-html="formValidate.buyCoins.buyerNickName" style="width: 100%;"></span>
             </el-form-item>
           </el-col>
           <el-col :span="10">
-            <el-form-item label="订单编号" prop="orderNumber">
-              <el-input v-model="formValidate.orderNumber" disabled style="width: 100%;"></el-input>
+            <el-form-item label="买家头像">
+              <img :src="formValidate.buyCoins.buyerHeader" v-if="formValidate.buyerHeader" style="width: 100px; height: 80px" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row :gutter="20" type="flex" class="row-bg" justify="center">
+          <el-col :span="10">
+            <el-form-item label="挂单编号">
+              <span v-html="formValidate.buyCoins.hangingOrderNumber" style="width: 100%;"></span>
+            </el-form-item>
+          </el-col>
+          <el-col :span="10">
+            <el-form-item label="卖家昵称">
+              <span v-html="formValidate.buyCoins.sellerNickName" style="width: 100%;"></span>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+
+        <el-row :gutter="20" type="flex" class="row-bg" justify="center">
+          <el-col :span="10">
+            <el-form-item label="卖家头像">
+              <img :src="formValidate.buyCoins.sellerHeader" v-if="formValidate.buyCoins.sellerHeader"
+                style="width: 100px; height: 80px" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="10">
+            <el-form-item label="订单状态">
+              <span v-html="formValidate.buyCoins.orderStatusName" style="width: 100%;"></span>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20" type="flex" class="row-bg" justify="center">
+          <el-col :span="10">
+            <el-form-item label="买家付款凭证">
+              <el-image v-for="item, index in compcStr2Arr(formValidate.buyCoins.voucherBuyPayedUrl)" :key="index" :src="item"
+                fit="fill" :preview-src-list="[item]" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="10">
+            <el-form-item label="卖家付款凭证">
+              <el-image v-for="item, index in compcStr2Arr(formValidate.buyCoins.voucherSellerUnreceivedUrl)" :key="index"
+                :src="item" fit="fill" :preview-src-list="[item]" />
             </el-form-item>
           </el-col>
         </el-row>
       </el-form>
-      <preview ref="previewRef" :previewUrl="formValidate.pic" width="40%" />
     </div>
+
+    <add-black :visible.sync="blackDialogVisible" :user-id="blackUserId" />
   </div>
 </template>
 <script>
 import {
-  TransactionAppealInfo,
-  TransactionAppealSave,
-  TransactionAppealUpdate
+  BuyCoinsInfo,
+  BuyCoinsSave,
+  BuyCoinsUpdate,
+  SellCoinsList,
+  releaseOrder,
+  buyCoins_close,
+  TransactionAppealInfo
 } from "@a/transaction";
+import AddBlack from "./addBlack";
 
 export default {
   name: "Edit",
-  components: {},
+  components: {
+    AddBlack
+  },
   data() {
     return {
       id: "",
       title: "",
       params: {},
       formValidate: {
-        centent: null,
-        appealType: null,
-        pic: null,
-        orderNumber: null,
-        userId: null,
+        buyerId: null,
+        money: null,
+        sellerId: null,
+        orgOrderId: null,
+        orderStatus: null,
         createBy: null,
         createTime: null,
-        isDelete: null,
         updateBy: null,
-        updateTime: null
+        updateTime: null,
+        isDelete: null
       },
       data: [],
       rules: {
-        centent: [{ required: true, message: "请输入内容", trigger: "blur" }],
-        appealType: [
-          { required: true, message: "请输入类型", trigger: "blur" }
+        buyerId: [
+          { required: true, message: "请输入买家id", trigger: "blur" },
+          { max: 50, message: "长度最多为50", trigger: "blur" }
         ],
-        pic: [{ required: true, message: "请输入图片", trigger: "blur" }],
-        orderNumber: [
-          { required: true, message: "请输入订单编号", trigger: "blur" }
+        money: [
+          { required: true, message: "请输入购买金额", trigger: "blur" },
+          { max: 50, message: "长度最多为50", trigger: "blur" }
         ],
-        userId: [{ required: true, message: "请输入用户id", trigger: "blur" }]
+        sellerId: [
+          { required: true, message: "请输入卖家id", trigger: "blur" },
+          { max: 50, message: "长度最多为50", trigger: "blur" }
+        ],
+        orgOrderId: [
+          { required: true, message: "请输入卖家订单id", trigger: "blur" },
+          { max: 50, message: "长度最多为50", trigger: "blur" }
+        ],
+        orderStatus: [
+          { required: true, message: "请输入订单状态", trigger: "blur" },
+          { max: 50, message: "长度最多为50", trigger: "blur" }
+        ]
       },
       dialogVisible: false,
-      otherType: ""
+      otherType: "",
+      sellOrders: [],
+      blackDialogVisible: false
     };
   },
-
-  methods: {
-    handleSuccess(res, file) {
-      this.formValidate.pic = res.url;
+  computed: {
+    compcStr2Arr() {
+      return (str) => str ? str.split(",") : [];
     },
+    canRelease() {
+      const orderStatus = Number(this.formValidate.orderStatus);
+      return [2, 5, 6].includes(orderStatus);
+    },
+    blackUserId() {
+      return this.formValidate.id || this.id;
+    }
+  },
+  methods: {
+    async getSellOrders() {
+      const data = await SellCoinsList();
+      this.sellOrders = data;
+    },
+
     //获取列表详情接口
     async getInfo(id) {
       const data = await TransactionAppealInfo(id);
-
       this.formValidate = data;
+    },
+    openBlackDialog() {
+      this.blackDialogVisible = true;
+    },
+    async releaseOrd(id) {
+      await releaseOrder(id);
+      this.$message.success("放行成功");
+      this.getInfo(id);
+    },
+    async releaseBuyOrder() {
+      this.$confirm("此操作将放行订单, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.releaseOrd(this.formValidate.id || this.id);
+        })
+        .catch(() => { });
+    },
+    closeBuyOrder() {
+      this.$confirm("此操作将关闭订单, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          buyCoins_close({ id: this.formValidate.id || this.id }).then(() => {
+            this.$message.success("关闭成功");
+            this.getInfo(this.formValidate.id || this.id);
+          });
+        })
+        .catch(() => { });
     },
     //新增保存接口
     async addData() {
-      const data = await TransactionAppealSave(this.formValidate);
+      await BuyCoinsSave(this.formValidate);
       this.$message.success("新增成功");
       this.resetForm();
       this.backTo();
     },
     //编辑保存接口
-    async sssh(appealStatus) {
-      var param = Object.assign({}, this.formValidate);
-      param.appealStatus = appealStatus;
-      const data = await TransactionAppealUpdate(param);
-      this.$message.success("提交成功");
-      this.resetForm();
-      this.backTo();
-    },
-    //编辑保存接口
     async editData() {
-      const data = await TransactionAppealUpdate(this.formValidate);
+      await BuyCoinsUpdate(this.formValidate);
       this.$message.success("修改成功");
       this.resetForm();
       this.backTo();
     },
     //保存
-    save(formName) {
+    save() {
       return this.$refs["formValidate"].validate().then(() => {
         return this.id ? this.editData() : this.addData();
       });
     },
 
     //重置
-    resetForm(formName) {
+    resetForm() {
       this.formValidate = {};
     },
     //返回
@@ -154,35 +252,7 @@ export default {
     if (this.id) {
       this.getInfo(this.id);
     }
+    this.getSellOrders();
   }
 };
 </script>
-
-<style>
-.avatar-uploader .el-upload {
-  border: 1px dashed #d9d9d9;
-  border-radius: 6px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-}
-
-.avatar-uploader .el-upload:hover {
-  border-color: #409eff;
-}
-
-.avatar-uploader-icon {
-  font-size: 28px;
-  color: #8c939d;
-  width: 178px;
-  height: 178px;
-  line-height: 178px;
-  text-align: center;
-}
-
-.avatar {
-  width: 178px;
-  height: 178px;
-  display: block;
-}
-</style>

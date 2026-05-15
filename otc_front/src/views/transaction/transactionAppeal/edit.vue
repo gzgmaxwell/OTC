@@ -19,7 +19,7 @@
         <el-row :gutter="20" type="flex" class="row-bg" justify="center">
           <el-col :span="10">
             <el-form-item label="购买金额" prop="money">
-              <el-input v-model="formValidate.buyCoins.money" disabled style="width: 100%;"></el-input>
+              <span v-html="formValidate?.buyCoins?.money" style="width: 100%;"></span>
             </el-form-item>
           </el-col>
           <el-col :span="10">
@@ -42,7 +42,8 @@
           </el-col>
           <el-col :span="10">
             <el-form-item label="买家头像">
-              <img :src="formValidate.buyCoins.buyerHeader" v-if="formValidate.buyerHeader" style="width: 100px; height: 80px" />
+              <img :src="formValidate.buyCoins.buyerHeader" v-if="formValidate.buyerHeader"
+                style="width: 100px; height: 80px" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -70,21 +71,21 @@
           </el-col>
           <el-col :span="10">
             <el-form-item label="订单状态">
-              <span v-html="formValidate.buyCoins.orderStatusName" style="width: 100%;"></span>
+              <span v-html="formValidate?.buyCoins?.orderStatusName" style="width: 100%;"></span>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20" type="flex" class="row-bg" justify="center">
           <el-col :span="10">
             <el-form-item label="买家付款凭证">
-              <el-image v-for="item, index in compcStr2Arr(formValidate.buyCoins.voucherBuyPayedUrl)" :key="index" :src="item"
-                fit="fill" :preview-src-list="[item]" />
+              <el-image v-for="item, index in compcStr2Arr(formValidate.buyCoins.voucherBuyPayedUrl)" :key="index"
+                :src="item" fit="fill" :preview-src-list="[item]" />
             </el-form-item>
           </el-col>
           <el-col :span="10">
             <el-form-item label="卖家付款凭证">
-              <el-image v-for="item, index in compcStr2Arr(formValidate.buyCoins.voucherSellerUnreceivedUrl)" :key="index"
-                :src="item" fit="fill" :preview-src-list="[item]" />
+              <el-image v-for="item, index in compcStr2Arr(formValidate.buyCoins.voucherSellerUnreceivedUrl)"
+                :key="index" :src="item" fit="fill" :preview-src-list="[item]" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -96,7 +97,6 @@
 </template>
 <script>
 import {
-  BuyCoinsInfo,
   BuyCoinsSave,
   BuyCoinsUpdate,
   SellCoinsList,
@@ -126,7 +126,17 @@ export default {
         createTime: null,
         updateBy: null,
         updateTime: null,
-        isDelete: null
+        isDelete: null,
+        buyCoins: {
+          buyerNickName: null,
+          buyerHeader: null,
+          hangingOrderNumber: null,
+          sellerNickName: null,
+          sellerHeader: null,
+          orderStatusName: null,
+          voucherBuyPayedUrl: null,
+          voucherSellerUnreceivedUrl: null
+        }
       },
       data: [],
       rules: {
@@ -162,11 +172,11 @@ export default {
       return (str) => str ? str.split(",") : [];
     },
     canRelease() {
-      const orderStatus = Number(this.formValidate.orderStatus);
+      const orderStatus = Number(this.formValidate?.buyCoins?.orderStatus);
       return [2, 5, 6].includes(orderStatus);
     },
     blackUserId() {
-      return this.formValidate.id || this.id;
+      return this.formValidate.userId
     }
   },
   methods: {
@@ -186,7 +196,6 @@ export default {
     async releaseOrd(id) {
       await releaseOrder(id);
       this.$message.success("放行成功");
-      this.getInfo(id);
     },
     async releaseBuyOrder() {
       this.$confirm("此操作将放行订单, 是否继续?", "提示", {
@@ -195,7 +204,7 @@ export default {
         type: "warning"
       })
         .then(() => {
-          this.releaseOrd(this.formValidate.id || this.id);
+          this.releaseOrd(this.formValidate.buyCoins.id);
         })
         .catch(() => { });
     },
@@ -206,7 +215,7 @@ export default {
         type: "warning"
       })
         .then(() => {
-          buyCoins_close({ id: this.formValidate.id || this.id }).then(() => {
+          buyCoins_close({ id: this.formValidate.buyCoins.id }).then(() => {
             this.$message.success("关闭成功");
             this.getInfo(this.formValidate.id || this.id);
           });

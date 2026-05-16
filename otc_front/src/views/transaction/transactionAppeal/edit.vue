@@ -78,12 +78,13 @@
 
         <el-row :gutter="20" type="flex" class="row-bg" justify="center">
           <el-col :span="10">
-            <el-form-item label="备注">
+            <el-form-item label="买家备注">
               <span v-html="formValidate?.buyCoins?.remarkBuyer" style="width: 100%;"></span>
             </el-form-item>
           </el-col>
           <el-col :span="10">
-            <el-form-item label="">
+            <el-form-item label="卖家备注">
+              <span v-html="formValidate?.buyCoins?.remarkSeller" style="width: 100%;"></span>
             </el-form-item>
           </el-col>
         </el-row>

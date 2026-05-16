@@ -24,7 +24,7 @@
 
     <div class="table_wrapper">
       <div style="margin-bottom: 10px;">挂单金额总计：{{ money }}</div>
-      <el-table ref="multipleTable" :data="list" border height="100%">
+      <el-table ref="multipleTable" :data="list" border height="calc(100vh - 300px)">
         <el-table-column prop="hangingOrderNumber" label="挂单编号" width="150"></el-table-column>
         <el-table-column prop="id" label="订单编号" width="170"></el-table-column>
         <el-table-column prop="sellerNickName" label="卖家昵称"></el-table-column>

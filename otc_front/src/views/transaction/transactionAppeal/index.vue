@@ -10,6 +10,10 @@
           @keyup.enter.native="search"></el-input>
         <el-input placeholder="订单号" style="width: 30%;margin-left: 5px;" v-model="params.orderNumber"
           @keyup.enter.native="search"></el-input>
+        <el-select v-model="params.appealCategory" style="width: 30%;margin-left: 5px;" placeholder="申诉类别"
+          @keyup.enter.native="search">
+          <el-option v-for="(item, index) in optAppealCategory" :key="index" :label="item.label" :value="item.value" />
+        </el-select>
 
         <el-button type="primary" icon="el-icon-search" @click="search">
           搜索
@@ -21,9 +25,12 @@
     <div class="table_wrapper">
       <el-table ref="multipleTable" :data="list" border height="100%">
         <el-table-column prop="appealStatusName" label="申诉状态"></el-table-column>
-
+        <el-table-column prop="appealCategory" label="申诉类别">
+          <template slot-scope="scope">
+            {{ getDicName(scope.row.appealCategory, optAppealCategory) }}
+          </template>
+        </el-table-column>
         <el-table-column prop="appealTypeName" label="类型"></el-table-column>
-
         <el-table-column prop="pic" label="图片">
           <template slot-scope="scope">
             <img :src="scope.row.pic" v-if="scope.row.pic" style="width: 50px; height: 50px" />
@@ -55,6 +62,7 @@
 
 <script>
 import { TransactionAppealPage, TransactionAppealDelete } from "@a/transaction";
+import { optAppealCategory } from "@/utils/enum";
 
 export default {
   name: "TransactionAppeal",
@@ -62,6 +70,7 @@ export default {
   data() {
     return {
       id: "",
+      optAppealCategory,
       params: {
         size: 10,
         current: 1
@@ -75,7 +84,11 @@ export default {
       fileList: []
     };
   },
-  created() { },
+  computed: {
+    getDicName() {
+      return (val, dicOpt) => dicOpt.find(item => item.value == val)?.label;
+    },
+  },
   methods: {
     //搜索
     search() {

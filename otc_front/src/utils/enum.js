@@ -341,3 +341,26 @@ export const optCategorySix = [
     label: "用户互转"
   }
 ];
+
+
+
+export const enum_appealCategory  = {
+  paid: "0", // 买家已付款
+  none: "1", // 卖家未收到款
+  norFull: "2", // 卖家未收到全款
+}
+
+export const optAppealCategory = [
+  {
+    value: enum_appealCategory.paid,
+    label: "买家已付款"
+  },
+  {
+    value: enum_appealCategory.none,
+    label: "卖家未收到款"
+  },
+  {
+    value: enum_appealCategory.norFull,
+    label: "卖家未收到全款"
+  },
+];

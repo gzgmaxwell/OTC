@@ -24,6 +24,16 @@
 
     <div class="table_wrapper">
       <el-table ref="multipleTable" :data="list" border height="100%">
+        <el-table-column label="买家名称">
+          <template slot-scope="scope">
+            {{ scope.row.buyCoins?.buyerNickName }}
+          </template>
+        </el-table-column>
+        <el-table-column label="卖家名称">
+          <template slot-scope="scope">
+            {{ scope.row.buyCoins?.sellerNickName }}
+          </template>
+        </el-table-column>
         <el-table-column prop="appealStatusName" label="申诉状态"></el-table-column>
         <el-table-column prop="appealCategory" label="申诉类别">
           <template slot-scope="scope">

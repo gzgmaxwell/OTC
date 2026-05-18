@@ -2,26 +2,13 @@
   <div class="list_page">
     <div class="top_wrapper">
       <div class="search_box">
-        <el-input
-          placeholder="姓名"
-          style="width: 30%;"
-          v-model="params.name"
-          @keyup.enter.native="search"
-        ></el-input>
-
-        <el-select
-          v-model="params.payType"
-          style="width: 30%;margin-left: 5px;"
-          placeholder="请选择"
-        >
-          <el-option
-            v-for="(item, index) in dics.payType"
-            :key="index"
-            :label="item.label"
-            :value="item.value"
-          ></el-option>
+        <el-input placeholder="姓名" style="width: 30%;" v-model="params.name" @keyup.enter.native="search"></el-input>
+        <el-select v-model="params.payType" style="width: 30%;margin-left: 5px;" placeholder="请选择">
+          <el-option v-for="(item, index) in dics.payType" :key="index" :label="item.label"
+            :value="item.value"></el-option>
         </el-select>
-
+        <el-input placeholder="用户ID" v-model="params.userId" @keyup.enter.native="search"
+          style="width: 30%;margin-left: 10px;" />
         <el-button type="primary" icon="el-icon-search" @click="search">
           搜索
         </el-button>
@@ -34,53 +21,26 @@
 
     <div class="table_wrapper">
       <el-table ref="multipleTable" :data="list" border height="100%">
+        <el-table-column prop="userId" label="用户ID" width="180"></el-table-column>
         <el-table-column prop="payTypeName" label="付款类型"></el-table-column>
-
         <el-table-column prop="name" label="姓名"></el-table-column>
-
         <el-table-column prop="zfbAccount" label="支付宝账户"></el-table-column>
-
-        <el-table-column
-          prop="authStatusName"
-          label="审核状态"
-        ></el-table-column>
-
+        <el-table-column prop="authStatusName" label="审核状态"></el-table-column>
         <el-table-column prop="zfbEwm" label="支付宝二维码">
           <template slot-scope="scope">
-            <img
-              :src="scope.row.zfbEwm"
-              v-if="scope.row.payType == 1"
-              style="width: 50px; height: 50px"
-            />
+            <img :src="scope.row.zfbEwm" v-if="scope.row.payType == 1" style="width: 50px; height: 50px" />
           </template>
         </el-table-column>
-
         <el-table-column prop="wxAccount" label="微信账号"></el-table-column>
-
         <el-table-column prop="wxEwm" label="微信二维码">
           <template slot-scope="scope">
-            <img
-              :src="scope.row.wxEwm"
-              v-if="scope.row.payType == 2"
-              style="width: 50px; height: 50px"
-            />
+            <img :src="scope.row.wxEwm" v-if="scope.row.payType == 2" style="width: 50px; height: 50px" />
           </template>
         </el-table-column>
-
         <el-table-column prop="bankName" label="银行名称"></el-table-column>
-
-        <el-table-column
-          prop="bankCardNumber"
-          label="银行卡号"
-        ></el-table-column>
-
-        <el-table-column
-          prop="updateTime"
-          label="更新时间"
-          width="160"
-        ></el-table-column>
-
-        <el-table-column label="操作" width="210">
+        <el-table-column prop="bankCardNumber" label="银行卡号"></el-table-column>
+        <el-table-column prop="updateTime" label="更新时间" width="160"></el-table-column>
+        <el-table-column label="操作" width="110" fixed="right">
           <template slot-scope="scope">
             <el-button size="mini" @click="edit(scope.row)">审核</el-button>
             <!-- <el-button  size="mini" type="primary"  @click="edit(scope.row)" >编辑</el-button> -->
@@ -89,16 +49,9 @@
         </el-table-column>
       </el-table>
     </div>
-    <el-pagination
-      background
-      @size-change="sizeChange"
-      @current-change="changePage"
-      :current-page="params.current"
-      :page-sizes="[10, 20, 30]"
-      :page-size="params.size"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="total"
-    ></el-pagination>
+    <el-pagination background @size-change="sizeChange" @current-change="changePage" :current-page="params.current"
+      :page-sizes="[10, 20, 30]" :page-size="params.size" layout="total, sizes, prev, pager, next, jumper"
+      :total="total"></el-pagination>
   </div>
 </template>
 
@@ -124,7 +77,7 @@ export default {
       fileList: []
     };
   },
-  created() {},
+  created() { },
   methods: {
     //搜索
     search() {
@@ -155,7 +108,7 @@ export default {
           });
           this.delData(totalArr);
         })
-        .catch(() => {});
+        .catch(() => { });
     },
     //获取列表
     async List() {
@@ -220,7 +173,7 @@ export default {
           arr.push(row.id);
           this.delData(arr);
         })
-        .catch(() => {});
+        .catch(() => { });
     }
   },
   mounted() {

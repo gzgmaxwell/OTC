@@ -52,10 +52,8 @@
         <el-table-column prop="userName" label="用户帐号"></el-table-column>
         <el-table-column prop="phoneNum" label="手机号码"></el-table-column>
         <el-table-column prop="emailAddress" label="邮箱地址"></el-table-column>
-
         <el-table-column prop="updateTime" label="更新时间" width="160"></el-table-column>
-
-        <el-table-column label="操作" width="210">
+        <el-table-column label="操作" width="210" fixed="right">
           <template slot-scope="scope">
             <!-- <el-button size="mini" @click="edit(scope.row)">处理</el-button> -->
             <el-button size="mini" type="primary" @click="edit(scope.row)">处理</el-button>

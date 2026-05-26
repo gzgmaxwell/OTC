@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import { merchantStatistics, paymentOrdersList } from "@a/summary";
+import { merchantStatistics } from "@a/summary";
 
 const PERIODS = [
   { key: "oneHour", label: "一小时内" },
@@ -94,7 +94,7 @@ export default {
   },
   methods: {
     async refreshStatistics() {
-      await Promise.all([this.loadStatistics(), this.loadPaymentOrders()]);
+      this.loadStatistics()
     },
     async loadStatistics() {
       this.statisticsLoading = true;
@@ -103,21 +103,6 @@ export default {
         this.statistics = this.pickPayload(data);
       } finally {
         this.statisticsLoading = false;
-      }
-    },
-    async loadPaymentOrders() {
-      this.tableLoading = true;
-      try {
-        const data = await paymentOrdersList({
-          "merchantNo": "3856625",
-          "channelType": "a"
-        });
-        this.paymentTree = this.normalizeRows(this.pickList(data));
-        this.$nextTick(() => {
-          this.$refs.paymentTable && this.$refs.paymentTable.doLayout();
-        });
-      } finally {
-        this.tableLoading = false;
       }
     },
     viewDetails() {

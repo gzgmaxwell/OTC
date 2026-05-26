@@ -2,11 +2,12 @@
   <div class="admin_summary_page">
     <div class="summary_header">
       <div>
+        <div class="summary_eyebrow">COLLECTION STATISTICS</div>
         <h2>订单统计</h2>
         <p>展示当前账号可见商户树的成功类收款数据。</p>
       </div>
       <div class="summary_actions">
-        <el-button icon="el-icon-refresh" :loading="statisticsLoading" @click="refreshStatistics">
+        <el-button icon="el-icon-refresh" :loading="statisticsLoading" @click="loadStatistics">
           刷新统计
         </el-button>
         <el-button type="primary" @click="viewDetails">查看详情</el-button>
@@ -16,8 +17,12 @@
     <div class="stat_card_list" v-loading="statisticsLoading">
       <div v-for="item in statisticCards" :key="item.key" class="stat_card">
         <div class="stat_title">{{ item.label }}</div>
-        <div class="stat_amount">{{ formatMoney(item.amount) }}</div>
-        <div class="stat_count">{{ formatCount(item.count) }} 笔成功类订单</div>
+        <div class="stat_amount">
+          {{ formatMoney(item.successSystemAmount) }}
+        </div>
+        <div class="stat_count">
+          {{ formatCount(item.successCount) }} 笔成功类订单
+        </div>
       </div>
     </div>
 
@@ -27,22 +32,37 @@
           <h3>树状收款明细</h3>
           <p>按“商户 - 自有通道 - 提供者 - 下级商户”展开。</p>
         </div>
+        <span class="tree_badge">TREE</span>
       </div>
 
-      <el-table ref="paymentTable" v-loading="tableLoading" :data="paymentTree" row-key="rowKey"
+      <el-table ref="paymentTable" v-loading="statisticsLoading" :data="paymentTree" row-key="id" default-expand-all
         :tree-props="{ children: 'children' }" height="100%" style="width: 100%;">
-        <el-table-column prop="name" label="收款节点" min-width="230">
+        <el-table-column prop="name" label="收款节点" min-width="260">
           <template slot-scope="scope">
             <span class="node_name">{{ scope.row.name || "--" }}</span>
-            <span v-if="scope.row.nodeTypeName" :class="['node_tag', scope.row.nodeType]">
+            <span :class="['node_tag', scope.row.nodeType]">
               {{ scope.row.nodeTypeName }}
             </span>
           </template>
         </el-table-column>
-        <el-table-column v-for="item in statisticCards" :key="item.key" :label="item.label" min-width="130">
+        <el-table-column v-for="period in periods" :key="period.key" :label="period.label" min-width="130">
           <template slot-scope="scope">
-            <div class="table_amount">{{ formatMoney(getPeriodValue(scope.row, item.key, 'amount')) }}</div>
-            <div class="table_count">{{ formatCount(getPeriodValue(scope.row, item.key, 'count')) }} 笔</div>
+            <div class="table_amount">
+              {{
+                formatMoney(
+                  getPeriodValue(scope.row.values, period.key)
+                    .successSystemAmount
+                )
+              }}
+            </div>
+            <div class="table_count">
+              {{
+                formatCount(
+                  getPeriodValue(scope.row.values, period.key).successCount
+                )
+              }}
+              笔
+            </div>
           </template>
         </el-table-column>
       </el-table>
@@ -53,54 +73,45 @@
 <script>
 import { merchantStatistics } from "@a/summary";
 
-const PERIODS = [
-  { key: "oneHour", label: "一小时内" },
-  { key: "today", label: "今天" },
-  { key: "thisWeek", label: "本周" },
-  { key: "lastWeek", label: "上周" },
-  { key: "thisMonth", label: "本月" },
-  { key: "lastMonth", label: "上月" },
-  { key: "lastThreeMonth", label: "最近三个月" }
-];
-
-const PERIOD_ALIASES = {
-  oneHour: ["oneHour", "lastHour", "hour"],
-  today: ["today", "day"],
-  thisWeek: ["thisWeek", "week"],
-  lastWeek: ["lastWeek"],
-  thisMonth: ["thisMonth", "month"],
-  lastMonth: ["lastMonth"],
-  lastThreeMonth: ["lastThreeMonth", "lastThreeMonths", "threeMonth", "threeMonths"]
+const NODE_TYPE_NAME = {
+  merchant: "商户",
+  channel: "自有通道",
+  provider: "支付通道提供者"
 };
 
 export default {
-  name: "AdminSummary",
+  name: "VipSummary",
   data() {
     return {
       statisticsLoading: false,
-      tableLoading: false,
-      statistics: {},
-      paymentTree: []
+      periods: [],
+      totals: [],
+      rows: []
     };
   },
   computed: {
     statisticCards() {
-      return PERIODS.map(item => ({
-        ...item,
-        amount: this.getPeriodValue(this.statistics, item.key, "amount"),
-        count: this.getPeriodValue(this.statistics, item.key, "count")
+      return this.periods.map(period => ({
+        ...period,
+        ...this.getPeriodValue(this.totals, period.key)
       }));
+    },
+    paymentTree() {
+      return this.buildPaymentTree(this.rows);
     }
   },
   methods: {
-    async refreshStatistics() {
-      this.loadStatistics()
-    },
     async loadStatistics() {
       this.statisticsLoading = true;
       try {
-        const data = await merchantStatistics({});
-        this.statistics = this.pickPayload(data);
+        const res = await merchantStatistics({});
+        const data = res && res.periods ? res : res && res.data ? res.data : {};
+        this.periods = Array.isArray(data.periods) ? data.periods : [];
+        this.totals = Array.isArray(data.total) ? data.total : [];
+        this.rows = Array.isArray(data.rows) ? data.rows : [];
+        this.$nextTick(() => {
+          this.$refs.paymentTable && this.$refs.paymentTable.doLayout();
+        });
       } finally {
         this.statisticsLoading = false;
       }
@@ -113,71 +124,126 @@ export default {
         }
       });
     },
-    pickPayload(data) {
-      if (!data) return {};
-      return data.data || data.result || data.records || data;
-    },
-    pickList(data) {
-      const payload = this.pickPayload(data);
-      if (Array.isArray(payload)) return payload;
-      if (Array.isArray(payload.records)) return payload.records;
-      if (Array.isArray(payload.list)) return payload.list;
-      if (Array.isArray(payload.dataList)) return payload.dataList;
-      if (payload.page && Array.isArray(payload.page.records)) return payload.page.records;
-      if (Array.isArray(data && data.page && data.page.records)) return data.page.records;
-      return [];
-    },
-    normalizeRows(rows, parentKey = "") {
-      return rows.map((row, index) => {
-        const rowKey = row.id || row.userId || row.merchantNo || row.channelType || `${parentKey}${index}`;
-        const children = row.children || row.childList || row.list || row.dataList || [];
-        return {
+    buildPaymentTree(rows) {
+      const merchants = rows.filter(row => row.scopeType === "merchant");
+      const providers = rows.filter(row => row.scopeType === "provider");
+      const merchantMap = {};
+      const roots = [];
+
+      merchants.forEach(row => {
+        merchantMap[row.id] = {
           ...row,
-          rowKey: `${parentKey}${rowKey}`,
-          name: row.name || row.nickName || row.merchantName || row.channelName || row.providerName || row.userName,
-          nodeTypeName: this.getNodeTypeName(row),
-          nodeType: this.getNodeType(row),
-          children: children.length ? this.normalizeRows(children, `${parentKey}${rowKey}-`) : undefined
+          nodeType: "merchant",
+          nodeTypeName: NODE_TYPE_NAME.merchant,
+          ownValues: row.values || [],
+          values: this.createEmptyValues(),
+          children: []
+        };
+      });
+
+      merchants.forEach(row => {
+        const node = merchantMap[row.id];
+        const parent = merchantMap[row.parentId];
+        if (parent) {
+          parent.children.push(node);
+        } else {
+          roots.push(node);
+        }
+      });
+
+      providers.forEach(row => {
+        const parent = merchantMap[row.parentId];
+        if (!parent) return;
+        parent.children.push({
+          ...row,
+          nodeType: "provider",
+          nodeTypeName: NODE_TYPE_NAME.provider,
+          values: row.values || []
+        });
+      });
+
+      roots.forEach(root => {
+        this.fillMerchantNode(root);
+      });
+
+      return roots;
+    },
+    fillMerchantNode(node) {
+      const merchantChildren = node.children.filter(
+        child => child.nodeType === "merchant"
+      );
+      const providerChildren = node.children.filter(
+        child => child.nodeType === "provider"
+      );
+      const ownChannelNode = {
+        id: `${node.id}:own-channel`,
+        name: `${node.name} 自有通道`,
+        nodeType: "channel",
+        nodeTypeName: NODE_TYPE_NAME.channel,
+        values: node.ownValues
+      };
+
+      merchantChildren.forEach(child => {
+        this.fillMerchantNode(child);
+      });
+
+      node.values = this.sumValues([
+        node.ownValues,
+        ...merchantChildren.map(child => child.values),
+        ...providerChildren.map(child => child.values)
+      ]);
+      node.children = [
+        ownChannelNode,
+        ...merchantChildren,
+        ...providerChildren
+      ];
+      delete node.ownValues;
+    },
+    createEmptyValues() {
+      return this.periods.map(period => ({
+        periodKey: period.key,
+        successCount: 0,
+        successSystemAmount: "0.00"
+      }));
+    },
+    sumValues(valueGroups) {
+      return this.periods.map(period => {
+        const total = valueGroups.reduce(
+          (acc, values) => {
+            const value = this.getPeriodValue(values, period.key);
+            return {
+              successCount: acc.successCount + Number(value.successCount || 0),
+              successSystemAmount:
+                acc.successSystemAmount + Number(value.successSystemAmount || 0)
+            };
+          },
+          {
+            successCount: 0,
+            successSystemAmount: 0
+          }
+        );
+
+        return {
+          periodKey: period.key,
+          successCount: total.successCount,
+          successSystemAmount: total.successSystemAmount.toFixed(2)
         };
       });
     },
-    getNodeType(row) {
-      const type = row.nodeType || row.type || row.userKind || row.queryUserKind;
-      if (type === 1 || type === "1" || type === "merchant") return "merchant";
-      if (type === 2 || type === "2" || type === "channel") return "channel";
-      if (type === 3 || type === "3" || type === "provider") return "provider";
-      return row.channelType ? "channel" : "";
-    },
-    getNodeTypeName(row) {
-      return row.nodeTypeName || row.typeName || row.userKindName || row.channelTypeName || row.roleName || "";
-    },
-    getPeriodValue(row, key, valueType) {
-      const aliases = PERIOD_ALIASES[key] || [key];
-      const suffixes = valueType === "amount" ? ["Amount", "Money", "Total", ""] : ["Count", "Num", "Number", "OrderCount"];
-
-      for (const alias of aliases) {
-        const periodValue = row && row[alias];
-        if (periodValue && typeof periodValue === "object") {
-          const nested = this.pickNestedValue(periodValue, valueType);
-          if (nested !== undefined) return nested;
-        }
-
-        for (const suffix of suffixes) {
-          const prop = `${alias}${suffix}`;
-          if (row && row[prop] !== undefined) return row[prop];
-        }
+    getPeriodValue(values, periodKey) {
+      if (!Array.isArray(values)) {
+        return {
+          successCount: 0,
+          successSystemAmount: "0.00"
+        };
       }
 
-      return 0;
-    },
-    pickNestedValue(value, valueType) {
-      const props = valueType === "amount"
-        ? ["amount", "money", "total", "successAmount"]
-        : ["count", "num", "number", "orderCount", "successCount"];
-      for (const prop of props) {
-        if (value[prop] !== undefined) return value[prop];
-      }
-      return undefined;
+      return (
+        values.find(item => item.periodKey === periodKey) || {
+          successCount: 0,
+          successSystemAmount: "0.00"
+        }
+      );
     },
     formatMoney(value) {
       const number = Number(value || 0);
@@ -188,7 +254,7 @@ export default {
     }
   },
   mounted() {
-    this.refreshStatistics();
+    this.loadStatistics();
   }
 };
 </script>
@@ -196,7 +262,7 @@ export default {
 <style scoped>
 .admin_summary_page {
   min-height: 100%;
-  padding: 22px;
+  padding: 18px;
   background: #f3f7fb;
   color: #18345a;
 }
@@ -205,7 +271,14 @@ export default {
   display: flex;
   justify-content: space-between;
   gap: 16px;
-  margin-bottom: 12px;
+  margin-bottom: 18px;
+}
+
+.summary_eyebrow {
+  margin-bottom: 8px;
+  color: #587294;
+  font-size: 12px;
+  font-weight: 800;
 }
 
 .summary_header h2,
@@ -241,7 +314,7 @@ export default {
 }
 
 .stat_card {
-  min-height: 108px;
+  min-height: 116px;
   padding: 38px 28px 18px;
   border-radius: 6px;
   background: #fff;
@@ -269,7 +342,7 @@ export default {
 }
 
 .detail_panel {
-  height: calc(100vh - 292px);
+  height: calc(100vh - 310px);
   min-height: 420px;
   padding: 28px;
   border-radius: 6px;
@@ -285,6 +358,16 @@ export default {
 
 .table_header h3 {
   font-size: 28px;
+}
+
+.tree_badge {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 5px;
+  background: #dbf2ff;
+  color: #0079ad;
+  font-size: 12px;
+  font-weight: 800;
 }
 
 .node_name,

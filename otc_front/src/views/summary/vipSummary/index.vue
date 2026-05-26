@@ -2,7 +2,6 @@
   <div class="admin_summary_page">
     <div class="summary_header">
       <div>
-        <div class="summary_eyebrow">COLLECTION STATISTICS</div>
         <h2>订单统计</h2>
         <p>展示当前账号可见商户树的成功类收款数据。</p>
       </div>
@@ -28,18 +27,10 @@
           <h3>树状收款明细</h3>
           <p>按“商户 - 自有通道 - 提供者 - 下级商户”展开。</p>
         </div>
-        <span class="tree_tag">TREE</span>
       </div>
 
-      <el-table
-        ref="paymentTable"
-        v-loading="tableLoading"
-        :data="paymentTree"
-        row-key="rowKey"
-        :tree-props="{ children: 'children' }"
-        height="100%"
-        style="width: 100%;"
-      >
+      <el-table ref="paymentTable" v-loading="tableLoading" :data="paymentTree" row-key="rowKey"
+        :tree-props="{ children: 'children' }" height="100%" style="width: 100%;">
         <el-table-column prop="name" label="收款节点" min-width="230">
           <template slot-scope="scope">
             <span class="node_name">{{ scope.row.name || "--" }}</span>
@@ -48,12 +39,7 @@
             </span>
           </template>
         </el-table-column>
-        <el-table-column
-          v-for="item in statisticCards"
-          :key="item.key"
-          :label="item.label"
-          min-width="130"
-        >
+        <el-table-column v-for="item in statisticCards" :key="item.key" :label="item.label" min-width="130">
           <template slot-scope="scope">
             <div class="table_amount">{{ formatMoney(getPeriodValue(scope.row, item.key, 'amount')) }}</div>
             <div class="table_count">{{ formatCount(getPeriodValue(scope.row, item.key, 'count')) }} 笔</div>
@@ -122,7 +108,10 @@ export default {
     async loadPaymentOrders() {
       this.tableLoading = true;
       try {
-        const data = await paymentOrdersList({});
+        const data = await paymentOrdersList({
+          "merchantNo": "3856625",
+          "channelType": "a"
+        });
         this.paymentTree = this.normalizeRows(this.pickList(data));
         this.$nextTick(() => {
           this.$refs.paymentTable && this.$refs.paymentTable.doLayout();
@@ -133,7 +122,7 @@ export default {
     },
     viewDetails() {
       this.$router.push({
-        name: "vipSummaryEdit",
+        name: "VipSummaryEdit",
         query: {
           source: "adminSummary"
         }
@@ -234,13 +223,6 @@ export default {
   margin-bottom: 12px;
 }
 
-.summary_eyebrow {
-  margin-bottom: 8px;
-  font-size: 12px;
-  font-weight: 700;
-  color: #536b8b;
-}
-
 .summary_header h2,
 .table_header h3 {
   margin: 0;
@@ -318,15 +300,6 @@ export default {
 
 .table_header h3 {
   font-size: 28px;
-}
-
-.tree_tag {
-  padding: 4px 8px;
-  border-radius: 5px;
-  background: #e0f3ff;
-  color: #0068b7;
-  font-size: 12px;
-  font-weight: 800;
 }
 
 .node_name,

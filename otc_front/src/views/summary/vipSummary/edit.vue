@@ -10,18 +10,10 @@
       <div class="list_page">
         <div class="top_wrapper">
           <div class="search_box">
-            <el-input
-              placeholder="本系统流水号"
-              v-model="params.systemOrderNo"
-              style="width: 220px;"
-              @keyup.enter.native="search"
-            ></el-input>
-            <el-input
-              placeholder="上游流水号"
-              v-model="params.upstreamOrderNo"
-              style="width: 220px; margin-left: 10px;"
-              @keyup.enter.native="search"
-            ></el-input>
+            <el-input placeholder="本系统流水号" v-model="params.systemOrderNo" style="width: 220px;"
+              @keyup.enter.native="search"></el-input>
+            <el-input placeholder="上游流水号" v-model="params.upstreamOrderNo" style="width: 220px; margin-left: 10px;"
+              @keyup.enter.native="search"></el-input>
             <el-button type="primary" icon="el-icon-search" @click="search">
               搜索
             </el-button>
@@ -29,39 +21,16 @@
           </div>
         </div>
         <div class="table_wrapper payment_order_table">
-          <el-table
-            ref="multipleTable"
-            :data="list"
-            border
-            height="100%"
-            stripe
-            style="width: 100%"
-          >
-            <el-table-column
-              prop="systemOrderNo"
-              label="本系统流水号"
-              min-width="160"
-            ></el-table-column>
-            <el-table-column
-              prop="upstreamOrderNo"
-              label="上游流水号"
-              min-width="170"
-            ></el-table-column>
-            <el-table-column
-              prop="productName"
-              label="商品名称"
-              min-width="90"
-            ></el-table-column>
+          <el-table ref="multipleTable" :data="list" border height="100%" stripe style="width: 100%">
+            <el-table-column prop="systemOrderNo" label="本系统流水号" min-width="160"></el-table-column>
+            <el-table-column prop="upstreamOrderNo" label="上游流水号" min-width="170"></el-table-column>
+            <el-table-column prop="productName" label="商品名称" min-width="90"></el-table-column>
             <el-table-column label="商户" min-width="190">
               <template slot-scope="scope">
                 {{ formatMerchant(scope.row) }}
               </template>
             </el-table-column>
-            <el-table-column
-              prop="paymentChannelName"
-              label="支付通道"
-              min-width="140"
-            ></el-table-column>
+            <el-table-column prop="paymentChannelName" label="支付通道" min-width="140"></el-table-column>
             <el-table-column label="支付类型" min-width="110">
               <template slot-scope="scope">
                 {{ formatPaymentType(scope.row.paymentType) }}
@@ -84,55 +53,37 @@
             </el-table-column>
             <el-table-column label="当前状态" min-width="90" align="center">
               <template slot-scope="scope">
-                <span
-                  :class="['status_tag', getOrderStatus(scope.row.status).type]"
-                >
+                <span :class="['status_tag', getOrderStatus(scope.row.status).type]">
                   {{ getOrderStatus(scope.row.status).label }}
                 </span>
               </template>
             </el-table-column>
             <el-table-column label="回调状态" min-width="90" align="center">
               <template slot-scope="scope">
-                <span
-                  :class="[
-                    'status_tag',
-                    scope.row.isCallbackSent ? 'success' : 'warning'
-                  ]"
-                >
+                <span :class="[
+                  'status_tag',
+                  scope.row.isCallbackSent ? 'success' : 'warning'
+                ]">
                   {{ scope.row.isCallbackSent ? "已回调" : "未回调" }}
                 </span>
               </template>
             </el-table-column>
             <el-table-column label="补发状态" min-width="90" align="center">
               <template slot-scope="scope">
-                <span
-                  :class="[
-                    'status_tag',
-                    scope.row.isManualResend ? 'primary' : 'default'
-                  ]"
-                >
+                <span :class="[
+                  'status_tag',
+                  scope.row.isManualResend ? 'primary' : 'default'
+                ]">
                   {{ scope.row.isManualResend ? "手动补发" : "系统默认" }}
                 </span>
               </template>
             </el-table-column>
-            <el-table-column
-              prop="callbackRetryCount"
-              label="反推次数"
-              min-width="90"
-              align="center"
-            ></el-table-column>
+            <el-table-column prop="callbackRetryCount" label="反推次数" min-width="90" align="center"></el-table-column>
           </el-table>
         </div>
-        <el-pagination
-          background
-          @size-change="sizeChange"
-          @current-change="changePage"
-          :current-page="params.current"
-          :page-sizes="[10, 20, 30]"
-          :page-size="params.size"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="total"
-        ></el-pagination>
+        <el-pagination background @size-change="sizeChange" @current-change="changePage" :current-page="params.current"
+          :page-sizes="[10, 20, 30]" :page-size="params.size" layout="total, sizes, prev, pager, next, jumper"
+          :total="total"></el-pagination>
       </div>
     </div>
   </div>
@@ -185,49 +136,9 @@ export default {
       this.List();
     },
     async List() {
-      const data = await paymentOrdersList(this.params);
-      const page = this.pickPage(data);
-      this.total = Number(page.total || page.records.length || 0);
-      this.list = page.records;
-      this.$nextTick(() => {
-        this.$refs.multipleTable && this.$refs.multipleTable.doLayout();
-      });
-    },
-    pickPage(data) {
-      const payload = data && (data.data || data.result || data.page || data);
-
-      if (Array.isArray(payload)) {
-        return {
-          total: payload.length,
-          records: payload
-        };
-      }
-
-      if (payload && Array.isArray(payload.records)) {
-        return {
-          total: payload.total,
-          records: payload.records
-        };
-      }
-
-      if (payload && payload.page && Array.isArray(payload.page.records)) {
-        return {
-          total: payload.page.total,
-          records: payload.page.records
-        };
-      }
-
-      if (payload && Array.isArray(payload.list)) {
-        return {
-          total: payload.total,
-          records: payload.list
-        };
-      }
-
-      return {
-        total: 0,
-        records: []
-      };
+      const res = await paymentOrdersList(this.params);
+      this.total = res.total
+      this.list = res.items;
     },
     sizeChange(val) {
       this.params.size = val;

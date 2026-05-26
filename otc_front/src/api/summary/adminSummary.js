@@ -42,3 +42,17 @@ export const statistical_count = data =>
     url: summaryUrl + "/count",
     data
   });
+
+export const merchantStatistics = data =>
+  request({
+    method: "post",
+    url: summaryUrl + "/merchantStatistics",
+    data
+  });
+
+export const paymentOrdersList = data =>
+  request({
+    method: "post",
+    url: summaryUrl + "/paymentOrdersList",
+    data
+  });

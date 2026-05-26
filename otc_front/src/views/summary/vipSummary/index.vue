@@ -1,211 +1,383 @@
 <template>
-  <div class="list_page">
-    <div class="cardbox">
-      <div class="summary_controls">
-        <el-radio-group v-model="timeFilter" size="small" @change="loadTotals">
-          <el-radio-button v-for="item in timeFilterOptions" :key="item.value" :label="item.value">
-            {{ item.label }}
-          </el-radio-button>
-        </el-radio-group>
-        <el-date-picker size="small" style="width: 400px; margin-left: 10px;" @change="loadTotals" v-model="datetime"
-          type="datetimerange" :picker-options="pickerOptions" value-format="yyyy-MM-dd HH:mm:ss" range-separator="-"
-          start-placeholder="开始日期" end-placeholder="结束日期" align="right" :default-time="['00:00:00', '23:59:59']" />
-
+  <div class="admin_summary_page">
+    <div class="summary_header">
+      <div>
+        <div class="summary_eyebrow">COLLECTION STATISTICS</div>
+        <h2>订单统计</h2>
+        <p>展示当前账号可见商户树的成功类收款数据。</p>
       </div>
-      <div class="summary_cards">
-        <el-card class="summary_card">
-          <div slot="header" class="clearfix">
-            <span>收款金额</span>
-          </div>
-          <div class="summary_amount">¥ {{ res?.amountSell || 0 }}</div>
-        </el-card>
-        <el-card class="summary_card">
-          <div slot="header" class="clearfix">
-            <span>出款金额</span>
-          </div>
-          <div class="summary_amount">¥ {{ res?.amountBuy || 0 }}</div>
-        </el-card>
-        <!-- <el-card class="summary_card">
-          <div slot="header" class="clearfix">
-            <span>已付金额</span>
-          </div>
-          <div class="summary_amount">¥ {{ res?.amountSell || 0 }}</div>
-        </el-card> -->
-        <el-card class="summary_card">
-          <div slot="header" class="clearfix">
-            <span>余额</span>
-          </div>
-          <div class="summary_amount">¥ {{ res?.amount || 0 }}</div>
-        </el-card>
-      </div>
-    </div>
-    <div class="top_wrapper">
-      <!-- <div class="search_box">
-        <el-input placeholder="商户名称" v-model="params.transNumber" style="width: 30%; " @keyup.enter.native="search">
-        </el-input>
-        <el-button type="primary" icon="el-icon-search" @click="search">
-          搜索
+      <div class="summary_actions">
+        <el-button icon="el-icon-refresh" :loading="statisticsLoading" @click="refreshStatistics">
+          刷新统计
         </el-button>
-        <el-button icon="el-icon-refresh" @click="reset">重置</el-button>
-      </div> -->
+        <el-button type="primary" @click="viewDetails">查看详情</el-button>
+      </div>
     </div>
-    <div class="table_wrapper" style="height: calc(100% - 300px);">
-      <el-table ref="multipleTable" :data="res?.dataList || []" border height="100%" stripe style="width: 100%;">
-        <el-table-column prop="nickName" label="名称"></el-table-column>
-        <el-table-column prop="amountSecond" label="收款金额"></el-table-column>
-        <el-table-column prop="amountFirst" label="出款金额"></el-table-column>
-        <el-table-column prop="money" label="支付金额"></el-table-column>
-        <el-table-column prop="amountThird" label="余额"></el-table-column>
-        <!-- <el-table-column label="操作" width="200">
+
+    <div class="stat_card_list" v-loading="statisticsLoading">
+      <div v-for="item in statisticCards" :key="item.key" class="stat_card">
+        <div class="stat_title">{{ item.label }}</div>
+        <div class="stat_amount">{{ formatMoney(item.amount) }}</div>
+        <div class="stat_count">{{ formatCount(item.count) }} 笔成功类订单</div>
+      </div>
+    </div>
+
+    <div class="detail_panel">
+      <div class="table_header">
+        <div>
+          <h3>树状收款明细</h3>
+          <p>按“商户 - 自有通道 - 提供者 - 下级商户”展开。</p>
+        </div>
+        <span class="tree_tag">TREE</span>
+      </div>
+
+      <el-table
+        ref="paymentTable"
+        v-loading="tableLoading"
+        :data="paymentTree"
+        row-key="rowKey"
+        :tree-props="{ children: 'children' }"
+        height="100%"
+        style="width: 100%;"
+      >
+        <el-table-column prop="name" label="收款节点" min-width="230">
           <template slot-scope="scope">
-            <el-button size="mini" @click="edit(scope.row)">查看</el-button>
+            <span class="node_name">{{ scope.row.name || "--" }}</span>
+            <span v-if="scope.row.nodeTypeName" :class="['node_tag', scope.row.nodeType]">
+              {{ scope.row.nodeTypeName }}
+            </span>
           </template>
-</el-table-column> -->
+        </el-table-column>
+        <el-table-column
+          v-for="item in statisticCards"
+          :key="item.key"
+          :label="item.label"
+          min-width="130"
+        >
+          <template slot-scope="scope">
+            <div class="table_amount">{{ formatMoney(getPeriodValue(scope.row, item.key, 'amount')) }}</div>
+            <div class="table_count">{{ formatCount(getPeriodValue(scope.row, item.key, 'count')) }} 笔</div>
+          </template>
+        </el-table-column>
       </el-table>
     </div>
-    <!-- <el-pagination background @size-change="sizeChange" @current-change="changePage" :current-page="params.current"
-      :page-sizes="[10, 20, 30]" :page-size="params.size" layout="total, sizes, prev, pager, next, jumper"
-      :total="total"></el-pagination> -->
   </div>
 </template>
 
 <script>
-import { TransferRecordPage, statistical_count } from "@a/summary";
-import { timeFilterOptions } from "@/utils/enum";
-import dayjs from "dayjs";
+import { merchantStatistics, paymentOrdersList } from "@a/summary";
+
+const PERIODS = [
+  { key: "oneHour", label: "一小时内" },
+  { key: "today", label: "今天" },
+  { key: "thisWeek", label: "本周" },
+  { key: "lastWeek", label: "上周" },
+  { key: "thisMonth", label: "本月" },
+  { key: "lastMonth", label: "上月" },
+  { key: "lastThreeMonth", label: "最近三个月" }
+];
+
+const PERIOD_ALIASES = {
+  oneHour: ["oneHour", "lastHour", "hour"],
+  today: ["today", "day"],
+  thisWeek: ["thisWeek", "week"],
+  lastWeek: ["lastWeek"],
+  thisMonth: ["thisMonth", "month"],
+  lastMonth: ["lastMonth"],
+  lastThreeMonth: ["lastThreeMonth", "lastThreeMonths", "threeMonth", "threeMonths"]
+};
+
 export default {
-  name: "TransferRecord",
-  components: {},
+  name: "AdminSummary",
   data() {
     return {
-      params: {
-        size: 10,
-        current: 1,
-        startTime: null,
-        endTime: null
-      },
-      total: 0,
-      list: [], //表格数据
-      money: 0,
-      timeFilter: "thisMonth",
-      timeFilterOptions: timeFilterOptions,
-      res: {},
-      datetime: [],
-      pickerOptions: {
-        shortcuts: [
-          {
-            text: "最近一周",
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-              picker.$emit("pick", [start, end]);
-            }
-          },
-          {
-            text: "最近一个月",
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-              picker.$emit("pick", [start, end]);
-            }
-          },
-          {
-            text: "最近三个月",
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-              picker.$emit("pick", [start, end]);
-            }
-          }
-        ]
-      },
+      statisticsLoading: false,
+      tableLoading: false,
+      statistics: {},
+      paymentTree: []
     };
   },
+  computed: {
+    statisticCards() {
+      return PERIODS.map(item => ({
+        ...item,
+        amount: this.getPeriodValue(this.statistics, item.key, "amount"),
+        count: this.getPeriodValue(this.statistics, item.key, "count")
+      }));
+    }
+  },
   methods: {
-    async loadTotals() {
-      const params = {
-        queryUserKind: "2", // 1平台，2码商，3商户
-        timeType: this.timeFilter // today,thisWeek,lastWeek,lastMonth,thisMonth
-        // "userId": ''   //  用户Id  this.userInfo.userId
-      };
-      if (this.datetime.length > 0) {
-        params.startTime = this.datetime[0];
-        params.endTime = this.datetime[1];
+    async refreshStatistics() {
+      await Promise.all([this.loadStatistics(), this.loadPaymentOrders()]);
+    },
+    async loadStatistics() {
+      this.statisticsLoading = true;
+      try {
+        const data = await merchantStatistics({});
+        this.statistics = this.pickPayload(data);
+      } finally {
+        this.statisticsLoading = false;
       }
-      statistical_count(params).then(res => {
-        this.res = res || {};
-      });
     },
-    //搜索
-    search() {
-      this.params.current = 1;
+    async loadPaymentOrders() {
+      this.tableLoading = true;
+      try {
+        const data = await paymentOrdersList({});
+        this.paymentTree = this.normalizeRows(this.pickList(data));
+        this.$nextTick(() => {
+          this.$refs.paymentTable && this.$refs.paymentTable.doLayout();
+        });
+      } finally {
+        this.tableLoading = false;
+      }
     },
-    //重置
-    reset() {
-      this.params = {};
-      this.search();
-    },
-
-    //获取列表
-    async List() {
-      this.params.descs = "a.update_time";
-      const data = await TransferRecordPage(this.params);
-      this.total = data.page.total;
-      this.list = data.page.records;
-      this.money = data.money;
-      // 数据加载完成后，强制更新表格以确保合计行正确显示
-      this.$nextTick(() => {
-        this.$refs.multipleTable && this.$refs.multipleTable.doLayout();
-      });
-    },
-    //每页多少条，切换显示条数
-    sizeChange(val) {
-      this.params.size = val;
-      this.List();
-    },
-    //当前第几页，切换页码
-    changePage(val) {
-      this.params.current = val;
-      this.List();
-    },
-
-    //编辑
-    edit(row) {
+    viewDetails() {
       this.$router.push({
-        name: "shopSummaryEdit",
+        name: "vipSummaryEdit",
         query: {
-          id: row.id
+          source: "adminSummary"
         }
       });
+    },
+    pickPayload(data) {
+      if (!data) return {};
+      return data.data || data.result || data.records || data;
+    },
+    pickList(data) {
+      const payload = this.pickPayload(data);
+      if (Array.isArray(payload)) return payload;
+      if (Array.isArray(payload.records)) return payload.records;
+      if (Array.isArray(payload.list)) return payload.list;
+      if (Array.isArray(payload.dataList)) return payload.dataList;
+      if (payload.page && Array.isArray(payload.page.records)) return payload.page.records;
+      if (Array.isArray(data && data.page && data.page.records)) return data.page.records;
+      return [];
+    },
+    normalizeRows(rows, parentKey = "") {
+      return rows.map((row, index) => {
+        const rowKey = row.id || row.userId || row.merchantNo || row.channelType || `${parentKey}${index}`;
+        const children = row.children || row.childList || row.list || row.dataList || [];
+        return {
+          ...row,
+          rowKey: `${parentKey}${rowKey}`,
+          name: row.name || row.nickName || row.merchantName || row.channelName || row.providerName || row.userName,
+          nodeTypeName: this.getNodeTypeName(row),
+          nodeType: this.getNodeType(row),
+          children: children.length ? this.normalizeRows(children, `${parentKey}${rowKey}-`) : undefined
+        };
+      });
+    },
+    getNodeType(row) {
+      const type = row.nodeType || row.type || row.userKind || row.queryUserKind;
+      if (type === 1 || type === "1" || type === "merchant") return "merchant";
+      if (type === 2 || type === "2" || type === "channel") return "channel";
+      if (type === 3 || type === "3" || type === "provider") return "provider";
+      return row.channelType ? "channel" : "";
+    },
+    getNodeTypeName(row) {
+      return row.nodeTypeName || row.typeName || row.userKindName || row.channelTypeName || row.roleName || "";
+    },
+    getPeriodValue(row, key, valueType) {
+      const aliases = PERIOD_ALIASES[key] || [key];
+      const suffixes = valueType === "amount" ? ["Amount", "Money", "Total", ""] : ["Count", "Num", "Number", "OrderCount"];
+
+      for (const alias of aliases) {
+        const periodValue = row && row[alias];
+        if (periodValue && typeof periodValue === "object") {
+          const nested = this.pickNestedValue(periodValue, valueType);
+          if (nested !== undefined) return nested;
+        }
+
+        for (const suffix of suffixes) {
+          const prop = `${alias}${suffix}`;
+          if (row && row[prop] !== undefined) return row[prop];
+        }
+      }
+
+      return 0;
+    },
+    pickNestedValue(value, valueType) {
+      const props = valueType === "amount"
+        ? ["amount", "money", "total", "successAmount"]
+        : ["count", "num", "number", "orderCount", "successCount"];
+      for (const prop of props) {
+        if (value[prop] !== undefined) return value[prop];
+      }
+      return undefined;
+    },
+    formatMoney(value) {
+      const number = Number(value || 0);
+      return number.toFixed(2);
+    },
+    formatCount(value) {
+      return Number(value || 0);
     }
   },
   mounted() {
-    this.search();
-    this.loadTotals();
+    this.refreshStatistics();
   }
 };
 </script>
+
 <style scoped>
-.summary_controls {
+.admin_summary_page {
+  min-height: 100%;
+  padding: 22px;
+  background: #f3f7fb;
+  color: #18345a;
+}
+
+.summary_header {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
   margin-bottom: 12px;
 }
 
-.summary_cards {
-  display: flex;
-  gap: 16px;
-  margin-bottom: 16px;
-}
-
-.summary_card {
-  flex: 1;
-}
-
-.summary_amount {
-  font-size: 22px;
+.summary_eyebrow {
+  margin-bottom: 8px;
+  font-size: 12px;
   font-weight: 700;
-  color: var(--primary);
+  color: #536b8b;
+}
+
+.summary_header h2,
+.table_header h3 {
+  margin: 0;
+  font-weight: 800;
+  color: #18345a;
+}
+
+.summary_header h2 {
+  font-size: 34px;
+  line-height: 1.2;
+}
+
+.summary_header p,
+.table_header p {
+  margin: 8px 0 0;
+  color: #46617f;
+}
+
+.summary_actions {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  white-space: nowrap;
+}
+
+.stat_card_list {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(120px, 1fr));
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.stat_card {
+  min-height: 108px;
+  padding: 38px 28px 18px;
+  border-radius: 6px;
+  background: #fff;
+  box-shadow: 0 1px 0 rgba(24, 52, 90, 0.04);
+}
+
+.stat_title {
+  margin-bottom: 6px;
+  font-size: 14px;
+  color: #2f4a6c;
+}
+
+.stat_amount {
+  font-size: 22px;
+  line-height: 1.1;
+  font-weight: 800;
+  color: #00b887;
+}
+
+.stat_count,
+.table_count {
+  margin-top: 4px;
+  font-size: 12px;
+  color: #395779;
+}
+
+.detail_panel {
+  height: calc(100vh - 292px);
+  min-height: 420px;
+  padding: 28px;
+  border-radius: 6px;
+  background: #fff;
+}
+
+.table_header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.table_header h3 {
+  font-size: 28px;
+}
+
+.tree_tag {
+  padding: 4px 8px;
+  border-radius: 5px;
+  background: #e0f3ff;
+  color: #0068b7;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.node_name,
+.table_amount {
+  font-weight: 700;
+  color: #0f2a4d;
+}
+
+.node_tag {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 2px 7px;
+  border-radius: 5px;
+  background: #eef4fb;
+  color: #31506f;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.node_tag.merchant {
+  background: #dcfae8;
+  color: #00864f;
+}
+
+.node_tag.channel {
+  background: #eef4fb;
+  color: #31506f;
+}
+
+.node_tag.provider {
+  background: #dbf2ff;
+  color: #0079ad;
+}
+
+@media (max-width: 1400px) {
+  .stat_card_list {
+    grid-template-columns: repeat(4, minmax(160px, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .summary_header {
+    flex-direction: column;
+  }
+
+  .stat_card_list {
+    grid-template-columns: repeat(2, minmax(140px, 1fr));
+  }
+
+  .detail_panel {
+    padding: 18px;
+  }
 }
 </style>

@@ -5,7 +5,12 @@
         <h2>{{ pageTitle }}</h2>
         <p>{{ pageDescription }}</p>
       </div>
-      <span class="tree_badge">TREE</span>
+      <div class="summary_actions">
+        <el-button icon="el-icon-refresh" :loading="loading" @click="loadStatistics">
+          刷新统计
+        </el-button>
+        <el-button type="primary" @click="viewDetails">查看详情</el-button>
+      </div>
     </div>
 
     <div class="stat_card_list" v-loading="loading">
@@ -347,6 +352,14 @@ export default {
     formatCount(value) {
       return Number(value || 0);
     },
+    viewDetails() {
+      this.$router.push({
+        name: "VipSummaryEdit",
+        query: {
+          source: "vipSummary"
+        }
+      });
+    },
     isBranchNode(row) {
       return Array.isArray(row.children) && row.children.length > 0;
     },
@@ -390,6 +403,7 @@ function value(periodKey, periodLabel, successCount, successSystemAmount) {
 .summary_header {
   display: flex;
   justify-content: space-between;
+  align-items: flex-start;
   gap: 16px;
   margin-bottom: 18px;
 }
@@ -411,15 +425,11 @@ function value(periodKey, periodLabel, successCount, successSystemAmount) {
   color: #46617f;
 }
 
-.tree_badge {
-  display: inline-block;
-  align-self: flex-start;
-  padding: 3px 8px;
-  border-radius: 5px;
-  background: #dbf2ff;
-  color: #0079ad;
-  font-size: 12px;
-  font-weight: 800;
+.summary_actions {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  white-space: nowrap;
 }
 
 .stat_card_list {

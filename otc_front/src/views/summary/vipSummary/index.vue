@@ -1,28 +1,19 @@
 <template>
-  <div class="admin_summary_page">
+  <div class="vip_summary_page">
     <div class="summary_header">
       <div>
-        <div class="summary_eyebrow">COLLECTION STATISTICS</div>
-        <h2>订单统计</h2>
-        <p>展示当前账号可见商户树的成功类收款数据。</p>
+        <div class="summary_eyebrow">PAY888 OPEN API DEMO</div>
+        <h2>{{ pageTitle }}</h2>
+        <p>{{ pageDescription }}</p>
       </div>
-      <div class="summary_actions">
-        <el-button icon="el-icon-refresh" :loading="statisticsLoading" @click="loadStatistics">
-          刷新统计
-        </el-button>
-        <el-button type="primary" @click="viewDetails">查看详情</el-button>
-      </div>
+      <span class="tree_badge">TREE</span>
     </div>
 
-    <div class="stat_card_list" v-loading="statisticsLoading">
-      <div v-for="item in statisticCards" :key="item.key" class="stat_card">
+    <div class="stat_card_list" v-loading="loading">
+      <div v-for="item in summaryCards" :key="item.key" class="stat_card">
         <div class="stat_title">{{ item.label }}</div>
-        <div class="stat_amount">
-          {{ formatMoney(item.successSystemAmount) }}
-        </div>
-        <div class="stat_count">
-          {{ formatCount(item.successCount) }} 笔成功类订单
-        </div>
+        <div class="stat_amount">{{ formatMoney(item.successSystemAmount) }}</div>
+        <div class="stat_count">{{ formatCount(item.successCount) }} 笔成功类订单</div>
       </div>
     </div>
 
@@ -30,42 +21,55 @@
       <div class="table_header">
         <div>
           <h3>树状收款明细</h3>
-          <p>按“商户 - 自有通道 - 提供者 - 下级商户”展开。</p>
+          <p>按“商户 - 自有通道 - 支付通道提供者 - 下级商户”展开。</p>
         </div>
-        <span class="tree_badge">TREE</span>
       </div>
 
-      <el-table ref="paymentTable" v-loading="statisticsLoading" :data="paymentTree" row-key="id" default-expand-all
-        :tree-props="{ children: 'children' }" height="100%" style="width: 100%;">
-        <el-table-column prop="name" label="收款节点" min-width="260">
-          <template slot-scope="scope">
-            <span class="node_name">{{ scope.row.name || "--" }}</span>
-            <span :class="['node_tag', scope.row.nodeType]">
-              {{ scope.row.nodeTypeName }}
-            </span>
-          </template>
-        </el-table-column>
-        <el-table-column v-for="period in periods" :key="period.key" :label="period.label" min-width="130">
-          <template slot-scope="scope">
-            <div class="table_amount">
-              {{
-                formatMoney(
-                  getPeriodValue(scope.row.values, period.key)
-                    .successSystemAmount
-                )
-              }}
-            </div>
-            <div class="table_count">
-              {{
-                formatCount(
-                  getPeriodValue(scope.row.values, period.key).successCount
-                )
-              }}
-              笔
-            </div>
-          </template>
-        </el-table-column>
-      </el-table>
+      <div class="table_wrap">
+        <el-table
+          ref="paymentTable"
+          v-loading="loading"
+          :data="paymentTree"
+          row-key="id"
+          :default-expand-all="true"
+          :tree-props="{ children: 'children' }"
+          border
+          stripe
+          height="100%"
+          style="width: 100%;"
+        >
+          <el-table-column prop="name" label="收款节点" min-width="320">
+            <template slot-scope="scope">
+              <div class="node">
+                <span v-if="isBranchNode(scope.row)" class="toggle_spacer"></span>
+                <span v-else class="toggle_spacer toggle_spacer_leaf"></span>
+                <div class="node_main">
+                  <div class="node_title">
+                    <span>{{ scope.row.name || "--" }}</span>
+                    <span :class="['node_tag', scope.row.nodeType]">{{ scope.row.nodeTypeName }}</span>
+                  </div>
+                  <div class="node_meta">
+                    {{ scope.row.merchantNo ? `商户号：${scope.row.merchantNo}` : scope.row.id }}
+                  </div>
+                </div>
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column
+            v-for="period in periods"
+            :key="period.key"
+            :label="period.label"
+            min-width="130"
+          >
+            <template slot-scope="scope">
+              <div class="metric">
+                <strong>{{ formatMoney(getPeriodValue(scope.row.values, period.key).successSystemAmount) }}</strong>
+                <span>{{ formatCount(getPeriodValue(scope.row.values, period.key).successCount) }} 笔</span>
+              </div>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
     </div>
   </div>
 </template>
@@ -79,156 +83,249 @@ const NODE_TYPE_NAME = {
   provider: "支付通道提供者"
 };
 
+const USE_MOCK_DATA = true;
+
+const MOCK_RESPONSE = {
+  code: 0,
+  message: "成功",
+  data: {
+    merchantNo: "6448346",
+    merchantName: "演示商户A",
+    summary: "这是商户 演示商户A 以及自有通道、下级商户、支付通道提供者的收款统计。",
+    periods: [
+      { key: "lastHour", label: "一小时内" },
+      { key: "today", label: "今天" },
+      { key: "thisWeek", label: "本周" },
+      { key: "lastWeek", label: "上周" },
+      { key: "thisMonth", label: "本月" },
+      { key: "lastMonth", label: "上月" },
+      { key: "lastThreeMonths", label: "最近三个月" }
+    ],
+    total: [
+      value("lastHour", "一小时内", 3, "188.00"),
+      value("today", "今天", 18, "1288.00"),
+      value("thisWeek", "本周", 73, "5896.00"),
+      value("lastWeek", "上周", 121, "9530.00"),
+      value("thisMonth", "本月", 389, "30520.00"),
+      value("lastMonth", "上月", 420, "33880.00"),
+      value("lastThreeMonths", "最近三个月", 1112, "90600.00")
+    ],
+    merchant: {
+      id: "merchant:10001",
+      name: "演示商户A",
+      role: "商户",
+      merchantNo: "6448346",
+      level: 0,
+      values: [
+        value("lastHour", "一小时内", 2, "138.00"),
+        value("today", "今天", 11, "808.00"),
+        value("thisWeek", "本周", 45, "3650.00"),
+        value("lastWeek", "上周", 78, "6120.00"),
+        value("thisMonth", "本月", 240, "18800.00"),
+        value("lastMonth", "上月", 260, "21000.00"),
+        value("lastThreeMonths", "最近三个月", 690, "56000.00")
+      ],
+      selfChannel: {
+        isSelfOwned: true,
+        typeText: "自有通道",
+        values: [
+          value("lastHour", "一小时内", 1, "58.00"),
+          value("today", "今天", 3, "168.00"),
+          value("thisWeek", "本周", 12, "920.00"),
+          value("lastWeek", "上周", 23, "1780.00"),
+          value("thisMonth", "本月", 82, "6200.00"),
+          value("lastMonth", "上月", 80, "6600.00"),
+          value("lastThreeMonths", "最近三个月", 215, "17600.00")
+        ]
+      },
+      paymentChannelProviders: [
+        {
+          id: "provider:20001",
+          name: "通道提供者张三",
+          role: "支付通道提供者",
+          merchantNo: "6448346",
+          level: 1,
+          values: [
+            value("lastHour", "一小时内", 1, "80.00"),
+            value("today", "今天", 6, "480.00"),
+            value("thisWeek", "本周", 25, "2090.00"),
+            value("lastWeek", "上周", 43, "3440.00"),
+            value("thisMonth", "本月", 128, "10200.00"),
+            value("lastMonth", "上月", 140, "11200.00"),
+            value("lastThreeMonths", "最近三个月", 380, "30800.00")
+          ],
+          children: []
+        }
+      ],
+      children: [
+        {
+          id: "merchant:10002",
+          name: "下级商户B",
+          role: "商户",
+          merchantNo: "7788990",
+          level: 1,
+          values: [
+            value("lastHour", "一小时内", 1, "50.00"),
+            value("today", "今天", 7, "480.00"),
+            value("thisWeek", "本周", 28, "2246.00"),
+            value("lastWeek", "上周", 43, "3410.00"),
+            value("thisMonth", "本月", 149, "11720.00"),
+            value("lastMonth", "上月", 160, "12880.00"),
+            value("lastThreeMonths", "最近三个月", 422, "34600.00")
+          ],
+          selfChannel: {
+            isSelfOwned: true,
+            typeText: "自有通道",
+            values: [
+              value("lastHour", "一小时内", 1, "50.00"),
+              value("today", "今天", 4, "260.00"),
+              value("thisWeek", "本周", 15, "1200.00"),
+              value("lastWeek", "上周", 21, "1680.00"),
+              value("thisMonth", "本月", 80, "6200.00"),
+              value("lastMonth", "上月", 90, "7200.00"),
+              value("lastThreeMonths", "最近三个月", 240, "19600.00")
+            ]
+          },
+          paymentChannelProviders: [
+            {
+              id: "provider:30001",
+              name: "子商户通道提供者王五",
+              role: "支付通道提供者",
+              merchantNo: "7788990",
+              level: 2,
+              values: [
+                value("lastHour", "一小时内", 0, "0.00"),
+                value("today", "今天", 3, "220.00"),
+                value("thisWeek", "本周", 13, "1046.00"),
+                value("lastWeek", "上周", 22, "1730.00"),
+                value("thisMonth", "本月", 69, "5520.00"),
+                value("lastMonth", "上月", 70, "5680.00"),
+                value("lastThreeMonths", "最近三个月", 182, "15000.00")
+              ],
+              children: []
+            }
+          ],
+          children: []
+        }
+      ]
+    }
+  }
+};
+
 export default {
   name: "VipSummary",
   data() {
     return {
-      statisticsLoading: false,
+      loading: false,
       periods: [],
       totals: [],
-      rows: []
+      merchantRoot: null
     };
   },
   computed: {
-    statisticCards() {
+    pageTitle() {
+      return this.merchantRoot
+        ? `${this.merchantRoot.name || this.merchantRoot.merchantNo} 收款统计`
+        : "商户收款统计";
+    },
+    pageDescription() {
+      return this.merchantRoot && this.merchantRoot.summary
+        ? this.merchantRoot.summary
+        : "展示当前账号可见商户树的成功类收款数据。";
+    },
+    summaryCards() {
       return this.periods.map(period => ({
         ...period,
         ...this.getPeriodValue(this.totals, period.key)
       }));
     },
     paymentTree() {
-      return this.buildPaymentTree(this.rows);
+      return this.merchantRoot ? [this.buildMerchantNode(this.merchantRoot)] : [];
     }
   },
   methods: {
     async loadStatistics() {
-      this.statisticsLoading = true;
+      this.loading = true;
       try {
-        const res = await merchantStatistics({});
-        const data = res && res.periods ? res : res && res.data ? res.data : {};
-        this.periods = Array.isArray(data.periods) ? data.periods : [];
-        this.totals = Array.isArray(data.total) ? data.total : [];
-        this.rows = Array.isArray(data.rows) ? data.rows : [];
-        this.$nextTick(() => {
-          this.$refs.paymentTable && this.$refs.paymentTable.doLayout();
-        });
+        const data = USE_MOCK_DATA
+          ? await this.loadMockStatistics()
+          : await this.loadRemoteStatistics();
+        this.applyStatistics(data);
       } finally {
-        this.statisticsLoading = false;
+        this.loading = false;
       }
     },
-    viewDetails() {
-      this.$router.push({
-        name: "VipSummaryEdit",
-        query: {
-          source: "adminSummary"
-        }
+    async loadMockStatistics() {
+      return MOCK_RESPONSE.data;
+    },
+    async loadRemoteStatistics() {
+      const res = await merchantStatistics({});
+      return (res && res.data) || res || {};
+    },
+    applyStatistics(data) {
+      this.periods = Array.isArray(data.periods) ? data.periods : [];
+      this.totals = Array.isArray(data.total) ? data.total : [];
+      this.merchantRoot = data.merchant || null;
+      this.$nextTick(() => {
+        this.$refs.paymentTable && this.$refs.paymentTable.doLayout();
       });
     },
-    buildPaymentTree(rows) {
-      const merchants = rows.filter(row => row.scopeType === "merchant");
-      const providers = rows.filter(row => row.scopeType === "provider");
-      const merchantMap = {};
-      const roots = [];
+    buildMerchantNode(merchant) {
+      const children = [];
 
-      merchants.forEach(row => {
-        merchantMap[row.id] = {
-          ...row,
-          nodeType: "merchant",
-          nodeTypeName: NODE_TYPE_NAME.merchant,
-          ownValues: row.values || [],
-          values: this.createEmptyValues(),
-          children: []
-        };
-      });
-
-      merchants.forEach(row => {
-        const node = merchantMap[row.id];
-        const parent = merchantMap[row.parentId];
-        if (parent) {
-          parent.children.push(node);
-        } else {
-          roots.push(node);
-        }
-      });
-
-      providers.forEach(row => {
-        const parent = merchantMap[row.parentId];
-        if (!parent) return;
-        parent.children.push({
-          ...row,
-          nodeType: "provider",
-          nodeTypeName: NODE_TYPE_NAME.provider,
-          values: row.values || []
-        });
-      });
-
-      roots.forEach(root => {
-        this.fillMerchantNode(root);
-      });
-
-      return roots;
-    },
-    fillMerchantNode(node) {
-      const merchantChildren = node.children.filter(
-        child => child.nodeType === "merchant"
-      );
-      const providerChildren = node.children.filter(
-        child => child.nodeType === "provider"
-      );
-      const ownChannelNode = {
-        id: `${node.id}:own-channel`,
-        name: `${node.name} 自有通道`,
+      children.push({
+        id: `${merchant.id}:self`,
+        name: `${merchant.name || merchant.merchantNo} 自有通道`,
         nodeType: "channel",
         nodeTypeName: NODE_TYPE_NAME.channel,
-        values: node.ownValues
-      };
-
-      merchantChildren.forEach(child => {
-        this.fillMerchantNode(child);
+        merchantNo: merchant.merchantNo,
+        values: this.getChannelValues(merchant.selfChannel)
       });
 
-      node.values = this.sumValues([
-        node.ownValues,
-        ...merchantChildren.map(child => child.values),
-        ...providerChildren.map(child => child.values)
-      ]);
-      node.children = [
-        ownChannelNode,
-        ...merchantChildren,
-        ...providerChildren
-      ];
-      delete node.ownValues;
+      (merchant.paymentChannelProviders || []).forEach(provider => {
+        children.push(this.buildProviderNode(provider));
+      });
+
+      (merchant.children || []).forEach(child => {
+        children.push(this.buildMerchantNode(child));
+      });
+
+      return {
+        id: merchant.id,
+        name: merchant.name || merchant.merchantNo,
+        nodeType: "merchant",
+        nodeTypeName: NODE_TYPE_NAME.merchant,
+        merchantNo: merchant.merchantNo,
+        values: merchant.values || [],
+        children
+      };
+    },
+    buildProviderNode(provider) {
+      return {
+        id: provider.id,
+        name: provider.name || provider.id,
+        nodeType: "provider",
+        nodeTypeName: NODE_TYPE_NAME.provider,
+        merchantNo: provider.merchantNo,
+        values: provider.values || [],
+        children: Array.isArray(provider.children)
+          ? provider.children.map(child => this.buildProviderNode(child))
+          : []
+      };
+    },
+    getChannelValues(channel) {
+      if (channel && Array.isArray(channel.values)) {
+        return channel.values;
+      }
+      return this.createEmptyValues();
     },
     createEmptyValues() {
       return this.periods.map(period => ({
         periodKey: period.key,
+        periodLabel: period.label,
         successCount: 0,
         successSystemAmount: "0.00"
       }));
-    },
-    sumValues(valueGroups) {
-      return this.periods.map(period => {
-        const total = valueGroups.reduce(
-          (acc, values) => {
-            const value = this.getPeriodValue(values, period.key);
-            return {
-              successCount: acc.successCount + Number(value.successCount || 0),
-              successSystemAmount:
-                acc.successSystemAmount + Number(value.successSystemAmount || 0)
-            };
-          },
-          {
-            successCount: 0,
-            successSystemAmount: 0
-          }
-        );
-
-        return {
-          periodKey: period.key,
-          successCount: total.successCount,
-          successSystemAmount: total.successSystemAmount.toFixed(2)
-        };
-      });
     },
     getPeriodValue(values, periodKey) {
       if (!Array.isArray(values)) {
@@ -246,25 +343,49 @@ export default {
       );
     },
     formatMoney(value) {
-      const number = Number(value || 0);
-      return number.toFixed(2);
+      return Number(value || 0).toFixed(2);
     },
     formatCount(value) {
       return Number(value || 0);
+    },
+    isBranchNode(row) {
+      return Array.isArray(row.children) && row.children.length > 0;
+    },
+    switchToRemoteData() {
+      this.loading = true;
+      return this.loadRemoteStatistics()
+        .then(data => {
+          this.applyStatistics(data);
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     }
   },
   mounted() {
     this.loadStatistics();
   }
 };
+
+function value(periodKey, periodLabel, successCount, successSystemAmount) {
+  return {
+    periodKey,
+    periodLabel,
+    successCount,
+    successSystemAmount
+  };
+}
 </script>
 
 <style scoped>
-.admin_summary_page {
-  min-height: 100%;
+.vip_summary_page {
+  height: 100%;
   padding: 18px;
   background: #f3f7fb;
   color: #18345a;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .summary_header {
@@ -299,11 +420,15 @@ export default {
   color: #46617f;
 }
 
-.summary_actions {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  white-space: nowrap;
+.tree_badge {
+  display: inline-block;
+  align-self: flex-start;
+  padding: 3px 8px;
+  border-radius: 5px;
+  background: #dbf2ff;
+  color: #0079ad;
+  font-size: 12px;
+  font-weight: 800;
 }
 
 .stat_card_list {
@@ -315,7 +440,7 @@ export default {
 
 .stat_card {
   min-height: 116px;
-  padding: 38px 28px 18px;
+  padding: 18px 20px;
   border-radius: 6px;
   background: #fff;
   box-shadow: 0 1px 0 rgba(24, 52, 90, 0.04);
@@ -331,22 +456,24 @@ export default {
   font-size: 22px;
   line-height: 1.1;
   font-weight: 800;
-  color: #00b887;
+  color: #0066ff;
 }
 
-.stat_count,
-.table_count {
+.stat_count {
   margin-top: 4px;
   font-size: 12px;
   color: #395779;
 }
 
 .detail_panel {
-  height: calc(100vh - 310px);
-  min-height: 420px;
+  flex: 1;
+  min-height: 0;
   padding: 28px;
   border-radius: 6px;
   background: #fff;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .table_header {
@@ -360,25 +487,63 @@ export default {
   font-size: 28px;
 }
 
-.tree_badge {
-  display: inline-block;
-  padding: 3px 8px;
-  border-radius: 5px;
-  background: #dbf2ff;
-  color: #0079ad;
-  font-size: 12px;
-  font-weight: 800;
+.table_wrap {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  display: flex;
 }
 
-.node_name,
-.table_amount {
-  font-weight: 700;
-  color: #0f2a4d;
+.table_wrap :deep(.el-table) {
+  width: 100%;
+  height: 100%;
+}
+
+.table_wrap :deep(.el-table__body-wrapper) {
+  overflow: auto;
+}
+
+.node {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  min-height: 28px;
+}
+
+.toggle_spacer {
+  width: 18px;
+  flex: 0 0 auto;
+}
+
+.toggle_spacer_leaf {
+  opacity: 0;
+}
+
+.node_main {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.node_title {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+  font-weight: 800;
+  word-break: break-word;
+}
+
+.node_meta {
+  font-size: 12px;
+  line-height: 1.4;
+  color: #587294;
 }
 
 .node_tag {
   display: inline-block;
-  margin-left: 6px;
   padding: 2px 7px;
   border-radius: 5px;
   background: #eef4fb;
@@ -400,6 +565,21 @@ export default {
 .node_tag.provider {
   background: #dbf2ff;
   color: #0079ad;
+}
+
+.metric {
+  display: grid;
+  gap: 4px;
+}
+
+.metric strong {
+  font-size: 15px;
+  color: #0f2a4d;
+}
+
+.metric span {
+  font-size: 12px;
+  color: #395779;
 }
 
 @media (max-width: 1400px) {

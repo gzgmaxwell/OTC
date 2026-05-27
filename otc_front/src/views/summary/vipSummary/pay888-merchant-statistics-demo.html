@@ -1,0 +1,697 @@
+<!doctype html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>PAY888 商户统计公开 API 前端展示示例</title>
+        <style>
+            :root {
+                --surface: #ffffff;
+                --page: #f6f7fb;
+                --border: #e5e7eb;
+                --text: #111827;
+                --muted: #6b7280;
+                --primary: #2563eb;
+                --success: #0f766e;
+                --info: #0369a1;
+                --secondary: #4b5563;
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+
+            body {
+                margin: 0;
+                background: var(--page);
+                color: var(--text);
+                font-family:
+                    system-ui,
+                    -apple-system,
+                    BlinkMacSystemFont,
+                    "Segoe UI",
+                    "Microsoft YaHei",
+                    sans-serif;
+            }
+
+            .page {
+                display: grid;
+                gap: 20px;
+                max-width: 1280px;
+                margin: 0 auto;
+                padding: 28px;
+            }
+
+            .header {
+                display: flex;
+                justify-content: space-between;
+                gap: 16px;
+                align-items: flex-start;
+            }
+
+            .eyebrow {
+                margin-bottom: 6px;
+                font-size: 12px;
+                font-weight: 800;
+                color: var(--muted);
+                letter-spacing: 0;
+            }
+
+            h1,
+            h2,
+            p {
+                margin: 0;
+            }
+
+            h1 {
+                font-size: 26px;
+                line-height: 1.25;
+            }
+
+            h2 {
+                font-size: 18px;
+            }
+
+            .description,
+            .card-head p,
+            .summary-card span,
+            .summary-card small,
+            .metric small,
+            .node-meta {
+                color: var(--muted);
+            }
+
+            .summary-grid {
+                display: grid;
+                grid-template-columns: repeat(7, minmax(0, 1fr));
+                gap: 12px;
+            }
+
+            .card,
+            .summary-card {
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                background: var(--surface);
+            }
+
+            .summary-card {
+                display: grid;
+                gap: 6px;
+                min-height: 108px;
+                padding: 16px;
+                align-content: center;
+            }
+
+            .summary-card strong {
+                color: var(--primary);
+                font-size: 22px;
+                line-height: 1.15;
+                font-family: Consolas, "Courier New", monospace;
+            }
+
+            .table-card {
+                display: grid;
+                gap: 14px;
+                padding: 16px;
+            }
+
+            .card-head {
+                display: flex;
+                justify-content: space-between;
+                gap: 16px;
+                align-items: flex-start;
+            }
+
+            .tag {
+                display: inline-flex;
+                align-items: center;
+                min-height: 22px;
+                border-radius: 6px;
+                padding: 2px 8px;
+                font-size: 12px;
+                font-weight: 800;
+                white-space: nowrap;
+            }
+
+            .tag-success {
+                background: #ccfbf1;
+                color: var(--success);
+            }
+
+            .tag-info {
+                background: #e0f2fe;
+                color: var(--info);
+            }
+
+            .tag-secondary {
+                background: #f3f4f6;
+                color: var(--secondary);
+            }
+
+            .table-wrap {
+                overflow: auto;
+                border: 1px solid var(--border);
+                border-radius: 8px;
+            }
+
+            table {
+                width: 100%;
+                min-width: 1080px;
+                border-collapse: collapse;
+                background: #fff;
+            }
+
+            th,
+            td {
+                padding: 12px;
+                border-bottom: 1px solid var(--border);
+                text-align: left;
+                vertical-align: top;
+                white-space: nowrap;
+            }
+
+            th {
+                background: #f9fafb;
+                font-size: 13px;
+                color: #374151;
+            }
+
+            th:first-child,
+            td:first-child {
+                width: 320px;
+                min-width: 320px;
+                max-width: 320px;
+                white-space: normal;
+            }
+
+            .node {
+                display: flex;
+                align-items: flex-start;
+                gap: 8px;
+                min-height: 28px;
+            }
+
+            .toggle {
+                width: 24px;
+                height: 24px;
+                border: 0;
+                border-radius: 6px;
+                background: transparent;
+                color: var(--muted);
+                cursor: pointer;
+                flex: 0 0 auto;
+            }
+
+            .toggle:hover {
+                background: #f3f4f6;
+                color: var(--text);
+            }
+
+            .toggle-placeholder {
+                width: 24px;
+                flex: 0 0 auto;
+            }
+
+            .node-main {
+                display: grid;
+                gap: 4px;
+                min-width: 0;
+            }
+
+            .node-title {
+                display: flex;
+                gap: 8px;
+                align-items: center;
+                flex-wrap: wrap;
+                font-weight: 800;
+                word-break: break-word;
+            }
+
+            .node-meta {
+                font-size: 12px;
+                line-height: 1.4;
+            }
+
+            .metric {
+                display: grid;
+                gap: 4px;
+            }
+
+            .metric strong {
+                font-family: Consolas, "Courier New", monospace;
+                font-size: 15px;
+            }
+
+            .code-card {
+                padding: 16px;
+            }
+
+            .code-card pre {
+                overflow: auto;
+                margin: 12px 0 0;
+                border-radius: 8px;
+                background: #111827;
+                color: #f9fafb;
+                padding: 14px;
+                font-size: 12px;
+                line-height: 1.55;
+            }
+
+            @media (max-width: 980px) {
+                .page {
+                    padding: 18px;
+                }
+
+                .header,
+                .card-head {
+                    display: grid;
+                }
+
+                .summary-grid {
+                    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <main class="page">
+            <header class="header">
+                <div>
+                    <div class="eyebrow">PAY888 OPEN API DEMO</div>
+                    <h1 id="pageTitle">商户收款统计</h1>
+                    <p class="description" id="pageDescription"></p>
+                </div>
+                <span class="tag tag-info">模拟公开 API 返回</span>
+            </header>
+
+            <section class="summary-grid" id="summaryGrid"></section>
+
+            <section class="card table-card">
+                <div class="card-head">
+                    <div>
+                        <h2>树状收款明细</h2>
+                        <p>按“商户 - 自有通道 - 支付通道提供者 - 下级商户”展开。</p>
+                    </div>
+                    <span class="tag tag-info">TREE</span>
+                </div>
+
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr id="tableHeader"></tr>
+                        </thead>
+                        <tbody id="tableBody"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="card code-card">
+                <h2>对接方拿到公开 API 返回后只需要渲染 data</h2>
+                <pre id="responsePreview"></pre>
+            </section>
+        </main>
+
+        <script>
+            const apiResponse = {
+                code: 0,
+                message: "成功",
+                data: {
+                    merchantNo: "6448346",
+                    merchantName: "演示商户A",
+                    summary: "这是商户 演示商户A 以及自有通道、下级商户、支付通道提供者的收款统计。",
+                    periods: [
+                        { key: "lastHour", label: "一小时内", startAt: "2026-05-27T15:00:00+08:00", endAt: "2026-05-27T16:00:00+08:00", description: "统计一小时内这个区间内已经成功或视为成功的收款订单。" },
+                        { key: "today", label: "今天", startAt: "2026-05-27T00:00:00+08:00", endAt: "2026-05-28T00:00:00+08:00", description: "统计今天这个区间内已经成功或视为成功的收款订单。" },
+                        { key: "thisWeek", label: "本周", startAt: "2026-05-25T00:00:00+08:00", endAt: "2026-06-01T00:00:00+08:00", description: "统计本周这个区间内已经成功或视为成功的收款订单。" },
+                        { key: "lastWeek", label: "上周", startAt: "2026-05-18T00:00:00+08:00", endAt: "2026-05-25T00:00:00+08:00", description: "统计上周这个区间内已经成功或视为成功的收款订单。" },
+                        { key: "thisMonth", label: "本月", startAt: "2026-05-01T00:00:00+08:00", endAt: "2026-06-01T00:00:00+08:00", description: "统计本月这个区间内已经成功或视为成功的收款订单。" },
+                        { key: "lastMonth", label: "上月", startAt: "2026-04-01T00:00:00+08:00", endAt: "2026-05-01T00:00:00+08:00", description: "统计上月这个区间内已经成功或视为成功的收款订单。" },
+                        { key: "lastThreeMonths", label: "最近三个月", startAt: "2026-02-27T00:00:00+08:00", endAt: "2026-05-28T00:00:00+08:00", description: "统计最近三个月这个区间内已经成功或视为成功的收款订单。" }
+                    ],
+                    total: [
+                        value("lastHour", "一小时内", 3, "188.00", "总计 全部商户 在一小时内收款 188.00 元，共 3 笔。"),
+                        value("today", "今天", 18, "1288.00", "总计 全部商户 在今天收款 1288.00 元，共 18 笔。"),
+                        value("thisWeek", "本周", 73, "5896.00", "总计 全部商户 在本周收款 5896.00 元，共 73 笔。"),
+                        value("lastWeek", "上周", 121, "9530.00", "总计 全部商户 在上周收款 9530.00 元，共 121 笔。"),
+                        value("thisMonth", "本月", 389, "30520.00", "总计 全部商户 在本月收款 30520.00 元，共 389 笔。"),
+                        value("lastMonth", "上月", 420, "33880.00", "总计 全部商户 在上月收款 33880.00 元，共 420 笔。"),
+                        value("lastThreeMonths", "最近三个月", 1112, "90600.00", "总计 全部商户 在最近三个月收款 90600.00 元，共 1112 笔。")
+                    ],
+                    merchant: {
+                        id: "merchant:10001",
+                        name: "演示商户A",
+                        role: "商户",
+                        merchantNo: "6448346",
+                        level: 0,
+                        description: "商户 演示商户A 的收款统计。",
+                        values: [
+                            value("lastHour", "一小时内", 2, "138.00"),
+                            value("today", "今天", 11, "808.00"),
+                            value("thisWeek", "本周", 45, "3650.00"),
+                            value("lastWeek", "上周", 78, "6120.00"),
+                            value("thisMonth", "本月", 240, "18800.00"),
+                            value("lastMonth", "上月", 260, "21000.00"),
+                            value("lastThreeMonths", "最近三个月", 690, "56000.00")
+                        ],
+                        selfChannel: {
+                            isSelfOwned: true,
+                            typeText: "自有通道",
+                            values: [
+                                value("lastHour", "一小时内", 1, "58.00"),
+                                value("today", "今天", 3, "168.00"),
+                                value("thisWeek", "本周", 12, "920.00"),
+                                value("lastWeek", "上周", 23, "1780.00"),
+                                value("thisMonth", "本月", 82, "6200.00"),
+                                value("lastMonth", "上月", 80, "6600.00"),
+                                value("lastThreeMonths", "最近三个月", 215, "17600.00")
+                            ]
+                        },
+                        paymentChannelProviders: [
+                            {
+                                id: "provider:20001",
+                                name: "通道提供者张三",
+                                role: "支付通道提供者",
+                                merchantNo: "6448346",
+                                level: 1,
+                                description: "支付通道提供者 通道提供者张三 的收款统计。",
+                                values: [
+                                    value("lastHour", "一小时内", 1, "80.00"),
+                                    value("today", "今天", 6, "480.00"),
+                                    value("thisWeek", "本周", 25, "2090.00"),
+                                    value("lastWeek", "上周", 43, "3440.00"),
+                                    value("thisMonth", "本月", 128, "10200.00"),
+                                    value("lastMonth", "上月", 140, "11200.00"),
+                                    value("lastThreeMonths", "最近三个月", 380, "30800.00")
+                                ],
+                                children: [
+                                    {
+                                        id: "provider:20002",
+                                        name: "下级提供者李四",
+                                        role: "支付通道提供者",
+                                        merchantNo: "6448346",
+                                        level: 2,
+                                        description: "支付通道提供者 下级提供者李四 的收款统计。",
+                                        values: [
+                                            value("lastHour", "一小时内", 0, "0.00"),
+                                            value("today", "今天", 2, "160.00"),
+                                            value("thisWeek", "本周", 8, "640.00"),
+                                            value("lastWeek", "上周", 12, "900.00"),
+                                            value("thisMonth", "本月", 30, "2400.00"),
+                                            value("lastMonth", "上月", 40, "3200.00"),
+                                            value("lastThreeMonths", "最近三个月", 95, "7600.00")
+                                        ],
+                                        children: []
+                                    }
+                                ]
+                            }
+                        ],
+                        children: [
+                            {
+                                id: "merchant:10002",
+                                name: "下级商户B",
+                                role: "商户",
+                                merchantNo: "7788990",
+                                level: 1,
+                                description: "商户 下级商户B 的收款统计。",
+                                values: [
+                                    value("lastHour", "一小时内", 1, "50.00"),
+                                    value("today", "今天", 7, "480.00"),
+                                    value("thisWeek", "本周", 28, "2246.00"),
+                                    value("lastWeek", "上周", 43, "3410.00"),
+                                    value("thisMonth", "本月", 149, "11720.00"),
+                                    value("lastMonth", "上月", 160, "12880.00"),
+                                    value("lastThreeMonths", "最近三个月", 422, "34600.00")
+                                ],
+                                selfChannel: {
+                                    isSelfOwned: true,
+                                    typeText: "自有通道",
+                                    values: [
+                                        value("lastHour", "一小时内", 1, "50.00"),
+                                        value("today", "今天", 4, "260.00"),
+                                        value("thisWeek", "本周", 15, "1200.00"),
+                                        value("lastWeek", "上周", 21, "1680.00"),
+                                        value("thisMonth", "本月", 80, "6200.00"),
+                                        value("lastMonth", "上月", 90, "7200.00"),
+                                        value("lastThreeMonths", "最近三个月", 240, "19600.00")
+                                    ]
+                                },
+                                paymentChannelProviders: [
+                                    {
+                                        id: "provider:30001",
+                                        name: "子商户通道提供者王五",
+                                        role: "支付通道提供者",
+                                        merchantNo: "7788990",
+                                        level: 2,
+                                        description: "支付通道提供者 子商户通道提供者王五 的收款统计。",
+                                        values: [
+                                            value("lastHour", "一小时内", 0, "0.00"),
+                                            value("today", "今天", 3, "220.00"),
+                                            value("thisWeek", "本周", 13, "1046.00"),
+                                            value("lastWeek", "上周", 22, "1730.00"),
+                                            value("thisMonth", "本月", 69, "5520.00"),
+                                            value("lastMonth", "上月", 70, "5680.00"),
+                                            value("lastThreeMonths", "最近三个月", 182, "15000.00")
+                                        ],
+                                        children: []
+                                    }
+                                ],
+                                children: []
+                            }
+                        ]
+                    }
+                }
+            };
+
+            function value(periodKey, periodLabel, successCount, successSystemAmount, text) {
+                return {
+                    periodKey,
+                    periodLabel,
+                    successCount,
+                    successSystemAmount,
+                    text: text || `${periodLabel}收款 ${successSystemAmount} 元，共 ${successCount} 笔。`
+                };
+            }
+
+            applyBackendStatisticsText(apiResponse.data);
+
+            function applyBackendStatisticsText(statistics) {
+                updateStatisticsValuesText(statistics.total || [], "总计", "全部商户");
+                if (statistics.merchant) {
+                    updateMerchantStatisticsText(statistics.merchant);
+                }
+            }
+
+            function updateMerchantStatisticsText(merchant) {
+                updateStatisticsValuesText(merchant.values || [], "商户", merchant.name || merchant.merchantNo);
+                updateSelfChannelStatisticsText(merchant.selfChannel?.values || []);
+
+                for (const provider of merchant.paymentChannelProviders || []) {
+                    updateProviderStatisticsText(provider);
+                }
+
+                for (const childMerchant of merchant.children || []) {
+                    updateMerchantStatisticsText(childMerchant);
+                }
+            }
+
+            function updateProviderStatisticsText(provider) {
+                updateStatisticsValuesText(provider.values || [], "支付通道提供者", provider.name || provider.id);
+                for (const childProvider of provider.children || []) {
+                    updateProviderStatisticsText(childProvider);
+                }
+            }
+
+            function updateStatisticsValuesText(values, role, name) {
+                for (const item of values) {
+                    item.text = `${role} ${name} 在${item.periodLabel}收款 ${item.successSystemAmount} 元，共 ${item.successCount} 笔。`;
+                }
+            }
+
+            function updateSelfChannelStatisticsText(values) {
+                for (const item of values) {
+                    item.text = `商户自有通道在${item.periodLabel}收款 ${item.successSystemAmount} 元，共 ${item.successCount} 笔。`;
+                }
+            }
+
+            const state = {
+                collapsed: new Set()
+            };
+
+            const data = apiResponse.data;
+
+            document.getElementById("pageTitle").textContent = `${data.merchantName} 收款统计`;
+            document.getElementById("pageDescription").textContent = data.summary;
+            document.getElementById("responsePreview").textContent = JSON.stringify(apiResponse, null, 4);
+
+            render();
+
+            function render() {
+                renderSummary();
+                renderTable();
+            }
+
+            function renderSummary() {
+                const summaryGrid = document.getElementById("summaryGrid");
+                summaryGrid.innerHTML = "";
+
+                for (const period of data.periods) {
+                    const current = findValue(data.total, period.key);
+                    const card = document.createElement("article");
+                    card.className = "summary-card";
+                    card.innerHTML = `
+                        <span>${escapeHtml(period.label)}</span>
+                        <strong>${escapeHtml(current.successSystemAmount)}</strong>
+                        <small>${current.successCount} 笔成功类订单</small>
+                    `;
+                    summaryGrid.appendChild(card);
+                }
+            }
+
+            function renderTable() {
+                const header = document.getElementById("tableHeader");
+                header.innerHTML = `<th>收款节点</th>${data.periods.map((period) => `<th>${escapeHtml(period.label)}</th>`).join("")}`;
+
+                const body = document.getElementById("tableBody");
+                body.innerHTML = "";
+
+                if (!data.merchant) {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `<td colspan="${data.periods.length + 1}">暂无统计数据</td>`;
+                    body.appendChild(row);
+                    return;
+                }
+
+                const rows = flattenRows(buildMerchantNode(data.merchant), []);
+                for (const rowData of rows) {
+                    body.appendChild(renderRow(rowData));
+                }
+            }
+
+            function buildMerchantNode(merchant) {
+                const children = [];
+
+                children.push({
+                    id: `${merchant.id}:self`,
+                    name: `${merchant.name || merchant.merchantNo} 自有通道`,
+                    role: merchant.selfChannel.typeText || "自有通道",
+                    level: merchant.level + 1,
+                    type: "self",
+                    values: merchant.selfChannel.values || [],
+                    children: []
+                });
+
+                for (const provider of merchant.paymentChannelProviders || []) {
+                    children.push(buildProviderNode(provider));
+                }
+
+                for (const childMerchant of merchant.children || []) {
+                    children.push(buildMerchantNode(childMerchant));
+                }
+
+                return {
+                    id: merchant.id,
+                    name: merchant.name || merchant.merchantNo,
+                    role: merchant.role || "商户",
+                    level: merchant.level,
+                    type: "merchant",
+                    merchantNo: merchant.merchantNo,
+                    values: merchant.values || [],
+                    children
+                };
+            }
+
+            function buildProviderNode(provider) {
+                const children = (provider.children || []).map(buildProviderNode);
+                return {
+                    id: provider.id,
+                    name: provider.name || provider.id,
+                    role: provider.role || "支付通道提供者",
+                    level: provider.level,
+                    type: "provider",
+                    merchantNo: provider.merchantNo,
+                    values: provider.values || [],
+                    children
+                };
+            }
+
+            function flattenRows(node, output) {
+                output.push(node);
+                if (state.collapsed.has(node.id)) {
+                    return output;
+                }
+                for (const child of node.children) {
+                    flattenRows(child, output);
+                }
+                return output;
+            }
+
+            function renderRow(rowData) {
+                const row = document.createElement("tr");
+                const tagClass = rowData.type === "merchant" ? "tag-success" : rowData.type === "provider" ? "tag-info" : "tag-secondary";
+                const canToggle = rowData.children.length > 0;
+                const toggleText = state.collapsed.has(rowData.id) ? "▶" : "▼";
+                const cells = data.periods
+                    .map((period) => {
+                        const current = findValue(rowData.values, period.key);
+                        return `
+                            <td>
+                                <div class="metric">
+                                    <strong>${escapeHtml(current.successSystemAmount)}</strong>
+                                    <small>${current.successCount} 笔</small>
+                                </div>
+                            </td>
+                        `;
+                    })
+                    .join("");
+
+                row.innerHTML = `
+                    <td>
+                        <div class="node" style="padding-left: ${rowData.level * 18}px">
+                            ${
+                                canToggle
+                                    ? `<button class="toggle" type="button" data-id="${escapeHtml(rowData.id)}">${toggleText}</button>`
+                                    : `<span class="toggle-placeholder"></span>`
+                            }
+                            <div class="node-main">
+                                <div class="node-title">
+                                    <span>${escapeHtml(rowData.name)}</span>
+                                    <span class="tag ${tagClass}">${escapeHtml(rowData.role)}</span>
+                                </div>
+                                <div class="node-meta">${escapeHtml(rowData.merchantNo ? `商户号：${rowData.merchantNo}` : rowData.id)}</div>
+                            </div>
+                        </div>
+                    </td>
+                    ${cells}
+                `;
+
+                const toggle = row.querySelector(".toggle");
+                if (toggle) {
+                    toggle.addEventListener("click", () => {
+                        const id = toggle.getAttribute("data-id");
+                        if (state.collapsed.has(id)) {
+                            state.collapsed.delete(id);
+                        } else {
+                            state.collapsed.add(id);
+                        }
+                        renderTable();
+                    });
+                }
+
+                return row;
+            }
+
+            function findValue(values, periodKey) {
+                return values.find((item) => item.periodKey === periodKey) || value(periodKey, periodKey, 0, "0.00");
+            }
+
+            function escapeHtml(value) {
+                return String(value)
+                    .replace(/&/g, "&amp;")
+                    .replace(/</g, "&lt;")
+                    .replace(/>/g, "&gt;")
+                    .replace(/"/g, "&quot;")
+                    .replace(/'/g, "&#039;");
+            }
+        </script>
+    </body>
+</html>

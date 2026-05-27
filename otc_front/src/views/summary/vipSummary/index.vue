@@ -2,7 +2,6 @@
   <div class="vip_summary_page">
     <div class="summary_header">
       <div>
-        <div class="summary_eyebrow">PAY888 OPEN API DEMO</div>
         <h2>{{ pageTitle }}</h2>
         <p>{{ pageDescription }}</p>
       </div>
@@ -83,7 +82,7 @@ const NODE_TYPE_NAME = {
   provider: "支付通道提供者"
 };
 
-const USE_MOCK_DATA = true;
+const USE_MOCK_DATA = false;
 
 const MOCK_RESPONSE = {
   code: 0,
@@ -394,14 +393,6 @@ function value(periodKey, periodLabel, successCount, successSystemAmount) {
   gap: 16px;
   margin-bottom: 18px;
 }
-
-.summary_eyebrow {
-  margin-bottom: 8px;
-  color: #587294;
-  font-size: 12px;
-  font-weight: 800;
-}
-
 .summary_header h2,
 .table_header h3 {
   margin: 0;

@@ -3,7 +3,7 @@
     <div class="top_wrapper">
       <div class="search_box">
         <el-input placeholder="用户id" v-model="params.userId" style="width: 30%; " @keyup.enter.native="search" />
-        <el-input placeholder="交易流水号" v-model="params.transNumber" style="width: 30%;margin-left: 10px; "
+        <el-input placeholder="交易流水号" v-model="params.id" style="width: 30%;margin-left: 10px; "
           @keyup.enter.native="search" />
         <!-- <el-select v-model="params.orderModel" style="width: 30%;margin-left: 5px;" placeholder="下单模式">
           <el-option v-for="(item, index) in optOrderModel" :key="index" :label="item.label"
@@ -22,7 +22,7 @@
 
     <div class="table_wrapper">
       <el-table ref="multipleTable" :data="list" border height="100%" stripe style="width: 100%">
-        <el-table-column prop="transNumber" label="交易流水号" width="110"></el-table-column>
+        <el-table-column prop="id" label="交易流水号" width="110"></el-table-column>
         <el-table-column prop="balance" label="转出人余额" width="110"></el-table-column>
         <el-table-column prop="fromId" label="转出人用户id" width="110"></el-table-column>
         <el-table-column prop="fromNickName" label="转出人"></el-table-column>

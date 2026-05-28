@@ -46,7 +46,7 @@
             <img :src="scope.row.pic" v-if="scope.row.pic" style="width: 50px; height: 50px" />
           </template>
         </el-table-column>
-        <el-table-column prop="id" label="订单编号"></el-table-column>
+        <el-table-column prop="id" label="申述编号"></el-table-column>
         <el-table-column prop="orderNumber" label="订单号"></el-table-column>
         <el-table-column prop="fullName" label="姓名"></el-table-column>
         <el-table-column prop="userName" label="用户帐号"></el-table-column>

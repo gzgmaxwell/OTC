@@ -50,7 +50,7 @@
           <template slot-scope="scope">
             <el-button size="mini" @click="edit(scope.row)">查看</el-button>
             <el-button size="mini" type="primary" @click="addBlack(scope.row)">加入黑名单</el-button>
-            <el-button size="mini" type="danger" @click="Close(scope.row)">关闭</el-button>
+            <el-button size="mini" type="danger" v-if="scope.row.orderStatus != 3" @click="Close(scope.row)">关闭</el-button>
             <el-button size="mini" type="primary" v-if="scope.row.orderStatus == 2 || scope.row.orderStatus == 5"
               @click="releaseBuyOrder(scope.row)">放行</el-button>
           </template>

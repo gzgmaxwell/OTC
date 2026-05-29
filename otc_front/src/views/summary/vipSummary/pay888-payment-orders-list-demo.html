@@ -1,0 +1,730 @@
+<!doctype html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>PAY888 订单列表公开 API 前端展示示例</title>
+        <style>
+            :root {
+                --surface: #ffffff;
+                --page: #f6f7fb;
+                --border: #e5e7eb;
+                --text: #111827;
+                --muted: #6b7280;
+                --primary: #2563eb;
+                --success: #0f766e;
+                --warning: #b45309;
+                --danger: #b91c1c;
+                --info: #0369a1;
+                --secondary: #4b5563;
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+
+            body {
+                margin: 0;
+                background: var(--page);
+                color: var(--text);
+                font-family:
+                    system-ui,
+                    -apple-system,
+                    BlinkMacSystemFont,
+                    "Segoe UI",
+                    "Microsoft YaHei",
+                    sans-serif;
+            }
+
+            .page {
+                display: grid;
+                gap: 20px;
+                max-width: 1360px;
+                margin: 0 auto;
+                padding: 28px;
+            }
+
+            .header,
+            .card-head,
+            .toolbar {
+                display: flex;
+                justify-content: space-between;
+                gap: 16px;
+                align-items: flex-start;
+            }
+
+            .eyebrow {
+                margin-bottom: 6px;
+                font-size: 12px;
+                font-weight: 800;
+                color: var(--muted);
+                letter-spacing: 0;
+            }
+
+            h1,
+            h2,
+            p {
+                margin: 0;
+            }
+
+            h1 {
+                font-size: 26px;
+                line-height: 1.25;
+            }
+
+            h2 {
+                font-size: 18px;
+            }
+
+            .muted,
+            .card-head p,
+            .summary-card span,
+            .summary-card small,
+            .order-sub,
+            .group-meta {
+                color: var(--muted);
+            }
+
+            .summary-grid {
+                display: grid;
+                grid-template-columns: repeat(5, minmax(0, 1fr));
+                gap: 12px;
+            }
+
+            .card,
+            .summary-card {
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                background: var(--surface);
+            }
+
+            .summary-card {
+                display: grid;
+                gap: 6px;
+                min-height: 104px;
+                padding: 16px;
+                align-content: center;
+            }
+
+            .summary-card strong {
+                color: var(--primary);
+                font-size: 22px;
+                line-height: 1.15;
+                font-family: Consolas, "Courier New", monospace;
+            }
+
+            .table-card,
+            .code-card,
+            .groups-card {
+                display: grid;
+                gap: 14px;
+                padding: 16px;
+            }
+
+            .tag {
+                display: inline-flex;
+                align-items: center;
+                min-height: 22px;
+                border-radius: 6px;
+                padding: 2px 8px;
+                font-size: 12px;
+                font-weight: 800;
+                white-space: nowrap;
+            }
+
+            .tag-success {
+                background: #ccfbf1;
+                color: var(--success);
+            }
+
+            .tag-warning {
+                background: #fef3c7;
+                color: var(--warning);
+            }
+
+            .tag-danger {
+                background: #fee2e2;
+                color: var(--danger);
+            }
+
+            .tag-info {
+                background: #e0f2fe;
+                color: var(--info);
+            }
+
+            .tag-secondary {
+                background: #f3f4f6;
+                color: var(--secondary);
+            }
+
+            .table-wrap {
+                overflow: auto;
+                border: 1px solid var(--border);
+                border-radius: 8px;
+            }
+
+            table {
+                width: 100%;
+                min-width: 1260px;
+                border-collapse: collapse;
+                background: #fff;
+            }
+
+            th,
+            td {
+                padding: 12px;
+                border-bottom: 1px solid var(--border);
+                text-align: left;
+                vertical-align: top;
+                white-space: nowrap;
+            }
+
+            th {
+                background: #f9fafb;
+                font-size: 13px;
+                color: #374151;
+            }
+
+            th:first-child,
+            td:first-child {
+                width: 260px;
+                min-width: 260px;
+                white-space: normal;
+            }
+
+            .order-main {
+                display: grid;
+                gap: 5px;
+            }
+
+            .order-title {
+                font-weight: 800;
+                word-break: break-word;
+            }
+
+            .order-sub {
+                font-size: 12px;
+                line-height: 1.4;
+                word-break: break-word;
+            }
+
+            .amount {
+                display: grid;
+                gap: 4px;
+                font-family: Consolas, "Courier New", monospace;
+            }
+
+            .amount strong {
+                font-size: 15px;
+            }
+
+            .merchant-cell,
+            .channel-cell,
+            .callback-cell {
+                display: grid;
+                gap: 5px;
+            }
+
+            .groups {
+                display: grid;
+                gap: 8px;
+            }
+
+            .group-row {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                min-height: 34px;
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                padding: 8px 10px;
+                background: #fff;
+            }
+
+            .group-name {
+                font-weight: 800;
+            }
+
+            .group-orders {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 6px;
+                margin-left: auto;
+            }
+
+            .order-chip {
+                border-radius: 6px;
+                background: #f3f4f6;
+                padding: 2px 7px;
+                font-size: 12px;
+                color: #374151;
+                font-family: Consolas, "Courier New", monospace;
+            }
+
+            .code-card pre {
+                overflow: auto;
+                margin: 0;
+                border-radius: 8px;
+                background: #111827;
+                color: #f9fafb;
+                padding: 14px;
+                font-size: 12px;
+                line-height: 1.55;
+            }
+
+            @media (max-width: 980px) {
+                .page {
+                    padding: 18px;
+                }
+
+                .header,
+                .card-head,
+                .toolbar {
+                    display: grid;
+                }
+
+                .summary-grid {
+                    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                }
+
+                .group-row {
+                    display: grid;
+                }
+
+                .group-orders {
+                    margin-left: 0;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <main class="page">
+            <header class="header">
+                <div>
+                    <div class="eyebrow">PAY888 OPEN API DEMO</div>
+                    <h1>公开订单列表</h1>
+                    <p class="muted" id="scopeText"></p>
+                </div>
+                <span class="tag tag-info">/api/open/v1/payment-orders/list</span>
+            </header>
+
+            <section class="summary-grid" id="summaryGrid"></section>
+
+            <section class="card table-card">
+                <div class="card-head">
+                    <div>
+                        <h2>订单</h2>
+                        <p>分页以 items 为准。</p>
+                    </div>
+                    <span class="tag tag-secondary" id="pageText"></span>
+                </div>
+
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>订单</th>
+                                <th>金额</th>
+                                <th>状态</th>
+                                <th>支付</th>
+                                <th>商户</th>
+                                <th>通道</th>
+                                <th>回调</th>
+                                <th>时间</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ordersBody"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="card groups-card">
+                <div class="card-head">
+                    <div>
+                        <h2>商户分组</h2>
+                        <p>当前页按实际收款商户分组。</p>
+                    </div>
+                    <span class="tag tag-info">merchantGroups</span>
+                </div>
+                <div class="groups" id="merchantGroups"></div>
+            </section>
+
+            <section class="card code-card">
+                <div class="card-head">
+                    <h2>模拟响应</h2>
+                    <span class="tag tag-secondary">JSON</span>
+                </div>
+                <pre id="responsePreview"></pre>
+            </section>
+        </main>
+
+        <script>
+            const apiResponse = {
+                code: 0,
+                message: "成功",
+                data: {
+                    page: 1,
+                    pageSize: 4,
+                    total: 36,
+                    hasMore: true,
+                    scope: {
+                        merchantNo: "6448346",
+                        merchantName: "演示商户A",
+                        displayName: "演示商户A（6448346）"
+                    },
+                    items: [
+                        {
+                            systemOrderNo: "260527153001000001",
+                            upstreamOrderNo: "TEST202605270001",
+                            productName: "会员充值",
+                            upstreamAmount: "100.00",
+                            systemAmount: "99.99",
+                            status: 1,
+                            statusText: "支付成功",
+                            paymentType: "alipay",
+                            paymentTypeText: "支付宝",
+                            channelType: "a",
+                            channelTypeText: "对冲模式",
+                            entryMerchant: {
+                                merchantNo: "6448346",
+                                name: "演示商户A",
+                                displayName: "演示商户A（6448346）"
+                            },
+                            settlementMerchant: {
+                                merchantNo: "7788990",
+                                name: "下级商户B",
+                                displayName: "下级商户B（7788990）"
+                            },
+                            paymentChannel: {
+                                id: "181823533574258688",
+                                name: "支付宝云端通道-01",
+                                displayName: "支付宝云端通道-01",
+                                isCreatedByPaymentChannelProvider: true,
+                                provider: {
+                                    id: "180372591003828224",
+                                    name: "通道提供者张三",
+                                    displayName: "通道提供者张三"
+                                }
+                            },
+                            callback: {
+                                isCallbackSent: true,
+                                isManualResend: false,
+                                callbackRetryCount: 1
+                            },
+                            createdAt: "2026-05-27T15:30:01+08:00",
+                            paidAt: "2026-05-27T15:31:18+08:00",
+                            completedAt: "2026-05-27T15:31:18+08:00",
+                            expiredAt: "2026-05-27T15:35:01+08:00"
+                        },
+                        {
+                            systemOrderNo: "260527153415000002",
+                            upstreamOrderNo: "TEST202605270002",
+                            productName: "套餐续费",
+                            upstreamAmount: "268.00",
+                            systemAmount: "268.01",
+                            status: 0,
+                            statusText: "待支付",
+                            paymentType: "alipay",
+                            paymentTypeText: "支付宝",
+                            channelType: "a",
+                            channelTypeText: "对冲模式",
+                            entryMerchant: {
+                                merchantNo: "6448346",
+                                name: "演示商户A",
+                                displayName: "演示商户A（6448346）"
+                            },
+                            settlementMerchant: {
+                                merchantNo: "6448346",
+                                name: "演示商户A",
+                                displayName: "演示商户A（6448346）"
+                            },
+                            paymentChannel: {
+                                id: "181823533574258689",
+                                name: "支付宝云端通道-02",
+                                displayName: "支付宝云端通道-02",
+                                isCreatedByPaymentChannelProvider: false,
+                                provider: null
+                            },
+                            callback: {
+                                isCallbackSent: false,
+                                isManualResend: false,
+                                callbackRetryCount: 0
+                            },
+                            createdAt: "2026-05-27T15:34:15+08:00",
+                            paidAt: null,
+                            completedAt: null,
+                            expiredAt: "2026-05-27T15:39:15+08:00"
+                        },
+                        {
+                            systemOrderNo: "260527154022000003",
+                            upstreamOrderNo: "TEST202605270003",
+                            productName: "积分购买",
+                            upstreamAmount: "50.00",
+                            systemAmount: "50.00",
+                            status: 3,
+                            statusText: "处理中",
+                            paymentType: "wxpay",
+                            paymentTypeText: "微信",
+                            channelType: "a",
+                            channelTypeText: "对冲模式",
+                            entryMerchant: {
+                                merchantNo: "6448346",
+                                name: "演示商户A",
+                                displayName: "演示商户A（6448346）"
+                            },
+                            settlementMerchant: {
+                                merchantNo: "7788990",
+                                name: "下级商户B",
+                                displayName: "下级商户B（7788990）"
+                            },
+                            paymentChannel: {
+                                id: "181823533574258690",
+                                name: "微信对冲通道-01",
+                                displayName: "微信对冲通道-01",
+                                isCreatedByPaymentChannelProvider: true,
+                                provider: {
+                                    id: "180372591003828225",
+                                    name: "子商户通道提供者王五",
+                                    displayName: "子商户通道提供者王五"
+                                }
+                            },
+                            callback: {
+                                isCallbackSent: false,
+                                isManualResend: false,
+                                callbackRetryCount: 0
+                            },
+                            createdAt: "2026-05-27T15:40:22+08:00",
+                            paidAt: null,
+                            completedAt: null,
+                            expiredAt: "2026-05-27T15:45:22+08:00"
+                        },
+                        {
+                            systemOrderNo: "260527145836000004",
+                            upstreamOrderNo: null,
+                            productName: "人工补单测试",
+                            upstreamAmount: "88.00",
+                            systemAmount: "88.02",
+                            status: 5,
+                            statusText: "回调返回异常",
+                            paymentType: "alipay",
+                            paymentTypeText: "支付宝",
+                            channelType: "a",
+                            channelTypeText: "对冲模式",
+                            entryMerchant: {
+                                merchantNo: "6448346",
+                                name: "演示商户A",
+                                displayName: "演示商户A（6448346）"
+                            },
+                            settlementMerchant: {
+                                merchantNo: "6448346",
+                                name: "演示商户A",
+                                displayName: "演示商户A（6448346）"
+                            },
+                            paymentChannel: {
+                                id: "181823533574258689",
+                                name: "支付宝云端通道-02",
+                                displayName: "支付宝云端通道-02",
+                                isCreatedByPaymentChannelProvider: false,
+                                provider: null
+                            },
+                            callback: {
+                                isCallbackSent: false,
+                                isManualResend: true,
+                                callbackRetryCount: 3
+                            },
+                            createdAt: "2026-05-27T14:58:36+08:00",
+                            paidAt: "2026-05-27T14:59:10+08:00",
+                            completedAt: null,
+                            expiredAt: "2026-05-27T15:03:36+08:00"
+                        }
+                    ],
+                    merchantGroups: [
+                        {
+                            merchantNo: "6448346",
+                            name: "演示商户A",
+                            displayName: "演示商户A（6448346）",
+                            level: 0,
+                            orderCount: 2,
+                            orders: ["260527153415000002", "260527145836000004"],
+                            children: [
+                                {
+                                    merchantNo: "7788990",
+                                    name: "下级商户B",
+                                    displayName: "下级商户B（7788990）",
+                                    level: 1,
+                                    orderCount: 2,
+                                    orders: ["260527153001000001", "260527154022000003"],
+                                    children: []
+                                }
+                            ]
+                        }
+                    ]
+                }
+            };
+
+            const data = apiResponse.data;
+
+            document.getElementById("scopeText").textContent = `${data.scope.displayName}，共 ${data.total} 笔`;
+            document.getElementById("pageText").textContent = `第 ${data.page} 页 / 每页 ${data.pageSize}`;
+            document.getElementById("responsePreview").textContent = JSON.stringify(apiResponse, null, 4);
+
+            renderSummary();
+            renderOrders();
+            renderMerchantGroups();
+
+            function renderSummary() {
+                const paidOrders = data.items.filter((item) => item.status === 1);
+                const pendingOrders = data.items.filter((item) => item.status === 0 || item.status === 3);
+                const paidAmount = paidOrders.reduce((sum, item) => sum + amountToCents(item.systemAmount), 0);
+                const groupsCount = flattenGroups(data.merchantGroups).length;
+                const cards = [
+                    ["当前页", `${data.items.length}`, "当前页订单"],
+                    ["总数", `${data.total}`, "total"],
+                    ["成功金额", centsToAmount(paidAmount), `${paidOrders.length} 笔成功`],
+                    ["待处理", `${pendingOrders.length}`, "待支付/处理中"],
+                    ["商户分组", `${groupsCount}`, data.hasMore ? "还有下一页" : "无下一页"]
+                ];
+
+                document.getElementById("summaryGrid").innerHTML = cards
+                    .map(
+                        ([label, value, hint]) => `
+                            <article class="summary-card">
+                                <span>${escapeHtml(label)}</span>
+                                <strong>${escapeHtml(value)}</strong>
+                                <small>${escapeHtml(hint)}</small>
+                            </article>
+                        `
+                    )
+                    .join("");
+            }
+
+            function renderOrders() {
+                document.getElementById("ordersBody").innerHTML = data.items.map(renderOrderRow).join("");
+            }
+
+            function renderOrderRow(order) {
+                const provider = order.paymentChannel.provider;
+                return `
+                    <tr>
+                        <td>
+                            <div class="order-main">
+                                <div class="order-title">${escapeHtml(order.productName)}</div>
+                                <div class="order-sub">系统：${escapeHtml(order.systemOrderNo)}</div>
+                                <div class="order-sub">上游：${escapeHtml(order.upstreamOrderNo || "-")}</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="amount">
+                                <strong>${escapeHtml(order.systemAmount)}</strong>
+                                <span class="order-sub">上游 ${escapeHtml(order.upstreamAmount)}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="tag ${statusClass(order.status)}">${escapeHtml(order.statusText)}</span>
+                        </td>
+                        <td>
+                            <div class="merchant-cell">
+                                <span>${escapeHtml(order.paymentTypeText)}</span>
+                                <span class="tag tag-secondary">${escapeHtml(order.channelTypeText)}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="merchant-cell">
+                                <span>接入：${escapeHtml(order.entryMerchant.displayName)}</span>
+                                <span>收款：${escapeHtml(order.settlementMerchant.displayName)}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="channel-cell">
+                                <span>${escapeHtml(order.paymentChannel.displayName)}</span>
+                                <span class="order-sub">${provider ? `提供者：${escapeHtml(provider.displayName)}` : "商户自有通道"}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="callback-cell">
+                                <span class="tag ${order.callback.isCallbackSent ? "tag-success" : "tag-warning"}">${order.callback.isCallbackSent ? "已回调" : "未回调"}</span>
+                                <span class="order-sub">次数 ${order.callback.callbackRetryCount}${order.callback.isManualResend ? " / 人工补发" : ""}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="order-main">
+                                <span>创建：${formatTime(order.createdAt)}</span>
+                                <span class="order-sub">支付：${formatTime(order.paidAt)}</span>
+                                <span class="order-sub">完成：${formatTime(order.completedAt)}</span>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }
+
+            function renderMerchantGroups() {
+                const groups = flattenGroups(data.merchantGroups);
+                document.getElementById("merchantGroups").innerHTML = groups.map(renderGroupRow).join("");
+            }
+
+            function renderGroupRow(group) {
+                const orders = group.orders.length
+                    ? group.orders.map((orderNo) => `<span class="order-chip">${escapeHtml(orderNo)}</span>`).join("")
+                    : `<span class="order-chip">无当前页订单</span>`;
+                return `
+                    <div class="group-row" style="margin-left: ${group.level * 22}px">
+                        <div>
+                            <div class="group-name">${escapeHtml(group.displayName)}</div>
+                            <div class="group-meta">当前节点 ${group.orderCount} 笔</div>
+                        </div>
+                        <div class="group-orders">${orders}</div>
+                    </div>
+                `;
+            }
+
+            function flattenGroups(groups) {
+                const output = [];
+                for (const group of groups || []) {
+                    output.push(group);
+                    output.push(...flattenGroups(group.children || []));
+                }
+                return output;
+            }
+
+            function statusClass(status) {
+                if (status === 1) return "tag-success";
+                if (status === 0 || status === 3) return "tag-warning";
+                if (status === 5 || status === 4) return "tag-danger";
+                return "tag-secondary";
+            }
+
+            function formatTime(value) {
+                if (!value) return "-";
+                return value.replace("T", " ").replace("+08:00", "");
+            }
+
+            function amountToCents(raw) {
+                const normalized = String(raw || "0").trim();
+                const negative = normalized.startsWith("-");
+                const absolute = negative ? normalized.slice(1) : normalized;
+                const [integerPart, decimalPart = ""] = absolute.split(".");
+                const integer = Number.parseInt(integerPart || "0", 10);
+                const cents = Number.parseInt(decimalPart.padEnd(2, "0").slice(0, 2) || "0", 10);
+                const total = integer * 100 + cents;
+                return negative ? -total : total;
+            }
+
+            function centsToAmount(cents) {
+                const negative = cents < 0;
+                const absolute = Math.abs(cents);
+                const integer = Math.trunc(absolute / 100);
+                const decimal = String(absolute % 100).padStart(2, "0");
+                return `${negative ? "-" : ""}${integer}.${decimal}`;
+            }
+
+            function escapeHtml(value) {
+                return String(value)
+                    .replace(/&/g, "&amp;")
+                    .replace(/</g, "&lt;")
+                    .replace(/>/g, "&gt;")
+                    .replace(/"/g, "&quot;")
+                    .replace(/'/g, "&#039;");
+            }
+        </script>
+    </body>
+</html>

@@ -11,6 +11,10 @@
           v-model="params.nickName"></el-input>
         <el-input placeholder="请输入登录名" @keyup.enter.native="search" style="margin-left: 5px;"
           v-model="params.userName"></el-input>
+
+        <el-select placeholder="请选择类型" @keyup.enter.native="search" style="margin-left: 5px; width: 100%;"  v-model="params.postName">
+          <el-option v-for="item in posts" :key="item.label" :label="item.label" :value="item.label" />
+        </el-select>
         <el-button style="margin-left: 5px;" type="primary" icon="el-icon-search" @click="search">
           搜索
         </el-button>
@@ -67,7 +71,8 @@ import {
   UserDelete,
   UserLockStatus,
   RemoveSecretKey,
-  userPayModify_resetPayPassword
+  userPayModify_resetPayPassword,
+  PostCascader
 } from "@a/system";
 export default {
   name: "Admin",
@@ -84,8 +89,13 @@ export default {
   },
   mounted() {
     this.search();
+    //获取角色Cascader
+    this.getPosts();
   },
   methods: {
+    async getPosts() {
+      this.posts = await PostCascader();
+    },
     async removeGgyzm(row) {
       this.$confirm("此操作将重置谷歌验证码, 是否继续?", "提示", {
         confirmButtonText: "确定",
@@ -178,7 +188,7 @@ export default {
         cancelButtonText: "取消",
         type: "warning"
       }).then(async () => {
-        await userPayModify_resetPayPassword({ userId: row.userId});
+        await userPayModify_resetPayPassword({ userId: row.userId });
         this.$message.success("操作成功");
       });
     },

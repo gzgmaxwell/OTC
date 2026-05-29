@@ -4,6 +4,8 @@
       <div class="search_box">
         <el-input placeholder="挂单编号" style="width: 30%;" v-model="params.hangingOrderNumber"
           @keyup.enter.native="search"></el-input>
+        <el-input placeholder="交易号" style="width: 30%; margin-left: 5px;" v-model="params.recorderId"
+          @keyup.enter.native="search" />
         <el-select v-model="params.orderStatus" style="width: 30%;margin-left: 5px;" placeholder="订单状态"
           @keyup.enter.native="search">
           <el-option v-for="(item, index) in optOrderSell" :key="index" :label="item.label" :value="item.value" />

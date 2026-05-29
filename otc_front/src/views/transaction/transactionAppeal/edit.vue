@@ -77,9 +77,14 @@
         </el-row>
 
         <el-row :gutter="20" type="flex" class="row-bg" justify="center">
-          <el-col :span="20">
+          <el-col :span="10">
             <el-form-item label="买家申述">
               <span v-html="formValidate?.centent" style="width: 100%;"></span>
+            </el-form-item>
+          </el-col>
+          <el-col :span="10">
+            <el-form-item label="订单编号">
+              <span v-html="formValidate?.orderNumber" style="width: 100%;"></span>
             </el-form-item>
           </el-col>
         </el-row>

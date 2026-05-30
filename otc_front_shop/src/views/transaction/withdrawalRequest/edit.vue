@@ -6,7 +6,7 @@
       </div>
       <div>
         <ja-button type="primary" :click="save">
-          保存
+          提交申请
         </ja-button>
         <el-button @click="backTo()">返回</el-button>
       </div>

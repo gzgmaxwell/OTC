@@ -6,6 +6,8 @@
           @keyup.enter.native="search"></el-input>
         <el-input placeholder="商户ID" v-model="params.merchantId" style="width: 30%;margin-left: 10px; "
           @keyup.enter.native="search"></el-input>
+        <el-input placeholder="会员账号" v-model="params.userName" style="width: 30%;margin-left: 10px; "
+          @keyup.enter.native="search"></el-input>
         <el-input placeholder="商户账号" v-model="params.merchantName" style="width: 30%;margin-left: 10px; "
           @keyup.enter.native="search"></el-input>
         <el-date-picker style="width: 50%; margin-left: 10px;" @change="selectTime" v-model="value2"

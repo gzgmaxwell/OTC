@@ -8,7 +8,7 @@
         <el-input placeholder="商户ID" @keyup.enter.native="search" style="margin-left: 5px;"
           v-model="params.userId"></el-input>
         <el-input placeholder="商户名" @keyup.enter.native="search" style="margin-left: 5px;"
-          v-model="params.nickName"></el-input>
+          v-model="params.fullName"></el-input>
         <el-input placeholder="商户平台" @keyup.enter.native="search" style="margin-left: 5px;"
           v-model="params.postName"></el-input>
         <el-button style="margin-left: 5px;" type="primary" icon="el-icon-search" @click="search">

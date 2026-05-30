@@ -2,12 +2,12 @@
   <div class="list_page">
     <div class="top_wrapper">
       <div class="search_box">
-        <el-input placeholder="商户名" @keyup.enter.native="search" v-model="params.fullName"></el-input>
+        <el-input placeholder="商户会员名" @keyup.enter.native="search" v-model="params.fullName"></el-input>
         <el-input placeholder="商户手机号码" @keyup.enter.native="search" style="margin-left: 5px;"
           v-model="params.phoneNum"></el-input>
         <el-input placeholder="商户ID" @keyup.enter.native="search" style="margin-left: 5px;"
           v-model="params.userId"></el-input>
-        <el-input placeholder="名称" @keyup.enter.native="search" style="margin-left: 5px;"
+        <el-input placeholder="商户名" @keyup.enter.native="search" style="margin-left: 5px;"
           v-model="params.nickName"></el-input>
         <el-input placeholder="商户平台" @keyup.enter.native="search" style="margin-left: 5px;"
           v-model="params.postName"></el-input>

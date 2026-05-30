@@ -39,6 +39,7 @@
         <el-table-column prop="merchantUserName" label="商户账号"></el-table-column>
         <el-table-column prop="userId" label="商户ID"></el-table-column>
         <el-table-column prop="transNumber" label="系统订单号"></el-table-column>
+        <el-table-column prop="memberUserId" label="商户会员ID"></el-table-column>
         <el-table-column prop="withdrawType" label="提现类型"></el-table-column>
         <el-table-column prop="nickName" label="商户会员名"></el-table-column>
         <el-table-column prop="money" label="提款金额"></el-table-column>

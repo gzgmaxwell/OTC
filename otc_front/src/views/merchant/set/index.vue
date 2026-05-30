@@ -2,7 +2,7 @@
   <div class="list_page">
     <div class="top_wrapper">
       <div class="search_box">
-        <el-input placeholder="商户会员名" @keyup.enter.native="search" v-model="params.fullName"></el-input>
+        <el-input placeholder="商户名" @keyup.enter.native="search" v-model="params.fullName"></el-input>
         <el-input placeholder="商户手机号码" @keyup.enter.native="search" style="margin-left: 5px;"
           v-model="params.phoneNum"></el-input>
         <el-input placeholder="商户ID" @keyup.enter.native="search" style="margin-left: 5px;"
@@ -26,7 +26,7 @@
         <el-table-column prop="userName" label="商户登录账号" show-overflow-tooltip></el-table-column>
         <el-table-column prop="phoneNum" label="商户手机号码"></el-table-column>
         <el-table-column prop="lockStatusName" label="锁定状态"></el-table-column>
-        <el-table-column prop="fullName" label="商户会员名"></el-table-column>
+        <el-table-column prop="fullName" label="商户名"></el-table-column>
         <el-table-column prop="gatewayAddress" label="网关地址"></el-table-column>
         <el-table-column prop="appKey" label="api密钥"></el-table-column>
         <el-table-column prop="ip" label="接口ip白名单"></el-table-column>

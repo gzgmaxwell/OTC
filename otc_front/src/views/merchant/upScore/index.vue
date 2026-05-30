@@ -20,8 +20,7 @@
           @keyup.enter.native="search" />
         <el-date-picker style="width: 50%; margin-left: 10px;" @change="selectTime" v-model="value2"
           type="datetimerange" :picker-options="pickerOptions" value-format="yyyy-MM-dd HH:mm:ss" range-separator="-"
-          start-placeholder="开始日期" end-placeholder="结束日期" align="right"
-          :default-time="['00:00:00', '23:59:59']" />
+          start-placeholder="开始日期" end-placeholder="结束日期" align="right" :default-time="['00:00:00', '23:59:59']" />
 
         <el-button type="primary" icon="el-icon-search" @click="search">
           搜索
@@ -39,6 +38,7 @@
         <el-table-column prop="merchantUserName" label="商户名"></el-table-column>
         <el-table-column prop="userId" label="商户ID"></el-table-column>
         <el-table-column prop="transNumber" label="系统订单号"></el-table-column>
+        <el-table-column prop="memberUserId" label="商户会员ID"></el-table-column>
         <el-table-column prop="nickName" label="商户会员名"></el-table-column>
         <el-table-column prop="money" label="存款金额"></el-table-column>
         <el-table-column prop="sucessCommitAmount" label="已成功金额"></el-table-column>

@@ -9,6 +9,8 @@
           v-model="params.userId"></el-input>
         <el-input placeholder="商户名" @keyup.enter.native="search" style="margin-left: 5px;"
           v-model="params.fullName"></el-input>
+        <el-input placeholder="商户昵称" @keyup.enter.native="search" style="margin-left: 5px;"
+          v-model="params.nickName"></el-input>
         <el-input placeholder="商户平台" @keyup.enter.native="search" style="margin-left: 5px;"
           v-model="params.postName"></el-input>
         <el-button style="margin-left: 5px;" type="primary" icon="el-icon-search" @click="search">
@@ -27,6 +29,7 @@
         <el-table-column prop="phoneNum" label="商户手机号码"></el-table-column>
         <el-table-column prop="lockStatusName" label="锁定状态"></el-table-column>
         <el-table-column prop="fullName" label="商户名"></el-table-column>
+        <el-table-column prop="nickName" label="商户昵称"></el-table-column>
         <el-table-column prop="gatewayAddress" label="网关地址"></el-table-column>
         <el-table-column prop="appKey" label="api密钥"></el-table-column>
         <el-table-column prop="ip" label="接口ip白名单"></el-table-column>

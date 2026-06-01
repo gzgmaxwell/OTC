@@ -9,7 +9,7 @@
       </el-form-item>
       <el-form-item label="拉黑对象：" prop="userId">
         <el-select v-model="formValidate.userId" placeholder="请选择" style="width: 100%;">
-          <el-option v-for="item in blackUserReasonOpt222" :key="item.value" :label="item.label" :value="item.value">
+          <el-option v-for="item in optBuySell" :key="item.value" :label="item.label" :value="item.value">
           </el-option>
         </el-select>
       </el-form-item>
@@ -43,6 +43,10 @@ export default {
     userId: {
       type: [String, Number],
       default: ""
+    },
+    optBuySell: {
+      type: Array,
+      default: () => []
     }
   },
   data() {
@@ -52,9 +56,6 @@ export default {
       isIndeterminate: true,
       blackUserReasonOpt,
       formValidate: this.getDefaultForm(),
-      blackUserReasonOpt222: [
-        { value: this.userId, label: this.userId },
-      ],
       rules: {
         recType: [{ required: true, message: "请选择拉黑原因", trigger: "change" }]
       }

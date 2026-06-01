@@ -119,7 +119,7 @@
       </el-form>
     </div>
 
-    <add-black :visible.sync="blackDialogVisible" :user-id="blackUserId" />
+    <add-black :visible.sync="blackDialogVisible" :user-id="blackUserId" :optBuySell="optBuySell" />
   </div>
 </template>
 <script>
@@ -143,6 +143,7 @@ export default {
       id: "",
       title: "",
       params: {},
+      optBuySell: [],
       formValidate: {
         buyerId: null,
         money: null,
@@ -216,6 +217,10 @@ export default {
     async getInfo(id) {
       const data = await TransactionAppealInfo(id);
       this.formValidate = data;
+      this.optBuySell = [
+        { value: data.buyCoins?.buyerId, label: data.buyCoins?.buyerNickName },
+        { value: data.buyCoins?.sellerId, label: data.buyCoins?.sellerNickName },
+      ];
     },
     openBlackDialog() {
       this.blackDialogVisible = true;

@@ -7,12 +7,17 @@
           </el-option>
         </el-select>
       </el-form-item>
+      <el-form-item label="拉黑对象：" prop="userId">
+        <el-select v-model="formValidate.userId" placeholder="请选择" style="width: 100%;">
+          <el-option v-for="item in blackUserReasonOpt222" :key="item.value" :label="item.label" :value="item.value">
+          </el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item label="备注：">
         <el-input v-model="formValidate.note1"></el-input>
       </el-form-item>
       <el-form-item label="限制功能：" v-if="compcChecked(formValidate.recType)">
-        <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll"
-          @change="handleCheckAllChange">全选</el-checkbox>
+        <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
         <el-checkbox-group v-model="formValidate.limitResource" @change="handleCheckedChange">
           <el-checkbox v-for="item in authOpt" :label="item.value" :key="item.value">{{ item.label }}</el-checkbox>
         </el-checkbox-group>
@@ -47,6 +52,9 @@ export default {
       isIndeterminate: true,
       blackUserReasonOpt,
       formValidate: this.getDefaultForm(),
+      blackUserReasonOpt222: [
+        { value: this.userId, label: this.userId },
+      ],
       rules: {
         recType: [{ required: true, message: "请选择拉黑原因", trigger: "change" }]
       }

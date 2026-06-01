@@ -269,8 +269,8 @@ export default {
         status: "",
         paymentType: "",
         channelType: "",
-        startTime: "",
-        endTime: "",
+        createdAtFrom: "",
+        createdAtTo: "",
         descs: "created_at"
       };
     },
@@ -284,8 +284,8 @@ export default {
       this.loadList();
     },
     handleTimeChange(value) {
-      this.params.startTime = value && value[0] ? value[0] : "";
-      this.params.endTime = value && value[1] ? value[1] : "";
+      this.params.createdAtFrom = value && value[0] ? value[0] : "";
+      this.params.createdAtTo = value && value[1] ? value[1] : "";
     },
     async loadList() {
       this.loading = true;
